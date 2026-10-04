@@ -1,0 +1,30 @@
+{
+ "actions": [],
+ "autoname": "field:provider",
+ "creation": "2026-10-04 14:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["provider", "expertise", "languages", "years_of_practice", "credentials"],
+ "fields": [
+  {"description": "The servicehq Provider this adds to. One row per provider; the Provider itself is not changed.", "fieldname": "provider", "fieldtype": "Link", "in_list_view": 1, "label": "Provider", "options": "Provider", "reqd": 1, "unique": 1},
+  {"description": "What they read or practise, e.g. Vedic, Tarot, Numerology.", "fieldname": "expertise", "fieldtype": "Data", "in_list_view": 1, "label": "Expertise"},
+  {"description": "Languages they consult in, separated by commas.", "fieldname": "languages", "fieldtype": "Data", "label": "Languages"},
+  {"fieldname": "years_of_practice", "fieldtype": "Int", "label": "Years of Practice"},
+  {"fieldname": "credentials", "fieldtype": "Table", "label": "Credentials", "options": "Astrologer Credential"}
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-04 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Astrologer Profile",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {"create": 1, "delete": 1, "email": 1, "print": 1, "read": 1, "role": "System Manager", "share": 1, "write": 1},
+  {"read": 1, "role": "Onboarding Reviewer"}
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

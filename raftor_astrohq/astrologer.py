@@ -1,0 +1,66 @@
+"""What an astrologer adds to servicehq's general Provider: their own table (Astrologer Profile) pointing at it.
+The Provider is never changed. The same rules run on every save (api.py) and in the onboarding checks.
+"""
+import frappe
+from frappe import _
+from frappe.utils import cint, getdate, today
+
+DOCTYPE = "Astrologer Profile"
+MAX_YEARS = 80  # a sanity limit on the number typed, not a business rule
+
+
+def provider_of(user: str) -> str | None:
+	return frappe.db.get_value("Provider", {"user": user}, "name")
+
+
+def profile_of(provider: str):
+	return frappe.get_doc(DOCTYPE, provider) if frappe.db.exists(DOCTYPE, provider) else None
+
+
+def clean(values: dict) -> dict:
+	years = str(values.get("years_of_practice") if values.get("years_of_practice") is not None else "").strip()
+	return {
+		"expertise": str(values.get("expertise") or "").strip(),
+		"languages": str(values.get("languages") or "").strip(),
+		"years_of_practice": years,
+	}
+
+
+def details_errors(values: dict) -> dict[str, str]:
+	v, errors = clean(values), {}
+	if len(v["expertise"]) < 2:
+		errors["expertise"] = _("Enter what you read or practise.")
+	if len(v["languages"]) < 2:
+		errors["languages"] = _("Enter the languages you consult in.")
+	years = v["years_of_practice"]
+	if not years.isdigit() or int(years) > MAX_YEARS:
+		errors["years_of_practice"] = _("Enter a whole number of years, from 0 to {0}.").format(MAX_YEARS)
+	return errors
+
+
+def credential_errors(values: dict) -> dict[str, str]:
+	errors = {}
+	if len(str(values.get("title") or "").strip()) < 2:
+		errors["title"] = _("Enter the name of the credential.")
+	year = str(values.get("year") or "").strip()
+	if year and (not year.isdigit() or not 1900 <= int(year) <= getdate(today()).year):
+		errors["year"] = _("Enter a valid year, or leave it empty.")
+	return errors
+
+
+def details_complete(application) -> bool:
+	"""Onboarding completion check: expertise, languages and years are filled in correctly."""
+	provider = provider_of(application.applicant_user)
+	row = profile_of(provider) if provider else None
+	return bool(row) and not details_errors({k: row.get(k) for k in ("expertise", "languages", "years_of_practice")})
+
+
+def credentials_complete(application) -> bool:
+	"""Onboarding completion check: at least one credential is listed."""
+	provider = provider_of(application.applicant_user)
+	row = profile_of(provider) if provider else None
+	return bool(row) and bool(row.credentials)
+
+
+def credential_year(value) -> int | None:
+	return cint(value) or None
