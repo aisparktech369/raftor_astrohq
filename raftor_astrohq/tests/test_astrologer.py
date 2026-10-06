@@ -5,10 +5,9 @@ from unittest import TestCase
 
 import frappe
 
-from raftor_astrohq import astrologer, astrologer_api as api, pages
+from raftor_astrohq import astrologer, astrologer_api as api
 from raftor_astrohq.journey import PROVIDER_JOURNEY, PROVIDER_STEPS
 from raftor_astrohq.tests.helpers import make_user
-from raftor_websitehq.website_hq.app_pages import check_definition, registered_pages
 
 GOOD = {"expertise": "Vedic, Tarot", "languages": "English, Hindi", "years_of_practice": "12"}
 
@@ -137,19 +136,23 @@ class TestJourney(TestCase):
 	def test_both_steps_name_a_page_and_a_check(self):
 		for step in PROVIDER_STEPS:
 			row = frappe.get_doc("Onboarding Flow Step", {"module": PROVIDER_JOURNEY, "step_key": step["step_key"]})
-			self.assertTrue(frappe.parse_json(row.config)["page"].startswith("/astrologer/"))
+			self.assertTrue(frappe.parse_json(row.config)["page"].startswith("/onboarding/astrologer-"))
 			self.assertTrue(frappe.get_attr(row.completion_check))
 
 
-class TestPages(TestCase):
-	def test_pages_are_registered_and_pass_the_kits_checks(self):
-		routes = registered_pages()
-		for route, fn in {"astrologer/details": pages.astrologer_details, "astrologer/credentials": pages.astrologer_credentials,
-						  "astrologer/credentials/new": pages.astrologer_credential_new}.items():
-			self.assertIn(route, routes)
-			self.assertTrue(check_definition(fn())["login_required"], route)
+class TestAstrologerPages(TestCase):
+	def test_the_pages_are_shipped_and_pass_the_kits_checks(self):
+		from raftor_astrohq import page_definitions
+		from raftor_websitehq.website_hq.page_sync import check
+
+		routes = {d["route"]: d for d in page_definitions.definitions()}
+		for route in ("onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new"):
+			self.assertTrue(check(routes[route])["login_required"], route)
 
 	def test_details_form_fields_and_next_page(self):
-		form = check_definition(pages.astrologer_details())["blocks"][2]
+		from raftor_astrohq import page_definitions
+
+		page = next(d for d in page_definitions.definitions() if d["route"] == "onboarding/astrologer-details")
+		form = page["sections"][1]["cards"][0]["values"]
 		self.assertEqual([f["name"] for f in form["fields"]], ["expertise", "languages", "years_of_practice"])
-		self.assertEqual(form["success"], {"redirect": "/astrologer/credentials"})
+		self.assertEqual(form["success_redirect"], "/onboarding/astrologer-credentials")

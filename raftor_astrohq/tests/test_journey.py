@@ -17,17 +17,17 @@ class TestJourney(AstroTestCase):
 		rows = frappe.get_all("Onboarding Flow Step", filters={"module": APP_KEY}, fields=["step_key", "step_type", "config", "required", "completion_check"])
 		self.assertEqual(len(rows), len(JOURNEY))
 		self.assertEqual((rows[0].step_type, rows[0].required), ("Form", 1))
-		self.assertEqual(json.loads(rows[0].config), {"page": "/birth-details", "entry": True})
+		self.assertEqual(json.loads(rows[0].config), {"page": "/onboarding/birth-details", "entry": True})
 		self.assertEqual(rows[0].completion_check, "raftor_astrohq.profiles.birth_details_complete")
 
 	def test_signing_up_for_astrohq_lands_on_the_birth_details_page(self):
 		user = make_user()
-		self.assertEqual(after_signup(user.name, "astrohq"), {"redirect_to": "/birth-details"})
+		self.assertEqual(after_signup(user.name, "astrohq"), {"redirect_to": "/onboarding/birth-details"})
 
 	def test_saving_your_details_finishes_the_step_and_ends_the_redirects(self):
 		user = make_user()
 		name = open_application(user.name, APP_KEY)
-		self.assertEqual(after_login(user.name), {"redirect_to": "/birth-details"})
+		self.assertEqual(after_login(user.name), {"redirect_to": "/onboarding/birth-details"})
 		frappe.set_user(user.name)
 		self.assertEqual(api.save_profile(values=GOOD, relationship="You"), {"ok": True})
 		step = frappe.get_doc("Onboarding Application", name).steps[0]

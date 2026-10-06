@@ -1,6 +1,6 @@
 """AstroHQ describes its onboarding; it does not code it.
 
-Each step names a page (drawn by websitehq from pages.py) and a check onboardinghq runs to know the step
+Each step names a page (drawn by websitehq from page_definitions.py) and a check onboardinghq runs to know the step
 is done. The journey is found by app first (AstroHQ), then by role, so these steps apply to every role of
 this app until a role-specific journey is described.
 """
@@ -14,7 +14,7 @@ JOURNEY = [
 		"label": "Your birth details",
 		"required": True,
 		"step_type": "Form",
-		"config": {"page": "/birth-details", "entry": True},
+		"config": {"page": "/onboarding/birth-details", "entry": True},
 		"completion_check": "raftor_astrohq.profiles.birth_details_complete",
 	},
 ]
@@ -35,7 +35,7 @@ PROVIDER_STEPS = [
 		"required": True,
 		"step_type": "Form",
 		"order": 15,
-		"config": {"page": "/astrologer/details"},
+		"config": {"page": "/onboarding/astrologer-details"},
 		"completion_check": "raftor_astrohq.astrologer.details_complete",
 	},
 	{
@@ -44,7 +44,7 @@ PROVIDER_STEPS = [
 		"required": True,
 		"step_type": "Form",
 		"order": 17,
-		"config": {"page": "/astrologer/credentials"},
+		"config": {"page": "/onboarding/astrologer-credentials"},
 		"completion_check": "raftor_astrohq.astrologer.credentials_complete",
 	},
 ]

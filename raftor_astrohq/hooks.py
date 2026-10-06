@@ -263,19 +263,20 @@ after_migrate = "raftor_astrohq.install.after_install"
 # Birth profiles are rows of a table on the User; these rules run whenever a User is saved.
 doc_events = {"User": {"validate": "raftor_astrohq.profiles.validate_user"}}
 
-# Pages for websitehq's page kit to draw (see pages.py), and the My account menu entry for the list.
-rfhq_app_pages = {
-    "birth-profiles": "raftor_astrohq.pages.birth_profiles",
-    "birth-profiles/new": "raftor_astrohq.pages.new_person",
-    "birth-profiles/edit": "raftor_astrohq.pages.edit_person",
-    "birth-details": "raftor_astrohq.pages.birth_details",
-    "birth-details/done": "raftor_astrohq.pages.birth_details_done",
-    "astrologer/details": "raftor_astrohq.pages.astrologer_details",
-    "astrologer/credentials": "raftor_astrohq.pages.astrologer_credentials",
-    "astrologer/credentials/new": "raftor_astrohq.pages.astrologer_credential_new",
-}
+# Pages as data for websitehq to build (page_definitions.py), and the old addresses forwarded to them.
+rfhq_page_definitions = ["raftor_astrohq.page_definitions.definitions"]
+website_redirects = [
+    {"source": "/birth-profiles", "target": "/my/birth-profiles"},
+    {"source": "/birth-profiles/new", "target": "/my/birth-profiles/new"},
+    {"source": "/birth-profiles/edit", "target": "/my/birth-profiles"},
+    {"source": "/birth-details", "target": "/onboarding/birth-details"},
+    {"source": "/birth-details/done", "target": "/onboarding/birth-details/done"},
+    {"source": "/astrologer/details", "target": "/onboarding/astrologer-details"},
+    {"source": "/astrologer/credentials", "target": "/onboarding/astrologer-credentials"},
+    {"source": "/astrologer/credentials/new", "target": "/onboarding/astrologer-credentials/new"},
+]
 standard_portal_menu_items = [
-    {"title": "Birth profiles", "route": "/birth-profiles", "reference_doctype": "Astro Birth Profile"},
+    {"title": "Birth profiles", "route": "/my/birth-profiles", "reference_doctype": "Astro Birth Profile"},
 ]
 
 # servicehq's service kinds, in astrohq's words (vocabulary.py). Only words; the mechanics are servicehq's.

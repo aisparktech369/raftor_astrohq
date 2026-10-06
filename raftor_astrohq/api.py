@@ -8,8 +8,8 @@ from frappe.utils import formatdate
 
 from raftor_astrohq import profiles
 from raftor_astrohq.journey import APP_KEY
+from raftor_websitehq.website_hq.page_groups import page_url
 
-EDIT_PAGE = "/birth-profiles/edit?id="
 DELETE = "raftor_astrohq.api.delete_profile"
 
 
@@ -33,7 +33,7 @@ def _line(row) -> str:
 
 
 def _item(row) -> dict:
-	actions = [{"label": _("Edit"), "href": EDIT_PAGE + row.name}]
+	actions = [{"label": _("Edit"), "href": page_url("my", "birth-profiles/edit", id=row.name)}]
 	if row.relationship != profiles.SELF:
 		actions.append({"label": _("Delete"), "kind": "danger", "call": DELETE, "args": {"id": row.name},
 						"confirm": _("Delete {0}?").format(row.full_name), "confirm_label": _("Yes, delete")})
@@ -58,12 +58,27 @@ def get_profile(id=None, relationship=None):
 
 
 @frappe.whitelist(methods=["POST"])
+def profile_form_fields(id=None):
+	"""The edit form: the short one for the account holder's own profile, the full one for a family member, with their values filled in."""
+	from raftor_astrohq.page_definitions import _person_fields, _you_fields
+
+	row = _find(_user_doc(), id)
+	if not row:
+		frappe.throw(_("That profile was not found."), frappe.DoesNotExistError)
+	is_self = row.relationship == profiles.SELF
+	return {"title": _("Your details") if is_self else _("Edit a person"), "fields": _you_fields() if is_self else _person_fields(), "values": profiles.row_values(row)}
+
+
+@frappe.whitelist(methods=["POST"])
 def save_profile(id=None, values=None, relationship=None):
 	"""Adds or changes one person. Rule problems come back per field, not as an error page."""
 	user_doc = _user_doc()
 	values = frappe.parse_json(values) if isinstance(values, str) else (values or {})
 	if relationship:  # the onboarding form fixes this to "You"
 		values["relationship"] = relationship
+	existing = _find(user_doc, id)
+	if existing and existing.relationship == profiles.SELF and not values.get("relationship"):
+		values["relationship"] = profiles.SELF  # the short form for the account holder has no relationship field
 	is_self = values.get("relationship") == profiles.SELF
 
 	only_one = {"relationship": _("There can be only one profile marked \"{0}\".").format(profiles.SELF)}

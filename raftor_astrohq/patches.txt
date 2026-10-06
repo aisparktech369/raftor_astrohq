@@ -2,3 +2,4 @@
 
 [post_model_sync]
 raftor_astrohq.patches.single_fields_to_birth_profiles
+raftor_astrohq.patches.move_pages_to_page_definitions

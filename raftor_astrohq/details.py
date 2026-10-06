@@ -24,8 +24,3 @@ def consultation_rules(values: dict, user: str) -> dict:
 	if not profiles.birth_details_complete(frappe._dict(applicant_user=user)):
 		return {"_form": _("Please add your birth details first, then book.")}
 	return {}
-
-
-def dashboard_section(user: str) -> list[dict]:
-	"""An extra block on the subscription dashboard: where the customer keeps their birth details."""
-	return [{"type": "actions", "links": [{"label": _("Your birth details"), "href": "/birth-profiles", "kind": "outline"}]}]
