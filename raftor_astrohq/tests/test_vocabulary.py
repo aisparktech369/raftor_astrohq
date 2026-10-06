@@ -19,19 +19,3 @@ class TestVocabulary(TestCase):
 		self.assertEqual(kinds.words("astrohq", "Event")["service"], "havan")
 		self.assertEqual(kinds.words("astrohq", "Subscription")["unit"], "day")
 		self.assertEqual(kinds.words("astrohq", "Consultation")["provider"], "astrologer")
-
-
-class TestAstroSubscriptionPages(TestCase):
-	def test_astrohqs_pages_are_servicehqs_builders_with_its_config(self):
-		from raftor_astrohq import pages
-		from raftor_websitehq.website_hq.app_pages import check_definition, registered_pages
-
-		for route in ("astro/plans", "astro/subscribe", "astro/subscription"):
-			self.assertIn(route, registered_pages())
-		plans = check_definition(pages.plans())
-		self.assertFalse(plans["login_required"])
-		self.assertEqual(plans["blocks"][1]["args"], {"vertical": "astrohq", "prefix": "/astro"})
-		frappe.set_user("Administrator")
-		dashboard = check_definition(pages.subscription())
-		self.assertEqual(dashboard["blocks"][1]["add"]["href"], "/astro/plans")
-		self.assertEqual(dashboard["blocks"][-1]["links"][0]["href"], "/birth-profiles")  # astrohq's own section

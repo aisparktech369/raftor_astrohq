@@ -155,20 +155,3 @@ def astrologer_credential_new():
 		],
 	}
 
-
-# ---- Subscription pages: servicehq's builders with astrohq's config (nothing is overridden) ----
-from raftor_servicehq import subscription_pages  # noqa: E402
-
-SUBSCRIPTION = {"vertical": "astrohq", "prefix": "/astro"}
-
-
-def plans():
-	return subscription_pages.pricing(SUBSCRIPTION)
-
-
-def subscribe():
-	return subscription_pages.subscribe(SUBSCRIPTION)
-
-
-def subscription():
-	return subscription_pages.dashboard(SUBSCRIPTION)

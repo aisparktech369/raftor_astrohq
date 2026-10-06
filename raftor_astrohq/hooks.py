@@ -273,9 +273,6 @@ rfhq_app_pages = {
     "astrologer/details": "raftor_astrohq.pages.astrologer_details",
     "astrologer/credentials": "raftor_astrohq.pages.astrologer_credentials",
     "astrologer/credentials/new": "raftor_astrohq.pages.astrologer_credential_new",
-    "astro/plans": "raftor_astrohq.pages.plans",
-    "astro/subscribe": "raftor_astrohq.pages.subscribe",
-    "astro/subscription": "raftor_astrohq.pages.subscription",
 }
 standard_portal_menu_items = [
     {"title": "Birth profiles", "route": "/birth-profiles", "reference_doctype": "Astro Birth Profile"},
