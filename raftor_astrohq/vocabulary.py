@@ -11,7 +11,20 @@ def vocabulary() -> dict:
 			"Tarot reader": {"word": "tarot reader", "plural": "tarot readers"},
 			"Pandit ji": {"word": "pandit ji", "plural": "pandit ji"},
 			"Palmist": {"word": "palmist", "plural": "palmists"},
+			"Numerologist": {"word": "numerologist", "plural": "numerologists"},
+			"Vastu expert": {"word": "vastu expert", "plural": "vastu experts"},
 		},
+		# The standard services providers enrol in. Fixed work has set minutes; readings let the provider choose theirs.
+		"services": [
+			{"name": "Match making", "persona": "Astrologer"},
+			{"name": "Astrology reading", "persona": "Astrologer", "minutes_by_provider": True},
+			{"name": "Muhurat", "persona": "Pandit ji"},
+			{"name": "Shadi date", "persona": "Pandit ji"},
+			{"name": "Tarot reading", "persona": "Tarot reader", "minutes_by_provider": True},
+			{"name": "Palm reading", "persona": "Palmist", "minutes_by_provider": True},
+			{"name": "Numerology reading", "persona": "Numerologist", "minutes_by_provider": True},
+			{"name": "Vastu consultation", "persona": "Vastu expert", "minutes_by_provider": True},
+		],
 		"kinds": {
 			"Consultation": {"service": "session", "services": "sessions", "unit": "session", "units": "sessions", "book": "Book a session",
 				"details": {"fields": [question()], "validate": "raftor_astrohq.details.consultation_rules"}},
