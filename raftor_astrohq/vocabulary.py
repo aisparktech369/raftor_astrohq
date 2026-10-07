@@ -26,8 +26,7 @@ def vocabulary() -> dict:
 			{"name": "Vastu consultation", "persona": "Vastu expert", "minutes_by_provider": True},
 		],
 		"kinds": {
-			"Consultation": {"service": "session", "services": "sessions", "unit": "session", "units": "sessions", "book": "Book a session",
-				"details": {"fields": [question()], "validate": "raftor_astrohq.details.consultation_rules"}},
+			"Consultation": {"details": {"fields": [question()], "validate": "raftor_astrohq.details.consultation_rules"}},
 			"Subscription": {"service": "daily pooja", "services": "daily poojas", "unit": "day", "units": "days", "book": "Subscribe", "details": {"fields": [*sankalp(), wish()]}},
 			"Event": {"service": "havan", "services": "havans", "unit": "seat", "units": "seats", "book": "Register", "details": {"fields": sankalp(), "per_person": True}},
 			"Timed service": {"service": "pooja", "services": "poojas", "unit": "pooja", "units": "poojas", "book": "Book a pooja", "details": {"fields": [*sankalp(), wish()]}},
