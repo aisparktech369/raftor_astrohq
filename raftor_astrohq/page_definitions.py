@@ -89,14 +89,17 @@ def definitions() -> list[dict]:
 		_form("my/birth-profiles/edit", _("Edit details"), "", {
 			"fields_source": API + "profile_form_fields", "save": API + "save_profile", "url_args": "id", "submit_label": _("Save"), "cancel_label": _("Cancel"),
 			"cancel_url": profile_list, "success_redirect": profile_list}),
-		_form("onboarding/astrologer-details", _("Your astrologer details"), _("Step 3 of 5. Customers see this on your page."), {
+		_form("onboarding/astrologer-personas", _("What you do"), _("Choose everything that applies. Our team approves it with your application."), {
+			"fields_source": ASTRO + "personas_form_fields", "save": ASTRO + "save_personas", "submit_label": _("Save and continue"),
+			"success_redirect": _start("astrologer-details")}),
+		_form("onboarding/astrologer-details", _("Your astrologer details"), _("Customers see this on your page."), {
 			"load": ASTRO + "get_details", "save": ASTRO + "save_details", "submit_label": _("Save and continue"),
 			"fields": [
 				{"name": "expertise", "label": _("Expertise"), "required": True, "placeholder": _("e.g. Vedic, Tarot, Numerology")},
 				{"name": "languages", "label": _("Languages"), "required": True, "placeholder": _("e.g. English, Hindi")},
 				{"name": "years_of_practice", "label": _("Years of practice"), "required": True, "placeholder": "0"}],
 			"success_redirect": _start("astrologer-credentials")}),
-		_list("onboarding/astrologer-credentials", _("Your credentials"), _("Step 4 of 5. Courses, certificates or lineage. Our team checks them to verify you."), {
+		_list("onboarding/astrologer-credentials", _("Your credentials"), _("Courses, certificates or lineage. Our team checks them to verify you."), {
 			"method": ASTRO + "list_credentials", "empty": _("No credentials added yet."), "links": [
 				{"label": _("Add a credential"), "href": _start("astrologer-credentials/new"), "kind": "outline", "where": "top"},
 				{"label": _("Continue"), "href": page_url("provider"), "kind": "primary", "where": "bottom"}]}),

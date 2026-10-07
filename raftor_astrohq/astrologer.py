@@ -1,6 +1,8 @@
 """What an astrologer adds to servicehq's general Provider: their own table (Astrologer Profile) pointing at it.
 The Provider is never changed. The same rules run on every save (api.py) and in the onboarding checks.
 """
+import re
+
 import frappe
 from frappe import _
 from frappe.utils import cint, getdate, today
@@ -64,3 +66,16 @@ def credentials_complete(application) -> bool:
 
 def credential_year(value) -> int | None:
 	return cint(value) or None
+
+
+def persona_fields() -> list[dict]:
+	"""One tick box per persona the vertical lists, in its own words."""
+	from raftor_servicehq import kinds
+
+	return [{"name": "p_" + re.sub(r"\W+", "_", name.lower()), "label": name.capitalize(), "type": "checkbox", "persona": name} for name in kinds.personas()]
+
+
+def personas_complete(application) -> bool:
+	"""Onboarding completion check: at least one persona is chosen."""
+	provider = provider_of(application.applicant_user)
+	return bool(provider) and bool(frappe.db.exists("Provider Persona", {"parent": provider, "parenttype": "Provider"}))

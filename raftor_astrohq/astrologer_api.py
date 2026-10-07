@@ -33,6 +33,32 @@ def _refresh_onboarding() -> None:
 
 
 @frappe.whitelist(methods=["POST"])
+def personas_form_fields():
+	return {"fields": [{k: v for k, v in f.items() if k != "persona"} for f in astrologer.persona_fields()],
+			"values": {f["name"]: 1 for f in astrologer.persona_fields() if f["persona"] in _chosen(_provider())}}
+
+
+def _chosen(provider: str) -> set[str]:
+	return set(frappe.get_all("Provider Persona", filters={"parent": provider, "parenttype": "Provider"}, pluck="persona"))
+
+
+@frappe.whitelist(methods=["POST"])
+def save_personas(values=None):
+	"""The personas the provider ticks. Ones already approved stay approved; new ones wait for the business team."""
+	provider = _provider()
+	values = frappe.parse_json(values) if isinstance(values, str) else (values or {})
+	wanted = [f["persona"] for f in astrologer.persona_fields() if values.get(f["name"]) in (1, True, "1", "true", "on")]
+	if not wanted:
+		return {"ok": False, "errors": {astrologer.persona_fields()[0]["name"]: _("Choose at least one.")}}
+	doc = frappe.get_doc("Provider", provider)
+	approved = {row.persona for row in doc.personas if row.approved}
+	doc.set("personas", [{"persona": p, "approved": int(p in approved)} for p in wanted])
+	doc.save(ignore_permissions=True)
+	_refresh_onboarding()
+	return {"ok": True}
+
+
+@frappe.whitelist(methods=["POST"])
 def get_details():
 	row = _profile(_provider())
 	return {"values": {k: row.get(k) if row.get(k) is not None else "" for k in ("expertise", "languages", "years_of_practice")} if row else {}}

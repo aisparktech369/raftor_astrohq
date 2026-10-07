@@ -23,7 +23,7 @@ class TestPages(TestCase):
 
 	def test_every_page_passes_the_kits_checks_and_needs_a_sign_in(self):
 		self.assertEqual(set(pages()), {"onboarding/birth-details", "onboarding/birth-details/done", "my/birth-profiles", "my/birth-profiles/new", "my/birth-profiles/edit",
-										"onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new"})
+										"onboarding/astrologer-personas", "onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new"})
 		for route, page in pages().items():
 			self.assertTrue(check(page)["login_required"], route)
 

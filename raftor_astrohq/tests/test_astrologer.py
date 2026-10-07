@@ -124,6 +124,38 @@ class TestCompletionChecks(AstrologerTestCase):
 		self.assertEqual((done["astro_details"], done["astro_credentials"]), ("Complete", "Complete"))
 
 
+class TestPersonaStep(AstrologerTestCase):
+	def test_the_form_has_one_box_per_persona_the_vertical_lists(self):
+		fields = api.personas_form_fields()["fields"]
+		self.assertEqual([f["label"] for f in fields], ["Astrologer", "Tarot reader", "Pandit ji", "Palmist", "Numerologist", "Vastu expert"])
+		self.assertTrue(all(f["type"] == "checkbox" for f in fields))
+
+	def test_nothing_chosen_is_refused_and_the_step_is_not_complete(self):
+		self.assertFalse(api.save_personas({})["ok"])
+		self.assertFalse(astrologer.personas_complete(frappe._dict(applicant_user=self.me.name)))
+
+	def test_chosen_personas_are_saved_waiting_for_approval(self):
+		self.assertTrue(api.save_personas({"p_astrologer": 1, "p_palmist": "1"})["ok"])
+		rows = {r.persona: r.approved for r in frappe.get_doc("Provider", self.provider.name).personas}
+		self.assertEqual(rows, {"Astrologer": 0, "Palmist": 0})
+		self.assertTrue(astrologer.personas_complete(frappe._dict(applicant_user=self.me.name)))
+		self.assertEqual(api.personas_form_fields()["values"], {"p_astrologer": 1, "p_palmist": 1})
+
+	def test_changing_the_choice_keeps_what_was_approved(self):
+		api.save_personas({"p_astrologer": 1})
+		frappe.db.set_value("Provider Persona", {"parent": self.provider.name}, "approved", 1)
+		api.save_personas({"p_astrologer": 1, "p_palmist": 1})
+		rows = {r.persona: r.approved for r in frappe.get_doc("Provider", self.provider.name).personas}
+		self.assertEqual(rows, {"Astrologer": 1, "Palmist": 0})
+
+	def test_approving_the_application_approves_the_chosen_personas(self):
+		from raftor_servicehq.onboarding import sync_from_application
+
+		api.save_personas({"p_tarot_reader": 1})
+		sync_from_application(self.provider.name, frappe._dict(status="Live", verification_status="Unverified"))
+		self.assertEqual(frappe.db.get_value("Provider Persona", {"parent": self.provider.name}, "approved"), 1)
+
+
 class TestJourney(TestCase):
 	def test_steps_sit_between_servicehqs_own_by_order_and_servicehq_keeps_its_steps(self):
 		rows = frappe.get_all("Onboarding Flow Step", filters={"module": PROVIDER_JOURNEY}, fields=["step_key", "order"], order_by="`order`")

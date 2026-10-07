@@ -30,6 +30,15 @@ def register_journey() -> None:
 PROVIDER_JOURNEY = "ServiceHQ Provider"
 PROVIDER_STEPS = [
 	{
+		"step_key": "astro_personas",
+		"label": "What you do",
+		"required": True,
+		"step_type": "Form",
+		"order": 14,
+		"config": {"page": "/onboarding/astrologer-personas"},
+		"completion_check": "raftor_astrohq.astrologer.personas_complete",
+	},
+	{
 		"step_key": "astro_details",
 		"label": "Your astrologer details",
 		"required": True,
