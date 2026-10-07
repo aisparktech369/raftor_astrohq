@@ -95,7 +95,7 @@ def definitions() -> list[dict]:
 		_form("onboarding/astrologer-details", _("Your astrologer details"), _("Customers see this on your page."), {
 			"load": ASTRO + "get_details", "save": ASTRO + "save_details", "submit_label": _("Save and continue"),
 			"fields": [
-				{"name": "expertise", "label": _("Expertise"), "required": True, "placeholder": _("e.g. Vedic, Tarot, Numerology")},
+				{"name": "expertise", "label": _("Your methods and skills"), "required": True, "placeholder": _("e.g. Vedic, KP, Nadi, Lal Kitab")},
 				{"name": "languages", "label": _("Languages"), "required": True, "placeholder": _("e.g. English, Hindi")},
 				{"name": "years_of_practice", "label": _("Years of practice"), "required": True, "placeholder": "0"}],
 			"success_redirect": _start("astrologer-credentials")}),
