@@ -6,6 +6,12 @@ from raftor_astrohq.details import question, sankalp, wish
 def vocabulary() -> dict:
 	return {
 		"words": {"provider": "astrologer", "providers": "astrologers", "unit": "unit", "units": "units", "recommendation": "remedy", "recommendations": "remedies"},
+		"personas": {
+			"Astrologer": {"word": "astrologer", "plural": "astrologers"},
+			"Tarot reader": {"word": "tarot reader", "plural": "tarot readers"},
+			"Pandit ji": {"word": "pandit ji", "plural": "pandit ji"},
+			"Palmist": {"word": "palmist", "plural": "palmists"},
+		},
 		"kinds": {
 			"Consultation": {"service": "session", "services": "sessions", "unit": "session", "units": "sessions", "book": "Book a session",
 				"details": {"fields": [question()], "validate": "raftor_astrohq.details.consultation_rules"}},
