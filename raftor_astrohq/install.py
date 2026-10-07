@@ -10,6 +10,9 @@ def after_install():
 	register_journey()
 	register_provider_steps()
 	sync_portal_menu()
+	from raftor_astrohq.branding import apply
+
+	apply()  # the brand and the menus, where the site still has the defaults
 
 
 def sync_portal_menu():
