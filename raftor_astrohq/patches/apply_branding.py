@@ -1,7 +1,6 @@
-"""Puts AstroHQ's brand and navigation on an existing site (only where it still has the defaults; see branding.py)."""
+"""Retired. The brand and menus are the site's own (a site kit, see raftor_websitehq.website_hq.site_kit), not the vertical's.
+Sites that ran this keep what it wrote; the file stays only so the patch list of those sites still resolves."""
 
 
 def execute():
-    from raftor_astrohq.branding import apply
-
-    apply()
+	pass
