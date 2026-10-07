@@ -188,3 +188,16 @@ class TestAstrologerPages(TestCase):
 		form = page["sections"][1]["cards"][0]["values"]
 		self.assertEqual([f["name"] for f in form["fields"]], ["expertise", "languages", "years_of_practice"])
 		self.assertEqual(form["success_redirect"], "/onboarding/astrologer-credentials")
+
+
+class TestCardLines(AstrologerTestCase):
+	def test_the_card_says_years_and_languages_and_nothing_private(self):
+		self.assertEqual(astrologer.card_lines(self.provider.name), [])
+		api.save_details(GOOD)
+		self.assertEqual(astrologer.card_lines(self.provider.name), ["12 years", "English, Hindi"])
+
+	def test_servicehq_gets_them_through_the_vocabulary(self):
+		from raftor_servicehq import kinds
+
+		api.save_details(GOOD)
+		self.assertEqual(kinds.provider_lines("astrohq", self.provider.name), ["12 years", "English, Hindi"])

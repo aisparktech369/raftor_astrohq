@@ -79,3 +79,11 @@ def personas_complete(application) -> bool:
 	"""Onboarding completion check: at least one persona is chosen."""
 	provider = provider_of(application.applicant_user)
 	return bool(provider) and bool(frappe.db.exists("Provider Persona", {"parent": provider, "parenttype": "Provider"}))
+
+
+def card_lines(provider: str) -> list[str]:
+	"""What a provider card says about an astrologer in public: years of practice, and the languages they consult in."""
+	row = profile_of(provider)
+	if not row:
+		return []
+	return [_("{0} years").format(row.years_of_practice) if row.years_of_practice is not None else "", (row.languages or "").strip()]
