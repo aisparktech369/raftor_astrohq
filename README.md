@@ -18,3 +18,4 @@ servicehq owns the general **Provider** and its journey ("ServiceHQ Provider"). 
 - two steps added to the provider journey by order number (`journey.py`): *Your astrologer details* and *Your credentials*
 - pages `/onboarding/astrologer-details`, `/onboarding/astrologer-credentials` (page definitions, `page_definitions.py`), endpoints in `astrologer_api.py`, rules in `astrologer.py`
 - verification is done by staff (Verify button on the Onboarding Application in Desk). Credentials file upload comes later with a page-kit upload block.
+# raftor_astrohq
