@@ -22,7 +22,7 @@ class TestAttributeSets(TestCase):
 	def test_every_icon_is_a_file_this_app_ships(self):
 		public = os.path.join(os.path.dirname(attributes.__file__), "public")
 		for entry in attributes.attribute_sets():
-			for value in entry["values"]:
+			for value in (v for v in entry["values"] if v.get("icon")):
 				path = os.path.join(public, value["icon"].replace("/assets/raftor_astrohq/", "", 1))
 				self.assertTrue(os.path.isfile(path), value["icon"])
 
@@ -30,3 +30,11 @@ class TestAttributeSets(TestCase):
 		doc = frappe.get_doc("Item Attribute", "Type")
 		self.assertEqual(doc.rfhq_display_as, "Icons")
 		self.assertTrue(all(r.rfhq_icon for r in doc.item_attribute_values))
+
+	def test_size_gets_the_ratti_sizes_as_a_plain_dropdown_and_keeps_the_standard_ones(self):
+		size = next(e for e in attributes.attribute_sets() if e["attribute"] == "Size")
+		self.assertEqual(size["display_as"], "Default")
+		self.assertTrue({"6 Ratti", "7 Ratti", "8 Ratti"} <= {v["value"] for v in size["values"]})
+		doc = frappe.get_doc("Item Attribute", "Size")
+		have = {r.attribute_value for r in doc.item_attribute_values}
+		self.assertTrue({"6 Ratti", "7 Ratti", "8 Ratti", "Small", "Large"} <= have)
