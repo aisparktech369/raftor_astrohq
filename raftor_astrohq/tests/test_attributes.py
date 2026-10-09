@@ -31,10 +31,9 @@ class TestAttributeSets(TestCase):
 		self.assertEqual(doc.rfhq_display_as, "Icons")
 		self.assertTrue(all(r.rfhq_icon for r in doc.item_attribute_values))
 
-	def test_size_gets_the_ratti_sizes_as_a_plain_dropdown_and_keeps_the_standard_ones(self):
-		size = next(e for e in attributes.attribute_sets() if e["attribute"] == "Size")
-		self.assertEqual(size["display_as"], "Default")
-		self.assertTrue({"6 Ratti", "7 Ratti", "8 Ratti"} <= {v["value"] for v in size["values"]})
-		doc = frappe.get_doc("Item Attribute", "Size")
-		have = {r.attribute_value for r in doc.item_attribute_values}
-		self.assertTrue({"6 Ratti", "7 Ratti", "8 Ratti", "Small", "Large"} <= have)
+	def test_ratti_is_its_own_plain_dropdown_and_size_keeps_only_its_standard_values(self):
+		ratti = next(e for e in attributes.attribute_sets() if e["attribute"] == "Ratti")
+		self.assertEqual(ratti["display_as"], "Default")
+		self.assertTrue({"6", "7", "8"} <= {v["value"] for v in ratti["values"]})
+		self.assertTrue({"6", "7", "8"} <= {r.attribute_value for r in frappe.get_doc("Item Attribute", "Ratti").item_attribute_values})
+		self.assertFalse([r.attribute_value for r in frappe.get_doc("Item Attribute", "Size").item_attribute_values if r.attribute_value.endswith("Ratti")])
