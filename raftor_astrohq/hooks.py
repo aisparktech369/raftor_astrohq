@@ -265,6 +265,9 @@ doc_events = {"User": {"validate": "raftor_astrohq.profiles.validate_user"}}
 
 # Pages as data for websitehq to build (page_definitions.py), and the old addresses forwarded to them.
 rfhq_page_definitions = ["raftor_astrohq.page_definitions.definitions"]
+
+# What a gemstone is sold as (Type: stone only, ring, pendant...), with the icon of each: data for websitehq to draw (attributes.py).
+rfhq_attribute_sets = ["raftor_astrohq.attributes.attribute_sets"]
 website_redirects = [
     {"source": "/birth-profiles", "target": "/my/birth-profiles"},
     {"source": "/birth-profiles/new", "target": "/my/birth-profiles/new"},
