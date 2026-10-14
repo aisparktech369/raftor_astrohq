@@ -134,6 +134,12 @@ def you_row(user_doc):
 	return next((r for r in (user_doc.get(TABLE) or []) if r.relationship == SELF), None)
 
 
+def has_birth_profile(user: str) -> bool:
+	"""Whether the person has at least one profile (their own or a family member's) with the details filled in correctly."""
+	user_doc = frappe.get_doc("User", user)
+	return any(not row_errors(row_values(r)) for r in (user_doc.get(TABLE) or []))
+
+
 def birth_details_complete(application) -> bool:
 	"""Onboarding completion check: the applicant's own ("You") profile is filled in correctly."""
 	user_doc = frappe.get_doc("User", application.applicant_user)

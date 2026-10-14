@@ -4,7 +4,7 @@ from unittest import TestCase
 import frappe
 
 from raftor_astrohq import details
-from raftor_astrohq.tests.helpers import GOOD, TABLE, make_user
+from raftor_astrohq.tests.helpers import FAMILY, GOOD, TABLE, make_user
 from raftor_servicehq import intake, kinds
 
 
@@ -36,6 +36,14 @@ class TestAstroDetails(TestCase):
 		self.assertEqual((errors, message), ({}, "Please add your birth details first, then book."))
 		doc = frappe.get_doc("User", user.name)
 		doc.append(TABLE, GOOD)
+		doc.save(ignore_permissions=True)
+		self.assertEqual(intake.validate("astrohq", "Consultation", {"question": "Career?"}, user.name)[1:], ({}, ""))
+
+	def test_a_family_members_profile_is_enough_for_a_consultation(self):
+		frappe.set_user("Administrator")
+		user = make_user()
+		doc = frappe.get_doc("User", user.name)
+		doc.append(TABLE, FAMILY)
 		doc.save(ignore_permissions=True)
 		self.assertEqual(intake.validate("astrohq", "Consultation", {"question": "Career?"}, user.name)[1:], ({}, ""))
 

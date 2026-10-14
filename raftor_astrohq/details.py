@@ -20,7 +20,7 @@ def question() -> dict:
 
 
 def consultation_rules(values: dict, user: str) -> dict:
-	"""A reading needs the customer's own birth details; they are kept on their account (birth_details_complete)."""
-	if not profiles.birth_details_complete(frappe._dict(applicant_user=user)):
+	"""A reading needs birth details on the customer's account: any profile will do, their own or a family member's (has_birth_profile)."""
+	if not profiles.has_birth_profile(user):
 		return {"_form": _("Please add your birth details first, then book.")}
 	return {}
