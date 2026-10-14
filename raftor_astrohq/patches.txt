@@ -4,3 +4,4 @@
 raftor_astrohq.patches.single_fields_to_birth_profiles
 raftor_astrohq.patches.move_pages_to_page_definitions
 raftor_astrohq.patches.apply_branding
+raftor_astrohq.patches.tidy_account_menu
