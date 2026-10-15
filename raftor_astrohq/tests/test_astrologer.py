@@ -201,3 +201,47 @@ class TestCardLines(AstrologerTestCase):
 
 		api.save_details(GOOD)
 		self.assertEqual(kinds.provider_lines("astrohq", self.provider.name), ["12 years", "English, Hindi"])
+
+
+class TestCardFilters(AstrologerTestCase):
+	"""What astrohq adds to the listing of astrologers: the language they consult in, and what is troubling the visitor."""
+
+	def facets(self, **choices):
+		return {f["name"]: f for f in astrologer.card_filters([self.provider.name], choices)["facets"]}
+
+	def test_a_language_is_offered_only_when_someone_speaks_it_with_how_many(self):
+		self.assertNotIn("language", self.facets())  # no profile yet
+		api.save_details({**GOOD, "languages": "english; Hindi ,Tamil"})
+		options = {o["value"]: o["count"] for o in self.facets()["language"]["options"]}
+		self.assertEqual(options, {"English": 1, "Hindi": 1, "Tamil": 1})
+		self.assertEqual(self.facets()["language"]["display"], "chips")
+
+	def test_a_language_narrows_the_list_and_nothing_chosen_keeps_everyone(self):
+		api.save_details(GOOD)
+		name = self.provider.name
+		self.assertEqual(astrologer.card_filters([name], {})["names"], [name])
+		self.assertEqual(astrologer.card_filters([name], {"language": "Hindi"})["names"], [name])
+		self.assertEqual(astrologer.card_filters([name], {"language": "hindi,Tamil"})["names"], [name])  # any of them, in any case
+		self.assertEqual(astrologer.card_filters([name], {"language": "Tamil"})["names"], [])
+
+	def test_the_trouble_is_asked_with_the_astrologers_words_and_never_narrows(self):
+		api.save_details(GOOD)
+		topic = self.facets()["topic"]
+		self.assertEqual((topic["heading"], topic["carry"], topic["display"]), ("What is troubling you?", True, "chips"))
+		self.assertEqual([o["value"] for o in topic["options"]], ["Career", "Marriage", "Love", "Money", "Health", "Children", "Auspicious date"])
+		self.assertEqual(astrologer.card_filters([self.provider.name], {"topic": "Career"})["names"], [self.provider.name])
+
+	def test_servicehq_gets_them_through_the_vocabulary(self):
+		from raftor_servicehq import kinds
+
+		api.save_details(GOOD)
+		facets, names = kinds.provider_filters("astrohq", [self.provider.name], {"language": "English"})
+		self.assertEqual({f["name"] for f in facets}, {"topic", "language"})
+		self.assertEqual(names, [self.provider.name])
+		self.assertEqual(kinds.provider_filters("astrohq", [self.provider.name], {"language": "Tamil"})[1], [])
+
+	def test_the_booking_question_is_the_one_the_topic_starts(self):
+		from raftor_servicehq import kinds
+
+		self.assertEqual(kinds.details("astrohq", "Consultation")["topic_field"], "question")
+		self.assertIn("question", [f["name"] for f in kinds.details("astrohq", "Consultation")["fields"]])

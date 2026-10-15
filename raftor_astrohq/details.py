@@ -15,6 +15,11 @@ def wish() -> dict:
 	return {"name": "wish", "label": _("Your wish or purpose"), "type": "textarea", "placeholder": _("Optional")}
 
 
+def topics() -> list[str]:
+	"""What can be troubling someone who comes for a reading. Every astrologer can answer every one, so it is not a way to filter them; it starts the question."""
+	return [_("Career"), _("Marriage"), _("Love"), _("Money"), _("Health"), _("Children"), _("Auspicious date")]
+
+
 def question() -> dict:
 	return {"name": "question", "label": _("What would you like to ask?"), "type": "textarea", "placeholder": _("Optional")}
 

@@ -87,3 +87,30 @@ def card_lines(provider: str) -> list[str]:
 	if not row:
 		return []
 	return [_("{0} years").format(row.years_of_practice) if row.years_of_practice is not None else "", (row.languages or "").strip()]
+
+
+def _spoken(text: str) -> list[str]:
+	"""The languages written in an astrologer's profile ("Hindi, English"), one word each, in a tidy case."""
+	return [w.strip().title() for w in re.split(r"[,;/]", text or "") if w.strip()]
+
+
+def card_filters(names: list[str], choices: dict) -> dict:
+	"""The ways a listing of astrologers can be narrowed beyond their persona (hook "provider_filters", see servicehq kinds.py): the language they consult in, and what is
+	troubling the visitor. The language narrows the list. The trouble does not: every astrologer can answer every question, so it only goes along to the booking."""
+	from raftor_astrohq.details import topics
+
+	rows = frappe.get_all(DOCTYPE, filters={"provider": ["in", names or ["-"]]}, fields=["provider", "languages"])
+	spoken = {r.provider: _spoken(r.languages) for r in rows}
+	counts: dict[str, int] = {}
+	for words in spoken.values():
+		for word in set(words):
+			counts[word] = counts.get(word, 0) + 1
+	options = [{"value": w, "label": w, "count": n} for w, n in sorted(counts.items(), key=lambda x: (-x[1], x[0]))]
+	facets = [
+		{"name": "topic", "label": _("What is troubling you?"), "heading": _("What is troubling you?"), "display": "chips", "carry": True, "optional": True,
+		 "options": [{"value": t, "label": t} for t in topics()]},
+		{"name": "language", "label": _("Language"), "heading": _("Which language?"), "display": "chips", "options": options},
+	]
+	wanted = {w.strip().title() for w in str(choices.get("language") or "").split(",") if w.strip()}
+	kept = [n for n in names if not wanted or wanted & set(spoken.get(n, []))]
+	return {"facets": [f for f in facets if f["options"]], "names": kept}

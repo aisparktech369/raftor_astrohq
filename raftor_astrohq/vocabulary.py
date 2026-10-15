@@ -7,6 +7,7 @@ def vocabulary() -> dict:
 	return {
 		"words": {"provider": "astrologer", "providers": "astrologers", "unit": "unit", "units": "units", "recommendation": "remedy", "recommendations": "remedies"},
 		"provider_lines": "raftor_astrohq.astrologer.card_lines",
+		"provider_filters": "raftor_astrohq.astrologer.card_filters",
 		"personas": {
 			"Astrologer": {"word": "astrologer", "plural": "astrologers"},
 			"Tarot reader": {"word": "tarot reader", "plural": "tarot readers"},
@@ -27,7 +28,7 @@ def vocabulary() -> dict:
 			{"name": "Vastu consultation", "persona": "Vastu expert", "minutes_by_provider": True},
 		],
 		"kinds": {
-			"Consultation": {"details": {"fields": [question()], "validate": "raftor_astrohq.details.consultation_rules"}},
+			"Consultation": {"details": {"fields": [question()], "topic_field": "question", "validate": "raftor_astrohq.details.consultation_rules"}},
 			"Subscription": {"service": "daily pooja", "services": "daily poojas", "unit": "day", "units": "days", "book": "Subscribe", "details": {"fields": [*sankalp(), wish()]}},
 			"Event": {"service": "havan", "services": "havans", "unit": "seat", "units": "seats", "book": "Register", "details": {"fields": sankalp(), "per_person": True}},
 			"Timed service": {"service": "pooja", "services": "poojas", "unit": "pooja", "units": "poojas", "book": "Book a pooja", "details": {"fields": [*sankalp(), wish()]}},
