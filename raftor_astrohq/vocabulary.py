@@ -29,9 +29,9 @@ def vocabulary() -> dict:
 			{"name": "Vastu consultation", "persona": "Vastu expert", "minutes_by_provider": True},
 		],
 		"kinds": {
-			"Consultation": {"details": {"fields": [question()], "topic_field": "question", "validate": "raftor_astrohq.details.consultation_rules"}},
+			"Consultation": {"line_title": "Seek guidance", "line_subtitle": "Every guide can help with every kind of question. Choose who to talk to, online now or at a time you choose.", "details": {"fields": [question()], "topic_field": "question", "validate": "raftor_astrohq.details.consultation_rules"}},
 			"Subscription": {"service": "daily pooja", "services": "daily poojas", "unit": "day", "units": "days", "book": "Subscribe", "details": {"fields": [*sankalp(), wish()]}},
-			"Event": {"service": "havan", "services": "havans", "unit": "seat", "units": "seats", "book": "Register", "details": {"fields": sankalp(), "per_person": True}},
+			"Event": {"line_title": "Book blessings", "line_subtitle": "Havans and poojas for what you wish for. Choose one and book your place.", "service": "havan", "services": "havans", "unit": "seat", "units": "seats", "book": "Register", "details": {"fields": sankalp(), "per_person": True}},
 			"Timed service": {"service": "pooja", "services": "poojas", "unit": "pooja", "units": "poojas", "book": "Book a pooja", "details": {"fields": [*sankalp(), wish()]}},
 		},
 	}
