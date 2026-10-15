@@ -228,7 +228,7 @@ class TestCardFilters(AstrologerTestCase):
 		api.save_details(GOOD)
 		topic = self.facets()["topic"]
 		self.assertEqual((topic["heading"], topic["carry"], topic["display"]), ("What is troubling you?", True, "chips"))
-		self.assertEqual([o["value"] for o in topic["options"]], ["Career", "Marriage", "Love", "Money", "Health", "Children", "Auspicious date"])
+		self.assertEqual([o["value"] for o in topic["options"]], ["Career", "Marriage", "Love", "Money", "Health", "Children", "Auspicious date"])  # the topics staff keep in Desk, as seeded
 		self.assertEqual(astrologer.card_filters([self.provider.name], {"topic": "Career"})["names"], [self.provider.name])
 
 	def test_servicehq_gets_them_through_the_vocabulary(self):
@@ -245,3 +245,28 @@ class TestCardFilters(AstrologerTestCase):
 
 		self.assertEqual(kinds.details("astrohq", "Consultation")["topic_field"], "question")
 		self.assertIn("question", [f["name"] for f in kinds.details("astrohq", "Consultation")["fields"]])
+
+
+class TestTopicsAndWishesAreData(AstrologerTestCase):
+	"""The buttons staff cannot change in code: topics and wishes are records in Desk, in the order and with the on/off staff give them."""
+
+	def test_a_topic_staff_add_is_a_button_and_one_they_switch_off_is_not(self):
+		from raftor_astrohq import details
+
+		frappe.get_doc({"doctype": "Guidance Topic", "topic_name": "Test topic", "enabled": 1, "sequence": 1}).insert(ignore_permissions=True)
+		self.assertEqual(details.topics()[0], "Test topic")  # first because staff numbered it first
+		frappe.db.set_value("Guidance Topic", "Test topic", "enabled", 0)
+		self.assertNotIn("Test topic", details.topics())
+
+	def test_a_wish_staff_add_can_be_put_on_an_event(self):
+		from raftor_astrohq import details
+
+		frappe.get_doc({"doctype": "Blessing Wish", "wish_name": "Test wish", "enabled": 1, "sequence": 1}).insert(ignore_permissions=True)
+		self.assertEqual(details.wishes()[0], "Test wish")
+
+	def test_the_starting_lists_are_only_put_in_when_there_are_none(self):
+		from raftor_astrohq.patches import seed_topics_and_wishes as seed
+
+		before = frappe.db.count("Guidance Topic")
+		seed.execute()
+		self.assertEqual(frappe.db.count("Guidance Topic"), before)  # a list that exists is never put back

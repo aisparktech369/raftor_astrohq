@@ -16,13 +16,14 @@ def wish() -> dict:
 
 
 def topics() -> list[str]:
-	"""What can be troubling someone who comes for a reading. Every astrologer can answer every one, so it is not a way to filter them; it starts the question."""
-	return [_("Career"), _("Marriage"), _("Love"), _("Money"), _("Health"), _("Children"), _("Auspicious date")]
+	"""The topics a visitor can say are troubling them, as staff keep them in Desk (Guidance Topic), in their order. Every astrologer can answer every one, so a topic is not a way to
+	filter them; it starts the question."""
+	return frappe.get_all("Guidance Topic", filters={"enabled": 1}, order_by="sequence asc, name asc", pluck="name")
 
 
 def wishes() -> list[str]:
-	"""What someone can wish for when they book a blessing. Staff tag each event with the ones it serves (event_filters.py)."""
-	return [_("Prosperity"), _("Health"), _("Family"), _("Protection"), _("Peace"), _("Success")]
+	"""What someone can wish for, as staff keep them in Desk (Blessing Wish), in their order. Staff tag each event with the ones it serves (event_filters.py)."""
+	return frappe.get_all("Blessing Wish", filters={"enabled": 1}, order_by="sequence asc, name asc", pluck="name")
 
 
 def question() -> dict:
