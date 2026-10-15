@@ -8,6 +8,7 @@ def vocabulary() -> dict:
 		"words": {"provider": "astrologer", "providers": "astrologers", "unit": "unit", "units": "units", "recommendation": "remedy", "recommendations": "remedies"},
 		"provider_lines": "raftor_astrohq.astrologer.card_lines",
 		"provider_filters": "raftor_astrohq.astrologer.card_filters",
+		"event_filters": "raftor_astrohq.event_filters.wish_filters",
 		"personas": {
 			"Astrologer": {"word": "astrologer", "plural": "astrologers"},
 			"Tarot reader": {"word": "tarot reader", "plural": "tarot readers"},

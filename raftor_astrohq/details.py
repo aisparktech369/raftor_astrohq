@@ -20,6 +20,11 @@ def topics() -> list[str]:
 	return [_("Career"), _("Marriage"), _("Love"), _("Money"), _("Health"), _("Children"), _("Auspicious date")]
 
 
+def wishes() -> list[str]:
+	"""What someone can wish for when they book a blessing. Staff tag each event with the ones it serves (event_filters.py)."""
+	return [_("Prosperity"), _("Health"), _("Family"), _("Protection"), _("Peace"), _("Success")]
+
+
 def question() -> dict:
 	return {"name": "question", "label": _("What would you like to ask?"), "type": "textarea", "placeholder": _("Optional")}
 
