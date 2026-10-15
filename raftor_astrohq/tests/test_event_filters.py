@@ -35,3 +35,20 @@ class TestWishFilters(EventCase):
 		self.assertEqual([f["name"] for f in facets], ["wish"])
 		self.assertEqual(names, [self.event])
 		self.assertEqual(kinds.event_filters("astrohq", [self.event], {"wish": "Peace"})[1], [])
+
+
+class TestWishLabels(EventCase):
+	def test_an_event_says_what_it_is_for_in_words_up_to_two_wishes_in_the_staff_order(self):
+		self.assertEqual(ef.wish_labels([self.event]), {})
+		for word in ("Success", "Peace", "Health", "Not a wish"):
+			add_tag(word, "Service Event", self.event)
+		label = ef.wish_labels([self.event])[self.event]
+		self.assertTrue(label.startswith("For "))
+		self.assertEqual(len(label[4:].split(" · ")), 2)
+		self.assertNotIn("Not a wish", label)
+
+	def test_servicehq_gets_them_through_the_vocabulary_and_astrohq_writes_the_time_in_12_hours(self):
+		add_tag("Health", "Service Event", self.event)
+		self.assertEqual(kinds.event_labels("astrohq", [self.event]), {self.event: "For Health"})
+		self.assertEqual(kinds.event_labels("", []), {})
+		self.assertEqual(kinds.words("astrohq", kinds.EVENT)["clock"], "h:mm a")

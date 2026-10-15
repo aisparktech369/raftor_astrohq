@@ -20,3 +20,15 @@ def wish_filters(names: list[str], choices: dict) -> dict:
 	facets = [{"name": "wish", "label": _("What do you wish for?"), "heading": _("What do you wish for?"), "display": "chips", "options": options}] if options else []
 	wanted = {w.strip().lower() for w in str(choices.get("wish") or "").split(",") if w.strip()}
 	return {"facets": facets, "names": [n for n in names if not wanted or wanted & tags.get(n, set())]}
+
+
+def wish_labels(names: list[str]) -> dict[str, str]:
+	"""What each event is for, in words: "For Health" (up to two wishes, in the order staff keep them), from the same tags the buttons use."""
+	rows = frappe.get_all("Service Event", filters={"name": ["in", names or ["-"]]}, fields=["name", "_user_tags"])
+	out = {}
+	for r in rows:
+		tags = _tagged(r)
+		mine = [w for w in wishes() if w.lower() in tags][:2]
+		if mine:
+			out[r.name] = _("For {0}").format(" · ".join(mine))
+	return out
