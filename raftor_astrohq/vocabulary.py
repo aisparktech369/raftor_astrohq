@@ -11,6 +11,7 @@ def vocabulary() -> dict:
 		"event_filters": "raftor_astrohq.event_filters.wish_filters",
 		"personas": {
 			"Astrologer": {"word": "astrologer", "plural": "astrologers"},
+			"KP astrologer": {"word": "KP astrologer", "plural": "KP astrologers"},
 			"Tarot reader": {"word": "tarot reader", "plural": "tarot readers"},
 			"Pandit ji": {"word": "pandit ji", "plural": "pandit ji"},
 			"Palmist": {"word": "palmist", "plural": "palmists"},
@@ -21,6 +22,7 @@ def vocabulary() -> dict:
 		"services": [
 			{"name": "Match making", "persona": "Astrologer"},
 			{"name": "Astrology reading", "persona": "Astrologer", "minutes_by_provider": True},
+			{"name": "KP astrology reading", "persona": "KP astrologer", "minutes_by_provider": True},
 			{"name": "Muhurat", "persona": "Pandit ji"},
 			{"name": "Shadi date", "persona": "Pandit ji"},
 			{"name": "Tarot reading", "persona": "Tarot reader", "minutes_by_provider": True},

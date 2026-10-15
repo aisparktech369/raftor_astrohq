@@ -127,7 +127,7 @@ class TestCompletionChecks(AstrologerTestCase):
 class TestPersonaStep(AstrologerTestCase):
 	def test_the_form_has_one_box_per_persona_the_vertical_lists(self):
 		fields = api.personas_form_fields()["fields"]
-		self.assertEqual([f["label"] for f in fields], ["Astrologer", "Tarot reader", "Pandit ji", "Palmist", "Numerologist", "Vastu expert"])
+		self.assertEqual([f["label"] for f in fields], ["Astrologer", "KP astrologer", "Tarot reader", "Pandit ji", "Palmist", "Numerologist", "Vastu expert"])
 		self.assertTrue(all(f["type"] == "checkbox" for f in fields))
 
 	def test_nothing_chosen_is_refused_and_the_step_is_not_complete(self):

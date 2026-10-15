@@ -72,7 +72,7 @@ def persona_fields() -> list[dict]:
 	"""One tick box per persona the vertical lists, in its own words."""
 	from raftor_servicehq import kinds
 
-	return [{"name": "p_" + re.sub(r"\W+", "_", name.lower()), "label": name.capitalize(), "type": "checkbox", "persona": name} for name in kinds.personas()]
+	return [{"name": "p_" + re.sub(r"\W+", "_", name.lower()), "label": kinds.upfirst(name), "type": "checkbox", "persona": name} for name in kinds.personas()]
 
 
 def personas_complete(application) -> bool:
