@@ -82,7 +82,7 @@ def definitions() -> list[dict]:
 		_list("my/birth-profiles", _("Birth profiles"), _("Keep details for the people you care about, all under your one account."), {
 			"method": API + "list_profiles", "empty": _("No profiles yet."),
 			"links": [{"label": _("Add a person"), "href": _my("birth-profiles/new"), "kind": "primary", "where": "top"}]},
-			menu={"label": _("Birth profiles"), "summary": _("Your details and your family's, for charts."), "order": 15}),
+			menu={"label": _("Birth profiles"), "summary": _("Your details and your family's, for charts."), "order": 15, "side": {"order": 30}}),
 		_form("my/birth-profiles/new", _("Add a person"), _("Their details are private to your account."), {
 			"save": API + "save_profile", "fields": _person_fields(), "submit_label": _("Save"), "cancel_label": _("Cancel"), "cancel_url": profile_list,
 			"success_redirect": profile_list}),

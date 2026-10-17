@@ -21,6 +21,12 @@ class TestPages(TestCase):
 		frappe.set_user("Administrator")
 		frappe.db.rollback()
 
+	def test_birth_profiles_join_the_customers_left_menu_after_remedies_and_before_orders(self):
+		clean = check(pages()["my/birth-profiles"])
+		self.assertEqual(clean["side"], {"label": "", "order": 30, "parent": ""})
+		self.assertEqual(clean["menu"]["label"], "Birth profiles")
+		self.assertEqual(clean["sidebar"], 1)
+
 	def test_every_page_passes_the_kits_checks_and_needs_a_sign_in(self):
 		self.assertEqual(set(pages()), {"onboarding/birth-details", "onboarding/birth-details/done", "my/birth-profiles", "my/birth-profiles/new", "my/birth-profiles/edit",
 										"onboarding/astrologer-personas", "onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new"})
