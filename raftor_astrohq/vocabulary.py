@@ -6,8 +6,10 @@ from raftor_astrohq.details import question, sankalp, wish
 def vocabulary() -> dict:
 	return {
 		"words": {"provider": "astrologer", "providers": "astrologers", "unit": "unit", "units": "units", "recommendation": "remedy", "recommendations": "remedies", "clock": "h:mm a",
-				  "join_title": "Become an astrologer", "join_subtitle": "Share your guidance with people who are looking for it. Here is how it works.", "join_already": "You are already an astrologer", "join_hint": "Share your guidance with people who are looking for it."},
+				  "join_title": "Become an astrologer", "join_subtitle": "Share your guidance with people who are looking for it. Here is how it works.", "join_already": "You are already an astrologer", "join_hint": "Share your guidance with people who are looking for it.",
+				  "privacy_note": "Your details are private and used only for your chart."},
 		"provider_lines": "raftor_astrohq.astrologer.card_lines",
+		"provider_credentials": "raftor_astrohq.astrologer.credentials",
 		"provider_filters": "raftor_astrohq.astrologer.card_filters",
 		"event_filters": "raftor_astrohq.event_filters.wish_filters",
 		"event_labels": "raftor_astrohq.event_filters.wish_labels",

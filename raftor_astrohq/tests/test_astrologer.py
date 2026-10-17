@@ -203,6 +203,36 @@ class TestCardLines(AstrologerTestCase):
 		self.assertEqual(kinds.provider_lines("astrohq", self.provider.name), ["12 years", "English, Hindi"])
 
 
+class TestCredentialsForCustomers(AstrologerTestCase):
+	"""What customers may be told about an astrologer's credentials: what is listed, and whether our team checked each one."""
+
+	def test_a_credential_added_by_the_astrologer_is_not_reviewed_and_they_cannot_say_otherwise(self):
+		api.save_details(GOOD)
+		api.add_credential({"title": "Jyotish Acharya", "issued_by": "BHU", "year": "2014", "reviewed": 1})
+		self.assertEqual(astrologer.credentials(self.provider.name), [{"text": "Jyotish Acharya · BHU · 2014", "reviewed": False}])
+
+	def test_our_team_ticking_it_in_desk_is_what_makes_it_reviewed(self):
+		api.save_details(GOOD)
+		api.add_credential({"title": "Jyotish Acharya"})
+		profile = astrologer.profile_of(self.provider.name)
+		profile.credentials[0].reviewed = 1
+		profile.save(ignore_permissions=True)
+		self.assertEqual(astrologer.credentials(self.provider.name), [{"text": "Jyotish Acharya", "reviewed": True}])
+
+	def test_no_profile_means_nothing_listed(self):
+		self.assertEqual(astrologer.credentials(self.provider.name), [])
+		self.assertEqual(astrologer.credentials(""), [])
+
+	def test_servicehq_reads_them_through_the_vocabulary_and_words_the_privacy_note(self):
+		from raftor_servicehq import kinds, standing
+
+		api.save_details(GOOD)
+		api.add_credential({"title": "Jyotish Acharya", "year": "2014"})
+		self.assertEqual(kinds.provider_credentials("astrohq", self.provider.name), [{"text": "Jyotish Acharya · 2014", "reviewed": False}])
+		self.assertEqual(standing.reviewed_line(self.provider.name), "")  # nothing is claimed until every credential is ticked
+		self.assertEqual(kinds.words("astrohq", kinds.CONSULTATION)["privacy_note"], "Your details are private and used only for your chart.")
+
+
 class TestCardFilters(AstrologerTestCase):
 	"""What astrohq adds to the listing of astrologers: the language they consult in, and what is troubling the visitor."""
 

@@ -89,6 +89,13 @@ def card_lines(provider: str) -> list[str]:
 	return [_("{0} years").format(row.years_of_practice) if row.years_of_practice is not None else "", (row.languages or "").strip()]
 
 
+def credentials(provider: str) -> list[dict]:
+	"""What an astrologer lists as their credentials, each as {"text": "Jyotish Acharya · Banaras Hindu University · 2014", "reviewed": whether our team has checked it}
+	(vocabulary hook "provider_credentials"). Plain text only: servicehq draws it and decides what to claim from `reviewed`."""
+	row = profile_of(provider) if provider else None
+	return [{"text": " · ".join(str(x) for x in (c.title, c.issued_by, c.year) if x), "reviewed": bool(c.reviewed)} for c in (row.credentials if row else [])]
+
+
 def _spoken(text: str) -> list[str]:
 	"""The languages written in an astrologer's profile ("Hindi, English"), one word each, in a tidy case."""
 	return [w.strip().title() for w in re.split(r"[,;/]", text or "") if w.strip()]
