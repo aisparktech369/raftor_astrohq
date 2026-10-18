@@ -1,6 +1,16 @@
 """astrohq's words and extra questions for servicehq's service kinds (hook servicehq_vocabulary).
 Only words, fields and one rule; the mechanics are servicehq's."""
+import json
+from pathlib import Path
+
 from raftor_astrohq.details import question, sankalp, wish
+
+PACK = Path(__file__).parent / "pack"
+
+
+def pack_services() -> list[dict]:
+	"""The dated services (and their dates) the installation pack ships: every .json file in the pack folder, a list of service entries. Add a file to add more."""
+	return [entry for path in sorted(PACK.glob("*.json")) for entry in json.loads(path.read_text())]
 
 
 def vocabulary() -> dict:
@@ -33,6 +43,7 @@ def vocabulary() -> dict:
 			{"name": "Palm reading", "persona": "Palmist", "minutes_by_provider": True},
 			{"name": "Numerology reading", "persona": "Numerologist", "minutes_by_provider": True},
 			{"name": "Vastu consultation", "persona": "Vastu expert", "minutes_by_provider": True},
+			*pack_services(),
 		],
 		"kinds": {
 			"Consultation": {"line_title": "Seek guidance", "line_subtitle": "Every guide can help with every kind of question. Choose who to talk to, online now or at a time you choose.", "details": {"fields": [question()], "topic_field": "question", "validate": "raftor_astrohq.details.consultation_rules"}},

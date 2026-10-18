@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Dhanteras Kuber-Lakshmi",
+    "dated": true,
+    "persona": "Pandit ji",
+    "description": "Kuber-Lakshmi puja for wealth and prosperity on Dhanteras.",
+    "dates": [
+      {"occasion": "Dhanteras", "starts_at": "2026-11-06 18:30:00", "closes_hours_before": 24, "seats": 108}
+    ]
+  },
+  {
+    "name": "Mahalakshmi-Ganesh with Shri Suktam Havan",
+    "dated": true,
+    "persona": "Pandit ji",
+    "description": "Diwali Lakshmi-Ganesh puja with a Shri Suktam havan.",
+    "dates": [
+      {"occasion": "Diwali", "starts_at": "2026-11-08 18:30:00", "closes_hours_before": 24, "seats": 108}
+    ]
+  },
+  {
+    "name": "Chopda Puja for Traders",
+    "dated": true,
+    "persona": "Pandit ji",
+    "description": "Chopda pujan for the new account books of a business.",
+    "dates": [
+      {"occasion": "Diwali", "starts_at": "2026-11-08 18:30:00", "closes_hours_before": 24, "seats": 108}
+    ]
+  }
+]
