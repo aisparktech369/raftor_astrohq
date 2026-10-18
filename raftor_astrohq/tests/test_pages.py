@@ -41,13 +41,19 @@ class TestPages(TestCase):
 		self.assertEqual(time["disabled_when"], "time_unknown")
 		self.assertEqual(form["success_redirect"], "/onboarding/birth-details/done")
 
-	def test_the_family_form_has_relationship_without_you_and_the_permission_tick(self):
+	def test_the_person_form_offers_you_with_the_others_and_asks_permission_only_for_others(self):
 		form = form_of(pages()["my/birth-profiles/new"])
 		names = [f["name"] for f in form["fields"]]
 		self.assertEqual(names[0], "relationship")
 		self.assertIn("permission_given", names)
-		self.assertNotIn("You", [o["value"] if isinstance(o, dict) else o for o in form["fields"][0]["options"]])
-		self.assertTrue(next(f for f in form["fields"] if f["name"] == "permission_given")["required"])
+		self.assertEqual([o["value"] if isinstance(o, dict) else o for o in form["fields"][0]["options"]][0], "You")
+		self.assertFalse(next(f for f in form["fields"] if f["name"] == "permission_given").get("required"))
+		user = make_user()
+		frappe.set_user(user.name)
+		spouse = {**GOOD, "relationship": "Spouse", "permission_given": 0}
+		self.assertIn("permission_given", api.save_profile(values=spouse)["errors"])  # the server still asks for others
+		self.assertEqual(api.save_profile(values={**GOOD, "relationship": "You"}), {"ok": True})  # and not for yourself
+		self.assertEqual([i["badge"] for i in api.list_profiles()["items"]], ["You"])
 
 	def test_the_all_set_page_shows_only_you_and_offers_family_and_continue(self):
 		source = check(pages()["onboarding/birth-details/done"])["sections"][1]["source"]

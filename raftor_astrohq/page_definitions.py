@@ -32,12 +32,13 @@ def _you_fields():
 def _person_fields():
 	return [
 		{"name": "relationship", "label": _("Relationship"), "type": "select", "required": True, "placeholder": _("Choose"),
-		 "options": [r for r in profiles.relationships() if r != profiles.SELF]},
+		 "options": profiles.relationships()},
 		{"name": "full_name", "label": _("Full name"), "required": True},
 		{"name": "date_of_birth", "label": _("Date of birth"), "type": "date", "required": True},
 		*_time_fields(),
 		{"name": "place_of_birth", "label": _("Place of birth"), "required": True, "placeholder": _("Town or city, country")},
-		{"name": "permission_given", "label": _("I have permission to keep this person's details"), "type": "checkbox", "required": True},
+		{"name": "permission_given", "label": _("I have permission to keep this person's details"), "type": "checkbox",
+		 "hint": _("Needed for anyone but yourself.")},
 	]
 
 
