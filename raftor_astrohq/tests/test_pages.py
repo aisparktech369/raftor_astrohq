@@ -28,7 +28,7 @@ class TestPages(TestCase):
 		self.assertEqual(clean["sidebar"], 1)
 
 	def test_every_page_passes_the_kits_checks_and_needs_a_sign_in(self):
-		self.assertEqual(set(pages()), {"onboarding/birth-details", "onboarding/birth-details/done", "my/birth-profiles", "my/birth-profiles/new", "my/birth-profiles/edit",
+		self.assertEqual(set(pages()), {"onboarding/birth-details", "onboarding/birth-details/done", "my/birth-profiles", "my/birth-profiles/new", "my/birth-profiles/edit", "my/birth-profiles/you",
 										"onboarding/astrologer-personas", "onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new"})
 		for route, page in pages().items():
 			self.assertTrue(check(page)["login_required"], route)
@@ -58,6 +58,24 @@ class TestPages(TestCase):
 		page = check(pages()["my/birth-profiles"])
 		self.assertEqual(page["menu"]["label"], "Birth profiles")
 		self.assertEqual(page["sections"][1]["source"]["links"][0]["href"], "/my/birth-profiles/new")
+
+	def test_the_list_always_has_a_place_for_you_until_you_are_filled_in(self):
+		user = make_user()
+		frappe.set_user(user.name)
+		first = api.list_profiles()["items"][0]
+		self.assertEqual((first["badge"], first["actions"][0]["href"]), ("You", "/my/birth-profiles/you"))
+		self.assertEqual(api.list_profiles(who="you")["items"], [])  # the onboarding summary shows only a saved one
+		frappe.set_user("Administrator")
+		user.append(TABLE, GOOD)
+		user.save(ignore_permissions=True)
+		frappe.set_user(user.name)
+		items = api.list_profiles()["items"]
+		self.assertEqual([i["badge"] for i in items], ["You"])
+		self.assertNotEqual(items[0]["id"], "you")
+
+	def test_the_page_for_you_saves_back_to_the_list(self):
+		form = form_of(pages()["my/birth-profiles/you"])
+		self.assertEqual((form["static_args"], form["success_redirect"]), ({"relationship": "You"}, "/my/birth-profiles"))
 
 	def test_editing_gives_the_short_form_for_you_and_the_full_one_for_family(self):
 		user = make_user()

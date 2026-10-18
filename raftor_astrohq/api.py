@@ -46,7 +46,11 @@ def list_profiles(who=None):
 	rows = sorted(_rows(_user_doc()), key=lambda r: (r.relationship != profiles.SELF, r.idx))
 	if who == "you":
 		rows = [r for r in rows if r.relationship == profiles.SELF]
-	return {"items": [_item(r) for r in rows]}
+	items = [_item(r) for r in rows]
+	if who != "you" and not any(r.relationship == profiles.SELF for r in rows):  # the account holder always has a place in the list, to fill in
+		items.insert(0, {"id": "you", "title": frappe.utils.get_fullname(frappe.session.user), "badge": profiles.SELF, "lines": [_("Add your own date, time and place of birth.")],
+						 "actions": [{"label": _("Add your details"), "href": page_url("my", "birth-profiles/you")}]})
+	return {"items": items}
 
 
 @frappe.whitelist(methods=["POST"])
