@@ -15,7 +15,7 @@ TIGHT = {"padding": "Small", "gap": "Small"}
 def _time_fields():
 	return [
 		{"name": "time_of_birth", "label": _("Time of birth"), "type": "time_text", "placeholder": "HH:MM",
-		 "hint": _("24-hour, as on your birth record."), "disabled_when": "time_unknown"},
+		 "hint": _("As on your birth record."), "disabled_when": "time_unknown"},
 		{"name": "time_unknown", "label": _("I don't know my birth time"), "type": "checkbox"},
 	]
 
