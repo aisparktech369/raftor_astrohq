@@ -6,7 +6,6 @@ import frappe
 from frappe.utils import add_days, today
 
 from raftor_astrohq import profiles
-from raftor_astrohq.patches.single_fields_to_birth_profiles import copy_to_you_rows
 from raftor_astrohq.tests.helpers import FAMILY, GOOD, TABLE, AstroTestCase, make_user
 
 
@@ -112,7 +111,3 @@ class TestCompleteness(AstroTestCase):
 		user.append(TABLE, {**GOOD, "time_of_birth": "", "time_unknown": 1}); user.save(ignore_permissions=True)
 		self.assertTrue(profiles.birth_details_complete(self.application(user)))
 
-
-class TestMovingOldFields(AstroTestCase):
-	def test_nothing_to_move_when_the_old_fields_are_gone(self):
-		self.assertEqual(copy_to_you_rows(), 0)
