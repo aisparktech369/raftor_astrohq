@@ -284,3 +284,4 @@ standard_portal_menu_items = [
 
 # servicehq's service kinds, in astrohq's words (vocabulary.py). Only words; the mechanics are servicehq's.
 servicehq_vocabulary = {"astrohq": "raftor_astrohq.vocabulary.vocabulary"}
+rfhq_report_makers = ["raftor_astrohq.reports.birth_summary"]

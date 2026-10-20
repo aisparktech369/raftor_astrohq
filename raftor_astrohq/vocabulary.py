@@ -3,7 +3,7 @@ Only words, fields and one rule; the mechanics are servicehq's."""
 import json
 from pathlib import Path
 
-from raftor_astrohq.details import question, sankalp, wish
+from raftor_astrohq.details import birth_details, question, sankalp, wish
 
 PACK = Path(__file__).parent / "pack"
 
@@ -49,6 +49,7 @@ def vocabulary() -> dict:
 			"Consultation": {"line_title": "Seek guidance", "line_subtitle": "Every guide can help with every kind of question. Choose who to talk to, online now or at a time you choose.", "details": {"fields": [question()], "topic_field": "question", "validate": "raftor_astrohq.details.consultation_rules"}},
 			"Subscription": {"service": "daily pooja", "services": "daily poojas", "unit": "day", "units": "days", "book": "Subscribe", "details": {"fields": [*sankalp(), wish()]}},
 			"Event": {"event_card": "Event Row", "line_title": "Book blessings", "line_subtitle": "Havans and poojas for what you wish for. Choose one and book your place.", "service": "havan", "services": "havans", "unit": "seat", "units": "seats", "book": "Register", "dated_name": "{0} Samuhik Pooja Blessings", "details": {"fields": sankalp(), "per_person": True}},
+			"Report": {"details": {"fields": birth_details()}},  # not a service kind: what a report made from someone's birth asks (servicehq digital.py)
 			"Timed service": {"service": "pooja", "services": "poojas", "unit": "pooja", "units": "poojas", "book": "Book a pooja", "dated_name": "{0} Personalised Pooja Blessings", "details": {"fields": [*sankalp(), wish()]}},
 		},
 	}

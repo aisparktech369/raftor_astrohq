@@ -15,6 +15,16 @@ def wish() -> dict:
 	return {"name": "wish", "label": _("Your wish or purpose"), "type": "textarea", "placeholder": _("Optional")}
 
 
+def birth_details() -> list[dict]:
+	"""What a report made from someone's birth asks: who, the day, the time and the place."""
+	return [
+		{"name": "report_name", "label": _("Name"), "required": True, "placeholder": _("Full name for the report")},
+		{"name": "birth_date", "label": _("Date of birth"), "type": "date", "required": True},
+		{"name": "birth_time", "label": _("Time of birth"), "type": "time_text", "required": True, "placeholder": "HH:MM", "hint": _("If you do not know it, write 12:00.")},
+		{"name": "birth_place", "label": _("Place of birth"), "required": True, "placeholder": _("Town or city")},
+	]
+
+
 def topics() -> list[str]:
 	"""The topics a visitor can say are troubling them, as staff keep them in Desk (Guidance Topic), in their order. Every astrologer can answer every one, so a topic is not a way to
 	filter them; it starts the question."""
