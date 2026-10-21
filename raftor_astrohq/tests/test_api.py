@@ -111,7 +111,7 @@ class TestOtherPeopleCannotBeTouched(ApiTestCase):
 		frappe.set_user("Administrator")
 		other = make_user()
 		frappe.set_user(other.name)
-		self.assertEqual(api.list_profiles(), {"items": []})
+		self.assertEqual([i["id"] for i in api.list_profiles()["items"]], ["you"])  # only the empty place for "You": none of the other person's rows
 		self.assertEqual(api.get_profile(id=mine[1]), {"values": {}})
 		with self.assertRaises(frappe.DoesNotExistError):
 			self.save(FAMILY, id=mine[1])

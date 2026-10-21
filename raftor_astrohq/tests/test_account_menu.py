@@ -5,7 +5,8 @@ from unittest import TestCase
 import frappe
 from frappe.website.utils import get_portal_sidebar_items
 
-PROCUREMENT = {"Request for Quotations", "Supplier Quotation", "Purchase Orders", "Purchase Invoices"}
+QUOTATIONS = {"Request for Quotations", "Supplier Quotation"}  # ERPNext's buying pages, which a provider never uses
+OWN_JOBS = {"Purchase Orders", "Purchase Invoices"}  # a provider is the portal user of their Supplier, who sees only their own of these (servicehq's install switches them on)
 
 
 def titles_for(*roles):
@@ -38,8 +39,11 @@ class TestAccountMenu(TestCase):
 	def test_staff_see_the_business_team_page(self):
 		self.assertIn("Business team", titles_for("Business Team"))
 
-	def test_nobody_sees_the_procurement_pages_even_as_a_supplier(self):
-		self.assertFalse(PROCUREMENT & set(titles_for("Supplier", "Customer")))
+	def test_a_supplier_sees_their_own_purchase_pages_and_nobody_sees_the_quotation_pages(self):
+		supplier = set(titles_for("Supplier", "Customer"))
+		self.assertTrue(OWN_JOBS <= supplier)
+		self.assertFalse(QUOTATIONS & supplier)
+		self.assertFalse((QUOTATIONS | OWN_JOBS) & set(titles_for("Customer")))
 
 	def test_the_old_second_birth_profiles_link_is_gone(self):
 		self.assertEqual(titles_for("Customer").count("Birth profiles"), 1)

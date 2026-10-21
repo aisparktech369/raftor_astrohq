@@ -295,8 +295,13 @@ class TestTopicsAndWishesAreData(AstrologerTestCase):
 		self.assertEqual(details.wishes()[0], "Test wish")
 
 	def test_the_starting_lists_are_only_put_in_when_there_are_none(self):
-		from raftor_astrohq.patches import seed_topics_and_wishes as seed
+		from raftor_astrohq import install
 
-		before = frappe.db.count("Guidance Topic")
-		seed.execute()
-		self.assertEqual(frappe.db.count("Guidance Topic"), before)  # a list that exists is never put back
+		for doctype in ("Guidance Topic", "Blessing Wish"):
+			frappe.db.delete(doctype)
+		install.seed_topics_and_wishes()
+		counts = lambda: (frappe.db.count("Guidance Topic"), frappe.db.count("Blessing Wish"))  # noqa: E731
+		self.assertEqual(counts(), (len(install.TOPICS), len(install.WISHES)))  # there were none: the starting lists go in
+		frappe.db.delete("Guidance Topic", {"topic_name": install.TOPICS[0]})  # staff took one away
+		install.seed_topics_and_wishes()
+		self.assertEqual(counts(), (len(install.TOPICS) - 1, len(install.WISHES)))  # a list that exists is never put back
