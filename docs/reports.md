@@ -12,6 +12,13 @@ Two reports a customer buys from the shop and receives as a PDF. They are made b
 
 The words on the pages are English. The name must be written in English letters (the form says so): the PDF fonts on the server have no Indian script and would print boxes.
 
+## Decided
+
+- **Both reports are free, always** (owner, 2026-10-23: the leaders' portals give them free). So their price is 0 and there is no first-one-free rule.
+- Consultancy is linked, not merged: reports stay on /services and consultancy on /consult (the owner's route rule). The link to the free first session is to be built (proposed, waiting for the owner's yes).
+- Open, waiting for the owner's yes: free reports without a cart, order, Delivery Note or invoice (the owner's rule is that free digital has no documents; today a free report goes through a ₹0 order),
+  and a safety limit per customer per day.
+
 ## Putting them on sale
 
 Both ship **switched off** as ordinary shop items (made by `servicehq.servicecatalog.sync_standard_reports`, which runs on install and migrate and never changes a report
