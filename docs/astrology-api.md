@@ -9,8 +9,8 @@ Straight to the astrology API (the MVP):  AstroHQ --(key)--> the astrology servi
 Through the hub:                          AstroHQ --(key, https)--> the hub (API Registry: astrology) --> the engine (Lambda or in the hub)
 ```
 
-What exists today is the **plumbing**: the service on this server, the settings page, the client code and the checks. No screen shows a chart to
-anyone yet (see "Not built yet").
+What exists today is the **plumbing** (the service on this server, the settings page, the client code and the checks) and, on top of it, **two reports a customer can buy**
+(the kundli report and the match making report, `docs/reports.md`). No screen shows a chart to an astrologer yet (see "Not built yet").
 
 ## The MVP way: the service on this server
 
@@ -85,12 +85,13 @@ data = astrology.chart(born, "CORE_BASIC")
 
 ## Not built yet
 
-- **Places.** A birth profile holds the place as text only. A chart needs latitude, longitude and the time zone offset, so a place has to be
-  turned into those (a place list or a lookup, and the time zone rule for that date), and the profile or the screen has to keep them.
-- **The astrologer's chart screen and the report offerings.** Who may see whose chart (the astrologer of a booking, the person themselves),
-  what is shown, and where; and the kundli and matching reports a customer can buy. `astrology.chart` checks nobody; the test
-  `test_nothing_that_makes_a_chart_can_be_called_from_the_web` keeps it off the web until a screen does the checking.
-- **Source offer.** The people who use the engine through AstroHQ are owed a link to its source (the hub's README, "Licences").
+- **The astrologer's chart screen.** Who may see whose chart (the astrologer of a booking, the person themselves) and what is shown. `astrology.chart` checks nobody;
+  the test `test_nothing_that_makes_a_chart_can_be_called_from_the_web` keeps it off the web until a screen does the checking. (The two reports do not need it: the
+  customer asks for their own report and receives a file; `docs/reports.md`.)
+- **Source offer.** The people who use the engine through AstroHQ (the astrologers, and the customers who buy a report) are owed a link to its source (the hub's README, "Licences").
+
+Built since this page was first written: **places** (`places.py`: the town a person writes to its latitude, longitude and the time zone on the day, from the GeoNames list; a
+birth profile still holds the place as text only) and **the report offerings** (`docs/reports.md`).
 
 ## Checks
 
@@ -98,3 +99,5 @@ data = astrology.chart(born, "CORE_BASIC")
 - Browser (the owner, an accounts user and a Business Team user, against a stand-in that answers both ways; it refuses to run while the page is
   switched on, so it can never wipe a real setting): `JOURNEY=astrology_check python3 e2e/astrology_settings_check.py`
 - Against the real hub: done on 2026-10-23 with a throwaway key on the local hub. Against the real service on this server: done the same day.
+- The engine's own tests (the hub, `raftor_apimanager.tests.test_astrology_engine`, `test_astrology_ashtakoota`, `test_astrology_lambda` ...) run with `env/bin/python -m unittest` in the hub bench;
+  the service here runs version 1.1.1 (the last Vimshottari period now has its end date, and the Ashtakoota points the library got wrong are worked out by the engine).

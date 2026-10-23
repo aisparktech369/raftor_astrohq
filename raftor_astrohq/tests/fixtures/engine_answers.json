@@ -1,0 +1,1956 @@
+{
+ "boy_panchanga": {
+  "panchanga": {
+   "day_lord": "Sun",
+   "sunrise": "05:26:45",
+   "sunset": "19:13:26",
+   "vaara": "Sunday"
+  }
+ },
+ "boy_super_basic": {
+  "dasha_sequences": {
+   "vimshottari": {
+    "dasha_system": "Vimshottari",
+    "mahadasha": [
+     {
+      "antardasha": [
+       {
+        "end_date": "1973-11-24",
+        "lord": "Me☿",
+        "start_date": "1971-06-28"
+       },
+       {
+        "end_date": "1974-11-21",
+        "lord": "Ke☋",
+        "start_date": "1973-11-24"
+       },
+       {
+        "end_date": "1977-09-21",
+        "lord": "Ve♀",
+        "start_date": "1974-11-21"
+       },
+       {
+        "end_date": "1978-07-28",
+        "lord": "Su☉",
+        "start_date": "1977-09-21"
+       },
+       {
+        "end_date": "1979-12-28",
+        "lord": "Mo☾",
+        "start_date": "1978-07-28"
+       },
+       {
+        "end_date": "1980-12-24",
+        "lord": "Ma♂",
+        "start_date": "1979-12-28"
+       },
+       {
+        "end_date": "1983-07-13",
+        "lord": "Ra☊",
+        "start_date": "1980-12-24"
+       },
+       {
+        "end_date": "1985-10-18",
+        "lord": "Ju♃",
+        "start_date": "1983-07-13"
+       },
+       {
+        "end_date": "1988-06-27",
+        "lord": "Sa♄",
+        "start_date": "1985-10-18"
+       }
+      ],
+      "duration_years": 17.0,
+      "end_date": "1988-06-27",
+      "lord": "Me☿",
+      "start_date": "1971-06-28"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "1988-11-24",
+        "lord": "Ke☋",
+        "start_date": "1988-06-27"
+       },
+       {
+        "end_date": "1990-01-24",
+        "lord": "Ve♀",
+        "start_date": "1988-11-24"
+       },
+       {
+        "end_date": "1990-06-01",
+        "lord": "Su☉",
+        "start_date": "1990-01-24"
+       },
+       {
+        "end_date": "1990-12-31",
+        "lord": "Mo☾",
+        "start_date": "1990-06-01"
+       },
+       {
+        "end_date": "1991-05-29",
+        "lord": "Ma♂",
+        "start_date": "1990-12-31"
+       },
+       {
+        "end_date": "1992-06-15",
+        "lord": "Ra☊",
+        "start_date": "1991-05-29"
+       },
+       {
+        "end_date": "1993-05-22",
+        "lord": "Ju♃",
+        "start_date": "1992-06-15"
+       },
+       {
+        "end_date": "1994-07-01",
+        "lord": "Sa♄",
+        "start_date": "1993-05-22"
+       },
+       {
+        "end_date": "1995-06-28",
+        "lord": "Me☿",
+        "start_date": "1994-07-01"
+       }
+      ],
+      "duration_years": 7.0,
+      "end_date": "1995-06-28",
+      "lord": "Ke☋",
+      "start_date": "1988-06-27"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "1998-10-28",
+        "lord": "Ve♀",
+        "start_date": "1995-06-28"
+       },
+       {
+        "end_date": "1999-10-28",
+        "lord": "Su☉",
+        "start_date": "1998-10-28"
+       },
+       {
+        "end_date": "2001-06-28",
+        "lord": "Mo☾",
+        "start_date": "1999-10-28"
+       },
+       {
+        "end_date": "2002-08-28",
+        "lord": "Ma♂",
+        "start_date": "2001-06-28"
+       },
+       {
+        "end_date": "2005-08-28",
+        "lord": "Ra☊",
+        "start_date": "2002-08-28"
+       },
+       {
+        "end_date": "2008-04-28",
+        "lord": "Ju♃",
+        "start_date": "2005-08-28"
+       },
+       {
+        "end_date": "2011-06-28",
+        "lord": "Sa♄",
+        "start_date": "2008-04-28"
+       },
+       {
+        "end_date": "2014-04-28",
+        "lord": "Me☿",
+        "start_date": "2011-06-28"
+       },
+       {
+        "end_date": "2015-06-28",
+        "lord": "Ke☋",
+        "start_date": "2014-04-28"
+       }
+      ],
+      "duration_years": 20.0,
+      "end_date": "2015-06-28",
+      "lord": "Ve♀",
+      "start_date": "1995-06-28"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2015-10-16",
+        "lord": "Su☉",
+        "start_date": "2015-06-28"
+       },
+       {
+        "end_date": "2016-04-16",
+        "lord": "Mo☾",
+        "start_date": "2015-10-16"
+       },
+       {
+        "end_date": "2016-08-21",
+        "lord": "Ma♂",
+        "start_date": "2016-04-16"
+       },
+       {
+        "end_date": "2017-07-16",
+        "lord": "Ra☊",
+        "start_date": "2016-08-21"
+       },
+       {
+        "end_date": "2018-05-04",
+        "lord": "Ju♃",
+        "start_date": "2017-07-16"
+       },
+       {
+        "end_date": "2019-04-16",
+        "lord": "Sa♄",
+        "start_date": "2018-05-04"
+       },
+       {
+        "end_date": "2020-02-21",
+        "lord": "Me☿",
+        "start_date": "2019-04-16"
+       },
+       {
+        "end_date": "2020-06-28",
+        "lord": "Ke☋",
+        "start_date": "2020-02-21"
+       },
+       {
+        "end_date": "2021-06-28",
+        "lord": "Ve♀",
+        "start_date": "2020-06-28"
+       }
+      ],
+      "duration_years": 6.0,
+      "end_date": "2021-06-28",
+      "lord": "Su☉",
+      "start_date": "2015-06-28"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2022-04-28",
+        "lord": "Mo☾",
+        "start_date": "2021-06-28"
+       },
+       {
+        "end_date": "2022-11-27",
+        "lord": "Ma♂",
+        "start_date": "2022-04-28"
+       },
+       {
+        "end_date": "2024-05-28",
+        "lord": "Ra☊",
+        "start_date": "2022-11-27"
+       },
+       {
+        "end_date": "2025-09-27",
+        "lord": "Ju♃",
+        "start_date": "2024-05-28"
+       },
+       {
+        "end_date": "2027-04-29",
+        "lord": "Sa♄",
+        "start_date": "2025-09-27"
+       },
+       {
+        "end_date": "2028-09-27",
+        "lord": "Me☿",
+        "start_date": "2027-04-29"
+       },
+       {
+        "end_date": "2029-04-28",
+        "lord": "Ke☋",
+        "start_date": "2028-09-27"
+       },
+       {
+        "end_date": "2030-12-28",
+        "lord": "Ve♀",
+        "start_date": "2029-04-28"
+       },
+       {
+        "end_date": "2031-06-28",
+        "lord": "Su☉",
+        "start_date": "2030-12-28"
+       }
+      ],
+      "duration_years": 10.0,
+      "end_date": "2031-06-28",
+      "lord": "Mo☾",
+      "start_date": "2021-06-28"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2031-11-25",
+        "lord": "Ma♂",
+        "start_date": "2031-06-28"
+       },
+       {
+        "end_date": "2032-12-12",
+        "lord": "Ra☊",
+        "start_date": "2031-11-25"
+       },
+       {
+        "end_date": "2033-11-18",
+        "lord": "Ju♃",
+        "start_date": "2032-12-12"
+       },
+       {
+        "end_date": "2034-12-28",
+        "lord": "Sa♄",
+        "start_date": "2033-11-18"
+       },
+       {
+        "end_date": "2035-12-25",
+        "lord": "Me☿",
+        "start_date": "2034-12-28"
+       },
+       {
+        "end_date": "2036-05-22",
+        "lord": "Ke☋",
+        "start_date": "2035-12-25"
+       },
+       {
+        "end_date": "2037-07-22",
+        "lord": "Ve♀",
+        "start_date": "2036-05-22"
+       },
+       {
+        "end_date": "2037-11-27",
+        "lord": "Su☉",
+        "start_date": "2037-07-22"
+       },
+       {
+        "end_date": "2038-06-28",
+        "lord": "Mo☾",
+        "start_date": "2037-11-27"
+       }
+      ],
+      "duration_years": 7.0,
+      "end_date": "2038-06-28",
+      "lord": "Ma♂",
+      "start_date": "2031-06-28"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2041-03-10",
+        "lord": "Ra☊",
+        "start_date": "2038-06-28"
+       },
+       {
+        "end_date": "2043-08-04",
+        "lord": "Ju♃",
+        "start_date": "2041-03-10"
+       },
+       {
+        "end_date": "2046-06-10",
+        "lord": "Sa♄",
+        "start_date": "2043-08-04"
+       },
+       {
+        "end_date": "2048-12-27",
+        "lord": "Me☿",
+        "start_date": "2046-06-10"
+       },
+       {
+        "end_date": "2050-01-15",
+        "lord": "Ke☋",
+        "start_date": "2048-12-27"
+       },
+       {
+        "end_date": "2053-01-15",
+        "lord": "Ve♀",
+        "start_date": "2050-01-15"
+       },
+       {
+        "end_date": "2053-12-09",
+        "lord": "Su☉",
+        "start_date": "2053-01-15"
+       },
+       {
+        "end_date": "2055-06-10",
+        "lord": "Mo☾",
+        "start_date": "2053-12-09"
+       },
+       {
+        "end_date": "2056-06-28",
+        "lord": "Ma♂",
+        "start_date": "2055-06-10"
+       }
+      ],
+      "duration_years": 18.0,
+      "end_date": "2056-06-28",
+      "lord": "Ra☊",
+      "start_date": "2038-06-28"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2058-08-16",
+        "lord": "Ju♃",
+        "start_date": "2056-06-28"
+       },
+       {
+        "end_date": "2061-02-26",
+        "lord": "Sa♄",
+        "start_date": "2058-08-16"
+       },
+       {
+        "end_date": "2063-06-04",
+        "lord": "Me☿",
+        "start_date": "2061-02-26"
+       },
+       {
+        "end_date": "2064-05-10",
+        "lord": "Ke☋",
+        "start_date": "2063-06-04"
+       },
+       {
+        "end_date": "2067-01-09",
+        "lord": "Ve♀",
+        "start_date": "2064-05-10"
+       },
+       {
+        "end_date": "2067-10-28",
+        "lord": "Su☉",
+        "start_date": "2067-01-09"
+       },
+       {
+        "end_date": "2069-02-26",
+        "lord": "Mo☾",
+        "start_date": "2067-10-28"
+       },
+       {
+        "end_date": "2070-02-02",
+        "lord": "Ma♂",
+        "start_date": "2069-02-26"
+       },
+       {
+        "end_date": "2072-06-28",
+        "lord": "Ra☊",
+        "start_date": "2070-02-02"
+       }
+      ],
+      "duration_years": 16.0,
+      "end_date": "2072-06-28",
+      "lord": "Ju♃",
+      "start_date": "2056-06-28"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2075-07-02",
+        "lord": "Sa♄",
+        "start_date": "2072-06-28"
+       },
+       {
+        "end_date": "2078-03-11",
+        "lord": "Me☿",
+        "start_date": "2075-07-02"
+       },
+       {
+        "end_date": "2079-04-20",
+        "lord": "Ke☋",
+        "start_date": "2078-03-11"
+       },
+       {
+        "end_date": "2082-06-19",
+        "lord": "Ve♀",
+        "start_date": "2079-04-20"
+       },
+       {
+        "end_date": "2083-06-01",
+        "lord": "Su☉",
+        "start_date": "2082-06-19"
+       },
+       {
+        "end_date": "2084-12-31",
+        "lord": "Mo☾",
+        "start_date": "2083-06-01"
+       },
+       {
+        "end_date": "2086-02-09",
+        "lord": "Ma♂",
+        "start_date": "2084-12-31"
+       },
+       {
+        "end_date": "2088-12-16",
+        "lord": "Ra☊",
+        "start_date": "2086-02-09"
+       },
+       {
+        "end_date": "2091-06-29",
+        "lord": "Ju♃",
+        "start_date": "2088-12-16"
+       }
+      ],
+      "duration_years": 19.0,
+      "end_date": "2091-06-29",
+      "lord": "Sa♄",
+      "start_date": "2072-06-28"
+     }
+    ],
+    "metadata": {
+     "source": "PyJHora",
+     "total_years": 120
+    }
+   }
+  },
+  "divisional_charts": {
+   "D1": {
+    "ascendant_house": 5,
+    "chart": [
+     "",
+     "Sun☉\n",
+     "Mercury☿\nVenus♀℞\n",
+     "Raagu☊\n",
+     "Mars♂\nJupiter♃\nSaturn♄\n",
+     "Ascendantℒ\n",
+     "",
+     "",
+     "",
+     "Kethu☋\n",
+     "",
+     "Moon☾\n"
+    ],
+    "info": {
+     "Custom Kundali (Dn)-Artha Praharaka (Ap)": "♌︎Leo 13° 15’ 51\"",
+     "Custom Kundali (Dn)-Ascendantℒ": "♍︎Virgo 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Avayogi Sphuta": "♒︎Aquarius 27° 47’ 24\"",
+     "Custom Kundali (Dn)-Beeja Sphuta": "♐︎Sagittarius 8° 18’ 54\"",
+     "Custom Kundali (Dn)-Bhava Lagna (BL)": "♍︎Virgo 29° 33’ 8\"",
+     "Custom Kundali (Dn)-Bhrigu Bindhu Lagna (BB)": "♏︎Scorpio 26° 46’ 49\"",
+     "Custom Kundali (Dn)-Chatur Sphuta": "♉︎Taurus 11° 57’ 37\"",
+     "Custom Kundali (Dn)-Deha Sphuta": "♌︎Leo 19° 25’ 36\"",
+     "Custom Kundali (Dn)-Dhuma (Dm)": "♎︎Libra 7° 26’ 21\"",
+     "Custom Kundali (Dn)-Ghati Lagna (GL)": "♒︎Aquarius 21° 47’ 42\"",
+     "Custom Kundali (Dn)-Gulika (Gk)": "♎︎Libra 9° 57’ 17\"",
+     "Custom Kundali (Dn)-Hora Lagna (HL)": "♒︎Aquarius 5° 6’ 46\"",
+     "Custom Kundali (Dn)-Indrachapa (Ic)": "♈Aries 7° 26’ 21\"",
+     "Custom Kundali (Dn)-Indu Lagna (IL)": "♌︎Leo 23° 41’ 2\"",
+     "Custom Kundali (Dn)-Jupiter♃": "♌︎Leo 9° 18’ 48\" (Putra Karaka)",
+     "Custom Kundali (Dn)-Kethu☋": "♑︎Capricorn 29° 52’ 36\"",
+     "Custom Kundali (Dn)-Kshetra Sphuta": "♐︎Sagittarius 22° 47’ 12\"",
+     "Custom Kundali (Dn)-Kunda Lagna (KL)": "♓︎Pisces 11° 27’ 59\"",
+     "Custom Kundali (Dn)-Maandhi (Md)": "♎︎Libra 21° 3’ 21\"",
+     "Custom Kundali (Dn)-Mars♂": "♌︎Leo 19° 47’ 22\" (Maitra Karaka)",
+     "Custom Kundali (Dn)-Mercury☿": "♊︎Gemini 17° 27’ 21\" (Pitri Karaka)",
+     "Custom Kundali (Dn)-Moon☾": "♓︎Pisces 23° 41’ 2\" (Bhratri Karaka)",
+     "Custom Kundali (Dn)-Mrithyu (Mr)": "♋︎Cancer 20° 57’ 28\"",
+     "Custom Kundali (Dn)-Mrityu Sphuta": "♒︎Aquarius 3° 47’ 22\"",
+     "Custom Kundali (Dn)-Pancha Sphuta": "♍︎Virgo 11° 50’ 13\"",
+     "Custom Kundali (Dn)-Parivesha (Pv)": "♓︎Pisces 22° 33’ 39\"",
+     "Custom Kundali (Dn)-Prana Sphuta": "♑︎Capricorn 21° 1’ 59\"",
+     "Custom Kundali (Dn)-Pranapada Lagna (PL)": "♑︎Capricorn 14° 36’ 21\"",
+     "Custom Kundali (Dn)-Raagu☊": "♋︎Cancer 29° 52’ 36\" (Dhatha Karaka)",
+     "Custom Kundali (Dn)-Rahu Tithi Sphuta": "♊︎Gemini 5° 46’ 14\"",
+     "Custom Kundali (Dn)-Saturn♄": "♌︎Leo 26° 51’ 24\" (Atma Karaka)",
+     "Custom Kundali (Dn)-Sookshma Tri Sphuta": "♈Aries 14° 14’ 57\"",
+     "Custom Kundali (Dn)-Sree Lagna (SL)": "♓︎Pisces 23° 40’ 59\"",
+     "Custom Kundali (Dn)-Sun☉": "♉︎Taurus 24° 6’ 21\" (Amatya Karaka)",
+     "Custom Kundali (Dn)-Tithi Sphuta": "♑︎Capricorn 29° 34’ 41\"",
+     "Custom Kundali (Dn)-Tri Sphuta": "♓︎Pisces 17° 51’ 16\"",
+     "Custom Kundali (Dn)-Upakethu (Uk)": "♈Aries 24° 6’ 21\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V1)": "♐︎Sagittarius 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V10)": "♉︎Taurus 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V11)": "♈Aries 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V12)": "♉︎Taurus 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V2)": "♍︎Virgo 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V3)": "♐︎Sagittarius 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V4)": "♉︎Taurus 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V5)": "♈Aries 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V6)": "♉︎Taurus 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V7)": "♐︎Sagittarius 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V8)": "♍︎Virgo 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V9)": "♐︎Sagittarius 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Varnada Lagna (VL)": "♐︎Sagittarius 14° 12’ 56\"",
+     "Custom Kundali (Dn)-Venus♀℞": "♊︎Gemini 4° 53’ 45\" (Jnaati Karaka)",
+     "Custom Kundali (Dn)-Vighati Lagna (VL)": "♈Aries 27° 37’ 58\"",
+     "Custom Kundali (Dn)-Vyathipatha (Vp)": "♍︎Virgo 22° 33’ 39\"",
+     "Custom Kundali (Dn)-Yama Ghantaka (Yg)": "♍︎Virgo 5° 59’ 35\"",
+     "Custom Kundali (Dn)-Yoga Sphuta": "♉︎Taurus 17° 47’ 24\"",
+     "Custom Kundali (Dn)-Yogi Sphuta": "♌︎Leo 21° 7’ 24\"",
+     "Custom Kundali (Dn)-kaala (Kl)": "♊︎Gemini 6° 3’ 12\"",
+     "D-1-Arudha Lagna (AL)": "♐︎Sagittarius",
+     "D-1-Bhagya Pada (A9)": "♋︎Cancer",
+     "D-1-Bhatrarudha (A3)": "♒︎Aquarius",
+     "D-1-Dara Pada (A7)": "♑︎Capricorn",
+     "D-1-Dhanarudha (A2)": "♒︎Aquarius",
+     "D-1-Karma Pada (A10)": "♓︎Pisces",
+     "D-1-Labha Pada (A11)": "♏︎Scorpio",
+     "D-1-Mantra Pada (A5)": "♓︎Pisces",
+     "D-1-Matri Pada (A4)": "♈Aries",
+     "D-1-Mrityu Pada (A8)": "♐︎Sagittarius",
+     "D-1-Roga Pada (A6)": "♏︎Scorpio",
+     "D-1-Upapada Lagna (UL)": "♏︎Scorpio"
+    },
+    "planet_signs": {
+     "Artha Praharaka (Ap)": "♌︎Leo 13° 15’ 51\"",
+     "Arudha Lagna (AL)": "♐︎Sagittarius",
+     "Ascendantℒ": "♍︎Virgo 14° 12’ 56\"",
+     "Avayogi Sphuta": "♒︎Aquarius 27° 47’ 24\"",
+     "Beeja Sphuta": "♐︎Sagittarius 8° 18’ 54\"",
+     "Bhagya Pada (A9)": "♋︎Cancer",
+     "Bhatrarudha (A3)": "♒︎Aquarius",
+     "Bhava Lagna (BL)": "♍︎Virgo 29° 33’ 8\"",
+     "Bhrigu Bindhu Lagna (BB)": "♏︎Scorpio 26° 46’ 49\"",
+     "Chatur Sphuta": "♉︎Taurus 11° 57’ 37\"",
+     "Dara Pada (A7)": "♑︎Capricorn",
+     "Deha Sphuta": "♌︎Leo 19° 25’ 36\"",
+     "Dhanarudha (A2)": "♒︎Aquarius",
+     "Dhuma (Dm)": "♎︎Libra 7° 26’ 21\"",
+     "Ghati Lagna (GL)": "♒︎Aquarius 21° 47’ 42\"",
+     "Gulika (Gk)": "♎︎Libra 9° 57’ 17\"",
+     "Hora Lagna (HL)": "♒︎Aquarius 5° 6’ 46\"",
+     "Indrachapa (Ic)": "♈Aries 7° 26’ 21\"",
+     "Indu Lagna (IL)": "♌︎Leo 23° 41’ 2\"",
+     "Jupiter♃": "♌︎Leo 9° 18’ 48\" (Putra Karaka)",
+     "Karma Pada (A10)": "♓︎Pisces",
+     "Kethu☋": "♑︎Capricorn 29° 52’ 36\"",
+     "Kshetra Sphuta": "♐︎Sagittarius 22° 47’ 12\"",
+     "Kunda Lagna (KL)": "♓︎Pisces 11° 27’ 59\"",
+     "Labha Pada (A11)": "♏︎Scorpio",
+     "Maandhi (Md)": "♎︎Libra 21° 3’ 21\"",
+     "Mantra Pada (A5)": "♓︎Pisces",
+     "Mars♂": "♌︎Leo 19° 47’ 22\" (Maitra Karaka)",
+     "Matri Pada (A4)": "♈Aries",
+     "Mercury☿": "♊︎Gemini 17° 27’ 21\" (Pitri Karaka)",
+     "Moon☾": "♓︎Pisces 23° 41’ 2\" (Bhratri Karaka)",
+     "Mrithyu (Mr)": "♋︎Cancer 20° 57’ 28\"",
+     "Mrityu Pada (A8)": "♐︎Sagittarius",
+     "Mrityu Sphuta": "♒︎Aquarius 3° 47’ 22\"",
+     "Pancha Sphuta": "♍︎Virgo 11° 50’ 13\"",
+     "Parivesha (Pv)": "♓︎Pisces 22° 33’ 39\"",
+     "Prana Sphuta": "♑︎Capricorn 21° 1’ 59\"",
+     "Pranapada Lagna (PL)": "♑︎Capricorn 14° 36’ 21\"",
+     "Raagu☊": "♋︎Cancer 29° 52’ 36\" (Dhatha Karaka)",
+     "Rahu Tithi Sphuta": "♊︎Gemini 5° 46’ 14\"",
+     "Roga Pada (A6)": "♏︎Scorpio",
+     "Saturn♄": "♌︎Leo 26° 51’ 24\" (Atma Karaka)",
+     "Sookshma Tri Sphuta": "♈Aries 14° 14’ 57\"",
+     "Sree Lagna (SL)": "♓︎Pisces 23° 40’ 59\"",
+     "Sun☉": "♉︎Taurus 24° 6’ 21\" (Amatya Karaka)",
+     "Tithi Sphuta": "♑︎Capricorn 29° 34’ 41\"",
+     "Tri Sphuta": "♓︎Pisces 17° 51’ 16\"",
+     "Upakethu (Uk)": "♈Aries 24° 6’ 21\"",
+     "Upapada Lagna (UL)": "♏︎Scorpio",
+     "Varnada Lagna (V1)": "♐︎Sagittarius 14° 12’ 56\"",
+     "Varnada Lagna (V10)": "♉︎Taurus 14° 12’ 56\"",
+     "Varnada Lagna (V11)": "♈Aries 14° 12’ 56\"",
+     "Varnada Lagna (V12)": "♉︎Taurus 14° 12’ 56\"",
+     "Varnada Lagna (V2)": "♍︎Virgo 14° 12’ 56\"",
+     "Varnada Lagna (V3)": "♐︎Sagittarius 14° 12’ 56\"",
+     "Varnada Lagna (V4)": "♉︎Taurus 14° 12’ 56\"",
+     "Varnada Lagna (V5)": "♈Aries 14° 12’ 56\"",
+     "Varnada Lagna (V6)": "♉︎Taurus 14° 12’ 56\"",
+     "Varnada Lagna (V7)": "♐︎Sagittarius 14° 12’ 56\"",
+     "Varnada Lagna (V8)": "♍︎Virgo 14° 12’ 56\"",
+     "Varnada Lagna (V9)": "♐︎Sagittarius 14° 12’ 56\"",
+     "Varnada Lagna (VL)": "♐︎Sagittarius 14° 12’ 56\"",
+     "Venus♀℞": "♊︎Gemini 4° 53’ 45\" (Jnaati Karaka)",
+     "Vighati Lagna (VL)": "♈Aries 27° 37’ 58\"",
+     "Vyathipatha (Vp)": "♍︎Virgo 22° 33’ 39\"",
+     "Yama Ghantaka (Yg)": "♍︎Virgo 5° 59’ 35\"",
+     "Yoga Sphuta": "♉︎Taurus 17° 47’ 24\"",
+     "Yogi Sphuta": "♌︎Leo 21° 7’ 24\"",
+     "kaala (Kl)": "♊︎Gemini 6° 3’ 12\""
+    }
+   },
+   "D9": {
+    "ascendant_house": 1,
+    "chart": [
+     "",
+     "Ascendantℒ\n",
+     "Jupiter♃\n",
+     "",
+     "Sun☉\n",
+     "Mars♂\nKethu☋\n",
+     "",
+     "Venus♀℞\n",
+     "Saturn♄\n",
+     "",
+     "Moon☾\n",
+     "Mercury☿\nRaagu☊\n"
+    ],
+    "info": {
+     "D-9-Arudha Lagna (AL)": "♒︎Aquarius",
+     "D-9-Bhagya Pada (A9)": "♏︎Scorpio",
+     "D-9-Bhatrarudha (A3)": "♍︎Virgo",
+     "D-9-Dara Pada (A7)": "♋︎Cancer",
+     "D-9-Dhanarudha (A2)": "♍︎Virgo",
+     "D-9-Karma Pada (A10)": "♈Aries",
+     "D-9-Labha Pada (A11)": "♊︎Gemini",
+     "D-9-Mantra Pada (A5)": "♊︎Gemini",
+     "D-9-Matri Pada (A4)": "♉︎Taurus",
+     "D-9-Mrityu Pada (A8)": "♍︎Virgo",
+     "D-9-Roga Pada (A6)": "♐︎Sagittarius",
+     "D-9-Upapada Lagna (UL)": "♒︎Aquarius",
+     "Navamsam (D9)-Artha Praharaka (Ap)": "♋︎Cancer 13° 15’ 51\"",
+     "Navamsam (D9)-Ascendantℒ": "♉︎Taurus 7° 56’ 27\"",
+     "Navamsam (D9)-Avayogi Sphuta": "♑︎Capricorn 20° 6’ 32\"",
+     "Navamsam (D9)-Beeja Sphuta": "♒︎Aquarius 14° 50’ 5\"",
+     "Navamsam (D9)-Bhava Lagna (BL)": "♋︎Cancer 11° 29’ 2\"",
+     "Navamsam (D9)-Bhrigu Bindhu Lagna (BB)": "♍︎Virgo 1° 1’ 20\"",
+     "Navamsam (D9)-Chatur Sphuta": "♍︎Virgo 28° 0’ 16\"",
+     "Navamsam (D9)-Deha Sphuta": "♒︎Aquarius 5° 12’ 5\"",
+     "Navamsam (D9)-Dhuma (Dm)": "♎︎Libra 20° 17’ 11\"",
+     "Navamsam (D9)-Ghati Lagna (GL)": "♒︎Aquarius 3° 43’ 36\"",
+     "Navamsam (D9)-Gulika (Gk)": "♐︎Sagittarius 9° 57’ 17\"",
+     "Navamsam (D9)-Hora Lagna (HL)": "♍︎Virgo 17° 2’ 41\"",
+     "Navamsam (D9)-Indrachapa (Ic)": "♈Aries 20° 17’ 11\"",
+     "Navamsam (D9)-Indu Lagna (IL)": "♒︎Aquarius 3° 9’ 21\"",
+     "Navamsam (D9)-Jupiter♃": "♊︎Gemini 23° 49’ 9\" (Putra Karaka)",
+     "Navamsam (D9)-Kethu☋": "♍︎Virgo 28° 53’ 20\"",
+     "Navamsam (D9)-Kshetra Sphuta": "♉︎Taurus 25° 4’ 49\"",
+     "Navamsam (D9)-Kunda Lagna (KL)": "♑︎Capricorn 13° 11’ 48\"",
+     "Navamsam (D9)-Maandhi (Md)": "♈Aries 21° 3’ 21\"",
+     "Navamsam (D9)-Mars♂": "♍︎Virgo 28° 6’ 19\" (Maitra Karaka)",
+     "Navamsam (D9)-Mercury☿": "♓︎Pisces 7° 6’ 5\" (Pitri Karaka)",
+     "Navamsam (D9)-Moon☾": "♒︎Aquarius 3° 9’ 21\" (Bhratri Karaka)",
+     "Navamsam (D9)-Mrithyu (Mr)": "♑︎Capricorn 20° 57’ 28\"",
+     "Navamsam (D9)-Mrityu Sphuta": "♒︎Aquarius 16° 38’ 12\"",
+     "Navamsam (D9)-Pancha Sphuta": "♍︎Virgo 26° 53’ 36\"",
+     "Navamsam (D9)-Parivesha (Pv)": "♓︎Pisces 9° 42’ 49\"",
+     "Navamsam (D9)-Prana Sphuta": "♓︎Pisces 19° 39’ 30\"",
+     "Navamsam (D9)-Pranapada Lagna (PL)": "♓︎Pisces 27° 27’ 11\"",
+     "Navamsam (D9)-Raagu☊": "♓︎Pisces 28° 53’ 20\" (Dhatha Karaka)",
+     "Navamsam (D9)-Rahu Tithi Sphuta": "♑︎Capricorn 21° 56’ 9\"",
+     "Navamsam (D9)-Saturn♄": "♐︎Sagittarius 1° 42’ 40\" (Atma Karaka)",
+     "Navamsam (D9)-Sookshma Tri Sphuta": "♋︎Cancer 11° 29’ 46\"",
+     "Navamsam (D9)-Sree Lagna (SL)": "♎︎Libra 3° 8’ 51\"",
+     "Navamsam (D9)-Sun☉": "♌︎Leo 6° 57’ 11\" (Amatya Karaka)",
+     "Navamsam (D9)-Tithi Sphuta": "♌︎Leo 26° 12’ 10\"",
+     "Navamsam (D9)-Tri Sphuta": "♑︎Capricorn 21° 3’ 5\"",
+     "Navamsam (D9)-Upakethu (Uk)": "♍︎Virgo 6° 57’ 11\"",
+     "Navamsam (D9)-Varnada Lagna (V1)": "♎︎Libra 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V10)": "♉︎Taurus 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V11)": "♊︎Gemini 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V12)": "♍︎Virgo 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V2)": "♑︎Capricorn 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V3)": "♒︎Aquarius 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V4)": "♉︎Taurus 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V5)": "♊︎Gemini 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V6)": "♍︎Virgo 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V7)": "♎︎Libra 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V8)": "♑︎Capricorn 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (V9)": "♒︎Aquarius 7° 56’ 27\"",
+     "Navamsam (D9)-Varnada Lagna (VL)": "♎︎Libra 7° 56’ 27\"",
+     "Navamsam (D9)-Venus♀℞": "♏︎Scorpio 14° 3’ 45\" (Jnaati Karaka)",
+     "Navamsam (D9)-Vighati Lagna (VL)": "♍︎Virgo 9° 33’ 53\"",
+     "Navamsam (D9)-Vyathipatha (Vp)": "♍︎Virgo 9° 42’ 49\"",
+     "Navamsam (D9)-Yama Ghantaka (Yg)": "♒︎Aquarius 5° 59’ 35\"",
+     "Navamsam (D9)-Yoga Sphuta": "♑︎Capricorn 10° 6’ 32\"",
+     "Navamsam (D9)-Yogi Sphuta": "♉︎Taurus 13° 26’ 32\"",
+     "Navamsam (D9)-kaala (Kl)": "♏︎Scorpio 6° 3’ 12\""
+    },
+    "planet_signs": {
+     "Artha Praharaka (Ap)": "♋︎Cancer 13° 15’ 51\"",
+     "Arudha Lagna (AL)": "♒︎Aquarius",
+     "Ascendantℒ": "♉︎Taurus 7° 56’ 27\"",
+     "Avayogi Sphuta": "♑︎Capricorn 20° 6’ 32\"",
+     "Beeja Sphuta": "♒︎Aquarius 14° 50’ 5\"",
+     "Bhagya Pada (A9)": "♏︎Scorpio",
+     "Bhatrarudha (A3)": "♍︎Virgo",
+     "Bhava Lagna (BL)": "♋︎Cancer 11° 29’ 2\"",
+     "Bhrigu Bindhu Lagna (BB)": "♍︎Virgo 1° 1’ 20\"",
+     "Chatur Sphuta": "♍︎Virgo 28° 0’ 16\"",
+     "Dara Pada (A7)": "♋︎Cancer",
+     "Deha Sphuta": "♒︎Aquarius 5° 12’ 5\"",
+     "Dhanarudha (A2)": "♍︎Virgo",
+     "Dhuma (Dm)": "♎︎Libra 20° 17’ 11\"",
+     "Ghati Lagna (GL)": "♒︎Aquarius 3° 43’ 36\"",
+     "Gulika (Gk)": "♐︎Sagittarius 9° 57’ 17\"",
+     "Hora Lagna (HL)": "♍︎Virgo 17° 2’ 41\"",
+     "Indrachapa (Ic)": "♈Aries 20° 17’ 11\"",
+     "Indu Lagna (IL)": "♒︎Aquarius 3° 9’ 21\"",
+     "Jupiter♃": "♊︎Gemini 23° 49’ 9\" (Putra Karaka)",
+     "Karma Pada (A10)": "♈Aries",
+     "Kethu☋": "♍︎Virgo 28° 53’ 20\"",
+     "Kshetra Sphuta": "♉︎Taurus 25° 4’ 49\"",
+     "Kunda Lagna (KL)": "♑︎Capricorn 13° 11’ 48\"",
+     "Labha Pada (A11)": "♊︎Gemini",
+     "Maandhi (Md)": "♈Aries 21° 3’ 21\"",
+     "Mantra Pada (A5)": "♊︎Gemini",
+     "Mars♂": "♍︎Virgo 28° 6’ 19\" (Maitra Karaka)",
+     "Matri Pada (A4)": "♉︎Taurus",
+     "Mercury☿": "♓︎Pisces 7° 6’ 5\" (Pitri Karaka)",
+     "Moon☾": "♒︎Aquarius 3° 9’ 21\" (Bhratri Karaka)",
+     "Mrithyu (Mr)": "♑︎Capricorn 20° 57’ 28\"",
+     "Mrityu Pada (A8)": "♍︎Virgo",
+     "Mrityu Sphuta": "♒︎Aquarius 16° 38’ 12\"",
+     "Pancha Sphuta": "♍︎Virgo 26° 53’ 36\"",
+     "Parivesha (Pv)": "♓︎Pisces 9° 42’ 49\"",
+     "Prana Sphuta": "♓︎Pisces 19° 39’ 30\"",
+     "Pranapada Lagna (PL)": "♓︎Pisces 27° 27’ 11\"",
+     "Raagu☊": "♓︎Pisces 28° 53’ 20\" (Dhatha Karaka)",
+     "Rahu Tithi Sphuta": "♑︎Capricorn 21° 56’ 9\"",
+     "Roga Pada (A6)": "♐︎Sagittarius",
+     "Saturn♄": "♐︎Sagittarius 1° 42’ 40\" (Atma Karaka)",
+     "Sookshma Tri Sphuta": "♋︎Cancer 11° 29’ 46\"",
+     "Sree Lagna (SL)": "♎︎Libra 3° 8’ 51\"",
+     "Sun☉": "♌︎Leo 6° 57’ 11\" (Amatya Karaka)",
+     "Tithi Sphuta": "♌︎Leo 26° 12’ 10\"",
+     "Tri Sphuta": "♑︎Capricorn 21° 3’ 5\"",
+     "Upakethu (Uk)": "♍︎Virgo 6° 57’ 11\"",
+     "Upapada Lagna (UL)": "♒︎Aquarius",
+     "Varnada Lagna (V1)": "♎︎Libra 7° 56’ 27\"",
+     "Varnada Lagna (V10)": "♉︎Taurus 7° 56’ 27\"",
+     "Varnada Lagna (V11)": "♊︎Gemini 7° 56’ 27\"",
+     "Varnada Lagna (V12)": "♍︎Virgo 7° 56’ 27\"",
+     "Varnada Lagna (V2)": "♑︎Capricorn 7° 56’ 27\"",
+     "Varnada Lagna (V3)": "♒︎Aquarius 7° 56’ 27\"",
+     "Varnada Lagna (V4)": "♉︎Taurus 7° 56’ 27\"",
+     "Varnada Lagna (V5)": "♊︎Gemini 7° 56’ 27\"",
+     "Varnada Lagna (V6)": "♍︎Virgo 7° 56’ 27\"",
+     "Varnada Lagna (V7)": "♎︎Libra 7° 56’ 27\"",
+     "Varnada Lagna (V8)": "♑︎Capricorn 7° 56’ 27\"",
+     "Varnada Lagna (V9)": "♒︎Aquarius 7° 56’ 27\"",
+     "Varnada Lagna (VL)": "♎︎Libra 7° 56’ 27\"",
+     "Venus♀℞": "♏︎Scorpio 14° 3’ 45\" (Jnaati Karaka)",
+     "Vighati Lagna (VL)": "♍︎Virgo 9° 33’ 53\"",
+     "Vyathipatha (Vp)": "♍︎Virgo 9° 42’ 49\"",
+     "Yama Ghantaka (Yg)": "♒︎Aquarius 5° 59’ 35\"",
+     "Yoga Sphuta": "♑︎Capricorn 10° 6’ 32\"",
+     "Yogi Sphuta": "♉︎Taurus 13° 26’ 32\"",
+     "kaala (Kl)": "♏︎Scorpio 6° 3’ 12\""
+    }
+   }
+  },
+  "lagna": {
+   "degree": 14.2156,
+   "lord": "Mercury",
+   "sign": "♍︎Virgo"
+  },
+  "planetary_positions": [
+   {
+    "absolute_longitude": 54.10589,
+    "house": 9,
+    "is_retrograde": false,
+    "longitude": 24.1058900426739,
+    "nakshatra": "Mrigasheesham",
+    "nakshatra_index": 5,
+    "nakshatra_lord": "Ma♂",
+    "pada": 1,
+    "planet": "Su☉",
+    "planet_index": 0,
+    "sign": "♉︎Taurus",
+    "sign_index": 1
+   },
+   {
+    "absolute_longitude": 353.683979,
+    "house": 7,
+    "is_retrograde": false,
+    "longitude": 23.683978944966782,
+    "nakshatra": "Revathi",
+    "nakshatra_index": 27,
+    "nakshatra_lord": "Me☿",
+    "pada": 3,
+    "planet": "Mo☾",
+    "planet_index": 1,
+    "sign": "♓︎Pisces",
+    "sign_index": 11
+   },
+   {
+    "absolute_longitude": 139.789468,
+    "house": 12,
+    "is_retrograde": false,
+    "longitude": 19.78946790297465,
+    "nakshatra": "Pooram",
+    "nakshatra_index": 11,
+    "nakshatra_lord": "Ve♀",
+    "pada": 2,
+    "planet": "Ma♂",
+    "planet_index": 2,
+    "sign": "♌︎Leo",
+    "sign_index": 4
+   },
+   {
+    "absolute_longitude": 77.455701,
+    "house": 10,
+    "is_retrograde": false,
+    "longitude": 17.455701289016886,
+    "nakshatra": "Thiruvaathirai",
+    "nakshatra_index": 6,
+    "nakshatra_lord": "Ra☊",
+    "pada": 4,
+    "planet": "Me☿",
+    "planet_index": 3,
+    "sign": "♊︎Gemini",
+    "sign_index": 2
+   },
+   {
+    "absolute_longitude": 129.313242,
+    "house": 12,
+    "is_retrograde": false,
+    "longitude": 9.313241588629836,
+    "nakshatra": "Makam",
+    "nakshatra_index": 10,
+    "nakshatra_lord": "Ke☋",
+    "pada": 3,
+    "planet": "Ju♃",
+    "planet_index": 4,
+    "sign": "♌︎Leo",
+    "sign_index": 4
+   },
+   {
+    "absolute_longitude": 64.895834,
+    "house": 10,
+    "is_retrograde": true,
+    "longitude": 4.89583375476181,
+    "nakshatra": "Mrigasheesham",
+    "nakshatra_index": 5,
+    "nakshatra_lord": "Ma♂",
+    "pada": 4,
+    "planet": "Ve♀",
+    "planet_index": 5,
+    "sign": "♊︎Gemini",
+    "sign_index": 2
+   },
+   {
+    "absolute_longitude": 146.856784,
+    "house": 12,
+    "is_retrograde": false,
+    "longitude": 26.856783623068793,
+    "nakshatra": "Uthiram",
+    "nakshatra_index": 12,
+    "nakshatra_lord": "Su☉",
+    "pada": 1,
+    "planet": "Sa♄",
+    "planet_index": 6,
+    "sign": "♌︎Leo",
+    "sign_index": 4
+   },
+   {
+    "absolute_longitude": 119.876543,
+    "house": 11,
+    "is_retrograde": true,
+    "longitude": 29.87654276952604,
+    "nakshatra": "Aayilyam",
+    "nakshatra_index": 9,
+    "nakshatra_lord": "Me☿",
+    "pada": 4,
+    "planet": "Ra☊",
+    "planet_index": 7,
+    "sign": "♋︎Cancer",
+    "sign_index": 3
+   },
+   {
+    "absolute_longitude": 299.876543,
+    "house": 5,
+    "is_retrograde": true,
+    "longitude": 29.876542769526054,
+    "nakshatra": "Avittam",
+    "nakshatra_index": 23,
+    "nakshatra_lord": "Ma♂",
+    "pada": 2,
+    "planet": "Ke☋",
+    "planet_index": 8,
+    "sign": "♑︎Capricorn",
+    "sign_index": 9
+   }
+  ]
+ },
+ "girl_super_basic": {
+  "dasha_sequences": {
+   "vimshottari": {
+    "dasha_system": "Vimshottari",
+    "mahadasha": [
+     {
+      "antardasha": [
+       {
+        "end_date": "1975-12-31",
+        "lord": "Ra☊",
+        "start_date": "1973-04-18"
+       },
+       {
+        "end_date": "1978-05-25",
+        "lord": "Ju♃",
+        "start_date": "1975-12-31"
+       },
+       {
+        "end_date": "1981-03-31",
+        "lord": "Sa♄",
+        "start_date": "1978-05-25"
+       },
+       {
+        "end_date": "1983-10-19",
+        "lord": "Me☿",
+        "start_date": "1981-03-31"
+       },
+       {
+        "end_date": "1984-11-05",
+        "lord": "Ke☋",
+        "start_date": "1983-10-19"
+       },
+       {
+        "end_date": "1987-11-06",
+        "lord": "Ve♀",
+        "start_date": "1984-11-05"
+       },
+       {
+        "end_date": "1988-09-30",
+        "lord": "Su☉",
+        "start_date": "1987-11-06"
+       },
+       {
+        "end_date": "1990-04-01",
+        "lord": "Mo☾",
+        "start_date": "1988-09-30"
+       },
+       {
+        "end_date": "1991-04-19",
+        "lord": "Ma♂",
+        "start_date": "1990-04-01"
+       }
+      ],
+      "duration_years": 18.0,
+      "end_date": "1991-04-19",
+      "lord": "Ra☊",
+      "start_date": "1973-04-18"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "1993-06-06",
+        "lord": "Ju♃",
+        "start_date": "1991-04-19"
+       },
+       {
+        "end_date": "1995-12-19",
+        "lord": "Sa♄",
+        "start_date": "1993-06-06"
+       },
+       {
+        "end_date": "1998-03-25",
+        "lord": "Me☿",
+        "start_date": "1995-12-19"
+       },
+       {
+        "end_date": "1999-03-01",
+        "lord": "Ke☋",
+        "start_date": "1998-03-25"
+       },
+       {
+        "end_date": "2001-10-30",
+        "lord": "Ve♀",
+        "start_date": "1999-03-01"
+       },
+       {
+        "end_date": "2002-08-19",
+        "lord": "Su☉",
+        "start_date": "2001-10-30"
+       },
+       {
+        "end_date": "2003-12-19",
+        "lord": "Mo☾",
+        "start_date": "2002-08-19"
+       },
+       {
+        "end_date": "2004-11-24",
+        "lord": "Ma♂",
+        "start_date": "2003-12-19"
+       },
+       {
+        "end_date": "2007-04-19",
+        "lord": "Ra☊",
+        "start_date": "2004-11-24"
+       }
+      ],
+      "duration_years": 16.0,
+      "end_date": "2007-04-19",
+      "lord": "Ju♃",
+      "start_date": "1991-04-19"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2010-04-22",
+        "lord": "Sa♄",
+        "start_date": "2007-04-19"
+       },
+       {
+        "end_date": "2012-12-30",
+        "lord": "Me☿",
+        "start_date": "2010-04-22"
+       },
+       {
+        "end_date": "2014-02-08",
+        "lord": "Ke☋",
+        "start_date": "2012-12-30"
+       },
+       {
+        "end_date": "2017-04-10",
+        "lord": "Ve♀",
+        "start_date": "2014-02-08"
+       },
+       {
+        "end_date": "2018-03-23",
+        "lord": "Su☉",
+        "start_date": "2017-04-10"
+       },
+       {
+        "end_date": "2019-10-22",
+        "lord": "Mo☾",
+        "start_date": "2018-03-23"
+       },
+       {
+        "end_date": "2020-11-30",
+        "lord": "Ma♂",
+        "start_date": "2019-10-22"
+       },
+       {
+        "end_date": "2023-10-07",
+        "lord": "Ra☊",
+        "start_date": "2020-11-30"
+       },
+       {
+        "end_date": "2026-04-19",
+        "lord": "Ju♃",
+        "start_date": "2023-10-07"
+       }
+      ],
+      "duration_years": 19.0,
+      "end_date": "2026-04-19",
+      "lord": "Sa♄",
+      "start_date": "2007-04-19"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2028-09-15",
+        "lord": "Me☿",
+        "start_date": "2026-04-19"
+       },
+       {
+        "end_date": "2029-09-12",
+        "lord": "Ke☋",
+        "start_date": "2028-09-15"
+       },
+       {
+        "end_date": "2032-07-13",
+        "lord": "Ve♀",
+        "start_date": "2029-09-12"
+       },
+       {
+        "end_date": "2033-05-19",
+        "lord": "Su☉",
+        "start_date": "2032-07-13"
+       },
+       {
+        "end_date": "2034-10-19",
+        "lord": "Mo☾",
+        "start_date": "2033-05-19"
+       },
+       {
+        "end_date": "2035-10-16",
+        "lord": "Ma♂",
+        "start_date": "2034-10-19"
+       },
+       {
+        "end_date": "2038-05-04",
+        "lord": "Ra☊",
+        "start_date": "2035-10-16"
+       },
+       {
+        "end_date": "2040-08-09",
+        "lord": "Ju♃",
+        "start_date": "2038-05-04"
+       },
+       {
+        "end_date": "2043-04-19",
+        "lord": "Sa♄",
+        "start_date": "2040-08-09"
+       }
+      ],
+      "duration_years": 17.0,
+      "end_date": "2043-04-19",
+      "lord": "Me☿",
+      "start_date": "2026-04-19"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2043-09-16",
+        "lord": "Ke☋",
+        "start_date": "2043-04-19"
+       },
+       {
+        "end_date": "2044-11-15",
+        "lord": "Ve♀",
+        "start_date": "2043-09-16"
+       },
+       {
+        "end_date": "2045-03-22",
+        "lord": "Su☉",
+        "start_date": "2044-11-15"
+       },
+       {
+        "end_date": "2045-10-22",
+        "lord": "Mo☾",
+        "start_date": "2045-03-22"
+       },
+       {
+        "end_date": "2046-03-20",
+        "lord": "Ma♂",
+        "start_date": "2045-10-22"
+       },
+       {
+        "end_date": "2047-04-07",
+        "lord": "Ra☊",
+        "start_date": "2046-03-20"
+       },
+       {
+        "end_date": "2048-03-13",
+        "lord": "Ju♃",
+        "start_date": "2047-04-07"
+       },
+       {
+        "end_date": "2049-04-22",
+        "lord": "Sa♄",
+        "start_date": "2048-03-13"
+       },
+       {
+        "end_date": "2050-04-19",
+        "lord": "Me☿",
+        "start_date": "2049-04-22"
+       }
+      ],
+      "duration_years": 7.0,
+      "end_date": "2050-04-19",
+      "lord": "Ke☋",
+      "start_date": "2043-04-19"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2053-08-19",
+        "lord": "Ve♀",
+        "start_date": "2050-04-19"
+       },
+       {
+        "end_date": "2054-08-19",
+        "lord": "Su☉",
+        "start_date": "2053-08-19"
+       },
+       {
+        "end_date": "2056-04-19",
+        "lord": "Mo☾",
+        "start_date": "2054-08-19"
+       },
+       {
+        "end_date": "2057-06-19",
+        "lord": "Ma♂",
+        "start_date": "2056-04-19"
+       },
+       {
+        "end_date": "2060-06-19",
+        "lord": "Ra☊",
+        "start_date": "2057-06-19"
+       },
+       {
+        "end_date": "2063-02-18",
+        "lord": "Ju♃",
+        "start_date": "2060-06-19"
+       },
+       {
+        "end_date": "2066-04-19",
+        "lord": "Sa♄",
+        "start_date": "2063-02-18"
+       },
+       {
+        "end_date": "2069-02-17",
+        "lord": "Me☿",
+        "start_date": "2066-04-19"
+       },
+       {
+        "end_date": "2070-04-19",
+        "lord": "Ke☋",
+        "start_date": "2069-02-17"
+       }
+      ],
+      "duration_years": 20.0,
+      "end_date": "2070-04-19",
+      "lord": "Ve♀",
+      "start_date": "2050-04-19"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2070-08-07",
+        "lord": "Su☉",
+        "start_date": "2070-04-19"
+       },
+       {
+        "end_date": "2071-02-05",
+        "lord": "Mo☾",
+        "start_date": "2070-08-07"
+       },
+       {
+        "end_date": "2071-06-13",
+        "lord": "Ma♂",
+        "start_date": "2071-02-05"
+       },
+       {
+        "end_date": "2072-05-07",
+        "lord": "Ra☊",
+        "start_date": "2071-06-13"
+       },
+       {
+        "end_date": "2073-02-23",
+        "lord": "Ju♃",
+        "start_date": "2072-05-07"
+       },
+       {
+        "end_date": "2074-02-05",
+        "lord": "Sa♄",
+        "start_date": "2073-02-23"
+       },
+       {
+        "end_date": "2074-12-13",
+        "lord": "Me☿",
+        "start_date": "2074-02-05"
+       },
+       {
+        "end_date": "2075-04-20",
+        "lord": "Ke☋",
+        "start_date": "2074-12-13"
+       },
+       {
+        "end_date": "2076-04-19",
+        "lord": "Ve♀",
+        "start_date": "2075-04-20"
+       }
+      ],
+      "duration_years": 6.0,
+      "end_date": "2076-04-19",
+      "lord": "Su☉",
+      "start_date": "2070-04-19"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2077-02-17",
+        "lord": "Mo☾",
+        "start_date": "2076-04-19"
+       },
+       {
+        "end_date": "2077-09-18",
+        "lord": "Ma♂",
+        "start_date": "2077-02-17"
+       },
+       {
+        "end_date": "2079-03-20",
+        "lord": "Ra☊",
+        "start_date": "2077-09-18"
+       },
+       {
+        "end_date": "2080-07-19",
+        "lord": "Ju♃",
+        "start_date": "2079-03-20"
+       },
+       {
+        "end_date": "2082-02-17",
+        "lord": "Sa♄",
+        "start_date": "2080-07-19"
+       },
+       {
+        "end_date": "2083-07-20",
+        "lord": "Me☿",
+        "start_date": "2082-02-17"
+       },
+       {
+        "end_date": "2084-02-18",
+        "lord": "Ke☋",
+        "start_date": "2083-07-20"
+       },
+       {
+        "end_date": "2085-10-19",
+        "lord": "Ve♀",
+        "start_date": "2084-02-18"
+       },
+       {
+        "end_date": "2086-04-19",
+        "lord": "Su☉",
+        "start_date": "2085-10-19"
+       }
+      ],
+      "duration_years": 10.0,
+      "end_date": "2086-04-19",
+      "lord": "Mo☾",
+      "start_date": "2076-04-19"
+     },
+     {
+      "antardasha": [
+       {
+        "end_date": "2086-09-16",
+        "lord": "Ma♂",
+        "start_date": "2086-04-19"
+       },
+       {
+        "end_date": "2087-10-04",
+        "lord": "Ra☊",
+        "start_date": "2086-09-16"
+       },
+       {
+        "end_date": "2088-09-09",
+        "lord": "Ju♃",
+        "start_date": "2087-10-04"
+       },
+       {
+        "end_date": "2089-10-19",
+        "lord": "Sa♄",
+        "start_date": "2088-09-09"
+       },
+       {
+        "end_date": "2090-10-16",
+        "lord": "Me☿",
+        "start_date": "2089-10-19"
+       },
+       {
+        "end_date": "2091-03-14",
+        "lord": "Ke☋",
+        "start_date": "2090-10-16"
+       },
+       {
+        "end_date": "2092-05-13",
+        "lord": "Ve♀",
+        "start_date": "2091-03-14"
+       },
+       {
+        "end_date": "2092-09-18",
+        "lord": "Su☉",
+        "start_date": "2092-05-13"
+       },
+       {
+        "end_date": "2093-04-19",
+        "lord": "Mo☾",
+        "start_date": "2092-09-18"
+       }
+      ],
+      "duration_years": 7.0,
+      "end_date": "2093-04-19",
+      "lord": "Ma♂",
+      "start_date": "2086-04-19"
+     }
+    ],
+    "metadata": {
+     "source": "PyJHora",
+     "total_years": 120
+    }
+   }
+  },
+  "divisional_charts": {
+   "D1": {
+    "ascendant_house": 11,
+    "chart": [
+     "",
+     "",
+     "Raagu☊\n",
+     "",
+     "",
+     "",
+     "Saturn♄℞\n",
+     "Jupiter♃\n",
+     "Kethu☋\n",
+     "Mercury☿\n",
+     "Sun☉\nMoon☾\nMars♂\nVenus♀\n",
+     "Ascendantℒ\n"
+    ],
+    "info": {
+     "Custom Kundali (Dn)-Artha Praharaka (Ap)": "♈Aries 8° 1’ 12\"",
+     "Custom Kundali (Dn)-Ascendantℒ": "♓︎Pisces 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Avayogi Sphuta": "♍︎Virgo 25° 13’ 14\"",
+     "Custom Kundali (Dn)-Beeja Sphuta": "♌︎Leo 11° 34’ 29\"",
+     "Custom Kundali (Dn)-Bhava Lagna (BL)": "♓︎Pisces 6° 3’ 27\"",
+     "Custom Kundali (Dn)-Bhrigu Bindhu Lagna (BB)": "♎︎Libra 10° 55’ 21\"",
+     "Custom Kundali (Dn)-Chatur Sphuta": "♒︎Aquarius 3° 52’ 13\"",
+     "Custom Kundali (Dn)-Deha Sphuta": "♉︎Taurus 25° 30’ 21\"",
+     "Custom Kundali (Dn)-Dhuma (Dm)": "♊︎Gemini 14° 36’ 35\"",
+     "Custom Kundali (Dn)-Ghati Lagna (GL)": "♋︎Cancer 24° 38’ 43\"",
+     "Custom Kundali (Dn)-Gulika (Gk)": "♊︎Gemini 3° 57’ 11\"",
+     "Custom Kundali (Dn)-Hora Lagna (HL)": "♈Aries 10° 42’ 16\"",
+     "Custom Kundali (Dn)-Indrachapa (Ic)": "♐︎Sagittarius 14° 36’ 35\"",
+     "Custom Kundali (Dn)-Indu Lagna (IL)": "♋︎Cancer 13° 56’ 39\"",
+     "Custom Kundali (Dn)-Jupiter♃": "♏︎Scorpio 14° 42’ 25\" (Maitra Karaka)",
+     "Custom Kundali (Dn)-Kethu☋": "♐︎Sagittarius 7° 54’ 3\"",
+     "Custom Kundali (Dn)-Kshetra Sphuta": "♌︎Leo 26° 38’ 35\"",
+     "Custom Kundali (Dn)-Kunda Lagna (KL)": "♎︎Libra 20° 27’ 9\"",
+     "Custom Kundali (Dn)-Maandhi (Md)": "♊︎Gemini 13° 42’ 28\"",
+     "Custom Kundali (Dn)-Mars♂": "♒︎Aquarius 27° 59’ 31\" (Atma Karaka)",
+     "Custom Kundali (Dn)-Mercury☿": "♑︎Capricorn 6° 6’ 30\" (Jnaati Karaka)",
+     "Custom Kundali (Dn)-Moon☾": "♒︎Aquarius 13° 56’ 39\" (Pitri Karaka)",
+     "Custom Kundali (Dn)-Mrithyu (Mr)": "♓︎Pisces 11° 18’ 57\"",
+     "Custom Kundali (Dn)-Mrityu Sphuta": "♈Aries 28° 56’ 51\"",
+     "Custom Kundali (Dn)-Pancha Sphuta": "♈Aries 11° 46’ 17\"",
+     "Custom Kundali (Dn)-Parivesha (Pv)": "♋︎Cancer 15° 23’ 25\"",
+     "Custom Kundali (Dn)-Prana Sphuta": "♓︎Pisces 17° 26’ 16\"",
+     "Custom Kundali (Dn)-Pranapada Lagna (PL)": "♍︎Virgo 2° 26’ 35\"",
+     "Custom Kundali (Dn)-Raagu☊": "♊︎Gemini 7° 54’ 3\" (Bhratri Karaka)",
+     "Custom Kundali (Dn)-Rahu Tithi Sphuta": "♌︎Leo 6° 37’ 28\"",
+     "Custom Kundali (Dn)-Saturn♄℞": "♎︎Libra 10° 49’ 3\" (Putra Karaka)",
+     "Custom Kundali (Dn)-Sookshma Tri Sphuta": "♊︎Gemini 11° 53’ 27\"",
+     "Custom Kundali (Dn)-Sree Lagna (SL)": "♎︎Libra 1° 11’ 15\"",
+     "Custom Kundali (Dn)-Sun☉": "♒︎Aquarius 1° 16’ 35\" (Dhatha Karaka)",
+     "Custom Kundali (Dn)-Tithi Sphuta": "♈Aries 12° 40’ 4\"",
+     "Custom Kundali (Dn)-Tri Sphuta": "♈Aries 2° 35’ 39\"",
+     "Custom Kundali (Dn)-Upakethu (Uk)": "♑︎Capricorn 1° 16’ 35\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V1)": "♈Aries 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V10)": "♍︎Virgo 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V11)": "♌︎Leo 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V12)": "♑︎Capricorn 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V2)": "♑︎Capricorn 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V3)": "♌︎Leo 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V4)": "♍︎Virgo 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V5)": "♐︎Sagittarius 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V6)": "♉︎Taurus 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V7)": "♈Aries 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V8)": "♉︎Taurus 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (V9)": "♐︎Sagittarius 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Varnada Lagna (VL)": "♈Aries 14° 41’ 49\"",
+     "Custom Kundali (Dn)-Venus♀": "♒︎Aquarius 25° 35’ 28\" (Amatya Karaka)",
+     "Custom Kundali (Dn)-Vighati Lagna (VL)": "♏︎Scorpio 10° 13’ 26\"",
+     "Custom Kundali (Dn)-Vyathipatha (Vp)": "♑︎Capricorn 15° 23’ 25\"",
+     "Custom Kundali (Dn)-Yama Ghantaka (Yg)": "♉︎Taurus 2° 16’ 49\"",
+     "Custom Kundali (Dn)-Yoga Sphuta": "♐︎Sagittarius 15° 13’ 14\"",
+     "Custom Kundali (Dn)-Yogi Sphuta": "♓︎Pisces 18° 33’ 14\"",
+     "Custom Kundali (Dn)-kaala (Kl)": "♋︎Cancer 21° 54’ 37\"",
+     "D-1-Arudha Lagna (AL)": "♋︎Cancer",
+     "D-1-Bhagya Pada (A9)": "♒︎Aquarius",
+     "D-1-Bhatrarudha (A3)": "♌︎Leo",
+     "D-1-Dara Pada (A7)": "♉︎Taurus",
+     "D-1-Dhanarudha (A2)": "♐︎Sagittarius",
+     "D-1-Karma Pada (A10)": "♎︎Libra",
+     "D-1-Labha Pada (A11)": "♈Aries",
+     "D-1-Mantra Pada (A5)": "♍︎Virgo",
+     "D-1-Matri Pada (A4)": "♌︎Leo",
+     "D-1-Mrityu Pada (A8)": "♊︎Gemini",
+     "D-1-Roga Pada (A6)": "♉︎Taurus",
+     "D-1-Upapada Lagna (UL)": "♊︎Gemini"
+    },
+    "planet_signs": {
+     "Artha Praharaka (Ap)": "♈Aries 8° 1’ 12\"",
+     "Arudha Lagna (AL)": "♋︎Cancer",
+     "Ascendantℒ": "♓︎Pisces 14° 41’ 49\"",
+     "Avayogi Sphuta": "♍︎Virgo 25° 13’ 14\"",
+     "Beeja Sphuta": "♌︎Leo 11° 34’ 29\"",
+     "Bhagya Pada (A9)": "♒︎Aquarius",
+     "Bhatrarudha (A3)": "♌︎Leo",
+     "Bhava Lagna (BL)": "♓︎Pisces 6° 3’ 27\"",
+     "Bhrigu Bindhu Lagna (BB)": "♎︎Libra 10° 55’ 21\"",
+     "Chatur Sphuta": "♒︎Aquarius 3° 52’ 13\"",
+     "Dara Pada (A7)": "♉︎Taurus",
+     "Deha Sphuta": "♉︎Taurus 25° 30’ 21\"",
+     "Dhanarudha (A2)": "♐︎Sagittarius",
+     "Dhuma (Dm)": "♊︎Gemini 14° 36’ 35\"",
+     "Ghati Lagna (GL)": "♋︎Cancer 24° 38’ 43\"",
+     "Gulika (Gk)": "♊︎Gemini 3° 57’ 11\"",
+     "Hora Lagna (HL)": "♈Aries 10° 42’ 16\"",
+     "Indrachapa (Ic)": "♐︎Sagittarius 14° 36’ 35\"",
+     "Indu Lagna (IL)": "♋︎Cancer 13° 56’ 39\"",
+     "Jupiter♃": "♏︎Scorpio 14° 42’ 25\" (Maitra Karaka)",
+     "Karma Pada (A10)": "♎︎Libra",
+     "Kethu☋": "♐︎Sagittarius 7° 54’ 3\"",
+     "Kshetra Sphuta": "♌︎Leo 26° 38’ 35\"",
+     "Kunda Lagna (KL)": "♎︎Libra 20° 27’ 9\"",
+     "Labha Pada (A11)": "♈Aries",
+     "Maandhi (Md)": "♊︎Gemini 13° 42’ 28\"",
+     "Mantra Pada (A5)": "♍︎Virgo",
+     "Mars♂": "♒︎Aquarius 27° 59’ 31\" (Atma Karaka)",
+     "Matri Pada (A4)": "♌︎Leo",
+     "Mercury☿": "♑︎Capricorn 6° 6’ 30\" (Jnaati Karaka)",
+     "Moon☾": "♒︎Aquarius 13° 56’ 39\" (Pitri Karaka)",
+     "Mrithyu (Mr)": "♓︎Pisces 11° 18’ 57\"",
+     "Mrityu Pada (A8)": "♊︎Gemini",
+     "Mrityu Sphuta": "♈Aries 28° 56’ 51\"",
+     "Pancha Sphuta": "♈Aries 11° 46’ 17\"",
+     "Parivesha (Pv)": "♋︎Cancer 15° 23’ 25\"",
+     "Prana Sphuta": "♓︎Pisces 17° 26’ 16\"",
+     "Pranapada Lagna (PL)": "♍︎Virgo 2° 26’ 35\"",
+     "Raagu☊": "♊︎Gemini 7° 54’ 3\" (Bhratri Karaka)",
+     "Rahu Tithi Sphuta": "♌︎Leo 6° 37’ 28\"",
+     "Roga Pada (A6)": "♉︎Taurus",
+     "Saturn♄℞": "♎︎Libra 10° 49’ 3\" (Putra Karaka)",
+     "Sookshma Tri Sphuta": "♊︎Gemini 11° 53’ 27\"",
+     "Sree Lagna (SL)": "♎︎Libra 1° 11’ 15\"",
+     "Sun☉": "♒︎Aquarius 1° 16’ 35\" (Dhatha Karaka)",
+     "Tithi Sphuta": "♈Aries 12° 40’ 4\"",
+     "Tri Sphuta": "♈Aries 2° 35’ 39\"",
+     "Upakethu (Uk)": "♑︎Capricorn 1° 16’ 35\"",
+     "Upapada Lagna (UL)": "♊︎Gemini",
+     "Varnada Lagna (V1)": "♈Aries 14° 41’ 49\"",
+     "Varnada Lagna (V10)": "♍︎Virgo 14° 41’ 49\"",
+     "Varnada Lagna (V11)": "♌︎Leo 14° 41’ 49\"",
+     "Varnada Lagna (V12)": "♑︎Capricorn 14° 41’ 49\"",
+     "Varnada Lagna (V2)": "♑︎Capricorn 14° 41’ 49\"",
+     "Varnada Lagna (V3)": "♌︎Leo 14° 41’ 49\"",
+     "Varnada Lagna (V4)": "♍︎Virgo 14° 41’ 49\"",
+     "Varnada Lagna (V5)": "♐︎Sagittarius 14° 41’ 49\"",
+     "Varnada Lagna (V6)": "♉︎Taurus 14° 41’ 49\"",
+     "Varnada Lagna (V7)": "♈Aries 14° 41’ 49\"",
+     "Varnada Lagna (V8)": "♉︎Taurus 14° 41’ 49\"",
+     "Varnada Lagna (V9)": "♐︎Sagittarius 14° 41’ 49\"",
+     "Varnada Lagna (VL)": "♈Aries 14° 41’ 49\"",
+     "Venus♀": "♒︎Aquarius 25° 35’ 28\" (Amatya Karaka)",
+     "Vighati Lagna (VL)": "♏︎Scorpio 10° 13’ 26\"",
+     "Vyathipatha (Vp)": "♑︎Capricorn 15° 23’ 25\"",
+     "Yama Ghantaka (Yg)": "♉︎Taurus 2° 16’ 49\"",
+     "Yoga Sphuta": "♐︎Sagittarius 15° 13’ 14\"",
+     "Yogi Sphuta": "♓︎Pisces 18° 33’ 14\"",
+     "kaala (Kl)": "♋︎Cancer 21° 54’ 37\""
+    }
+   },
+   "D9": {
+    "ascendant_house": 7,
+    "chart": [
+     "",
+     "Venus♀\n",
+     "Mars♂\nKethu☋\n",
+     "",
+     "",
+     "",
+     "Sun☉\n",
+     "Ascendantℒ\nJupiter♃\n",
+     "Raagu☊\n",
+     "Saturn♄℞\n",
+     "Moon☾\nMercury☿\n",
+     ""
+    ],
+    "info": {
+     "D-9-Arudha Lagna (AL)": "♑︎Capricorn",
+     "D-9-Bhagya Pada (A9)": "♍︎Virgo",
+     "D-9-Bhatrarudha (A3)": "♎︎Libra",
+     "D-9-Dara Pada (A7)": "♒︎Aquarius",
+     "D-9-Dhanarudha (A2)": "♎︎Libra",
+     "D-9-Karma Pada (A10)": "♐︎Sagittarius",
+     "D-9-Labha Pada (A11)": "♋︎Cancer",
+     "D-9-Mantra Pada (A5)": "♋︎Cancer",
+     "D-9-Matri Pada (A4)": "♐︎Sagittarius",
+     "D-9-Mrityu Pada (A8)": "♎︎Libra",
+     "D-9-Roga Pada (A6)": "♌︎Leo",
+     "D-9-Upapada Lagna (UL)": "♐︎Sagittarius",
+     "Navamsam (D9)-Artha Praharaka (Ap)": "♊︎Gemini 8° 1’ 12\"",
+     "Navamsam (D9)-Ascendantℒ": "♏︎Scorpio 12° 16’ 21\"",
+     "Navamsam (D9)-Avayogi Sphuta": "♓︎Pisces 26° 59’ 2\"",
+     "Navamsam (D9)-Beeja Sphuta": "♏︎Scorpio 14° 10’ 17\"",
+     "Navamsam (D9)-Bhava Lagna (BL)": "♐︎Sagittarius 17° 20’ 36\"",
+     "Navamsam (D9)-Bhrigu Bindhu Lagna (BB)": "♑︎Capricorn 8° 18’ 9\"",
+     "Navamsam (D9)-Chatur Sphuta": "♑︎Capricorn 3° 12’ 34\"",
+     "Navamsam (D9)-Deha Sphuta": "♍︎Virgo 17° 55’ 39\"",
+     "Navamsam (D9)-Dhuma (Dm)": "♉︎Taurus 24° 49’ 14\"",
+     "Navamsam (D9)-Ghati Lagna (GL)": "♉︎Taurus 5° 55’ 51\"",
+     "Navamsam (D9)-Gulika (Gk)": "♏︎Scorpio 3° 57’ 11\"",
+     "Navamsam (D9)-Hora Lagna (HL)": "♎︎Libra 21° 59’ 25\"",
+     "Navamsam (D9)-Indrachapa (Ic)": "♏︎Scorpio 24° 49’ 14\"",
+     "Navamsam (D9)-Indu Lagna (IL)": "♉︎Taurus 5° 29’ 49\"",
+     "Navamsam (D9)-Jupiter♃": "♏︎Scorpio 12° 21’ 49\" (Maitra Karaka)",
+     "Navamsam (D9)-Kethu☋": "♊︎Gemini 11° 6’ 29\"",
+     "Navamsam (D9)-Kshetra Sphuta": "♓︎Pisces 29° 47’ 15\"",
+     "Navamsam (D9)-Kunda Lagna (KL)": "♉︎Taurus 4° 4’ 23\"",
+     "Navamsam (D9)-Maandhi (Md)": "♒︎Aquarius 13° 42’ 28\"",
+     "Navamsam (D9)-Mars♂": "♊︎Gemini 11° 55’ 38\" (Atma Karaka)",
+     "Navamsam (D9)-Mercury☿": "♒︎Aquarius 24° 58’ 31\" (Jnaati Karaka)",
+     "Navamsam (D9)-Moon☾": "♒︎Aquarius 5° 29’ 49\" (Pitri Karaka)",
+     "Navamsam (D9)-Mrithyu (Mr)": "♎︎Libra 11° 18’ 57\"",
+     "Navamsam (D9)-Mrityu Sphuta": "♊︎Gemini 9° 9’ 30\"",
+     "Navamsam (D9)-Pancha Sphuta": "♉︎Taurus 14° 19’ 3\"",
+     "Navamsam (D9)-Parivesha (Pv)": "♌︎Leo 5° 10’ 46\"",
+     "Navamsam (D9)-Prana Sphuta": "♉︎Taurus 5° 18’ 56\"",
+     "Navamsam (D9)-Pranapada Lagna (PL)": "♈Aries 12° 39’ 14\"",
+     "Navamsam (D9)-Raagu☊": "♐︎Sagittarius 11° 6’ 29\" (Bhratri Karaka)",
+     "Navamsam (D9)-Rahu Tithi Sphuta": "♍︎Virgo 29° 37’ 15\"",
+     "Navamsam (D9)-Saturn♄℞": "♑︎Capricorn 7° 21’ 25\" (Putra Karaka)",
+     "Navamsam (D9)-Sookshma Tri Sphuta": "♑︎Capricorn 2° 24’ 5\"",
+     "Navamsam (D9)-Sree Lagna (SL)": "♑︎Capricorn 10° 41’ 11\"",
+     "Navamsam (D9)-Sun☉": "♎︎Libra 11° 29’ 14\" (Dhatha Karaka)",
+     "Navamsam (D9)-Tithi Sphuta": "♒︎Aquarius 24° 0’ 35\"",
+     "Navamsam (D9)-Tri Sphuta": "♎︎Libra 21° 43’ 20\"",
+     "Navamsam (D9)-Upakethu (Uk)": "♈Aries 11° 29’ 14\"",
+     "Navamsam (D9)-Varnada Lagna (V1)": "♒︎Aquarius 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V10)": "♋︎Cancer 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V11)": "♒︎Aquarius 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V12)": "♓︎Pisces 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V2)": "♋︎Cancer 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V3)": "♎︎Libra 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V4)": "♏︎Scorpio 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V5)": "♊︎Gemini 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V6)": "♓︎Pisces 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V7)": "♊︎Gemini 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V8)": "♏︎Scorpio 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (V9)": "♎︎Libra 12° 16’ 21\"",
+     "Navamsam (D9)-Varnada Lagna (VL)": "♒︎Aquarius 12° 16’ 21\"",
+     "Navamsam (D9)-Venus♀": "♉︎Taurus 20° 19’ 15\" (Amatya Karaka)",
+     "Navamsam (D9)-Vighati Lagna (VL)": "♑︎Capricorn 21° 30’ 35\"",
+     "Navamsam (D9)-Vyathipatha (Vp)": "♒︎Aquarius 5° 10’ 46\"",
+     "Navamsam (D9)-Yama Ghantaka (Yg)": "♑︎Capricorn 2° 16’ 49\"",
+     "Navamsam (D9)-Yoga Sphuta": "♍︎Virgo 16° 59’ 2\"",
+     "Navamsam (D9)-Yogi Sphuta": "♑︎Capricorn 20° 19’ 2\"",
+     "Navamsam (D9)-kaala (Kl)": "♑︎Capricorn 21° 54’ 37\""
+    },
+    "planet_signs": {
+     "Artha Praharaka (Ap)": "♊︎Gemini 8° 1’ 12\"",
+     "Arudha Lagna (AL)": "♑︎Capricorn",
+     "Ascendantℒ": "♏︎Scorpio 12° 16’ 21\"",
+     "Avayogi Sphuta": "♓︎Pisces 26° 59’ 2\"",
+     "Beeja Sphuta": "♏︎Scorpio 14° 10’ 17\"",
+     "Bhagya Pada (A9)": "♍︎Virgo",
+     "Bhatrarudha (A3)": "♎︎Libra",
+     "Bhava Lagna (BL)": "♐︎Sagittarius 17° 20’ 36\"",
+     "Bhrigu Bindhu Lagna (BB)": "♑︎Capricorn 8° 18’ 9\"",
+     "Chatur Sphuta": "♑︎Capricorn 3° 12’ 34\"",
+     "Dara Pada (A7)": "♒︎Aquarius",
+     "Deha Sphuta": "♍︎Virgo 17° 55’ 39\"",
+     "Dhanarudha (A2)": "♎︎Libra",
+     "Dhuma (Dm)": "♉︎Taurus 24° 49’ 14\"",
+     "Ghati Lagna (GL)": "♉︎Taurus 5° 55’ 51\"",
+     "Gulika (Gk)": "♏︎Scorpio 3° 57’ 11\"",
+     "Hora Lagna (HL)": "♎︎Libra 21° 59’ 25\"",
+     "Indrachapa (Ic)": "♏︎Scorpio 24° 49’ 14\"",
+     "Indu Lagna (IL)": "♉︎Taurus 5° 29’ 49\"",
+     "Jupiter♃": "♏︎Scorpio 12° 21’ 49\" (Maitra Karaka)",
+     "Karma Pada (A10)": "♐︎Sagittarius",
+     "Kethu☋": "♊︎Gemini 11° 6’ 29\"",
+     "Kshetra Sphuta": "♓︎Pisces 29° 47’ 15\"",
+     "Kunda Lagna (KL)": "♉︎Taurus 4° 4’ 23\"",
+     "Labha Pada (A11)": "♋︎Cancer",
+     "Maandhi (Md)": "♒︎Aquarius 13° 42’ 28\"",
+     "Mantra Pada (A5)": "♋︎Cancer",
+     "Mars♂": "♊︎Gemini 11° 55’ 38\" (Atma Karaka)",
+     "Matri Pada (A4)": "♐︎Sagittarius",
+     "Mercury☿": "♒︎Aquarius 24° 58’ 31\" (Jnaati Karaka)",
+     "Moon☾": "♒︎Aquarius 5° 29’ 49\" (Pitri Karaka)",
+     "Mrithyu (Mr)": "♎︎Libra 11° 18’ 57\"",
+     "Mrityu Pada (A8)": "♎︎Libra",
+     "Mrityu Sphuta": "♊︎Gemini 9° 9’ 30\"",
+     "Pancha Sphuta": "♉︎Taurus 14° 19’ 3\"",
+     "Parivesha (Pv)": "♌︎Leo 5° 10’ 46\"",
+     "Prana Sphuta": "♉︎Taurus 5° 18’ 56\"",
+     "Pranapada Lagna (PL)": "♈Aries 12° 39’ 14\"",
+     "Raagu☊": "♐︎Sagittarius 11° 6’ 29\" (Bhratri Karaka)",
+     "Rahu Tithi Sphuta": "♍︎Virgo 29° 37’ 15\"",
+     "Roga Pada (A6)": "♌︎Leo",
+     "Saturn♄℞": "♑︎Capricorn 7° 21’ 25\" (Putra Karaka)",
+     "Sookshma Tri Sphuta": "♑︎Capricorn 2° 24’ 5\"",
+     "Sree Lagna (SL)": "♑︎Capricorn 10° 41’ 11\"",
+     "Sun☉": "♎︎Libra 11° 29’ 14\" (Dhatha Karaka)",
+     "Tithi Sphuta": "♒︎Aquarius 24° 0’ 35\"",
+     "Tri Sphuta": "♎︎Libra 21° 43’ 20\"",
+     "Upakethu (Uk)": "♈Aries 11° 29’ 14\"",
+     "Upapada Lagna (UL)": "♐︎Sagittarius",
+     "Varnada Lagna (V1)": "♒︎Aquarius 12° 16’ 21\"",
+     "Varnada Lagna (V10)": "♋︎Cancer 12° 16’ 21\"",
+     "Varnada Lagna (V11)": "♒︎Aquarius 12° 16’ 21\"",
+     "Varnada Lagna (V12)": "♓︎Pisces 12° 16’ 21\"",
+     "Varnada Lagna (V2)": "♋︎Cancer 12° 16’ 21\"",
+     "Varnada Lagna (V3)": "♎︎Libra 12° 16’ 21\"",
+     "Varnada Lagna (V4)": "♏︎Scorpio 12° 16’ 21\"",
+     "Varnada Lagna (V5)": "♊︎Gemini 12° 16’ 21\"",
+     "Varnada Lagna (V6)": "♓︎Pisces 12° 16’ 21\"",
+     "Varnada Lagna (V7)": "♊︎Gemini 12° 16’ 21\"",
+     "Varnada Lagna (V8)": "♏︎Scorpio 12° 16’ 21\"",
+     "Varnada Lagna (V9)": "♎︎Libra 12° 16’ 21\"",
+     "Varnada Lagna (VL)": "♒︎Aquarius 12° 16’ 21\"",
+     "Venus♀": "♉︎Taurus 20° 19’ 15\" (Amatya Karaka)",
+     "Vighati Lagna (VL)": "♑︎Capricorn 21° 30’ 35\"",
+     "Vyathipatha (Vp)": "♒︎Aquarius 5° 10’ 46\"",
+     "Yama Ghantaka (Yg)": "♑︎Capricorn 2° 16’ 49\"",
+     "Yoga Sphuta": "♍︎Virgo 16° 59’ 2\"",
+     "Yogi Sphuta": "♑︎Capricorn 20° 19’ 2\"",
+     "kaala (Kl)": "♑︎Capricorn 21° 54’ 37\""
+    }
+   }
+  },
+  "lagna": {
+   "degree": 14.6969,
+   "lord": "Jupiter",
+   "sign": "♓︎Pisces"
+  },
+  "planetary_positions": [
+   {
+    "absolute_longitude": 301.276351,
+    "house": 12,
+    "is_retrograde": false,
+    "longitude": 1.2763507897117847,
+    "nakshatra": "Avittam",
+    "nakshatra_index": 23,
+    "nakshatra_lord": "Ma♂",
+    "pada": 3,
+    "planet": "Su☉",
+    "planet_index": 0,
+    "sign": "♒︎Aquarius",
+    "sign_index": 10
+   },
+   {
+    "absolute_longitude": 313.94409,
+    "house": 12,
+    "is_retrograde": false,
+    "longitude": 13.944090422224917,
+    "nakshatra": "Sadhayam",
+    "nakshatra_index": 24,
+    "nakshatra_lord": "Ra☊",
+    "pada": 3,
+    "planet": "Mo☾",
+    "planet_index": 1,
+    "sign": "♒︎Aquarius",
+    "sign_index": 10
+   },
+   {
+    "absolute_longitude": 327.991921,
+    "house": 12,
+    "is_retrograde": false,
+    "longitude": 27.991920933754614,
+    "nakshatra": "Poorattathi",
+    "nakshatra_index": 25,
+    "nakshatra_lord": "Ju♃",
+    "pada": 3,
+    "planet": "Ma♂",
+    "planet_index": 2,
+    "sign": "♒︎Aquarius",
+    "sign_index": 10
+   },
+   {
+    "absolute_longitude": 276.108369,
+    "house": 11,
+    "is_retrograde": false,
+    "longitude": 6.108368629322115,
+    "nakshatra": "Uthiraadam",
+    "nakshatra_index": 21,
+    "nakshatra_lord": "Su☉",
+    "pada": 3,
+    "planet": "Me☿",
+    "planet_index": 3,
+    "sign": "♑︎Capricorn",
+    "sign_index": 9
+   },
+   {
+    "absolute_longitude": 224.707054,
+    "house": 9,
+    "is_retrograde": false,
+    "longitude": 14.70705356167528,
+    "nakshatra": "Anusham",
+    "nakshatra_index": 17,
+    "nakshatra_lord": "Sa♄",
+    "pada": 4,
+    "planet": "Ju♃",
+    "planet_index": 4,
+    "sign": "♏︎Scorpio",
+    "sign_index": 7
+   },
+   {
+    "absolute_longitude": 325.591209,
+    "house": 12,
+    "is_retrograde": false,
+    "longitude": 25.591208693880503,
+    "nakshatra": "Poorattathi",
+    "nakshatra_index": 25,
+    "nakshatra_lord": "Ju♃",
+    "pada": 2,
+    "planet": "Ve♀",
+    "planet_index": 5,
+    "sign": "♒︎Aquarius",
+    "sign_index": 10
+   },
+   {
+    "absolute_longitude": 190.817443,
+    "house": 8,
+    "is_retrograde": true,
+    "longitude": 10.817442526267513,
+    "nakshatra": "Swaathi",
+    "nakshatra_index": 15,
+    "nakshatra_lord": "Ra☊",
+    "pada": 2,
+    "planet": "Sa♄",
+    "planet_index": 6,
+    "sign": "♎︎Libra",
+    "sign_index": 6
+   },
+   {
+    "absolute_longitude": 67.900893,
+    "house": 4,
+    "is_retrograde": true,
+    "longitude": 7.900892554690884,
+    "nakshatra": "Thiruvaathirai",
+    "nakshatra_index": 6,
+    "nakshatra_lord": "Ra☊",
+    "pada": 1,
+    "planet": "Ra☊",
+    "planet_index": 7,
+    "sign": "♊︎Gemini",
+    "sign_index": 2
+   },
+   {
+    "absolute_longitude": 247.900893,
+    "house": 10,
+    "is_retrograde": true,
+    "longitude": 7.90089255469087,
+    "nakshatra": "Moolam",
+    "nakshatra_index": 19,
+    "nakshatra_lord": "Ke☋",
+    "pada": 3,
+    "planet": "Ke☋",
+    "planet_index": 8,
+    "sign": "♐︎Sagittarius",
+    "sign_index": 8
+   }
+  ]
+ },
+ "match": {
+  "compatibility": {
+   "adhipathi": 3.0,
+   "dosha_risk": "High",
+   "feasibility": "Not Recommended",
+   "gana": 1,
+   "guna_milan": "18.0/36",
+   "harmony_score": "50.0%",
+   "mahendra": true,
+   "max_score": 36,
+   "nadi": 8,
+   "rajju": true,
+   "rasi": 0,
+   "sthree_dheerga": false,
+   "tara": 1.5,
+   "total_score": 18.0,
+   "varna": 1,
+   "vasiya": 1.5,
+   "vedha": true,
+   "yoni": 2
+  },
+  "doshas": {
+   "person1": {
+    "manglik": true,
+    "manglik_exceptions": true,
+    "pitru_dosha": true
+   },
+   "person2": {
+    "manglik": true,
+    "manglik_exceptions": true,
+    "pitru_dosha": true
+   }
+  }
+ },
+ "numbers": {
+  "boy": {
+   "day": 8,
+   "gender": "Male",
+   "hour": 13,
+   "latitude": 28.65195,
+   "longitude": 77.23149,
+   "minute": 49,
+   "month": 6,
+   "second": 0,
+   "timezone_offset": 5.5,
+   "year": 1980
+  },
+  "girl": {
+   "day": 14,
+   "gender": "Female",
+   "hour": 9,
+   "latitude": 19.07283,
+   "longitude": 72.88261,
+   "minute": 30,
+   "month": 2,
+   "second": 0,
+   "timezone_offset": 5.5,
+   "year": 1983
+  }
+ }
+}

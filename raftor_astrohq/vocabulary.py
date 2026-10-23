@@ -3,7 +3,9 @@ Only words, fields and one rule; the mechanics are servicehq's."""
 import json
 from pathlib import Path
 
-from raftor_astrohq.details import birth_details, question, sankalp, wish
+from frappe import _
+
+from raftor_astrohq.details import birth_details, kundli_fields, match_fields, question, sankalp, wish
 
 PACK = Path(__file__).parent / "pack"
 
@@ -45,6 +47,18 @@ def vocabulary() -> dict:
 			{"name": "Vastu consultation", "persona": "Vastu expert", "minutes_by_provider": True},
 			*pack_services(),
 		],
+		# The reports sold from the shop, made from the buyer's own birth details (servicehq digital.py). Each ships as an item switched off, for the business team
+		# to price and switch on; servicehq asks the details, takes the order and delivers the PDF the maker returns.
+		"reports": {
+			"kundli": {"title": _("Kundli report"), "blurb": _("Your birth chart made from your date, time and place of birth."),
+					   "description": _("Your kundli: the lagna, where each planet stood, the houses, the navamsa chart, your dasha periods and the panchang of the day you were born.\n\n"
+										"Made for you from the details you give, by the same calculation astrologers use (Lahiri ayanamsa). It is sent to you as a PDF once the order is paid."),
+					   "details": {"fields": kundli_fields(), "validate": "raftor_astrohq.details.kundli_rules"}, "maker": "raftor_astrohq.reports.kundli_report"},
+			"match": {"title": _("Match making report"), "blurb": _("How well two birth charts match, by the eight kootas out of 36."),
+					  "description": _("The Ashtakoota (Guna Milan) score for a boy and a girl, koota by koota, out of 36, with the Moon sign and nakshatra of each and their manglik check.\n\n"
+									   "Made from the details you give for both. It is sent to you as a PDF once the order is paid."),
+					  "details": {"fields": match_fields(), "validate": "raftor_astrohq.details.match_rules"}, "maker": "raftor_astrohq.reports.match_report"},
+		},
 		"kinds": {
 			"Consultation": {"line_title": "Seek guidance", "line_subtitle": "Every guide can help with every kind of question. Choose who to talk to, online now or at a time you choose.", "details": {"fields": [question()], "topic_field": "question", "validate": "raftor_astrohq.details.consultation_rules"}},
 			"Subscription": {"service": "daily pooja", "services": "daily poojas", "unit": "day", "units": "days", "book": "Subscribe", "details": {"fields": [*sankalp(), wish()]}},
