@@ -15,9 +15,10 @@ The words on the pages are English. The name must be written in English letters 
 ## Decided
 
 - **Both reports are free, always** (owner, 2026-10-23: the leaders' portals give them free). So their price is 0 and there is no first-one-free rule.
-- Consultancy is linked, not merged: reports stay on /services and consultancy on /consult (the owner's route rule). The link to the free first session is to be built (proposed, waiting for the owner's yes).
-- Open, waiting for the owner's yes: free reports without a cart, order, Delivery Note or invoice (the owner's rule is that free digital has no documents; today a free report goes through a ₹0 order),
-  and a safety limit per customer per day.
+- **Free digital reports skip the order cycle** (owner, 2026-10-23): it is the chance to enrol the person in the portal, and anything free should engage the customer. (Today a free report still goes through a ₹0 order, Delivery Note and invoice; that is to be replaced. A paid report keeps the order route.)
+- Consultancy is linked, not merged: reports stay on /services and consultancy on /consult (the owner's route rule).
+
+Proposed, not built, waiting for the owner's yes: the sign-in code is asked after the details (it is the sign-up), the details become the person's birth profile, one small record per free report ("Free Report", with its own Workflow), a block of next steps after the report (the free first session, a report for family, match making), and a safety limit per customer per day.
 
 ## Putting them on sale
 
