@@ -187,6 +187,15 @@ class TestTheKundliPage(Stood):
 						 "Lagna chart (Rasi, D1)", "Navamsa chart (D9)", "Calculated with the Lahiri ayanamsa", "GeoNames", "Made for you on 23 October 2026"):
 			self.assertIn(expected, text)
 
+	def test_the_born_row_has_the_weekday_the_customer_knows_and_the_panchang_says_when_its_day_began_earlier(self):
+		sunday = plain(reports.kundli_html(self.kundli_context()))
+		self.assertIn("Sunday, 08 June 1980, 13:49", sunday)  # born in the afternoon of a Sunday: the same day in both counts
+		self.assertNotIn("born before sunrise", sunday)
+		person = {"name": "Asha Rao", "born": datetime.datetime(1980, 6, 9, 3, 0), "place_text": "Delhi"}  # 3 in the morning of Monday: the panchang's day is still Sunday's
+		before_sunrise = plain(reports.kundli_html(reports.kundli_context(person, DELHI, ANSWERS["boy_super_basic"], ANSWERS["boy_panchanga"]["panchanga"], ON)))
+		self.assertIn("Monday, 09 June 1980, 03:00", before_sunrise)
+		self.assertIn("Sunday (lord Sun) (the day runs from sunrise to sunrise: you were born before sunrise on Monday)", before_sunrise)
+
 	def test_every_planet_has_its_row_in_the_table(self):
 		text = plain(reports.kundli_html(self.kundli_context()))
 		for row in ("Sun Taurus (Vrishabha) 24°06′ Mrigashira, pada 1 9", "Moon Pisces (Meena) 23°41′ Revati, pada 3 7", "Venus Gemini (Mithuna) 4°53′ Mrigashira, pada 4 10 Yes",

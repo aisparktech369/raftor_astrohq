@@ -101,9 +101,12 @@ def kundli_html(c: dict) -> str:
 	moon, sun = positions["Mo"], positions["Su"]
 	moon_sign = moon["sign_index"]
 	sunrise, sunset = (str(panchang.get(key) or "")[:5] for key in ("sunrise", "sunset"))
+	civil = born.strftime("%A")  # the weekday the customer knows; the panchang's day runs from sunrise to sunrise and may be the one before
+	vaara = panchang.get("vaara") or civil
+	weekday = f"{vaara} (lord {panchang.get('day_lord')})" + ("" if vaara == civil else " " + _("(the day runs from sunrise to sunrise: you were born before sunrise on {0})").format(civil))
 	facts = rp._facts([
 		(_("Name"), c["name"]),
-		(_("Born"), f"{panchang.get('vaara') or born.strftime('%A')}, {rp.long_date(born.date())}, {born.strftime('%H:%M')}"),
+		(_("Born"), f"{civil}, {rp.long_date(born.date())}, {born.strftime('%H:%M')}"),
 		(_("Place"), f"{place['name']} ({place['latitude']:.2f}\u00b0{'N' if place['latitude'] >= 0 else 'S'}, {abs(place['longitude']):.2f}\u00b0{'E' if place['longitude'] >= 0 else 'W'})"),
 		(_("Time zone"), f"{rp.offset_text(place['timezone_offset'])} ({place['timezone']}), as it was on that day"),
 		(_("Lagna (ascendant)"), f"{rp.sign_label(c['lagna_sign'])}, {rp.degrees(lagna['degree'])}; lord {lagna.get('lord') or rp.SIGN_LORDS[c['lagna_sign']]}"),
@@ -112,7 +115,7 @@ def kundli_html(c: dict) -> str:
 		(_("Sun sign"), rp.sign_label(sun["sign_index"])),
 	])
 	pan = rp._facts([
-		(_("Weekday"), f"{panchang.get('vaara')} (lord {panchang.get('day_lord')})"), (_("Tithi"), panchang["tithi"]), (_("Nakshatra"), rp.nakshatra_label(moon["nakshatra_index"])),
+		(_("Weekday"), weekday), (_("Tithi"), panchang["tithi"]), (_("Nakshatra"), rp.nakshatra_label(moon["nakshatra_index"])),
 		(_("Yoga"), panchang["yoga"]), (_("Karana"), panchang["karana"]), (_("Sunrise and sunset"), f"{sunrise} and {sunset} (local time)"),
 	])
 	charts = (f'<table class="charts"><tr><td>{rp.diamond_chart_svg(c["d1"]["chart"], c["lagna_sign"], _("Lagna chart (Rasi, D1)"))}</td>'
