@@ -171,6 +171,22 @@ class TestTheBirthChartDrawing(AstroTestCase):
 		cells[0] = "Sun☉\nMoon☾\nMars♂\nMercury☿\nJupiter♃\n"
 		self.assertEqual(house_layout(rp.diamond_chart_svg(cells, lagna=0))[1]["planets"], ["Su Mo Ma", "Me Ju"])
 
+	def test_the_title_is_inside_the_picture_not_cut_off_below_it(self):
+		titled = ET.fromstring(rp.diamond_chart_svg(self.CELLS, lagna=0, title="Lagna chart", size=300))
+		self.assertEqual((titled.get("width"), titled.get("height"), titled.get("viewBox")), ("300", "322", "0 0 300 322"))  # room under the drawing for the title
+		title = next(t for t in titled.iter("{http://www.w3.org/2000/svg}text") if t.text == "Lagna chart")
+		self.assertLess(float(title.get("y")), 322)
+		plain = ET.fromstring(rp.diamond_chart_svg(self.CELLS, lagna=0))
+		self.assertEqual((plain.get("width"), plain.get("height")), ("300", "300"))  # without a title the picture is as it always was
+
+	def test_the_planets_can_be_written_smaller_for_a_small_chart(self):
+		cells = [""] * 12
+		cells[0] = "Sun☉\nMoon☾\nMars♂\nMercury☿\nJupiter♃\n"
+		small = ET.fromstring(rp.diamond_chart_svg(cells, lagna=0, size=200, font=9))
+		self.assertEqual({t.get("font-size") for t in small.iter("{http://www.w3.org/2000/svg}text") if t.get("font-weight") == "bold"}, {"9"})
+		usual = ET.fromstring(rp.diamond_chart_svg(cells, lagna=0))
+		self.assertEqual({t.get("font-size") for t in usual.iter("{http://www.w3.org/2000/svg}text") if t.get("font-weight") == "bold"}, {"12"})
+
 	def test_it_is_a_valid_picture_and_the_title_is_escaped(self):
 		svg = rp.diamond_chart_svg([""] * 12, lagna=0, title="A <b>&</b> chart")
 		root = ET.fromstring(svg)  # parses: nothing is left open

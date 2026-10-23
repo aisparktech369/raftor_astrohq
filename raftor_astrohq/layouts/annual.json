@@ -1,0 +1,52 @@
+{
+ "title": "Yearly dashas",
+ "intro": "Mudda and Patyayini, as the library gives them.",
+ "hide": [
+  "meta",
+  "verification"
+ ],
+ "sections": [
+  {
+   "kind": "lines",
+   "title": "Birth",
+   "rows": [
+    [
+     "Date of birth",
+     "{birth.day:02d}-{birth.month:02d}-{birth.year}"
+    ],
+    [
+     "Time of birth",
+     "{birth.hour:02d}:{birth.minute:02d}"
+    ],
+    [
+     "Latitude, longitude",
+     "{birth.latitude:.4f}, {birth.longitude:.4f}"
+    ],
+    [
+     "Time zone",
+     "UTC{birth.timezone_offset:+.2f}"
+    ],
+    [
+     "Lagna",
+     "@lagna"
+    ],
+    [
+     "Moon sign",
+     "@moon_sign"
+    ],
+    [
+     "Sun sign",
+     "@sun_sign"
+    ]
+   ]
+  },
+  {
+   "kind": "dashas",
+   "from_all": [
+    "extra_dashas"
+   ],
+   "now": false
+  }
+ ],
+ "note": "The API takes no year, so these are for one fixed year after birth."
+}

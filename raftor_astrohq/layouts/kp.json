@@ -1,0 +1,194 @@
+{
+ "title": "KP system",
+ "intro": "Planets and cusps with their sign, star, sub and sub-sub lords.",
+ "hide": [
+  "metadata"
+ ],
+ "sections": [
+  {
+   "kind": "lines",
+   "title": "Ruling planets at birth",
+   "head": [
+    "",
+    "Sign lord",
+    "Star lord",
+    "Sub lord"
+   ],
+   "rows": [
+    [
+     "Ascendant",
+     "{ruling_planets_at_birth.Asc_Sign_Lord}",
+     "{ruling_planets_at_birth.Asc_Star_Lord}",
+     "{ruling_planets_at_birth.Asc_Sub_Lord}"
+    ],
+    [
+     "Moon",
+     "{ruling_planets_at_birth.Moon_Sign_Lord}",
+     "{ruling_planets_at_birth.Moon_Star_Lord}",
+     "{ruling_planets_at_birth.Moon_Sub_Lord}"
+    ]
+   ]
+  },
+  {
+   "kind": "facts",
+   "title": "Day lord",
+   "from": "ruling_planets_at_birth",
+   "rows": [
+    [
+     "Lord of the birth day",
+     "Day_Lord",
+     "planet"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Planets",
+   "from": "planets",
+   "columns": [
+    [
+     "Planet",
+     "Object"
+    ],
+    [
+     "Position",
+     "SignLonDMS",
+     "dms_lon"
+    ],
+    [
+     "Sign lord",
+     "RasiLord"
+    ],
+    [
+     "Star lord",
+     "NakshatraLord"
+    ],
+    [
+     "Sub lord",
+     "SubLord"
+    ],
+    [
+     "Sub-sub lord",
+     "SubSubLord"
+    ],
+    [
+     "House",
+     "HouseNr"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "House cusps",
+   "from": "houses",
+   "columns": [
+    [
+     "House",
+     "HouseNr"
+    ],
+    [
+     "Cusp",
+     "SignLonDMS",
+     "dms_lon"
+    ],
+    [
+     "Sign lord",
+     "RasiLord"
+    ],
+    [
+     "Star lord",
+     "NakshatraLord"
+    ],
+    [
+     "Sub lord",
+     "SubLord"
+    ],
+    [
+     "Sub-sub lord",
+     "SubSubLord"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Significators of the planets",
+   "from": "significators.planet_wise",
+   "columns": [
+    [
+     "Planet",
+     "Planet"
+    ],
+    [
+     "House of its star lord",
+     "A"
+    ],
+    [
+     "House it sits in",
+     "B"
+    ],
+    [
+     "Houses its star lord owns",
+     "C"
+    ],
+    [
+     "Houses it owns",
+     "D"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Significators of the houses",
+   "from": "significators.house_wise",
+   "columns": [
+    [
+     "House",
+     "House"
+    ],
+    [
+     "Planets in the star of an occupant (A)",
+     "A"
+    ],
+    [
+     "Occupants (B)",
+     "B"
+    ],
+    [
+     "Planets in the star of the lord (C)",
+     "C"
+    ],
+    [
+     "Lord (D)",
+     "D"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Aspects",
+   "from": "aspects",
+   "columns": [
+    [
+     "Planet",
+     "P1"
+    ],
+    [
+     "Aspects",
+     "P2"
+    ],
+    [
+     "Aspect",
+     "AspectType"
+    ],
+    [
+     "Angle",
+     "AspectDeg"
+    ],
+    [
+     "Orb",
+     "AspectOrb"
+    ]
+   ]
+  }
+ ]
+}

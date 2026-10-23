@@ -85,6 +85,47 @@ another kundli (for someone in the family); the match making report.
 3. The pages are laid out as HTML (the charts are inline SVG, nothing the customer wrote is ever left unescaped) and turned into a PDF.
 4. Each page carries the credit for the place data: "Place data: GeoNames (geonames.org), licensed CC BY 4.0."
 
+## The arranger (`arrange.py`, `layouts/`, `engine_words.json`)
+
+Every mode of the astrology API answers in JSON, and almost all of it is a table. The arranger lays any answer out as pages: **it calculates nothing.** A *layout* (a small JSON file in
+`layouts/`) says which part of the answer goes where, under which heading; the arranger does the rest. A new mode, or another order, is a new file and no code.
+
+| Layout | Made from | Pages (sample) | What is in it |
+|---|---|---|---|
+| `basic` | SUPER_BASIC, CORE_BASIC | 2 / 4 | birth, planets, D1 and D9, Vimshottari with the running period marked; with CORE_BASIC also houses, planet strength (shadbala), 14 more divisional charts |
+| `standard` | CORE_STANDARD | 6 | + planets with their chara karakas, special lagnas, shadow points, planets together, ashtakavarga, arudhas, doshas, sphutas, sahams |
+| `advanced` | CORE_ADVANCED | 8 | + birth star, yogas, the panchang of the birth day with its times |
+| `match` | MATCH_CALC | 1 | the two people, the eight kootas and their total, doshas, other checks |
+| `dasha` | DASHA_CALC | 35 | every dasha system asked for, each under its own name, the running period marked (name the systems in `birth_data.requested_dasha_systems`) |
+| `annual` | ANNUAL_CALC | 1 | Mudda and Patyayini dasha: **one fixed year after birth** (the API takes no year) |
+| `transit` | TRANSIT_CALC | 1 | the Tajaka chart and sahams of the birth moment (**no date is taken**: it is not the sky of today) |
+| `panchang` | PANCHANGA | 1 | tithi, nakshatra, yoga, karana with when each begins and ends |
+| `kp` | KP_SYSTEM | 3 | ruling planets, planets and cusps with sign, star, sub and sub-sub lords, significators, aspects |
+
+CORE_ADVANCED holds everything of the three modes under it, so one call can feed `basic`, `standard` and `advanced` (a layout simply shows less). CORE_STANDARD has **no
+`planetary_positions`**: its planets come from `planets.info`, its signs from the houses (`arrange.where`).
+
+**A layout** is `{"title", "intro", "note", "hide": [keys never shown], "sections": [...], "rest": false}`; `"extends": "basic"` with `"append": [...]` builds on another. A section is one of
+`lines` (a few facts by template), `facts` (by key), `times` (what the library wrote as "Revati ... 02:05:50 from 00:19:48 (+1) ends"), `places` (what it wrote as "♉︎Taurus 24° 6’ 21" (Atma Karaka)"),
+`table`, `pivot`, `matrix`, `charts`, `dasha`, `dashas`, `yogas`, `auto` (whatever is there, as it comes: every record a row, nothing left as raw JSON) and `text`. The top of `arrange.py` says what each takes.
+A section with nothing to show is left out with its heading.
+
+**The engine's words.** The library spells names its own way (Tamil: Revathi, Sadhayam, Dhasami, Soubhagya): `engine_words.json` turns them into ours (Revati, Shatabhisha, Dashami, Saubhagya), whole
+words only. The library writes a time before midnight as how far it is from midnight with "(-1)" after it (a tithi that began at 17:08 the day before comes as "06:51:18 (-1)"): `arrange.clock`
+turns it back. Its "% balance" is **left out** (it works it out from the wrong start for that tithi). Also left out: the longevity estimate, the match's verdicts (feasibility, harmony, risk), what a yoga is said to give,
+the engine's own verification block, and the placeholders for dasha systems the mode did not make.
+
+**For a PDF** (wkhtmltopdf, an old WebKit): no CSS variables, no flex or grid; `page-break-inside: avoid` on a `div` is not honoured but on a *table* it is. So a heading is written as the `<caption>` of the table under it
+(a page can never end between them), a note is the table's last row, and a part of several tables is put in a table of one cell (`arrange.keep`). The chart drawing writes its title inside its own picture
+(it used to sit below the picture and was cut off, in the kundli report too).
+
+**Not checked by an astrologer yet** (the layout shows what the engine gave, no value is changed): planet strength, special lagnas, shadow points, sphutas, sahams, ashtakavarga, arudhas, the Tajaka chart, every dasha
+system but Vimshottari, KP lords and significators, the 14 divisional charts but D1 and D9. **The yogas are not reliable:** of six checked by hand two are wrong (Sareera Soukhya needs the lagna lord, Jupiter and Venus in kendras,
+Bhaga Chumbana the 7th lord in the 4th with Venus; Jupiter is in the 12th). Match: both people show Manglik and Pitru dosha "Yes" in the sample.
+
+**Tests:** `raftor_astrohq/tests/test_arrange.py` (32; the ten layouts on the engine's own answers for one invented birth, `tests/fixtures/engine_answers_all_modes.json.gz`) and the chart drawing in `test_kundli_reports.py`;
+13 deliberate breakages were each caught. The pictures: lay each mode out with `arrange.html(answer, layout, subject=..., today=...)` and `frappe.utils.pdf.get_pdf`.
+
 ## When a report cannot be made
 
 The record stays **Being made** (a paid report's payment is never undone) and:
@@ -142,7 +183,7 @@ The score is a guide, and the page says a full match is read with the charts and
 ## Not built
 
 - Other languages and scripts (names, pages); a report from an unknown time of birth (no lagna, so none is made); places outside the GeoNames list (500 people and more).
-- More in the kundli (other divisional charts, yogas, remedies); a free kundli summary as a lighter report than the full one (price 0 on the full one works today).
+- The arranger's layouts are **not yet reports**: no item, no web page, no stored answer (design: `report-pages.md`). Remedies. A lighter kundli than the full one is a layout away.
 - "Report ready" messages (notifications are the last topic). The report is made in the request that confirms the code, so it is normally ready before the person looks; make it a background job if the astrology
   service ever becomes slow.
 - The astrologer seeing the customer's report for their booking, if the customer agrees (needs the chart screen and the owner's rule on who sees whose chart).

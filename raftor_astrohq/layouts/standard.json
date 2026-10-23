@@ -1,0 +1,330 @@
+{
+ "extends": "basic",
+ "title": "Birth chart: standard",
+ "hide": [
+  "meta",
+  "verification",
+  "dasha",
+  "dasha_meta",
+  "ayanamsa",
+  "longevity_prediction"
+ ],
+ "append": [
+  {
+   "kind": "places",
+   "title": "Planets and their chara karakas",
+   "from": "planets.info",
+   "prefix": "Custom Kundali (Dn)-",
+   "first": "Planet",
+   "remark": "Chara karaka",
+   "rows": [
+    [
+     "Lagna",
+     "Ascendant"
+    ],
+    [
+     "Sun",
+     "Sun"
+    ],
+    [
+     "Moon",
+     "Moon"
+    ],
+    [
+     "Mars",
+     "Mars"
+    ],
+    [
+     "Mercury",
+     "Mercury"
+    ],
+    [
+     "Jupiter",
+     "Jupiter"
+    ],
+    [
+     "Venus",
+     "Venus"
+    ],
+    [
+     "Saturn",
+     "Saturn"
+    ],
+    [
+     "Rahu",
+     "Raagu"
+    ],
+    [
+     "Ketu",
+     "Kethu"
+    ]
+   ],
+   "note": "The chara karakas are the library's: they go by the planets' degrees."
+  },
+  {
+   "kind": "places",
+   "title": "Special lagnas",
+   "from": "planets.info",
+   "prefix": "Custom Kundali (Dn)-",
+   "first": "Lagna",
+   "rows": [
+    [
+     "Bhava Lagna",
+     "Bhava Lagna"
+    ],
+    [
+     "Hora Lagna",
+     "Hora Lagna"
+    ],
+    [
+     "Ghati Lagna",
+     "Ghati Lagna"
+    ],
+    [
+     "Vighati Lagna",
+     "Vighati Lagna"
+    ],
+    [
+     "Pranapada Lagna",
+     "Pranapada Lagna"
+    ],
+    [
+     "Indu Lagna",
+     "Indu Lagna"
+    ],
+    [
+     "Bhrigu Bindu",
+     "Bhrigu Bindhu Lagna"
+    ],
+    [
+     "Kunda Lagna",
+     "Kunda Lagna"
+    ],
+    [
+     "Sree Lagna",
+     "Sree Lagna"
+    ],
+    [
+     "Varnada Lagna",
+     "Varnada Lagna (VL)"
+    ]
+   ]
+  },
+  {
+   "kind": "places",
+   "title": "Shadow points (upagrahas)",
+   "from": "planets.info",
+   "prefix": "Custom Kundali (Dn)-",
+   "first": "Point",
+   "rows": [
+    [
+     "Kaala",
+     "kaala"
+    ],
+    [
+     "Mrityu",
+     "Mrithyu"
+    ],
+    [
+     "Artha Praharaka",
+     "Artha Praharaka"
+    ],
+    [
+     "Yama Ghantaka",
+     "Yama Ghantaka"
+    ],
+    [
+     "Gulika",
+     "Gulika"
+    ],
+    [
+     "Maandi",
+     "Maandhi"
+    ],
+    [
+     "Dhuma",
+     "Dhuma"
+    ],
+    [
+     "Vyatipata",
+     "Vyathipatha"
+    ],
+    [
+     "Parivesha",
+     "Parivesha"
+    ],
+    [
+     "Indrachapa",
+     "Indrachapa"
+    ],
+    [
+     "Upaketu",
+     "Upakethu"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Planets together",
+   "from": "conjunctions",
+   "columns": [
+    [
+     "Sign",
+     "house",
+     "sign_index"
+    ],
+    [
+     "Planets",
+     "planets",
+     "names"
+    ]
+   ],
+   "note": "Planets in the same sign."
+  },
+  {
+   "kind": "matrix",
+   "title": "Ashtakavarga",
+   "from": "ashtakavarga.binna_ashtaka",
+   "row_labels": [
+    "Sun",
+    "Moon",
+    "Mars",
+    "Mercury",
+    "Jupiter",
+    "Venus",
+    "Saturn",
+    "Lagna"
+   ],
+   "col_labels": "signs",
+   "total": true,
+   "footer": {
+    "label": "All (Sarvashtakavarga)",
+    "from": "ashtakavarga.samudhaya_ashtaka"
+   },
+   "note": "Points in each sign, from each planet and the lagna."
+  },
+  {
+   "kind": "table",
+   "title": "Arudhas of the houses",
+   "from": "arudha.bhava_arudhas",
+   "labels": "bhava_padas",
+   "label": "Arudha",
+   "columns": [
+    [
+     "Sign",
+     "value",
+     "sign_index"
+    ]
+   ]
+  },
+  {
+   "kind": "lines",
+   "title": "Doshas",
+   "rows": [
+    [
+     "Mars in house",
+     "@mars_house"
+    ],
+    [
+     "Manglik by the usual rule (Mars in 2, 4, 7, 8 or 12)",
+     "{dosha.manglik.present}"
+    ],
+    [
+     "An exception to it applies (the library's rules)",
+     "{dosha.manglik.exception_applied}"
+    ],
+    [
+     "Kala sarpa",
+     "{dosha.kala_sarpa}"
+    ]
+   ]
+  },
+  {
+   "kind": "places",
+   "title": "Sphuta points",
+   "from": "planets.info",
+   "prefix": "Custom Kundali (Dn)-",
+   "first": "Sphuta",
+   "rows": [
+    [
+     "Tri sphuta",
+     "Tri Sphuta"
+    ],
+    [
+     "Chatur sphuta",
+     "Chatur Sphuta"
+    ],
+    [
+     "Pancha sphuta",
+     "Pancha Sphuta"
+    ],
+    [
+     "Prana sphuta",
+     "Prana Sphuta"
+    ],
+    [
+     "Deha sphuta",
+     "Deha Sphuta"
+    ],
+    [
+     "Mrityu sphuta",
+     "Mrityu Sphuta"
+    ],
+    [
+     "Sookshma tri sphuta",
+     "Sookshma Tri Sphuta"
+    ],
+    [
+     "Beeja sphuta",
+     "Beeja Sphuta"
+    ],
+    [
+     "Kshetra sphuta",
+     "Kshetra Sphuta"
+    ],
+    [
+     "Tithi sphuta",
+     "Tithi Sphuta"
+    ],
+    [
+     "Yoga sphuta",
+     "Yoga Sphuta"
+    ],
+    [
+     "Yogi",
+     "Yogi Sphuta"
+    ],
+    [
+     "Avayogi",
+     "Avayogi Sphuta"
+    ],
+    [
+     "Rahu tithi sphuta",
+     "Rahu Tithi Sphuta"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Sahams",
+   "from": "saham_system",
+   "key": "Saham",
+   "columns": [
+    [
+     "Sign",
+     "sign",
+     "sign"
+    ],
+    [
+     "Degree",
+     "degree_in_sign",
+     "degree"
+    ],
+    [
+     "House",
+     "house_from_lagna"
+    ]
+   ]
+  }
+ ]
+}

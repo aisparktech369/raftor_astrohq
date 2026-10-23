@@ -1,0 +1,139 @@
+{
+ "title": "Match making",
+ "intro": "Ashtakoota, out of 36.",
+ "hide": [
+  "verification"
+ ],
+ "sections": [
+  {
+   "kind": "lines",
+   "title": "The two people",
+   "head": [
+    "",
+    "Person 1",
+    "Person 2"
+   ],
+   "rows": [
+    [
+     "Birth star",
+     "{person1.nakshatra}, pada {person1.pada}",
+     "{person2.nakshatra}, pada {person2.pada}"
+    ],
+    [
+     "Moon sign",
+     "{person1.rasi}",
+     "{person2.rasi}"
+    ],
+    [
+     "Lagna",
+     "{person1.lagna}",
+     "{person2.lagna}"
+    ]
+   ]
+  },
+  {
+   "kind": "lines",
+   "title": "Koota by koota",
+   "head": [
+    "Koota",
+    "Points",
+    "Out of"
+   ],
+   "rows": [
+    [
+     "Varna",
+     "{compatibility.varna}",
+     "1"
+    ],
+    [
+     "Vashya",
+     "{compatibility.vasiya}",
+     "2"
+    ],
+    [
+     "Tara",
+     "{compatibility.tara}",
+     "3"
+    ],
+    [
+     "Yoni",
+     "{compatibility.yoni}",
+     "4"
+    ],
+    [
+     "Graha Maitri",
+     "{compatibility.adhipathi}",
+     "5"
+    ],
+    [
+     "Gana",
+     "{compatibility.gana}",
+     "6"
+    ],
+    [
+     "Bhakoot",
+     "{compatibility.rasi}",
+     "7"
+    ],
+    [
+     "Nadi",
+     "{compatibility.nadi}",
+     "8"
+    ],
+    [
+     "Total",
+     "{compatibility.total_score}",
+     "36"
+    ]
+   ]
+  },
+  {
+   "kind": "lines",
+   "title": "Doshas",
+   "head": [
+    "",
+    "Person 1",
+    "Person 2"
+   ],
+   "rows": [
+    [
+     "Manglik",
+     "{doshas.person1.manglik}",
+     "{doshas.person2.manglik}"
+    ],
+    [
+     "Pitru dosha",
+     "{doshas.person1.pitru_dosha}",
+     "{doshas.person2.pitru_dosha}"
+    ]
+   ]
+  },
+  {
+   "kind": "lines",
+   "title": "Other checks",
+   "head": [
+    "Check",
+    "Result"
+   ],
+   "rows": [
+    [
+     "Mahendra",
+     "{compatibility.mahendra}"
+    ],
+    [
+     "Vedha",
+     "{compatibility.vedha}"
+    ],
+    [
+     "Rajju",
+     "{compatibility.rajju}"
+    ],
+    [
+     "Sthree dheerga",
+     "{compatibility.sthree_dheerga}"
+    ]
+   ],
+   "note": "As the library calculates them. Its verdicts (feasibility, harmony, risk) are left out."
+  }
+ ]
+}

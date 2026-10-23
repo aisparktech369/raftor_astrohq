@@ -1,0 +1,226 @@
+{
+ "title": "Birth chart",
+ "intro": "Calculated with the Lahiri ayanamsa.",
+ "hide": [
+  "meta",
+  "verification",
+  "dasha",
+  "dasha_meta",
+  "ayanamsa",
+  "longevity_prediction"
+ ],
+ "sections": [
+  {
+   "kind": "lines",
+   "title": "Birth",
+   "rows": [
+    [
+     "Date of birth",
+     "{birth.day:02d}-{birth.month:02d}-{birth.year}"
+    ],
+    [
+     "Time of birth",
+     "{birth.hour:02d}:{birth.minute:02d}"
+    ],
+    [
+     "Latitude, longitude",
+     "{birth.latitude:.4f}, {birth.longitude:.4f}"
+    ],
+    [
+     "Time zone",
+     "UTC{birth.timezone_offset:+.2f}"
+    ],
+    [
+     "Lagna",
+     "@lagna"
+    ],
+    [
+     "Moon sign",
+     "@moon_sign"
+    ],
+    [
+     "Sun sign",
+     "@sun_sign"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Planets",
+   "from": "planetary_positions",
+   "columns": [
+    [
+     "Planet",
+     "planet",
+     "planet"
+    ],
+    [
+     "Sign",
+     "sign"
+    ],
+    [
+     "Degree",
+     "longitude",
+     "degree"
+    ],
+    [
+     "House",
+     "house"
+    ],
+    [
+     "Nakshatra",
+     "nakshatra_index",
+     "nakshatra"
+    ],
+    [
+     "Pada",
+     "pada"
+    ],
+    [
+     "Nakshatra lord",
+     "nakshatra_lord",
+     "planet"
+    ],
+    [
+     "Retrograde",
+     "is_retrograde",
+     "bool"
+    ]
+   ]
+  },
+  {
+   "kind": "charts",
+   "title": "Charts",
+   "from": "divisional_charts",
+   "which": [
+    "D1",
+    "D9"
+   ],
+   "titles": {
+    "D1": "Lagna chart (D1)",
+    "D9": "Navamsa (D9)"
+   },
+   "columns": 2,
+   "size": 260
+  },
+  {
+   "kind": "dasha",
+   "title": "Vimshottari dasha",
+   "from": "dasha_sequences.vimshottari"
+  },
+  {
+   "kind": "table",
+   "title": "Houses",
+   "from": "houses.houses",
+   "columns": [
+    [
+     "House",
+     "house_number"
+    ],
+    [
+     "Bhava",
+     "bhava_name"
+    ],
+    [
+     "Sign",
+     "sign",
+     "sign"
+    ],
+    [
+     "Lord",
+     "lord"
+    ],
+    [
+     "Planets",
+     "planets",
+     "names"
+    ]
+   ]
+  },
+  {
+   "kind": "pivot",
+   "title": "Planet strength (shadbala)",
+   "from": "shadbala.components",
+   "row_label": "Planet",
+   "columns": [
+    [
+     "Sthana",
+     "sthana_bala"
+    ],
+    [
+     "Kala",
+     "kala_bala"
+    ],
+    [
+     "Dig",
+     "dig_bala"
+    ],
+    [
+     "Cheshta",
+     "cheshta_bala"
+    ],
+    [
+     "Naisargika",
+     "naisargika_bala"
+    ],
+    [
+     "Drik",
+     "drik_bala"
+    ],
+    [
+     "Total virupas",
+     "total_virupas"
+    ],
+    [
+     "Total rupas",
+     "total_rupas"
+    ],
+    [
+     "Relative strength",
+     "relative_strength"
+    ]
+   ],
+   "note": "As the library calculates it."
+  },
+  {
+   "kind": "charts",
+   "title": "Other divisional charts",
+   "from": "divisional_charts",
+   "which": [
+    "D2",
+    "D3",
+    "D4",
+    "D7",
+    "D10",
+    "D12",
+    "D16",
+    "D20",
+    "D24",
+    "D27",
+    "D30",
+    "D40",
+    "D45",
+    "D60"
+   ],
+   "titles": {
+    "D2": "Hora (D2)",
+    "D3": "Drekkana (D3)",
+    "D4": "Chaturthamsa (D4)",
+    "D7": "Saptamsa (D7)",
+    "D10": "Dasamsa (D10)",
+    "D12": "Dwadasamsa (D12)",
+    "D16": "Shodasamsa (D16)",
+    "D20": "Vimsamsa (D20)",
+    "D24": "Siddhamsa (D24)",
+    "D27": "Bhamsa (D27)",
+    "D30": "Trimsamsa (D30)",
+    "D40": "Khavedamsa (D40)",
+    "D45": "Akshavedamsa (D45)",
+    "D60": "Shashtiamsa (D60)"
+   },
+   "columns": 3,
+   "size": 220,
+   "font": 9
+  }
+ ]
+}

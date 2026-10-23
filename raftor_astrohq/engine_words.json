@@ -1,0 +1,12 @@
+{
+	"about": "How the calculation library spells a name that the rest of the app spells another way. Used by arrange.clean for every text the library wrote.",
+	"nakshatras": ["Aswini", "Bharani", "Karthigai", "Rohini", "Mrigasheesham", "Thiruvaathirai", "Punarpoosam", "Poosam", "Aayilyam", "Makam", "Pooram", "Uthiram", "Hastham", "Chithirai",
+				   "Swaathi", "Visaakam", "Anusham", "Kaettai", "Moolam", "Pooraadam", "Uthiraadam", "Thiruvonam", "Avittam", "Sadhayam", "Poorattathi", "Uthirattathi", "Revathi", "Abhijith"],
+	"nakshatras_note": "In the library's order; the app's names (report_pdf.NAKSHATRAS) are in the same order, the 28th is Abhijit.",
+	"words": {
+		"Prathamai": "Pratipada", "Pirathamai": "Pratipada", "Thuthiyai": "Dwitiya", "Thiruthiyai": "Tritiya", "Chathurthi": "Chaturthi", "Shasti": "Shashthi", "Sapthami": "Saptami", "Astami": "Ashtami",
+		"Dhasami": "Dashami", "Egadhasi": "Ekadashi", "Dhuvadhasi": "Dwadashi", "Thirayodasi": "Trayodashi", "Sathuradasi": "Chaturdashi", "Pournami": "Purnima", "Amavasai": "Amavasya",
+		"Sukla": "Shukla", "Soubhagya": "Saubhagya", "Sobhana": "Shobhana", "Dhrithi": "Dhriti", "Soola": "Shula", "Vriyana": "Variyana", "Siva": "Shiva", "Subha": "Shubha", "Vaidhrithi": "Vaidhriti",
+		"Baalava": "Balava", "kaulava": "Kaulava", "Kimstugna": "Kimstughna", "Sakuna": "Shakuni", "Raagu": "Rahu", "Kethu": "Ketu"
+	}
+}

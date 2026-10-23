@@ -1,0 +1,51 @@
+{
+ "title": "Dasha systems",
+ "intro": "Every system asked for, with the running period marked.",
+ "hide": [
+  "meta",
+  "verification"
+ ],
+ "sections": [
+  {
+   "kind": "lines",
+   "title": "Birth",
+   "rows": [
+    [
+     "Date of birth",
+     "{birth.day:02d}-{birth.month:02d}-{birth.year}"
+    ],
+    [
+     "Time of birth",
+     "{birth.hour:02d}:{birth.minute:02d}"
+    ],
+    [
+     "Latitude, longitude",
+     "{birth.latitude:.4f}, {birth.longitude:.4f}"
+    ],
+    [
+     "Time zone",
+     "UTC{birth.timezone_offset:+.2f}"
+    ],
+    [
+     "Lagna",
+     "@lagna"
+    ],
+    [
+     "Moon sign",
+     "@moon_sign"
+    ],
+    [
+     "Sun sign",
+     "@sun_sign"
+    ]
+   ]
+  },
+  {
+   "kind": "dashas",
+   "from_all": [
+    "dasha_sequences",
+    "extra_dashas"
+   ]
+  }
+ ]
+}

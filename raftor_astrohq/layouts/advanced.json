@@ -1,0 +1,143 @@
+{
+ "extends": "standard",
+ "title": "Birth chart: full",
+ "hide": [
+  "meta",
+  "verification",
+  "dasha",
+  "dasha_meta",
+  "ayanamsa",
+  "longevity_prediction"
+ ],
+ "append": [
+  {
+   "kind": "lines",
+   "title": "Birth star",
+   "rows": [
+    [
+     "Nakshatra",
+     "{nakshatra_details.index|nakshatra}"
+    ],
+    [
+     "Pada",
+     "{nakshatra_details.pada}"
+    ],
+    [
+     "Lord",
+     "{nakshatra_details.lord|planet}"
+    ]
+   ]
+  },
+  {
+   "kind": "yogas",
+   "title": "Yogas",
+   "from": "yogas"
+  },
+  {
+   "kind": "facts",
+   "title": "Panchang of the birth day",
+   "from": "panchanga",
+   "rows": [
+    [
+     "Weekday",
+     "Day"
+    ],
+    [
+     "Lunar year and month",
+     "Lunar Year/Month:"
+    ],
+    [
+     "Solar month",
+     "Solar Month:"
+    ],
+    [
+     "Kali year",
+     "Kali Year"
+    ],
+    [
+     "Vikrama year",
+     "Vikarama Year"
+    ],
+    [
+     "Saka year",
+     "Saka Year"
+    ],
+    [
+     "Sunrise",
+     "Sun Rise",
+     "time"
+    ],
+    [
+     "Sunset",
+     "Sun Set",
+     "time"
+    ],
+    [
+     "Moonrise",
+     "Moon Rise",
+     "time"
+    ],
+    [
+     "Moonset",
+     "Moon Set",
+     "time"
+    ]
+   ]
+  },
+  {
+   "kind": "times",
+   "title": "Tithi, nakshatra, yoga and karana at the birth",
+   "note": "Times are the local time of the birth place.",
+   "from": "panchanga",
+   "rows": [
+    [
+     "Tithi",
+     "Tithi"
+    ],
+    [
+     "Moon sign",
+     "Raasi"
+    ],
+    [
+     "Nakshatra",
+     "Nakshatram"
+    ],
+    [
+     "Yoga",
+     "Yoga"
+    ],
+    [
+     "Karana",
+     "Karana"
+    ]
+   ]
+  },
+  {
+   "kind": "times",
+   "title": "Times of the birth day",
+   "from": "panchanga",
+   "rows": [
+    [
+     "Rahu Kalam",
+     "Raagu Kaalam"
+    ],
+    [
+     "Gulika Kalam",
+     "KuLigai"
+    ],
+    [
+     "Yamaganda",
+     "Yamagandam"
+    ],
+    [
+     "Abhijit Muhurta",
+     "Abhijit"
+    ],
+    [
+     "Dur Muhurta",
+     "Dhur Muhurtham"
+    ]
+   ]
+  }
+ ]
+}

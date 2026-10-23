@@ -80,11 +80,13 @@ def _house_shapes(size: float) -> dict[int, list[tuple[float, float]]]:
 	}
 
 
-def diamond_chart_svg(cells: list[str], lagna: int, title: str = "", size: int = 300) -> str:
+def diamond_chart_svg(cells: list[str], lagna: int, title: str = "", size: int = 300, font: int = 12) -> str:
 	"""A North Indian chart. `cells` is the engine's list of twelve texts, one for each sign from Aries, naming the planets in it; `lagna` is the sign (0 = Aries)
-	of house 1, which is the top diamond, and the houses run anticlockwise from it. Each house shows its sign's number and its planets."""
+	of house 1, which is the top diamond, and the houses run anticlockwise from it. Each house shows its sign's number and its planets (written `font` high: smaller for a small chart).
+	The title, when there is one, is written under the drawing, in room made for it."""
 	shapes = _house_shapes(size)
-	out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size}" viewBox="0 0 {size} {size}">',
+	room = 22 if title else 0
+	out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size + room}" viewBox="0 0 {size} {size + room}">',
 		   f'<rect x="0" y="0" width="{size}" height="{size}" fill="#ffffff" stroke="{ACCENT}" stroke-width="2"/>']
 	for number, points in shapes.items():
 		coordinates = " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
@@ -98,11 +100,12 @@ def diamond_chart_svg(cells: list[str], lagna: int, title: str = "", size: int =
 				names.append(code + ("(R)" if "℞" in line else ""))
 		out.append(f'<text x="{cx:.1f}" y="{cy + 15:.1f}" text-anchor="middle" font-size="11" fill="#8a7aa3" font-family="Arial, sans-serif">{sign + 1}</text>')
 		rows = [" ".join(names[i:i + 3]) for i in range(0, len(names), 3)] or [""]
-		top = cy - 4 - 7 * (len(rows) - 1)
+		line = font + 2
+		top = cy - 4 - line / 2 * (len(rows) - 1)
 		for n, row in enumerate(rows):
-			out.append(f'<text x="{cx:.1f}" y="{top + 14 * n:.1f}" text-anchor="middle" font-size="12" font-weight="bold" fill="{INK}" font-family="Arial, sans-serif">{escape(row)}</text>')
+			out.append(f'<text x="{cx:.1f}" y="{top + line * n:.1f}" text-anchor="middle" font-size="{font}" font-weight="bold" fill="{INK}" font-family="Arial, sans-serif">{escape(row)}</text>')
 	if title:
-		out.append(f'<text x="{size / 2}" y="{size + 18}" text-anchor="middle" font-size="12" fill="{INK}" font-family="Arial, sans-serif">{escape(title)}</text>')
+		out.append(f'<text x="{size / 2}" y="{size + 16}" text-anchor="middle" font-size="12" fill="{INK}" font-family="Arial, sans-serif">{escape(title)}</text>')
 	out.append("</svg>")
 	return "".join(out)
 

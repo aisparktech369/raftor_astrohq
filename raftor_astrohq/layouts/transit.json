@@ -1,0 +1,80 @@
+{
+ "title": "Tajaka charts and sahams",
+ "intro": "Worked out for the birth moment itself: the API takes no date, so this is not the sky of today.",
+ "hide": [
+  "meta",
+  "verification"
+ ],
+ "sections": [
+  {
+   "kind": "lines",
+   "title": "Birth",
+   "rows": [
+    [
+     "Date of birth",
+     "{birth.day:02d}-{birth.month:02d}-{birth.year}"
+    ],
+    [
+     "Time of birth",
+     "{birth.hour:02d}:{birth.minute:02d}"
+    ],
+    [
+     "Latitude, longitude",
+     "{birth.latitude:.4f}, {birth.longitude:.4f}"
+    ],
+    [
+     "Time zone",
+     "UTC{birth.timezone_offset:+.2f}"
+    ],
+    [
+     "Lagna",
+     "@lagna"
+    ],
+    [
+     "Moon sign",
+     "@moon_sign"
+    ],
+    [
+     "Sun sign",
+     "@sun_sign"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Annual chart (Tajaka)",
+   "from": "tajaka.annual.chart",
+   "key": "Planet",
+   "key_how": "tajaka_planet",
+   "columns": [
+    [
+     "Place",
+     "value",
+     "signdeg"
+    ]
+   ]
+  },
+  {
+   "kind": "table",
+   "title": "Sahams",
+   "from": "saham_system",
+   "key": "Saham",
+   "columns": [
+    [
+     "Sign",
+     "sign",
+     "sign"
+    ],
+    [
+     "Degree",
+     "degree_in_sign",
+     "degree"
+    ],
+    [
+     "House",
+     "house_from_lagna"
+    ]
+   ]
+  }
+ ]
+}
