@@ -1,0 +1,83 @@
+{
+ "actions": [],
+ "autoname": "field:key",
+ "creation": "2026-10-31 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "mode",
+  "key",
+  "made_on",
+  "size_kb",
+  "answer"
+ ],
+ "fields": [
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Person",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "mode",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Mode",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "key",
+   "fieldtype": "Data",
+   "label": "Key",
+   "read_only": 1,
+   "reqd": 1,
+   "unique": 1,
+   "description": "What was asked, as one fingerprint: the person, the mode and the numbers sent to the engine."
+  },
+  {
+   "fieldname": "made_on",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Made On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "size_kb",
+   "fieldtype": "Int",
+   "label": "Size (KB, packed)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "answer",
+   "fieldtype": "Long Text",
+   "hidden": 1,
+   "label": "Answer",
+   "read_only": 1,
+   "description": "The engine's answer, packed (gzip, base64). Birth details are personal: only a System Manager can see this record."
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-31 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Astro Answer",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

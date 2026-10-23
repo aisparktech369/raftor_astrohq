@@ -261,7 +261,7 @@ after_install = "raftor_astrohq.install.after_install"
 after_migrate = "raftor_astrohq.install.after_install"
 
 # Birth profiles are rows of a table on the User; these rules run whenever a User is saved.
-doc_events = {"User": {"validate": "raftor_astrohq.profiles.validate_user"}}
+doc_events = {"User": {"validate": "raftor_astrohq.profiles.validate_user", "on_trash": "raftor_astrohq.answers.forget_user"}}
 
 # Pages as data for websitehq to build (page_definitions.py), and the old addresses forwarded to them.
 rfhq_page_definitions = ["raftor_astrohq.page_definitions.definitions"]

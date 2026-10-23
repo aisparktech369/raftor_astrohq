@@ -15,6 +15,35 @@ def pack_services() -> list[dict]:
 	return [entry for path in sorted(PACK.glob("*.json")) for entry in json.loads(path.read_text())]
 
 
+def person_free() -> dict:
+	"""What the free way does for a report about one person (servicehq free_reports.py): asks whose it is, keeps the details as a birth profile, says whose it is, names a new account and fills the form from the person's own profile."""
+	return {"fields": [whose()], "keep": "raftor_astrohq.reports.keep_birth_profile", "summary": "raftor_astrohq.reports.kundli_summary", "prefill": "raftor_astrohq.reports.kundli_prefill", "account_name": "raftor_astrohq.reports.kundli_account_name",
+			"keep_line": _("We keep these details in your birth profile so you do not have to write them again. If this is for someone else, you confirm that you may.")}
+
+
+def arranged_reports() -> dict:
+	"""The reports made by laying the engine's answer out with a layout (arrange.py, layouts/): each says its layout and the mode it is made from. They ship as items switched off like the others; a customer
+	sees the sections an astrologer has ticked as reviewed in the layout (reports.arranged_report). The names are plain words to be changed in Desk."""
+	person = {"fields": kundli_fields(), "validate": "raftor_astrohq.details.kundli_rules"}
+	maker = "raftor_astrohq.reports.arranged_report"
+	return {
+		"detailed": {"title": _("Detailed kundli report"), "blurb": _("Your kundli in full: the houses, the strength of each planet, the divisional charts, ashtakavarga, doshas and more."), "price": 0,
+					 "description": _("Everything the kundli report has, and more: the houses, the strength of each planet, the divisional charts, ashtakavarga, arudhas, doshas and the panchang of the day you were born.\n\n"
+									  "Made for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
+					 "details": person, "maker": maker, "layout": "advanced", "modes": ["CORE_ADVANCED"], "free": person_free()},
+		"dasha": {"title": _("Dasha periods report"), "blurb": _("Every dasha system and the period you are in now."), "price": 0,
+				  "description": _("The dasha periods of your life, system by system, with the one running today marked.\n\nMade for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
+				  "details": person, "maker": maker, "layout": "dasha", "modes": ["DASHA_CALC"], "free": person_free()},
+		"kp": {"title": _("KP chart report"), "blurb": _("Your chart the Krishnamurti way: cusps, star and sub lords, significators."), "price": 0,
+			   "description": _("Your chart as a KP astrologer reads it: the ruling planets, each planet and house cusp with its sign, star, sub and sub-sub lord, the significators and the aspects.\n\n"
+								"Made for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
+			   "details": person, "maker": maker, "layout": "kp", "modes": ["KP_SYSTEM"], "free": person_free()},
+		"panchang": {"title": _("Panchang of your birth day"), "blurb": _("The tithi, nakshatra, yoga and karana you were born in, with when each begins and ends."), "price": 0,
+					 "description": _("The panchang of the day and moment you were born, with the times each part begins and ends.\n\nMade for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
+					 "details": person, "maker": maker, "layout": "panchang", "modes": ["PANCHANGA"], "free": person_free()},
+	}
+
+
 def vocabulary() -> dict:
 	return {
 		"words": {"provider": "astrologer", "providers": "astrologers", "unit": "unit", "units": "units", "recommendation": "remedy", "recommendations": "remedies", "clock": "h:mm a",
@@ -55,13 +84,13 @@ def vocabulary() -> dict:
 										"Made for you from the details you give, by the same calculation astrologers use (Lahiri ayanamsa). It is free: you can read it as a PDF as soon as it is made."),
 					   "details": {"fields": kundli_fields(), "validate": "raftor_astrohq.details.kundli_rules"}, "maker": "raftor_astrohq.reports.kundli_report",
 					   # What only the free way does (servicehq free_reports.py): asks whose it is, keeps the details as a birth profile, says whose it is, and fills the form from the person's own profile.
-					   "free": {"fields": [whose()], "keep": "raftor_astrohq.reports.keep_birth_profile", "summary": "raftor_astrohq.reports.kundli_summary", "prefill": "raftor_astrohq.reports.kundli_prefill", "account_name": "raftor_astrohq.reports.kundli_account_name",
-								"keep_line": _("We keep these details in your birth profile so you do not have to write them again. If this is for someone else, you confirm that you may.")}},
+					   "free": person_free()},
 			"match": {"title": _("Match making report"), "blurb": _("How well two birth charts match, by the eight kootas out of 36."), "price": 0,
 					  "description": _("The Ashtakoota (Guna Milan) score for a boy and a girl, koota by koota, out of 36, with the Moon sign and nakshatra of each and their manglik check.\n\n"
 									   "Made from the details you give for both. It is free: you can read it as a PDF as soon as it is made."),
 					  "details": {"fields": match_fields(), "validate": "raftor_astrohq.details.match_rules"}, "maker": "raftor_astrohq.reports.match_report",
 					  "free": {"summary": "raftor_astrohq.reports.match_summary"}},  # a match is between two people: nothing is kept as a birth profile on its own
+			**arranged_reports(),
 		},
 		"kinds": {
 			"Consultation": {"line_title": "Seek guidance", "line_subtitle": "Every guide can help with every kind of question. Choose who to talk to, online now or at a time you choose.", "details": {"fields": [question()], "topic_field": "question", "validate": "raftor_astrohq.details.consultation_rules"}},

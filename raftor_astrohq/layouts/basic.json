@@ -42,7 +42,8 @@
      "Sun sign",
      "@sun_sign"
     ]
-   ]
+   ],
+   "reviewed": true
   },
   {
    "kind": "table",
@@ -86,7 +87,8 @@
      "is_retrograde",
      "bool"
     ]
-   ]
+   ],
+   "reviewed": true
   },
   {
    "kind": "charts",
@@ -101,12 +103,14 @@
     "D9": "Navamsa (D9)"
    },
    "columns": 2,
-   "size": 260
+   "size": 260,
+   "reviewed": true
   },
   {
    "kind": "dasha",
    "title": "Vimshottari dasha",
-   "from": "dasha_sequences.vimshottari"
+   "from": "dasha_sequences.vimshottari",
+   "reviewed": true
   },
   {
    "kind": "table",

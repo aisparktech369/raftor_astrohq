@@ -134,6 +134,23 @@ network or login is needed; PNG, JPG, GIF or WEBP, up to 400 KB). `report_pdf.si
 in the accent colour, the headings, table heads, lines and charts in the theme's colours, the headings in the theme's heading font where the PDF engine has one (else a serif). A main colour that would not read on white (under 4.5 to 1) gives way to the ink.
 **A site with no theme, or no logo, gets what it always had** (the name in small type, the plain purple). Nothing is typed in the code: change the theme or the logo in Desk and the next report wears it.
 
+## Reports made from a layout, and what is kept (`answers.py`, `reports.arranged_report`)
+
+Four more reports ship with the kundli and the match making report, each **switched off, at price 0, its page down** (the team switches them on; the names are plain words to change in Desk):
+**Detailed kundli report** (layout `advanced`), **Dasha periods report** (`dasha`), **KP chart report** (`kp`), **Panchang of your birth day** (`panchang`). They ask what the kundli asks, say whose it is and keep the details
+the same way (`vocabulary.person_free`). Their maker, `reports.arranged_report`, finds the layout and the mode in the vocabulary entry, asks the engine (or reads what is kept), lays the answer out by the layout in the site's brand and makes the PDF, titled
+by the report (the layout's own title is not used).
+
+**What a customer sees: only what an astrologer has checked.** A section of a layout says `"reviewed": true` (a `dashas` section names the systems: `"reviewed": ["vimshottari"]`). A customer's PDF has those only; a
+page that shows all (an astrologer's, the team's, or a customer's when **Astrology API Settings, Show Sections Nobody Has Checked To Customers** is ticked, for a demonstration) marks the others **Draft** beside their heading.
+Today the four sections the live kundli has already are checked (Birth, Planets, Charts, Vimshottari dasha): so the detailed report reads like the kundli until astrologers check more, one section at a time, in the layout file.
+A report none of whose sections is checked cannot be given ("Nothing in this report has been checked by an astrologer yet": the engine is not even asked).
+
+**What is kept.** The engine's answer for a person's birth in a mode is kept in a private `Astro Answer` record (only a System Manager can open it) under a fingerprint of the person, the mode and the numbers sent: so the
+second report from the same birth, a page and a PDF cost no new call (a second detailed report took 0.4 s instead of 1.3 s; three calls per person feed seven of the ten modes). It is gzip-packed (about a tenth of its size), goes with the person (a User's deletion removes it),
+is never shared between two people with the same birth, and is asked for again when it was made before **Astrology API Settings, Kept Answers Are Good From** (put today's date there after the engine has been updated).
+The sky of another moment (today's planets) is kept for a day in the cache, for anyone, since it is about no person.
+
 ## When a report cannot be made
 
 The record stays **Being made** (a paid report's payment is never undone) and:
@@ -191,7 +208,7 @@ The score is a guide, and the page says a full match is read with the charts and
 ## Not built
 
 - Other languages and scripts (names, pages); a report from an unknown time of birth (no lagna, so none is made); places outside the GeoNames list (500 people and more).
-- The arranger's layouts are **not yet reports**: no item, no web page, no stored answer (design: `report-pages.md`). Remedies. A lighter kundli than the full one is a layout away.
+- The web page of a report, one tap for the next report, the astrologer's page and the drishti matrix (design: `report-pages.md`). Remedies.
 - "Report ready" messages (notifications are the last topic). The report is made in the request that confirms the code, so it is normally ready before the person looks; make it a background job if the astrology
   service ever becomes slow.
 - The astrologer seeing the customer's report for their booking, if the customer agrees (needs the chart screen and the owner's rule on who sees whose chart).

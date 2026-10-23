@@ -38,14 +38,69 @@
      "Sun sign",
      "@sun_sign"
     ]
-   ]
+   ],
+   "reviewed": true
   },
   {
    "kind": "dashas",
    "from_all": [
     "dasha_sequences",
     "extra_dashas"
+   ],
+   "reviewed": [
+    "vimshottari"
    ]
   }
- ]
+ ],
+ "ask": {
+  "requested_dasha_systems": [
+   "vimshottari",
+   "yogini",
+   "kalachakra",
+   "chara",
+   "aayu",
+   "ashtottari",
+   "brahma_dasha",
+   "buddhi_gathi",
+   "chakra_dasha",
+   "chara_dasha",
+   "chathuraaseethi_sama",
+   "drig_dasha",
+   "dwadasottari",
+   "dwisapathi",
+   "kaala",
+   "kalachakra_dasha",
+   "karaka",
+   "karana_chathuraaseethi_sama",
+   "kendradhi_rasi_dasha",
+   "lagnamsaka_dasha",
+   "mandooka_dasha",
+   "moola_dasha",
+   "mudda_dasha",
+   "naisargika",
+   "narayana_dasha",
+   "navamsa_dasha",
+   "nirayana_dasha",
+   "padhanadhamsa_dasha",
+   "panchottari",
+   "paryaaya_dasha",
+   "patyayini_dasha",
+   "saptharishi_nakshatra",
+   "sataatbika",
+   "shastihayani",
+   "shattrimsa_sama",
+   "shodasottari",
+   "shoola_dasha",
+   "sthira_dasha",
+   "sudasa_dasha",
+   "tara",
+   "tara_lagna_dasha",
+   "tithi_ashtottari",
+   "tithi_yogini",
+   "trikona_dasha",
+   "varnada_dasha",
+   "yoga_vimshottari",
+   "yogardha_dasha"
+  ]
+ }
 }

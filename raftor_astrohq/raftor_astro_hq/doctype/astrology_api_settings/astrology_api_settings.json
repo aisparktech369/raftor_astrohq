@@ -15,7 +15,10 @@
   "section_check",
   "check_connection",
   "last_checked",
-  "last_result"
+  "last_result",
+  "answers_section",
+  "answers_valid_from",
+  "show_unreviewed"
  ],
  "fields": [
   {
@@ -92,12 +95,30 @@
    "fieldtype": "Small Text",
    "label": "What It Answered",
    "read_only": 1
+  },
+  {
+   "fieldname": "answers_section",
+   "fieldtype": "Section Break",
+   "label": "What Is Kept And What Is Shown"
+  },
+  {
+   "description": "The engine's answers are kept for each person so a report, a page and a second report cost no new call. An answer made before this date is asked for again: put today's date here after the engine has been updated.",
+   "fieldname": "answers_valid_from",
+   "fieldtype": "Date",
+   "label": "Kept Answers Are Good From"
+  },
+  {
+   "default": "0",
+   "description": "A customer's report and page show only the sections an astrologer has checked (a section of a layout says so with \"reviewed\"). Tick this to show all of them to customers too, with a Draft mark: for a demonstration. Astrologers and the team always see all.",
+   "fieldname": "show_unreviewed",
+   "fieldtype": "Check",
+   "label": "Show Sections Nobody Has Checked To Customers"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-10-30 15:00:00",
+ "modified": "2026-10-31 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Astrology API Settings",

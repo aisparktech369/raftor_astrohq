@@ -1,6 +1,6 @@
 # Reports as web pages and branded PDFs (design, 2026-10-23)
 
-**Status: a design. Nothing in it is built except the arranger (`reports.md`, "The arranger").** The owner asked (23 Oct 2026): "design this available functionality to integrate for
+**Status: being built (owner's yes, 23 Oct 2026). Built so far: the arranger, the brand for documents, the kept answers, the reports made from a layout with the checked-sections rule (`reports.md`).** The owner asked (23 Oct 2026): "design this available functionality to integrate for
 optimum utilisation and features... we can keep them free... platform agnostic, web based feature alongwith branded pdf report". Build only after an explicit yes.
 
 ## The idea in four lines

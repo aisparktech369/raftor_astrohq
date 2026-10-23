@@ -408,9 +408,9 @@ class TestWhatTheFormAsksAndChecks(Stood):
 
 
 class TestWhatAstroHQShips(AstroTestCase):
-	def test_the_vocabulary_lists_the_two_reports_with_everything_servicehq_needs(self):
+	def test_the_vocabulary_lists_the_reports_with_everything_servicehq_needs(self):
 		shipped = vocabulary.vocabulary()["reports"]
-		self.assertEqual(sorted(shipped), ["kundli", "match"])
+		self.assertEqual(sorted(shipped), ["dasha", "detailed", "kp", "kundli", "match", "panchang"])  # the first two by their own makers, the rest by layouts (test_arranged_reports)
 		for name, entry in shipped.items():
 			with self.subTest(name):
 				self.assertTrue(entry["title"] and entry["blurb"] and entry["description"])

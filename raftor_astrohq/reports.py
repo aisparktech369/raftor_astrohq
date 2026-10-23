@@ -12,10 +12,10 @@ import unicodedata
 import frappe
 from dateutil.relativedelta import relativedelta
 from frappe import _
-from frappe.utils import escape_html, format_date, getdate, today
+from frappe.utils import cint, escape_html, format_date, getdate, today
 from frappe.utils.pdf import get_pdf
 
-from raftor_astrohq import astrology, details as detail_rules, places, profiles, report_pdf as rp
+from raftor_astrohq import answers, arrange, astrology, details as detail_rules, places, profiles, report_pdf as rp
 
 PDF_OPTIONS = {"margin-top": "14mm", "margin-bottom": "18mm", "margin-left": "14mm", "margin-right": "14mm", "footer-center": "[page] / [topage]", "footer-font-size": "8", "footer-spacing": "5"}
 CREDIT = "Calculated with the Lahiri ayanamsa. Place data: GeoNames (geonames.org), licensed CC BY 4.0."
@@ -226,6 +226,46 @@ def kundli_report(item_code: str, details: dict, buyer: str) -> dict:
 	panchanga = astrology.chart(numbers, "PANCHANGA")["panchanga"]
 	html = kundli_html(kundli_context(person, place, chart, panchanga, getdate(today())))
 	return {"file_name": _file_name("kundli-report", person["name"]), "content": _pdf(html)}
+
+
+# ---- the reports made from a layout ----
+def report_entry(item_code: str) -> dict:
+	"""What the vocabulary says about the report an item is (its title, its layout, the modes it is made from)."""
+	from raftor_servicehq import kinds
+
+	name, vertical = frappe.db.get_value("Item", item_code, ["custom_report_kind", "custom_vertical"]) or ("", "")
+	return kinds.report(vertical, name) if name else {}
+
+
+def shown() -> str:
+	"""What a customer's report shows: "reviewed" (the sections an astrologer has checked) or, when the setting says so (a demonstration), "all"."""
+	return "all" if cint(frappe.db.get_single_value("Astrology API Settings", "show_unreviewed")) else "reviewed"
+
+
+def born_line(person: dict, place: dict) -> str:
+	"""Who, when and where, as the line under a report's title."""
+	born = person["born"]
+	return f"{person['name']} · {born.strftime('%A')}, {rp.long_date(born.date())}, {born.strftime('%H:%M')} · {place['name']}"
+
+
+def arranged_report(item_code: str, details: dict, buyer: str) -> dict:
+	"""A report made from a layout (arrange.py, layouts/): the engine's answer for the person in the layout's mode (kept, so a second report of the same birth costs no call), laid out by the layout the
+	vocabulary names, in the site's brand, as a PDF. A customer's report has the sections an astrologer has checked (`shown`)."""
+	entry = report_entry(item_code)
+	if not entry.get("layout") or not entry.get("modes"):
+		frappe.throw(_("This report has no layout to be made from."))
+	layout = arrange.layout_named(entry["layout"])
+	show = shown()
+	if show == "reviewed" and not any(section.get("reviewed") for section in layout["sections"]):
+		frappe.throw(_("Nothing in this report has been checked by an astrologer yet, so it cannot be given."))
+	person = _person(details)
+	place = _find(person)
+	numbers = {**_numbers(person, place), **(layout.get("ask") or {})}
+	data = answers.get(buyer, numbers, entry["modes"][0])
+	on = getdate(today())
+	html = arrange.html(data, {**layout, "title": entry.get("title") or layout.get("title")}, brand=_brand(), credit=CREDIT + " " + _("Made for you on {0}.").format(rp.long_date(on)), today=on,
+						subject=born_line(person, place), look=rp.site_look(), show=show)
+	return {"file_name": _file_name(f"{entry['layout']}-report", person["name"]), "content": _pdf(html)}
 
 
 # ---- the match making report ----

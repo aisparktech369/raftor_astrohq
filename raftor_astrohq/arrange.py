@@ -62,6 +62,7 @@ caption.h2 {{ font-size: 15px; border-bottom: 2px solid {k['line']}; padding: 20
 caption.h3 {{ font-size: 13px; padding: 12px 0 4px 0; }}
 table td.note, table.m td.note {{ border: none; padding: 6px 0 0 0; font-size: 10.5px; text-align: left; color: {k['muted']}; background: none; font-weight: normal; }}
 h3 {{ font-size: 13px; color: {k['heading']}; margin: 12px 0 4px 0; }}
+.draft {{ font-family: Arial, sans-serif; font-size: 8px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; color: {k['accent']}; border: 1px solid {k['accent']}; padding: 0 4px; margin-left: 8px; vertical-align: middle; }}
 </style>"""
 
 
@@ -266,9 +267,12 @@ def tpl(template, data) -> str:
 
 
 # ---- the pieces of a page ----
-def caption(text: str, level: int = 2) -> str:
-	"""A heading written as the caption of the table under it, so a page can never end between the two."""
-	return f"<caption class='h{level}'>{escape(text)}</caption>" if text else ""
+DRAFT = "<span class='draft'>Draft</span>"
+
+
+def caption(text: str, level: int = 2, draft: bool = False) -> str:
+	"""A heading written as the caption of the table under it, so a page can never end between the two. A part nobody has checked yet says Draft beside its heading."""
+	return f"<caption class='h{level}'>{escape(text)}{DRAFT if draft else ''}</caption>" if text else ""
 
 
 def add_note(table: str, text: str) -> str:
@@ -287,14 +291,14 @@ def cell(text, cls: str = "") -> str:
 	return f"<td{' class=' + chr(34) + cls + chr(34) if cls else ''}>{escape(str(text))}</td>"
 
 
-def table_html(head: list[str], rows: list[list], matrix: bool = False, row_classes: list[str] | None = None, title: str = "", level: int = 2) -> str:
+def table_html(head: list[str], rows: list[list], matrix: bool = False, row_classes: list[str] | None = None, title: str = "", level: int = 2, draft: bool = False) -> str:
 	more = max(len(rows) - MAX_ROWS, 0)
 	rows = rows[:MAX_ROWS]
 	header = "<tr>" + "".join(f"<th{' class=l' if matrix and n == 0 else ''}>{escape(str(h))}</th>" for n, h in enumerate(head)) + "</tr>" if head else ""
 	body = "".join(f'<tr{" class=" + chr(34) + row_classes[n] + chr(34) if row_classes and row_classes[n] else ""}>' + "".join(cell(c, "l" if matrix and i == 0 else "") for i, c in enumerate(row)) + "</tr>"
 				   for n, row in enumerate(rows))
 	tail = f"<tr><td colspan='{max(len(head), 1)}' class='note'>… and {more} more</td></tr>" if more else ""
-	return f"<table{' class=m' if matrix else ''}>{caption(title, level)}{header}{body}{tail}</table>"
+	return f"<table{' class=m' if matrix else ''}>{caption(title, level, draft)}{header}{body}{tail}</table>"
 
 
 def lines(spec, data) -> str:
@@ -456,7 +460,7 @@ def running(period: dict, on: datetime.date) -> bool:
 	return bool(start) and datetime.date.fromisoformat(start) <= on and (not end or on <= datetime.date.fromisoformat(end))
 
 
-def dasha(spec, data, today: datetime.date, title: str = "", level: int = 2) -> str:
+def dasha(spec, data, today: datetime.date, title: str = "", level: int = 2, draft: bool = False) -> str:
 	source = dig(data, spec.get("from")) or {}
 	periods = source.get("mahadasha") or []
 	if not periods:
@@ -466,7 +470,7 @@ def dasha(spec, data, today: datetime.date, title: str = "", level: int = 2) -> 
 		on = spec.get("now", True) and running(period, today)
 		rows.append([fmt(period.get("lord"), "planet"), fmt(period.get("start_date"), "date"), fmt(period.get("end_date"), "date") or "—", number(period.get("duration_years") or 0) if period.get("end_date") else "—"])
 		classes.append("now" if on else "")
-	out = table_html(["Main period", "From", "To", "Years"], rows, row_classes=classes, title=title, level=level)
+	out = table_html(["Main period", "From", "To", "Years"], rows, row_classes=classes, title=title, level=level, draft=draft)
 	current = next((p for p in periods if spec.get("now", True) and running(p, today)), None)
 	if current and current.get("antardasha"):
 		inner = [[f"{fmt(current['lord'], 'planet')} / {fmt(a.get('lord'), 'planet')}", fmt(a.get("start_date"), "date"), fmt(a.get("end_date"), "date") or "—"] for a in current["antardasha"]]
@@ -505,14 +509,19 @@ def yogas(spec, data) -> str:
 	return table_html(head, rows) if rows else ""
 
 
-def dashas(spec, data, today: datetime.date) -> str:
-	"""Every dasha system the answer holds, each under its own name (a system with no periods is left out)."""
+def dashas(spec, data, today: datetime.date, show: str = "all") -> str:
+	"""Every dasha system the answer holds, each under its own name (a system with no periods is left out). When the layout names the systems an astrologer has checked ("reviewed": ["vimshottari"]),
+	a customer's page has those only and the others, on a page that shows all, say Draft."""
+	checked = spec.get("reviewed")
 	out = []
 	for section in spec.get("from_all") or ["dasha_sequences", "extra_dashas"]:
 		for key, system in (dig(data, section) or {}).items():
 			if isinstance(system, dict) and system.get("mahadasha"):
+				ok = checked is True or (isinstance(checked, list) and key in checked)
+				if show == "reviewed" and not ok:
+					continue
 				name = system.get("dasha_system") or pretty(key)
-				out.append(dasha({"from": f"{section}.{key}", "now": spec.get("now", True)}, data, today, title=name, level=3))
+				out.append(dasha({"from": f"{section}.{key}", "now": spec.get("now", True)}, data, today, title=name, level=3, draft=not ok))
 	return "".join(out)
 
 
@@ -546,8 +555,13 @@ def layout_named(name: str) -> dict:
 	return layout
 
 
-def section_html(spec: dict, data: dict, today: datetime.date, look: dict | None = None) -> str:
+def section_html(spec: dict, data: dict, today: datetime.date, look: dict | None = None, show: str = "all") -> str:
+	"""One section of a layout. `show` is "all" (every section, those nobody has checked marked Draft: for astrologers and the team) or "reviewed" (only what the layout calls reviewed: for customers)."""
 	kind = spec.get("kind")
+	checked = bool(spec.get("reviewed"))
+	if show == "reviewed" and not checked:
+		return ""
+	draft = not checked
 	if kind == "lines":
 		body = lines(spec, data)
 	elif kind == "facts":
@@ -565,11 +579,11 @@ def section_html(spec: dict, data: dict, today: datetime.date, look: dict | None
 	elif kind == "charts":
 		body = charts(spec, data, look)
 	elif kind == "dasha":
-		return dasha(spec, data, today, title=spec.get("title", "")) + (f"<p class='note'>{escape(spec['note'])}</p>" if spec.get("note") else "")
+		return dasha(spec, data, today, title=spec.get("title", ""), draft=draft) + (f"<p class='note'>{escape(spec['note'])}</p>" if spec.get("note") else "")
 	elif kind == "yogas":
 		body = yogas(spec, data)
 	elif kind == "dashas":
-		return dashas(spec, data, today)
+		return dashas(spec, data, today, show)
 	elif kind == "auto":
 		body = auto(dig(data, spec.get("from")) if spec.get("from") else data, spec.get("title", ""), hide=tuple(spec.get("hide") or ()))
 	elif kind == "text":
@@ -580,14 +594,14 @@ def section_html(spec: dict, data: dict, today: datetime.date, look: dict | None
 		return ""
 	if body.startswith("<table") and body.count("<table") == 1:  # one table: its heading is its caption and its note its last row, so a page can never end between them
 		opening, rest = body.split(">", 1)
-		one = f"{opening}>{caption(spec.get('title', ''))}{rest}"
+		one = f"{opening}>{caption(spec.get('title', ''), 2, draft)}{rest}"
 		return add_note(one, spec["note"]) if spec.get("note") else one
 	note = f"<p class='note'>{escape(spec['note'])}</p>" if spec.get("note") else ""
-	title = f"<h2>{escape(spec['title'])}</h2>" if spec.get("title") else ""
+	title = f"<h2>{escape(spec['title'])}{DRAFT if draft else ''}</h2>" if spec.get("title") else ""
 	return keep(f"{title}{body}{note}")
 
 
-def body(data: dict, layout: dict | str, today: datetime.date | None = None, subject: str = "", look: dict | None = None) -> str:
+def body(data: dict, layout: dict | str, today: datetime.date | None = None, subject: str = "", look: dict | None = None, show: str = "all") -> str:
 	"""The page: its title, then each section of the layout that has something to show; with "rest" on, then whatever the layout did not name, as it comes."""
 	layout = layout_named(layout) if isinstance(layout, str) else layout
 	today = today or datetime.date.today()
@@ -600,7 +614,7 @@ def body(data: dict, layout: dict | str, today: datetime.date | None = None, sub
 	for spec in layout.get("sections") or []:
 		if spec.get("from"):
 			named.add(spec["from"].split(".")[0])
-		parts.append(section_html(spec, data, today, look))
+		parts.append(section_html(spec, data, today, look, show))
 	if layout.get("rest"):
 		hide = set(layout.get("hide") or []) | named
 		for key, value in data.items():
@@ -611,8 +625,8 @@ def body(data: dict, layout: dict | str, today: datetime.date | None = None, sub
 	return "".join(p for p in parts if p)
 
 
-def html(data: dict, layout: dict | str, brand: str = "", credit: str = "", today: datetime.date | None = None, subject: str = "", look: dict | None = None) -> str:
+def html(data: dict, layout: dict | str, brand: str = "", credit: str = "", today: datetime.date | None = None, subject: str = "", look: dict | None = None, show: str = "all") -> str:
 	"""The whole page for a PDF or a screen: the masthead (the site's logo and name when it has them), then the layout's page, in the look (the plain one when none is given)."""
 	name = brand or (look or {}).get("name") or ""
 	title = layout.get("title", "") if isinstance(layout, dict) else layout
-	return rp.page(title, extra_css(look) + rp.masthead(look, name) + body(data, layout, today, subject, look), name, credit or "Calculated with the Lahiri ayanamsa.", look)
+	return rp.page(title, extra_css(look) + rp.masthead(look, name) + body(data, layout, today, subject, look, show), name, credit or "Calculated with the Lahiri ayanamsa.", look)

@@ -166,10 +166,10 @@ class TestTheKindsOfSection(AstroTestCase):
 			self.assertNotIn(raw, text)
 
 	def test_a_section_of_more_than_one_table_is_kept_whole_with_its_heading_and_a_single_table_carries_its_heading_and_note(self):
-		many = self.section(kind="auto", title="Both", **{"from": "many"}, note="A note.")
+		many = self.section(kind="auto", title="Both", **{"from": "many"}, note="A note.", reviewed=True)
 		self.assertTrue(many.startswith("<table class='sec'><tr><td><h2>Both</h2>"), many[:80])  # a table of one cell: the page never ends inside it
 		self.assertIn("<p class='note'>A note.</p>", many)
-		one = self.section(kind="table", title="Rows", **{"from": "rows"}, columns=[["Name", "name"]], note="A note.")
+		one = self.section(kind="table", title="Rows", **{"from": "rows"}, columns=[["Name", "name"]], note="A note.", reviewed=True)
 		self.assertTrue(one.startswith("<table><caption class='h2'>Rows</caption>"), one[:80])
 		self.assertTrue(one.endswith("<tr><td colspan='1' class='note'>A note.</td></tr></table>"), one[-80:])  # the note is the table's last row: it cannot be left alone on the next page
 
@@ -311,3 +311,63 @@ class TestWhatTheTenPagesSay(AstroTestCase):
 		self.assertIn("<caption class='h2'>Planets</caption>", html)  # a heading is the caption of its table: a page can never end between the two
 		self.assertIn("table.sec", html)
 		self.assertNotIn("<h2>Planets</h2>", html)
+
+
+class TestWhatACustomerSees(AstroTestCase):
+	"""A section says it has been checked by an astrologer ("reviewed"); a customer's page has those only, and a page that shows all marks the others Draft."""
+
+	DATA = {"rows": [{"name": "Sun"}], "d": {"mahadasha": [{"lord": "Sun☉", "start_date": "2015-06-28", "end_date": "2031-06-28", "duration_years": 16.0}]}}
+
+	def test_a_section_nobody_has_checked_is_left_out_of_a_customers_page_and_marked_draft_on_the_others(self):
+		checked = {"kind": "table", "title": "Checked", "from": "rows", "columns": [["Name", "name"]], "reviewed": True}
+		unchecked = {"kind": "table", "title": "Unchecked", "from": "rows", "columns": [["Name", "name"]]}
+		layout = {"title": "T", "sections": [checked, unchecked]}
+		customers = arrange.body(self.DATA, layout, TODAY, show="reviewed")
+		everything = arrange.body(self.DATA, layout, TODAY, show="all")
+		self.assertIn("Checked", customers)
+		self.assertNotIn("Unchecked", customers)
+		self.assertNotIn("Draft", customers)
+		self.assertIn("Unchecked<span class='draft'>Draft</span>", everything)
+		self.assertNotIn("Checked<span class='draft'>", everything)
+		self.assertEqual(everything.count("Draft"), 1)
+
+	def test_every_kind_of_section_can_be_checked_or_not_and_says_so(self):
+		for spec in ({"kind": "lines", "rows": [["a", "{rows.0.name}"]]}, {"kind": "table", "from": "rows", "columns": [["Name", "name"]]}, {"kind": "dasha", "from": "d"}, {"kind": "auto", "from": "rows"}):
+			spec = {"title": "S", **spec}
+			self.assertEqual(arrange.section_html(spec, self.DATA, TODAY, show="reviewed"), "", spec["kind"])
+			self.assertIn("Draft", arrange.section_html(spec, self.DATA, TODAY, show="all"), spec["kind"])
+			self.assertTrue(arrange.section_html({**spec, "reviewed": True}, self.DATA, TODAY, show="reviewed"), spec["kind"])
+			self.assertNotIn("Draft", arrange.section_html({**spec, "reviewed": True}, self.DATA, TODAY, show="all"), spec["kind"])
+
+	def test_of_all_the_dasha_systems_a_customer_has_those_the_layout_names_and_the_rest_say_draft(self):
+		spec = {"kind": "dashas", "reviewed": ["vimshottari"]}
+		customers = words(arrange.section_html(spec, MODES["DASHA_CALC"], TODAY, show="reviewed"))
+		self.assertIn("Vimshottari", customers)
+		self.assertNotIn("Yogini", customers)
+		everything = arrange.section_html(spec, MODES["DASHA_CALC"], TODAY, show="all")
+		self.assertIn("Yogini<span class='draft'>Draft</span>", everything)
+		self.assertIn("Vimshottari</caption>", everything)  # the one checked has no mark
+		self.assertEqual(words(arrange.section_html({"kind": "dashas"}, MODES["DASHA_CALC"], TODAY, show="reviewed")), "")  # a layout that names none: a customer has none
+
+	def test_what_the_live_kundli_already_says_is_what_is_checked_in_the_basic_layouts(self):
+		basic = arrange.layout_named("basic")
+		self.assertEqual([s["title"] for s in basic["sections"] if s.get("reviewed")], ["Birth", "Planets", "Charts", "Vimshottari dasha"])
+		customers = words(arrange.html(MODES["CORE_ADVANCED"], "advanced", today=TODAY, show="reviewed"))
+		for expected in ("Birth", "Planets", "Charts", "Vimshottari dasha", "Moon / Saturn"):
+			self.assertIn(expected, customers)
+		for left_out in ("Houses", "Planet strength", "Yogas", "Ashtakavarga", "Panchang of the birth day", "Draft"):
+			self.assertNotIn(left_out, customers)
+		everything = arrange.html(MODES["CORE_ADVANCED"], "advanced", today=TODAY, show="all")
+		self.assertIn("Yogas<span class='draft'>Draft</span>", everything)
+		self.assertNotIn("Planets<span class='draft'>", everything)
+
+	def test_a_layout_nobody_has_checked_gives_a_customer_nothing_but_its_title(self):
+		page = words(arrange.body(MODES["KP_SYSTEM"], "kp", TODAY, show="reviewed"))
+		self.assertEqual(page.strip().splitlines(), ["KP system", "Planets and cusps with their sign, star, sub and sub-sub lords."])  # the title and its line, no table
+
+	def test_the_dasha_layout_says_which_systems_to_ask_for(self):
+		ask = arrange.layout_named("dasha")["ask"]["requested_dasha_systems"]
+		self.assertEqual(len(ask), 47)
+		self.assertEqual(len(set(ask)), 47)
+		self.assertIn("vimshottari", ask)
+
