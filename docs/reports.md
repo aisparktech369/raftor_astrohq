@@ -126,6 +126,14 @@ Bhaga Chumbana the 7th lord in the 4th with Venus; Jupiter is in the 12th). Matc
 **Tests:** `raftor_astrohq/tests/test_arrange.py` (32; the ten layouts on the engine's own answers for one invented birth, `tests/fixtures/engine_answers_all_modes.json.gz`) and the chart drawing in `test_kundli_reports.py`;
 13 deliberate breakages were each caught. The pictures: lay each mode out with `arrange.html(answer, layout, subject=..., today=...)` and `frappe.utils.pdf.get_pdf`.
 
+## What a report wears (the site's brand)
+
+A report's PDF is drawn in the site's own brand, read when it is made from the places the web pages read it (websitehq `brand.document_brand()`): the colours and the two fonts of the active **Website Theme**,
+the name in **Website Settings**, and a **still logo** kept in **Website HQ Settings, Logo for Documents** (a PDF cannot play the moving logo of the site; the picture is carried inside the PDF as a data address, so no
+network or login is needed; PNG, JPG, GIF or WEBP, up to 400 KB). `report_pdf.site_look()` turns it into a *look*; the kundli, the match making report and every arranged page are drawn in it: the logo over a rule
+in the accent colour, the headings, table heads, lines and charts in the theme's colours, the headings in the theme's heading font where the PDF engine has one (else a serif). A main colour that would not read on white (under 4.5 to 1) gives way to the ink.
+**A site with no theme, or no logo, gets what it always had** (the name in small type, the plain purple). Nothing is typed in the code: change the theme or the logo in Desk and the next report wears it.
+
 ## When a report cannot be made
 
 The record stays **Being made** (a paid report's payment is never undone) and:

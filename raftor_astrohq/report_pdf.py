@@ -22,6 +22,9 @@ ENGINE_NAMES = {"Sun": "Su", "Moon": "Mo", "Mars": "Ma", "Mercury": "Me", "Jupit
 				"Ascendant": "Asc"}
 
 INK, ACCENT, LINE, SOFT = "#2b1a3d", "#6b3fa0", "#b9a6d3", "#f5f0fb"
+# The look of a page: what colours and type it is drawn in. These are what the reports have always worn; a site with a brand of its own gives its own (`site_look`).
+DEFAULT_LOOK = {"ink": INK, "heading": ACCENT, "accent": ACCENT, "line": LINE, "soft": SOFT, "muted": "#6f6285", "faint": "#8a7aa3", "key": "#fbf9fe", "now": "#fff4d6", "bar": "#e9e1f5",
+				"body_font": "Arial, Helvetica, sans-serif", "heading_font": "", "logo": "", "name": ""}
 
 
 # ---- reading the engine's words ----
@@ -80,10 +83,12 @@ def _house_shapes(size: float) -> dict[int, list[tuple[float, float]]]:
 	}
 
 
-def diamond_chart_svg(cells: list[str], lagna: int, title: str = "", size: int = 300, font: int = 12) -> str:
+def diamond_chart_svg(cells: list[str], lagna: int, title: str = "", size: int = 300, font: int = 12, look: dict | None = None) -> str:
 	"""A North Indian chart. `cells` is the engine's list of twelve texts, one for each sign from Aries, naming the planets in it; `lagna` is the sign (0 = Aries)
 	of house 1, which is the top diamond, and the houses run anticlockwise from it. Each house shows its sign's number and its planets (written `font` high: smaller for a small chart).
-	The title, when there is one, is written under the drawing, in room made for it."""
+	The title, when there is one, is written under the drawing, in room made for it. `look` gives the colours (the plain ones when none)."""
+	k = {**DEFAULT_LOOK, **(look or {})}
+	ACCENT, SOFT, INK = k["heading"], k["soft"], k["ink"]
 	shapes = _house_shapes(size)
 	room = 22 if title else 0
 	out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size + room}" viewBox="0 0 {size} {size + room}">',
@@ -98,7 +103,7 @@ def diamond_chart_svg(cells: list[str], lagna: int, title: str = "", size: int =
 			code = planet_code(line)
 			if code:
 				names.append(code + ("(R)" if "℞" in line else ""))
-		out.append(f'<text x="{cx:.1f}" y="{cy + 15:.1f}" text-anchor="middle" font-size="11" fill="#8a7aa3" font-family="Arial, sans-serif">{sign + 1}</text>')
+		out.append(f'<text x="{cx:.1f}" y="{cy + 15:.1f}" text-anchor="middle" font-size="11" fill="{k['faint']}" font-family="Arial, sans-serif">{sign + 1}</text>')
 		rows = [" ".join(names[i:i + 3]) for i in range(0, len(names), 3)] or [""]
 		line = font + 2
 		top = cy - 4 - line / 2 * (len(rows) - 1)
@@ -111,28 +116,38 @@ def diamond_chart_svg(cells: list[str], lagna: int, title: str = "", size: int =
 
 
 # ---- pages ----
-STYLE = f"""
+def style(look: dict | None = None) -> str:
+	"""The page's style sheet in a look (the plain one when none is given). For a PDF maker of an old engine: no variables, so the colours are written in."""
+	k = {**DEFAULT_LOOK, **(look or {})}
+	heading_face = f"h1, h2 {{ font-family: {k['heading_font']}; font-weight: normal; }}\n" if k["heading_font"] else ""
+	return f"""
 <style>
-body {{ font-family: Arial, Helvetica, sans-serif; color: {INK}; font-size: 12px; line-height: 1.45; }}
-h1 {{ font-size: 25px; color: {ACCENT}; margin: 0 0 2px 0; }}
-h2 {{ font-size: 15px; color: {ACCENT}; border-bottom: 2px solid {LINE}; padding-bottom: 3px; margin: 20px 0 8px 0; page-break-after: avoid; }}
-p.sub {{ color: #6f6285; margin: 0 0 10px 0; font-size: 13px; }}
+body {{ font-family: {k['body_font']}; color: {k['ink']}; font-size: 12px; line-height: 1.45; }}
+h1 {{ font-size: 25px; color: {k['heading']}; margin: 0 0 2px 0; }}
+h2 {{ font-size: 15px; color: {k['heading']}; border-bottom: 2px solid {k['line']}; padding-bottom: 3px; margin: 20px 0 8px 0; page-break-after: avoid; }}
+{heading_face}p.sub {{ color: {k['muted']}; margin: 0 0 10px 0; font-size: 13px; }}
 table {{ border-collapse: collapse; width: 100%; page-break-inside: avoid; }}
-th {{ background: {SOFT}; color: {ACCENT}; text-align: left; padding: 5px 8px; border: 1px solid {LINE}; font-size: 11px; }}
-td {{ padding: 5px 8px; border: 1px solid {LINE}; vertical-align: top; }}
-td.k {{ width: 32%; color: #6f6285; background: #fbf9fe; }}
+th {{ background: {k['soft']}; color: {k['heading']}; text-align: left; padding: 5px 8px; border: 1px solid {k['line']}; font-size: 11px; }}
+td {{ padding: 5px 8px; border: 1px solid {k['line']}; vertical-align: top; }}
+td.k {{ width: 32%; color: {k['muted']}; background: {k['key']}; }}
 .num {{ text-align: right; white-space: nowrap; }}
-.now td {{ background: #fff4d6; font-weight: bold; }}
+.now td {{ background: {k['now']}; font-weight: bold; }}
 .charts td {{ border: none; text-align: center; padding: 6px 0 0 0; }}
-.note {{ color: #6f6285; font-size: 10.5px; margin-top: 6px; }}
-.total {{ font-size: 15px; font-weight: bold; color: {ACCENT}; }}
-.bar {{ background: #e9e1f5; height: 11px; width: 100%; }}
-.bar div {{ background: {ACCENT}; height: 11px; }}
-.footer {{ color: #8a7aa3; font-size: 10px; margin-top: 22px; border-top: 1px solid {LINE}; padding-top: 6px; }}
-.brand {{ color: #8a7aa3; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }}
+.note {{ color: {k['muted']}; font-size: 10.5px; margin-top: 6px; }}
+.total {{ font-size: 15px; font-weight: bold; color: {k['heading']}; }}
+.bar {{ background: {k['bar']}; height: 11px; width: 100%; }}
+.bar div {{ background: {k['heading']}; height: 11px; }}
+.footer {{ color: {k['faint']}; font-size: 10px; margin-top: 22px; border-top: 1px solid {k['line']}; padding-top: 6px; }}
+.brand {{ color: {k['faint']}; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }}
+.masthead {{ width: 100%; margin: 0 0 14px 0; border: none; border-bottom: 3px solid {k['accent']}; }}
+.masthead td {{ border: none; padding: 0 0 6px 0; vertical-align: bottom; }}
+.masthead img {{ height: 34px; }}
 .card td {{ width: 50%; }}
 </style>
 """
+
+
+STYLE = style()
 
 
 def _table(rows: list[list], head: list[str] | None = None, classes: dict | None = None) -> str:
@@ -148,9 +163,37 @@ def _facts(rows: list[tuple[str, str]]) -> str:
 	return "<table>" + "".join(f'<tr><td class="k">{escape(label)}</td><td>{escape(value)}</td></tr>' for label, value in rows) + "</table>"
 
 
-def page(title: str, body: str, brand: str, credit: str) -> str:
-	return (f"<html><head><meta charset='utf-8'>{STYLE}</head><body>{body}"
+def page(title: str, body: str, brand: str, credit: str, look: dict | None = None) -> str:
+	return (f"<html><head><meta charset='utf-8'>{style(look)}</head><body>{body}"
 			f'<div class="footer">{escape(credit)}<br>{escape(brand)}</div></body></html>')
+
+
+def masthead(look: dict | None, name: str) -> str:
+	"""The top of a report's first page: the site's still logo over a rule in its accent colour when it has one (the logo says the name); else the name in small type, as it always was."""
+	k = {**DEFAULT_LOOK, **(look or {})}
+	if not k["logo"]:
+		return f'<div class="brand">{escape(name)}</div>' if name else ""
+	return f'<table class="masthead"><tr><td><img src="{escape(k["logo"], quote=True)}" alt="{escape(name, quote=True)}"></td></tr></table>'
+
+
+def look_of(brand: dict) -> dict:
+	"""A look from a site's brand (websitehq `document_brand`); the plain look when it has none."""
+	if not brand or not brand.get("styled"):
+		return dict(DEFAULT_LOOK)
+	def tint(hexcode: str, share: float) -> str:
+		return "#" + "".join(f"{round(int(hexcode[i:i + 2], 16) * share + 255 * (1 - share)):02x}" for i in (1, 3, 5))
+	body_font = brand.get("body_font") or DEFAULT_LOOK["body_font"]
+	return {**DEFAULT_LOOK, "ink": brand["ink"], "heading": brand["heading"], "accent": brand["accent"], "line": brand["line"], "soft": brand["soft"], "muted": brand["muted"], "faint": tint(brand["muted"], 0.8),
+			"key": brand.get("page") or DEFAULT_LOOK["key"], "now": tint(brand["accent"], 0.2), "bar": brand["line"], "body_font": body_font, "heading_font": brand.get("heading_font") or "", "logo": brand.get("logo") or "", "name": brand.get("name") or ""}
+
+
+def site_look() -> dict:
+	"""The look of this site's documents: its own brand when websitehq knows one (theme, name, a still logo), else the plain look."""
+	try:
+		from raftor_websitehq.website_hq.brand import document_brand
+	except ImportError:  # websitehq is not installed: nothing to wear
+		return dict(DEFAULT_LOOK)
+	return look_of(document_brand())
 
 
 def offset_text(hours: float) -> str:

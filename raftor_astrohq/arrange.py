@@ -45,21 +45,27 @@ QUARTER = re.compile(r"\bQuarter-(\d)\b")
 PLACE = re.compile(r"^(?P<sign>[♈-♓]\ufe0e?\s*[A-Za-z]+)\s*(?:(?P<d>\d+)°\s*(?P<m>\d+)[’'](?:\s*(?P<s>\d+)\")?)?\s*(?:\((?P<note>[^)]*)\))?$")
 TIMED = re.compile(r"^(?P<name>.*?)\s*(?:(?P<a>\d{2}:\d{2}:\d{2})(?: \((?P<ad>[+-]\d)\))? from )?(?P<b>\d{2}:\d{2}:\d{2})(?: \((?P<bd>[+-]\d)\))? ends\b(?:\s*\([\d.]+% Balance\s*\))?\s*$")
 ISO = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-EXTRA_CSS = f"""<style>
+def extra_css(look: dict | None = None) -> str:
+	"""What the arranger adds to the page's style sheet, in a look (the plain one when none is given)."""
+	k = {**rp.DEFAULT_LOOK, **(look or {})}
+	return f"""<style>
 table.m td, table.m th {{ text-align: center; padding: 3px 4px; font-size: 10.5px; }}
 table.m td.l, table.m th.l {{ text-align: left; }}
-table.m tr.f td {{ background: {rp.SOFT}; font-weight: bold; }}
+table.m tr.f td {{ background: {k['soft']}; font-weight: bold; }}
 .grid {{ width: 100%; page-break-inside: auto; }}
 .grid tr {{ page-break-inside: avoid; }}
 .grid td {{ border: none; text-align: center; padding: 8px 0 2px 0; vertical-align: top; }}
 td.wrap {{ white-space: normal; }}
 table.sec, table.sec > tbody > tr > td {{ border: none; padding: 0; page-break-inside: avoid; }}
-caption {{ caption-side: top; text-align: left; font-weight: bold; color: {rp.ACCENT}; }}
-caption.h2 {{ font-size: 15px; border-bottom: 2px solid {rp.LINE}; padding: 20px 0 3px 0; }}
+caption {{ caption-side: top; text-align: left; font-weight: bold; color: {k['heading']}; }}
+caption.h2 {{ font-size: 15px; border-bottom: 2px solid {k['line']}; padding: 20px 0 3px 0; }}
 caption.h3 {{ font-size: 13px; padding: 12px 0 4px 0; }}
-table td.note, table.m td.note {{ border: none; padding: 6px 0 0 0; font-size: 10.5px; text-align: left; color: #6f6285; background: none; font-weight: normal; }}
-h3 {{ font-size: 13px; color: {rp.ACCENT}; margin: 12px 0 4px 0; }}
+table td.note, table.m td.note {{ border: none; padding: 6px 0 0 0; font-size: 10.5px; text-align: left; color: {k['muted']}; background: none; font-weight: normal; }}
+h3 {{ font-size: 13px; color: {k['heading']}; margin: 12px 0 4px 0; }}
 </style>"""
+
+
+EXTRA_CSS = extra_css()
 
 
 # ---- reading the engine's words ----
@@ -430,7 +436,7 @@ def matrix(spec, data) -> str:
 	return table_html(head, rows, matrix=True, row_classes=classes)
 
 
-def charts(spec, data) -> str:
+def charts(spec, data, look: dict | None = None) -> str:
 	source = dig(data, spec.get("from")) or {}
 	size, per_row = int(spec.get("size") or 220), int(spec.get("columns") or 2)
 	cells = []
@@ -439,7 +445,7 @@ def charts(spec, data) -> str:
 		if not isinstance(chart, dict) or not chart.get("chart"):
 			continue
 		title = (spec.get("titles") or {}).get(key) or key
-		cells.append(rp.diamond_chart_svg(chart["chart"], int(chart.get("ascendant_house") or 0) % 12, title, size, int(spec.get("font") or 12)))
+		cells.append(rp.diamond_chart_svg(chart["chart"], int(chart.get("ascendant_house") or 0) % 12, title, size, int(spec.get("font") or 12), look))
 	if not cells:
 		return ""
 	return "<table class='grid'>" + "".join("<tr>" + "".join(f"<td>{c}</td>" for c in cells[n:n + per_row]) + "</tr>" for n in range(0, len(cells), per_row)) + "</table>"
@@ -540,7 +546,7 @@ def layout_named(name: str) -> dict:
 	return layout
 
 
-def section_html(spec: dict, data: dict, today: datetime.date) -> str:
+def section_html(spec: dict, data: dict, today: datetime.date, look: dict | None = None) -> str:
 	kind = spec.get("kind")
 	if kind == "lines":
 		body = lines(spec, data)
@@ -557,7 +563,7 @@ def section_html(spec: dict, data: dict, today: datetime.date) -> str:
 	elif kind == "matrix":
 		body = matrix(spec, data)
 	elif kind == "charts":
-		body = charts(spec, data)
+		body = charts(spec, data, look)
 	elif kind == "dasha":
 		return dasha(spec, data, today, title=spec.get("title", "")) + (f"<p class='note'>{escape(spec['note'])}</p>" if spec.get("note") else "")
 	elif kind == "yogas":
@@ -581,7 +587,7 @@ def section_html(spec: dict, data: dict, today: datetime.date) -> str:
 	return keep(f"{title}{body}{note}")
 
 
-def body(data: dict, layout: dict | str, today: datetime.date | None = None, subject: str = "") -> str:
+def body(data: dict, layout: dict | str, today: datetime.date | None = None, subject: str = "", look: dict | None = None) -> str:
 	"""The page: its title, then each section of the layout that has something to show; with "rest" on, then whatever the layout did not name, as it comes."""
 	layout = layout_named(layout) if isinstance(layout, str) else layout
 	today = today or datetime.date.today()
@@ -594,7 +600,7 @@ def body(data: dict, layout: dict | str, today: datetime.date | None = None, sub
 	for spec in layout.get("sections") or []:
 		if spec.get("from"):
 			named.add(spec["from"].split(".")[0])
-		parts.append(section_html(spec, data, today))
+		parts.append(section_html(spec, data, today, look))
 	if layout.get("rest"):
 		hide = set(layout.get("hide") or []) | named
 		for key, value in data.items():
@@ -605,6 +611,8 @@ def body(data: dict, layout: dict | str, today: datetime.date | None = None, sub
 	return "".join(p for p in parts if p)
 
 
-def html(data: dict, layout: dict | str, brand: str = "AstroHQ", credit: str = "", today: datetime.date | None = None, subject: str = "") -> str:
-	"""The whole page for a PDF or a screen."""
-	return rp.page(layout.get("title", "") if isinstance(layout, dict) else layout, EXTRA_CSS + body(data, layout, today, subject), brand, credit or "Calculated with the Lahiri ayanamsa.")
+def html(data: dict, layout: dict | str, brand: str = "", credit: str = "", today: datetime.date | None = None, subject: str = "", look: dict | None = None) -> str:
+	"""The whole page for a PDF or a screen: the masthead (the site's logo and name when it has them), then the layout's page, in the look (the plain one when none is given)."""
+	name = brand or (look or {}).get("name") or ""
+	title = layout.get("title", "") if isinstance(layout, dict) else layout
+	return rp.page(title, extra_css(look) + rp.masthead(look, name) + body(data, layout, today, subject, look), name, credit or "Calculated with the Lahiri ayanamsa.", look)

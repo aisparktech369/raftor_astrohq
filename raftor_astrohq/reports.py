@@ -158,8 +158,9 @@ def kundli_html(c: dict) -> str:
 		(_("Weekday"), weekday), (_("Tithi"), panchang["tithi"]), (_("Nakshatra"), rp.nakshatra_label(moon["nakshatra_index"])),
 		(_("Yoga"), panchang["yoga"]), (_("Karana"), panchang["karana"]), (_("Sunrise and sunset"), f"{sunrise} and {sunset} (local time)"),
 	])
-	charts = (f'<table class="charts"><tr><td>{rp.diamond_chart_svg(c["d1"]["chart"], c["lagna_sign"], _("Lagna chart (Rasi, D1)"))}</td>'
-			  f'<td>{rp.diamond_chart_svg(c["d9"]["chart"], c["d9"]["ascendant_house"], _("Navamsa chart (D9)"))}</td></tr></table>'
+	look = rp.site_look()
+	charts = (f'<table class="charts"><tr><td>{rp.diamond_chart_svg(c["d1"]["chart"], c["lagna_sign"], _("Lagna chart (Rasi, D1)"), look=look)}</td>'
+			  f'<td>{rp.diamond_chart_svg(c["d9"]["chart"], c["d9"]["ascendant_house"], _("Navamsa chart (D9)"), look=look)}</td></tr></table>'
 			  f'<p class="note">{escape_html(_("The number in each house is its sign (1 is Aries). House 1 is the top diamond and the houses run anticlockwise. R means the planet is moving backwards."))}</p>')
 	rows = [[_("Lagna"), rp.sign_label(c["lagna_sign"]), rp.degrees(lagna["degree"]), "-", "1", ""]]
 	for code in ("Su", "Mo", "Ma", "Me", "Ju", "Ve", "Sa", "Ra", "Ke"):
@@ -167,12 +168,12 @@ def kundli_html(c: dict) -> str:
 		rows.append([rp.PLANETS[code], rp.sign_label(p["sign_index"]), rp.degrees(p["longitude"]), rp.nakshatra_label(p["nakshatra_index"], p["pada"]), str(p["house"]), _("Yes") if p["is_retrograde"] else ""])
 	planets = rp._table([[escape_html(str(cell)) for cell in row] for row in rows], [_("Planet"), _("Sign"), _("Degree"), _("Nakshatra"), _("House"), _("Retrograde")])
 	return rp.page(_("Kundli report"),
-		f'<div class="brand">{escape_html(_brand())}</div><h1>{escape_html(_("Kundli report"))}</h1><p class="sub">{escape_html(c["name"])}</p>'
+		f'{rp.masthead(look, _brand())}<h1>{escape_html(_("Kundli report"))}</h1><p class="sub">{escape_html(c["name"])}</p>'
 		f'<h2>{escape_html(_("Birth details"))}</h2>{facts}<h2>{escape_html(_("Panchang of the day"))}</h2>{pan}'
 		f'<h2>{escape_html(_("Birth chart"))}</h2>{charts}'
 		f'<h2 style="page-break-before: always">{escape_html(_("Planets"))}</h2>{planets}'
 		f'<h2>{escape_html(_("Vimshottari dasha"))}</h2>{_dasha_html(c)}',
-		_brand(), CREDIT + " " + _("Made for you on {0}.").format(rp.long_date(c["on"])))
+		_brand(), CREDIT + " " + _("Made for you on {0}.").format(rp.long_date(c["on"])), look)
 
 
 def _dasha_html(c: dict) -> str:
@@ -274,14 +275,15 @@ def match_html(c: dict) -> str:
 	present = lambda flags: _("Present") if flags.get("manglik") else _("Not present")
 	manglik = rp._table([[escape_html(_("Mars is in the house")), escape_html(_mars_house(c["charts"][0])), escape_html(_mars_house(c["charts"][1]))],
 						 [escape_html(_("Manglik dosha")), escape_html(present(doshas["person1"])), escape_html(present(doshas["person2"]))]], ["", _("Boy"), _("Girl")])
+	look = rp.site_look()
 	return rp.page(_("Match making report"),
-		f'<div class="brand">{escape_html(_brand())}</div><h1>{escape_html(_("Match making report"))}</h1><p class="sub">{escape_html(boy["name"])} {escape_html(_("and"))} {escape_html(girl["name"])}</p>'
+		f'{rp.masthead(look, _brand())}<h1>{escape_html(_("Match making report"))}</h1><p class="sub">{escape_html(boy["name"])} {escape_html(_("and"))} {escape_html(girl["name"])}</p>'
 		f'<h2>{escape_html(_("The two people"))}</h2>{people}'
 		f'<h2>{escape_html(_("Ashtakoota (Guna Milan)"))}</h2><p class="total">{escape_html(_("{0} out of 36").format(f"{total:g}"))} ({total / best * 100:.0f}%)</p>{bar}<br>{table}'
 		f'<p class="note">{escape_html(_verdict(total))} {escape_html(_("A guideline, not a decision: a full match is read with the two charts and by an astrologer."))}</p>'
 		f'<h2>{escape_html(_("Manglik"))}</h2>{manglik}'
 		f'<p class="note">{escape_html(_("Manglik is counted when Mars stands in the {0} house from the lagna. Astrologers also read it from the Moon and from Venus, and look at exceptions, so ask an astrologer before you decide anything on it.").format(MANGLIK_HOUSES))}</p>',
-		_brand(), CREDIT + " " + _("Made for you on {0}.").format(rp.long_date(c["on"])))
+		_brand(), CREDIT + " " + _("Made for you on {0}.").format(rp.long_date(c["on"])), look)
 
 
 def match_report(item_code: str, details: dict, buyer: str) -> dict:
