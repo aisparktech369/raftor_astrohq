@@ -1,9 +1,10 @@
-// Astrology API Settings: where the hub is, AstroHQ's key at the hub, and a check that the hub accepts it and the engine answers.
+// Astrology API Settings: how AstroHQ reaches the astrology API (through the hub, or straight), where it is, AstroHQ's key, and a check that the key is accepted and the engine answers.
 frappe.ui.form.on("Astrology API Settings", {
 	refresh(frm) {
 		const ready = frm.doc.enabled && frm.doc.hub_address;
+		const way = frm.doc.how === "Straight to the astrology API" ? __("straight to the astrology API") : __("through the hub");
 		frm.dashboard.add_comment(
-			ready ? __("Charts are available: AstroHQ asks the astrology engine through the hub.") : __("Charts are not available: AstroHQ does not ask the astrology engine anything."),
+			ready ? __("Charts are available: AstroHQ asks the astrology engine {0}.", [way]) : __("Charts are not available: AstroHQ does not ask the astrology engine anything."),
 			ready ? "green" : "orange",
 			true
 		);

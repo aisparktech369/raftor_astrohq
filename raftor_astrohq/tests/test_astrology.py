@@ -48,7 +48,7 @@ USAGE = Reply(200, {"subscription": "ACC-SUB-2026-00011", "plan": "Internal", "s
 
 def configure(**changes):
 	"""Saves the settings (so the page's own rules run). Rolled back with the test."""
-	values = {"enabled": 1, "hub_address": ADDRESS, "api_key": KEY, "api_name": "astrology", "timeout_seconds": 20}
+	values = {"enabled": 1, "how": astrology.HUB, "hub_address": ADDRESS, "api_key": KEY, "api_name": "astrology", "timeout_seconds": 20}
 	values.update(changes)
 	doc = frappe.get_single(astrology.SETTINGS)
 	doc.update(values)
@@ -71,7 +71,7 @@ class TestSettingsPage(AstroTestCase):
 	def test_a_page_never_saved_is_off_and_has_its_defaults(self):
 		s = astrology.settings()
 		self.assertFalse(s.enabled)
-		self.assertEqual((s.api_name, s.timeout, s.address, s.api_key), ("astrology", 20, "", ""))
+		self.assertEqual((s.api_name, s.timeout, s.address, s.api_key, s.how), ("astrology", 20, "", "", astrology.HUB))
 		self.assertFalse(astrology.available())
 
 	def test_available_needs_the_switch_the_address_the_key_and_the_name(self):
@@ -353,6 +353,150 @@ class TestCheckingTheConnection(AstroTestCase):
 		with asking(Reply(200, None)):
 			result = astrology.check_connection()
 		self.assertFalse(result["ok"])
+
+
+ENGINE = "http://127.0.0.1:8795"
+ENVELOPE_SAMPLE = {"status": "success", "opcode": "PANCHANGA", "processing_time": 0.4, "data": {"panchanga": {"vaara": "Sunday"}}}
+ABOUT = Reply(200, {"service": "astrology", "version": "1.1.0", "ready": True, "operations": ["PANCHANGA"], "libraries": {}, "source": None})
+
+
+def engine_error(status, code, message):
+	return Reply(status, {"status": "error", "error": {"code": code, "message": message, "request_id": "abc123"}})
+
+
+def straight_settings(**changes):
+	values = {"how": astrology.STRAIGHT, "hub_address": ENGINE, "api_name": ""}
+	values.update(changes)
+	return configure(**values)
+
+
+class TestStraightToTheAstrologyAPI(AstroTestCase):
+	"""AstroHQ asks the astrology API itself (the small service on this server, or an AWS Lambda function): its own contract, no hub."""
+
+	def setUp(self):
+		super().setUp()
+		straight_settings()
+
+	def test_it_can_be_switched_on_without_the_hubs_api_name_but_not_without_an_address_or_key(self):
+		self.assertTrue(astrology.available())
+		for missing, words in (("hub_address", "address"), ("api_key", "key")):
+			with self.subTest(missing):
+				with self.assertRaises(frappe.ValidationError) as caught:
+					straight_settings(**{missing: ""})
+				self.assertIn(words, str(caught.exception))
+
+	def test_the_request_is_the_payload_itself_with_the_key_and_nothing_of_the_hub(self):
+		with asking(Reply(200, ENVELOPE_SAMPLE)) as web:
+			astrology.chart({**BORN, "full_name": "Asha Rao"}, "PANCHANGA")
+		(method, url), kwargs = web.call_args.args, web.call_args.kwargs
+		self.assertEqual((method, url), ("POST", ENGINE + "/"))
+		self.assertEqual(kwargs["headers"], {"X-Api-Key": KEY})
+		self.assertEqual(kwargs["json"], {"opcode": "PANCHANGA", "birth_data": BORN})
+		self.assertNotIn("api_name", kwargs["json"])
+		self.assertNotIn("Asha", json.dumps(kwargs["json"]))
+
+	def test_the_engines_answer_is_what_comes_back_and_matching_sends_the_partner(self):
+		with asking(Reply(200, {"status": "success", "opcode": "MATCH_CALC", "data": {"compatibility": {"total_score": 21}}})) as web:
+			out = astrology.chart(BORN, "MATCH_CALC", partner={**BORN, "year": 1983})
+		self.assertEqual(out["compatibility"]["total_score"], 21)
+		self.assertEqual(web.call_args.kwargs["json"]["birth_data_2"]["year"], 1983)
+
+	def test_an_engine_error_inside_a_good_answer_is_not_handed_over_as_a_chart(self):
+		with asking(Reply(200, {"status": "success", "data": {"error": "Unable to compute compatibility: missing nakshatra data"}})):
+			with self.assertRaises(astrology.AstrologyUnavailable) as caught:
+				astrology.chart(BORN, "MATCH_CALC", partner=BORN)
+		self.assertIn("missing nakshatra", str(caught.exception))
+
+	def test_a_good_status_without_an_envelope_is_unreadable(self):
+		for reply in (Reply(200, {"success": True, "data": {"x": 1}}), Reply(200, {"status": "error"}), Reply(200, None), Reply(200, [1])):
+			with self.subTest(str(reply._body)):
+				with asking(reply):
+					with self.assertRaises(astrology.AstrologyUnavailable):
+						astrology.chart(BORN)
+
+	def test_a_refusal_comes_back_with_the_services_own_words(self):
+		for status, code in ((422, "invalid_request"), (400, "bad_request"), (413, "too_large")):
+			with self.subTest(status):
+				with asking(engine_error(status, code, "birth_data.month must be in [1, 12], got 13")):
+					with self.assertRaises(astrology.AstrologyRefused) as caught:
+						astrology.chart({**BORN, "month": 13})
+				self.assertIn("month must be in [1, 12]", str(caught.exception))
+
+	def test_each_way_the_service_can_say_no_has_its_own_plain_sentence(self):
+		cases = {
+			401: (engine_error(401, "unauthorized", "Missing or wrong API key."), "did not accept AstroHQ's API key"),
+			404: (Reply(404, None), "Nothing answers as the astrology API"),
+			503: (engine_error(503, "engine_not_ready", "The astrology engine is not ready on this server."), "not ready"),
+			500: (engine_error(500, "engine_error", "The astrology engine could not complete this request."), "not working"),
+			405: (engine_error(405, "method_not_allowed", "Use POST."), "not working"),
+		}
+		for status, (reply, words) in cases.items():
+			with self.subTest(status):
+				with asking(reply):
+					with self.assertRaises(astrology.AstrologyUnavailable) as caught:
+						astrology.chart(BORN)
+				self.assertIn(words, str(caught.exception))
+				self.assertNotIn(KEY, str(caught.exception))
+
+	def test_the_service_being_down_is_unavailable_not_a_crash(self):
+		for failure in (requests.exceptions.ConnectionError("refused"), requests.exceptions.Timeout("slow")):
+			with self.subTest(type(failure).__name__):
+				with mock.patch.object(astrology.requests, "request", side_effect=failure):
+					with self.assertRaises(astrology.AstrologyUnavailable):
+						astrology.chart(BORN)
+
+	def test_switched_off_it_asks_nothing(self):
+		straight_settings(enabled=0)
+		with asking() as web:
+			with self.assertRaises(astrology.AstrologyUnavailable):
+				astrology.chart(BORN)
+		web.assert_not_called()
+
+	def test_the_connection_check_asks_who_it_is_then_for_a_sample_chart(self):
+		with asking(ABOUT, Reply(200, ENVELOPE_SAMPLE)) as web:
+			result = astrology.check_connection()
+		self.assertTrue(result["ok"], result)
+		self.assertIn("version 1.1.0", result["message"])
+		(first, second) = web.call_args_list
+		self.assertEqual(first.args, ("GET", ENGINE + "/"))
+		self.assertEqual((second.args[0], second.args[1]), ("POST", ENGINE + "/"))
+		self.assertEqual(second.kwargs["json"]["opcode"], "PANCHANGA")
+
+	def test_it_can_be_tried_before_it_is_switched_on(self):
+		straight_settings(enabled=0)
+		with asking(ABOUT, Reply(200, ENVELOPE_SAMPLE)):
+			self.assertTrue(astrology.check_connection()["ok"])
+
+	def test_a_service_that_says_it_is_not_ready_is_not_asked_for_a_chart(self):
+		with asking(Reply(200, {"service": "astrology", "version": "1.1.0", "ready": False})) as web:
+			result = astrology.check_connection()
+		self.assertFalse(result["ok"])
+		self.assertIn("not ready", result["message"])
+		self.assertEqual(web.call_count, 1)
+
+	def test_a_service_that_answers_503_to_who_are_you(self):
+		with asking(Reply(503, {"service": "astrology", "ready": False})) as web:
+			result = astrology.check_connection()
+		self.assertFalse(result["ok"])
+		self.assertEqual(web.call_count, 1)
+
+	def test_a_wrong_key_shows_up_at_the_chart_and_is_said_plainly(self):
+		with asking(ABOUT, engine_error(401, "unauthorized", "Missing or wrong API key.")):
+			result = astrology.check_connection()
+		self.assertFalse(result["ok"])
+		self.assertIn("did not accept AstroHQ's API key", result["message"])
+
+	def test_a_service_that_cannot_be_reached(self):
+		with mock.patch.object(astrology.requests, "request", side_effect=requests.exceptions.ConnectionError("refused")):
+			result = astrology.check_connection()
+		self.assertFalse(result["ok"])
+		self.assertIn("did not answer", result["message"])
+
+	def test_the_way_defaults_to_the_hub_and_switching_back_needs_the_name(self):
+		configure()  # through the hub again, with its API name
+		self.assertEqual(astrology.settings().how, astrology.HUB)
+		with self.assertRaises(frappe.ValidationError):
+			configure(api_name="")
 
 
 class TestWhoMaySeeAndUseIt(AstroTestCase):

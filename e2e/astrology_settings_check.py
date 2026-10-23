@@ -34,14 +34,21 @@ class StandInHub(BaseHTTPRequestHandler):
 		self.wfile.write(data)
 
 	def _handle(self):
+		engine = self.path in ("/", "")  # the astrology API's own contract; the hub's paths are .../gateway.usage and .../gateway.call
+		if engine and self.command == "GET":  # who are you: asks for no key
+			return self._reply(200, {"service": "astrology", "version": "e2e-stand-in", "ready": True, "operations": ["PANCHANGA"], "libraries": {}, "source": None})
 		if self.headers.get("X-Api-Key") != GOOD_KEY:
+			if engine:
+				return self._reply(401, {"status": "error", "error": {"code": "unauthorized", "message": "Missing or wrong API key.", "request_id": "stand-in"}})
 			return self._reply(401, {"exc_type": "AuthenticationError", "_server_messages": json.dumps([json.dumps({"message": "Invalid or inactive API key"})])})
 		if self.path.endswith("gateway.usage"):
 			return self._reply(200, {"subscription": "ACC-SUB-STAND-IN", "plan": "Internal", "status": "Active", "calls_used": 0, "calls_limit": 0, "calls_remaining": 0})
 		length = int(self.headers.get("content-length") or 0)
 		asked = json.loads(self.rfile.read(length) or b"{}")
-		return self._reply(200, {"success": True, "request_id": "stand-in", "data": {"status": "success", "opcode": asked["payload"]["opcode"], "processing_time": 0.01,
-								"data": {"panchanga": {"tithi": "Krishna Paksha Dhasami", "vaara": "Sunday"}}}})
+		envelope = {"status": "success", "opcode": (asked.get("payload") or asked)["opcode"], "processing_time": 0.01, "data": {"panchanga": {"tithi": "Krishna Paksha Dhasami", "vaara": "Sunday"}}}
+		if engine:
+			return self._reply(200, envelope)
+		return self._reply(200, {"success": True, "request_id": "stand-in", "data": envelope})
 
 	do_GET = do_POST = _handle
 
@@ -60,6 +67,8 @@ def snap(pg, role, caption):
 
 
 def setup():
+	if run('print("R=" + str(frappe.db.get_single_value("Astrology API Settings", "enabled", cache=False) or 0))').strip() == "R=1":
+		sys.exit("Astrology API Settings is switched on (in real use): this check starts from an empty page and would wipe it. Not running.")
 	run(f'''
 for email, first, roles in (("{OWNER}", "Asha", ["System Manager"]), ("{ACCOUNTS}", "Bina", ["Accounts Manager"]), ("{BUSINESS}", "Chitra", ["Business Team"])):
     frappe.get_doc({{"doctype": "User", "email": email, "first_name": first, "send_welcome_email": 0, "user_type": "System User", "roles": [{{"role": r}} for r in roles if frappe.db.exists("Role", r)]}}).insert(ignore_permissions=True)
@@ -95,6 +104,11 @@ print("R=" + "|".join([str(doc.enabled), doc.hub_address or "", doc.get_password
 	return next((line.split("=", 1)[1] for line in out.splitlines() if line.startswith("R=")), "")
 
 
+def way():
+	out = run('print("R=" + (frappe.get_single("Astrology API Settings").how or ""))')
+	return next((line.split("=", 1)[1] for line in out.splitlines() if line.startswith("R=")), "")
+
+
 def alert_text(pg):
 	return pg.inner_text(".desk-alert") if pg.locator(".desk-alert").count() else ""
 
@@ -104,7 +118,7 @@ def stage_owner():
 		pg.goto(B + "/app/astrology-api-settings", wait_until="networkidle")
 		pg.wait_for_timeout(3000)
 		text = pg.inner_text("body")
-		step("the owner sees the page: the hub, the key, the name, the wait and the check", all(w in text for w in ("The Hub", "Hub Address", "API Key", "Name of the API in the Hub", "Wait for an Answer", "Is It Connected", "Check the Connection")), text[:120].replace("\n", " | "))
+		step("the owner sees the page: the way, the address, the key, the name, the wait and the check", all(w in text for w in ("How AstroHQ Reaches It", "Where It Is", "Address", "API Key", "Name of the API in the Hub", "Wait for an Answer", "Is It Connected", "Check the Connection")), text[:120].replace("\n", " | "))
 		step("it explains what is sent (numbers, never a name) and says charts are not available yet", "never a name" in text and "Charts are not available" in text, "")
 		step("the name of the API and the wait start filled in", saved().endswith("|astrology|20") or saved() == "", saved())
 		snap(pg, "owner", "Desk: Astrology API Settings, off and empty")
@@ -145,7 +159,7 @@ def stage_owner():
 		pg.reload()
 		pg.wait_for_timeout(3000)
 		text = pg.inner_text("body")
-		step("and the page keeps what the hub said and when", "Connected. The hub knows AstroHQ" in text and "Last Checked" in text, "")
+		step("and the page keeps what the hub said and when", "Connected to the hub, which knows AstroHQ" in text and "Last Checked" in text, "")
 
 		pg.locator('[data-fieldname="api_key"] input').first.fill(WRONG_KEY)
 		pg.keyboard.press("Control+s")
@@ -168,6 +182,28 @@ def stage_owner():
 		step("the connection can still be tried while it is off", "Connected" in alert_text(pg), alert_text(pg)[:160])
 		snap(pg, "owner", "Desk: off, the connection can still be tried")
 
+		# the way: straight to the astrology API instead of through the hub
+		pg.locator('[data-fieldname="how"] select').first.select_option("Straight to the astrology API")
+		pg.wait_for_timeout(600)
+		step("choosing the straight way hides the hub's API name", not pg.locator('[data-fieldname="api_name"]').first.is_visible(), "")
+		pg.locator('[data-fieldname="enabled"] input[type=checkbox]').first.check()
+		pg.keyboard.press("Control+s")
+		pg.wait_for_timeout(3000)
+		step("it saves with the straight way chosen, the address and the key", saved().startswith(f"1|http://127.0.0.1:{PORT}|{GOOD_KEY}|") and way() == "Straight to the astrology API", saved() + " / " + way())
+		pg.locator('[data-fieldname="check_connection"] button').first.click()
+		pg.wait_for_timeout(5000)
+		step("the check asks the astrology API itself and says so", "Connected to the astrology API" in alert_text(pg) and "e2e-stand-in" in alert_text(pg), alert_text(pg)[:160])
+		snap(pg, "owner", "Desk: straight to the astrology API, connected")
+		pg.reload()
+		pg.wait_for_timeout(3000)
+		step("the page says charts are available straight to the astrology API", "straight to the astrology API" in pg.inner_text("body"), "")
+		pg.locator('[data-fieldname="api_key"] input').first.fill(WRONG_KEY)
+		pg.keyboard.press("Control+s")
+		pg.wait_for_timeout(3000)
+		pg.locator('[data-fieldname="check_connection"] button').first.click()
+		pg.wait_for_timeout(5000)
+		step("straight, a key the service does not accept is reported in plain words", "did not accept AstroHQ's API key" in alert_text(pg), alert_text(pg)[:160])
+
 	desk("owner", OWNER, look)
 
 
@@ -176,7 +212,7 @@ def stage_others(who, email, caption):
 		pg.goto(B + "/app/astrology-api-settings", wait_until="networkidle")
 		pg.wait_for_timeout(3000)
 		text = pg.inner_text("body")
-		step(f"{who} is not given the page that holds the key", GOOD_KEY not in text and "Hub Address" not in text and ("not permitted" in text.lower() or "insufficient" in text.lower() or "no permission" in text.lower()), text[:140].replace("\n", " | "))
+		step(f"{who} is not given the page that holds the key", GOOD_KEY not in text and "Where It Is" not in text and ("not permitted" in text.lower() or "insufficient" in text.lower() or "no permission" in text.lower()), text[:140].replace("\n", " | "))
 		snap(pg, who, caption)
 
 	desk(who, email, look)

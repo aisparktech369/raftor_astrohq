@@ -1,8 +1,9 @@
 """AstroHQ's way to the astrology API.
 
-The astrology engine (Vedic charts, dasha, panchang, KP, matching) is the hub's `astrology` API, and the hub passes the call on to wherever
-the engine runs. AstroHQ only asks, over the web, with the key the hub gave it. It never imports an astrology library: those are under
-the AGPL, and keeping them out of AstroHQ keeps AstroHQ a separate program (tests/test_astrology.py checks that).
+The astrology engine (Vedic charts, dasha, panchang, KP, matching) is a program of its own that AstroHQ only asks, over the web, with a key.
+Two ways to reach it, chosen in Astrology API Settings: through the hub (the hub's `astrology` API, which passes the call on to wherever the engine
+runs) or straight to the astrology API (a small service on this server, or an AWS Lambda function: the same contract). AstroHQ never imports an
+astrology library: those are under the AGPL, and keeping them out of AstroHQ keeps AstroHQ a separate program (tests/test_astrology.py checks that).
 
     from raftor_astrohq import astrology
     born = astrology.birth_data(profile_row, latitude=28.6139, longitude=77.209, timezone_offset=5.5)
@@ -25,6 +26,7 @@ from frappe import _
 from frappe.utils import getdate, now_datetime, strip_html_tags
 
 SETTINGS = "Astrology API Settings"
+HUB, STRAIGHT = "Through the hub", "Straight to the astrology API"  # the two values of the page's "How AstroHQ Reaches It"
 CALL = "/api/method/raftor_apimanager.gateway.call"
 USAGE = "/api/method/raftor_apimanager.gateway.usage"
 LOCAL_HOSTS = ("localhost", "127.0.0.1", "::1")  # http is accepted for these only, for trying things on one computer
@@ -54,6 +56,7 @@ def settings() -> frappe._dict:
 	doc = frappe.get_single(SETTINGS)
 	return frappe._dict(
 		enabled=bool(doc.enabled),
+		how=doc.how or HUB,
 		address=(doc.hub_address or "").strip().rstrip("/"),
 		api_key=doc.get_password("api_key", raise_exception=False) or "",
 		api_name=(doc.api_name or "").strip(),
@@ -61,24 +64,29 @@ def settings() -> frappe._dict:
 	)
 
 
+def _filled_in(s: frappe._dict) -> bool:
+	"""Address and key, and (only through the hub) the API's name."""
+	return bool(s.address and s.api_key and (s.how == STRAIGHT or s.api_name))
+
+
 def available() -> bool:
-	"""Whether charts can be asked for now: switched on, and the hub's address, AstroHQ's key and the API's name are filled in."""
+	"""Whether charts can be asked for now: switched on, and the address, AstroHQ's key (and, through the hub, the API's name) are filled in."""
 	s = settings()
-	return bool(s.enabled and s.address and s.api_key and s.api_name)
+	return bool(s.enabled and _filled_in(s))
 
 
 def clean_address(text: str) -> str:
-	"""The hub's address as `https://host[:port]`, or a plain sentence saying what is wrong with it."""
+	"""The address as `https://host[:port]`, or a plain sentence saying what is wrong with it."""
 	address = (text or "").strip().rstrip("/")
 	if not address:
 		return ""
 	parts = urlsplit(address)
 	if parts.scheme not in ("https", "http") or not parts.hostname:
-		frappe.throw(_("The hub's address must look like https://hub.example.com"))
+		frappe.throw(_("The address must look like https://hub.example.com"))
 	if parts.scheme == "http" and parts.hostname not in LOCAL_HOSTS:
-		frappe.throw(_("The hub's address must start with https:// so that the key and the birth details travel safely. (An address on this computer may start with http://.)"))
+		frappe.throw(_("The address must start with https:// so that the key and the birth details travel safely. (An address on this computer may start with http://.)"))
 	if parts.username or parts.password or parts.path or parts.query or parts.fragment:
-		frappe.throw(_("Give only the hub's address, such as https://hub.example.com: no user name, path or extras."))
+		frappe.throw(_("Give only the address, such as https://hub.example.com: no user name, path or extras."))
 	return address
 
 
@@ -131,10 +139,11 @@ def _sendable(birth: dict) -> dict:
 
 def _ask(payload: dict, s: frappe._dict | None = None, must_be_on: bool = True) -> dict:
 	s = s or settings()
-	if not ((s.enabled or not must_be_on) and s.address and s.api_key and s.api_name):
+	if not ((s.enabled or not must_be_on) and _filled_in(s)):
 		raise AstrologyUnavailable(_("Charts are switched off or not set up yet: see Astrology API Settings."))
-	response = _send("POST", s.address + CALL, s, {"api_name": s.api_name, "payload": payload})
-	return _result(response)
+	if s.how == STRAIGHT:  # the astrology API's own contract: the payload itself, answered with the engine's envelope
+		return _result(_send("POST", s.address + "/", s, payload), straight=True)
+	return _result(_send("POST", s.address + CALL, s, {"api_name": s.api_name, "payload": payload}))
 
 
 def _send(method: str, url: str, s: frappe._dict, body: dict | None = None) -> requests.Response:
@@ -144,8 +153,9 @@ def _send(method: str, url: str, s: frappe._dict, body: dict | None = None) -> r
 		raise AstrologyUnavailable(_("The astrology service did not answer. Try again in a little while.")) from None
 
 
-def _result(response: requests.Response) -> dict:
-	"""The chart inside the hub's answer, or the right exception for what went wrong."""
+def _result(response: requests.Response, straight: bool = False) -> dict:
+	"""The chart inside the answer, or the right exception for what went wrong. `straight` is the astrology API's own contract (the answer is the
+	engine's envelope), not the hub's (the envelope inside {"success", "data"})."""
 	status = response.status_code
 	try:
 		body = response.json()
@@ -153,27 +163,33 @@ def _result(response: requests.Response) -> dict:
 		body = None
 	if not isinstance(body, dict):
 		body = {}
+	who = _("the astrology API") if straight else _("the hub")
 	if status == 200:
-		if isinstance(body.get("message"), dict) and "data" not in body:  # an answer that came wrapped, as Frappe sometimes does
-			body = body["message"]
-		answer = body.get("data")
-		if body.get("success") and isinstance(answer, dict):
+		if straight:
+			answer = body if body.get("status") == "success" else None
+		else:
+			if isinstance(body.get("message"), dict) and "data" not in body:  # an answer that came wrapped, as Frappe sometimes does
+				body = body["message"]
+			answer = body.get("data") if body.get("success") else None
+		if isinstance(answer, dict):
 			chart = answer["data"] if answer.get("status") == "success" and "data" in answer else answer
 			if isinstance(chart, dict) and isinstance(chart.get("error"), str):  # the engine could not finish (it says so inside an otherwise good answer)
 				raise AstrologyUnavailable(chart["error"])
 			return chart
 		raise AstrologyUnavailable(_("The astrology service sent an answer AstroHQ could not read."))
 	words = _words(body)
-	if status in (400, 417, 422):
+	if status in (400, 413, 417, 422):
 		raise AstrologyRefused(words or _("The birth details were not accepted."))
 	if status == 401:
-		raise AstrologyUnavailable(_("The hub did not accept AstroHQ's API key. Ask whoever runs the hub for a new one and put it in Astrology API Settings."))
+		raise AstrologyUnavailable(_("{0} did not accept AstroHQ's API key. Ask whoever runs it for a new one and put it in Astrology API Settings.").format(who[:1].upper() + who[1:]))
 	if status == 403:
 		raise AstrologyUnavailable(_("AstroHQ's plan at the hub does not include the astrology API, or its subscription is not active."))
 	if status == 404:
-		raise AstrologyUnavailable(_("The hub has no astrology API by that name. Check the hub's address and the API's name in Astrology API Settings."))
+		raise AstrologyUnavailable(_("Nothing answers as the astrology API at that address. Check the address in Astrology API Settings.") if straight else _("The hub has no astrology API by that name. Check the hub's address and the API's name in Astrology API Settings."))
 	if status == 429:
 		raise AstrologyUnavailable(_("AstroHQ has used up the calls it may make to the astrology API for now."))
+	if status == 503 and straight:
+		raise AstrologyUnavailable(_("The astrology API is running but is not ready (its key or its star-position files are not set up). Ask whoever runs it."))
 	raise AstrologyUnavailable(_("The astrology service is not working right now. Try again in a little while."))
 
 
@@ -190,30 +206,46 @@ def _words(body: dict) -> str:
 				return text[:300]
 		except (ValueError, IndexError, AttributeError, TypeError):
 			pass
+	error = body.get("error")
+	if isinstance(error, dict) and isinstance(error.get("message"), str):  # the astrology API's own refusal
+		return strip_html_tags(error["message"]).strip()[:300]
 	message = body.get("message")
 	return strip_html_tags(message).strip()[:300] if isinstance(message, str) else ""
 
 
 def check_connection() -> dict:
-	"""Asks the hub whether it accepts AstroHQ's key (this counts no call) and then whether the engine answers a sample chart.
-	Uses the saved address and key whether or not charts are switched on, so it can be tried before switching on. {"ok": bool, "message": str}"""
+	"""Asks whether AstroHQ's key is accepted and the engine answers a sample chart. Through the hub, the hub is asked first about the key (this
+	counts no call); straight, the astrology API is asked who it is and whether it is ready. Uses the saved address and key whether or not charts
+	are switched on, so it can be tried before switching on. {"ok": bool, "message": str}"""
 	s = settings()
-	if not (s.address and s.api_key and s.api_name):
-		return {"ok": False, "message": _("Fill in the hub's address, AstroHQ's API key and the API's name first, and save.")}
+	if not _filled_in(s):
+		return {"ok": False, "message": _("Fill in the address and AstroHQ's API key (and, through the hub, the API's name) first, and save.")}
 	try:
-		usage = _send("GET", s.address + USAGE, s)
-		if usage.status_code != 200:
-			_result(usage)  # raises the right sentence for 401, 403, 429 and the rest
-			raise AstrologyUnavailable(_("The hub did not give the key's usage."))
-		plan = (usage.json() or {}).get("plan") or _("an unnamed plan")
-		answer = _ask({"opcode": "PANCHANGA", "birth_data": SAMPLE}, s, must_be_on=False)
+		if s.how == STRAIGHT:
+			info = _send("GET", s.address + "/", s)
+			if info.status_code != 200:
+				_result(info, straight=True)  # raises the right sentence for 503, 404 and the rest
+				raise AstrologyUnavailable(_("The astrology API did not say who it is."))
+			about = info.json() or {}
+			if not about.get("ready"):
+				return {"ok": False, "message": _("The astrology API is running but says it is not ready. Ask whoever runs it.")}
+			answer = _ask({"opcode": "PANCHANGA", "birth_data": SAMPLE}, s, must_be_on=False)
+			named = _("the astrology API (version {0})").format(about.get("version") or "?")
+		else:
+			usage = _send("GET", s.address + USAGE, s)
+			if usage.status_code != 200:
+				_result(usage)  # raises the right sentence for 401, 403, 429 and the rest
+				raise AstrologyUnavailable(_("The hub did not give the key's usage."))
+			plan = (usage.json() or {}).get("plan") or _("an unnamed plan")
+			answer = _ask({"opcode": "PANCHANGA", "birth_data": SAMPLE}, s, must_be_on=False)
+			named = _("the hub, which knows AstroHQ on the plan {0}").format(plan)
 	except (AstrologyUnavailable, AstrologyRefused) as error:
 		return {"ok": False, "message": str(error)}
 	except ValueError:
-		return {"ok": False, "message": _("The hub sent an answer AstroHQ could not read.")}
+		return {"ok": False, "message": _("The answer could not be read.")}
 	if not isinstance(answer, dict) or not answer.get("panchanga"):
-		return {"ok": False, "message": _("The hub accepted the key but the engine's answer was empty.")}
-	return {"ok": True, "message": _("Connected. The hub knows AstroHQ on the plan {0}, and the astrology engine answered a sample chart.").format(plan)}
+		return {"ok": False, "message": _("The key was accepted but the engine's answer was empty.")}
+	return {"ok": True, "message": _("Connected to {0}: the astrology engine answered a sample chart.").format(named)}
 
 
 def note_connection(result: dict) -> None:

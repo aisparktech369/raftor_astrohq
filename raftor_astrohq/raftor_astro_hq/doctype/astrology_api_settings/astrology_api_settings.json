@@ -6,6 +6,7 @@
  "field_order": [
   "note",
   "enabled",
+  "how",
   "section_hub",
   "hub_address",
   "api_key",
@@ -21,7 +22,7 @@
    "fieldname": "note",
    "fieldtype": "HTML",
    "label": "What this is",
-   "options": "<p>AstroHQ asks the hub's astrology API for an astrologer's charts: birth chart, dasha, panchang, KP and matching. The hub passes the request on to the astrology engine. Only the numbers the calculation needs are sent (date, time, latitude, longitude and the time zone), never a name.</p>"
+   "options": "<p>AstroHQ asks the astrology API for an astrologer's charts: birth chart, dasha, panchang, KP and matching. It can ask through the hub, which passes the request on to the engine, or straight to the astrology API: the small service on this server, or an AWS Lambda function. Only the numbers the calculation needs are sent (date, time, latitude, longitude and the time zone), never a name.</p>"
   },
   {
    "default": "0",
@@ -31,18 +32,26 @@
    "label": "Charts Are Available"
   },
   {
+   "default": "Through the hub",
+   "description": "Through the hub: the hub keeps count of the calls and passes each on to the engine. Straight: AstroHQ asks the astrology API itself, with the key set on that service.",
+   "fieldname": "how",
+   "fieldtype": "Select",
+   "label": "How AstroHQ Reaches It",
+   "options": "Through the hub\nStraight to the astrology API"
+  },
+  {
    "fieldname": "section_hub",
    "fieldtype": "Section Break",
-   "label": "The Hub"
+   "label": "Where It Is"
   },
   {
-   "description": "Where the hub is, for example https://hub.example.com. It must start with https:// (an address on this computer may start with http://).",
+   "description": "The hub's address, for example https://hub.example.com, or the astrology API's, for example http://127.0.0.1:8795 for the service on this server. It must start with https:// (an address on this computer may start with http://).",
    "fieldname": "hub_address",
    "fieldtype": "Data",
-   "label": "Hub Address"
+   "label": "Address"
   },
   {
-   "description": "The key the hub gave to AstroHQ (on the hub, Desk, API Key). It is kept encrypted and is never shown again.",
+   "description": "The key the hub gave to AstroHQ, or, going straight, the key set on the astrology API. It is kept encrypted and is never shown again.",
    "fieldname": "api_key",
    "fieldtype": "Password",
    "label": "API Key"
@@ -52,11 +61,12 @@
    "description": "The name the astrology API has in the hub's API Registry.",
    "fieldname": "api_name",
    "fieldtype": "Data",
-   "label": "Name of the API in the Hub"
+   "label": "Name of the API in the Hub",
+   "depends_on": "eval:doc.how!='Straight to the astrology API'"
   },
   {
    "default": "20",
-   "description": "How long to wait for the hub before giving up (5 to 60). A chart takes about a second; the first one after a quiet time can take a few.",
+   "description": "How long to wait for an answer before giving up (5 to 60). A chart takes about a second; the first one after a quiet time can take a few.",
    "fieldname": "timeout_seconds",
    "fieldtype": "Int",
    "label": "Wait for an Answer (seconds)"
@@ -80,14 +90,14 @@
   {
    "fieldname": "last_result",
    "fieldtype": "Small Text",
-   "label": "What the Hub Said",
+   "label": "What It Answered",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-10-30 12:00:00",
+ "modified": "2026-10-30 15:00:00",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Astrology API Settings",

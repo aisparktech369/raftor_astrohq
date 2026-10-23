@@ -1,4 +1,4 @@
-"""Astrology API Settings: where the hub is and AstroHQ's key there. Only a System Manager sees them: the key is AstroHQ's way into the hub."""
+"""Astrology API Settings: how AstroHQ reaches the astrology API (through the hub, or straight), where it is and AstroHQ's key there. Only a System Manager sees them: the key is AstroHQ's way in."""
 import frappe
 from frappe import _
 from frappe.model.document import Document
@@ -13,14 +13,17 @@ class AstrologyAPISettings(Document):
 		if not 5 <= int(self.timeout_seconds or 0) <= 60:
 			frappe.throw(_("Wait for an answer between 5 and 60 seconds."))
 		if self.enabled:
-			missing = [label for field, label in (("hub_address", _("the hub's address")), ("api_key", _("the API key")), ("api_name", _("the API's name"))) if not self.get(field)]
+			needed = [("hub_address", _("the address")), ("api_key", _("the API key"))]
+			if (self.how or astrology.HUB) != astrology.STRAIGHT:
+				needed.append(("api_name", _("the API's name")))
+			missing = [label for field, label in needed if not self.get(field)]
 			if missing:
 				frappe.throw(_("To make charts available, fill in {0}.").format(", ".join(missing)))
 
 	@frappe.whitelist()
 	def check_connection(self) -> dict:
-		"""Asks the hub whether the saved key is accepted and the engine answers (one sample chart), and keeps what it said."""
-		self.check_permission("write")  # (the key is AstroHQ's way into the hub: only those who may change it)
+		"""Asks whether the saved key is accepted and the engine answers (one sample chart), and keeps what it said."""
+		self.check_permission("write")  # (the key is AstroHQ's way in: only those who may change it)
 		from raftor_astrohq import astrology
 
 		result = astrology.check_connection()
