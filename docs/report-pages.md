@@ -22,7 +22,7 @@ The pictures that went with this (a web page on a phone and on a desktop, the br
 | 4 | **The web page** | `my/report` shows a card with the file | the same page shows the arranged report: summary cards, tabs, the tables, a Download PDF button, next steps; wide tables scroll inside their box, the page never scrolls sideways; the running period is marked **today** | websitehq section "Report Body" fed by an astrohq method; servicehq page `my/report` |
 | 5 | **The PDF** | kundli and match | any layout, in the brand, a dated copy ("made for you on ..."); cover with logo, name and birth details; footer with the brand and the page number | `arrange.html` + brand |
 | 6 | **One tap for more** | "Get it free" opens the form again | the person's saved details make the next report at once, from the kept answer (no API call) | servicehq `next_steps`, `free_reports.cards` |
-| 7 | **The astrologer's view** | none | the astrologer of a booking opens the customer's reports, **all sections**, the unchecked ones marked Draft; only with the customer's consent line | servicehq `proof.can_view`, a card in the astrologer's booking |
+| 7 | **The astrologer's page** | none | one wide page of panes (below) for the customer of a booking: **all sections**, the unchecked ones marked Draft; only with the customer's consent line | servicehq `proof.can_view`, a card in the astrologer's booking; astrohq panes |
 | 8 | **Team control in Desk** | layouts are files | a Report Layout record per layout, synced from the files on migrate (like page definitions), so the team changes what a report shows and ticks a section **reviewed** | astrohq doctype |
 
 ## How it fits what exists
@@ -54,7 +54,7 @@ The pictures that went with this (a web page on a phone and on a desktop, the br
 2. Kept answers and the generic maker (pieces 2, 3) with the first reports as OFF items: the owner's choice of names and of which sections are reviewed.
 3. The web page (piece 4), checked on a phone and a desktop in the PWA shell; the PDF button (piece 5).
 4. One tap for more (piece 6).
-5. The astrologer's view (piece 7).
+5. The panes and the condensed web view (below), then the astrologer's page (piece 7).
 6. The layouts in Desk (piece 8).
 
 Later, and not part of this: **Year ahead** and **Transit today** need the hub's API to take a year and a date (today ANNUAL_CALC has one fixed year and TRANSIT_CALC takes no date); "report ready" messages (notifications are last); Hindi.
@@ -70,6 +70,46 @@ Later, and not part of this: **Year ahead** and **Transit today** need the hub's
 | KP chart | KP_SYSTEM | 3 | |
 | Panchang of the birth day | PANCHANGA | 1 | |
 | Yearly, Tajaka | ANNUAL_CALC, TRANSIT_CALC | 1 + 1 | wait for the API to take a date |
+
+## The astrologer's page and the condensed view (second ask, 23 Oct 2026)
+
+The owner sent a screenshot of Parashara's Light (one wide screen of panes: the birth chart, six divisional charts, the dasha list, the planets, shad bala, karakas, "today from lagna") and said:
+condense the web views (a lot of information, use the space wisely); show drishti as a matrix with each planet as a row and a column and the drishti where they meet; "we need an astrologer page, one wider page view like this".
+Pictures of both were made from the real answers for the sample birth (`final-astrologer-page`, `final-condensed-desktop`, `final-condensed-phone`).
+
+**One block, many pages.** A *pane* is a titled box that shows one part of the answer (a chart, a table, bars, a matrix, a list). A *view* is a grid of panes, written as data like the layouts
+(`views/*.json`: pane, column, row, how wide). The astrologer's page is the view "Birth chart" at 1920 px (four columns, four rows, about 1100 px tall: no scrolling on a full-HD screen) with the other views as tabs
+(Dashas, Strength, Transits, KP, Yogas (draft), and "+ New view" for the astrologer's own); the customer's condensed view is the same panes in three columns; on a phone the same panes in one column,
+two open and the rest shut with **one line of what they say** ("Drishti: Ma→Mo 58, Sa→Ve 56").
+
+| Pane | Made from | API call |
+|---|---|---|
+| Birth chart, wide, with each planet's degree; facts beside it (lagna, Moon sign, star, tithi, yoga and karana, weekday, running period, ayanamsa, manglik, kala sarpa) | CORE_ADVANCED (`planetary_positions`, `lagna`, `panchanga`, `dosha`) | the kept answer |
+| Divisional charts (D9, D10, D7, D24, D60, D4; the astrologer picks any of the 16 from the pane's list) | `divisional_charts` | the kept answer |
+| Planets: degree, sign and its lord, house, nakshatra and pada, star, sub and sub-sub lord (KP), D9 sign | `planetary_positions` + KP_SYSTEM `planets` | + KP_SYSTEM |
+| Vimshottari: the running line, the sub-periods, the next main periods; levels 1 to 6 chosen in the pane | `dasha_sequences` (`dasha_levels` 3 asked) | the kept answer |
+| **Drishti matrix** (below) | **not in the API today** | needs the hub |
+| Shad bala: bars of total rupas, green when the planet has what it needs | `shadbala.components` | the kept answer |
+| Karakas (AK to DK), special lagnas, arudhas | `planets.info`, `arudha` | the kept answer |
+| Today from lagna: today's planets in the person's houses; any date can be picked | **a chart asked for that date** (the same API, a "birth" at that moment), each planet's sign placed by the person's lagna | + one SUPER_BASIC call per date |
+| Houses (two columns), panchang strip, yogas (Draft) | `houses`, `panchanga`, `yogas` | the kept answer |
+
+**Drishti as a matrix.** Each planet is a row (looking) and a column (looked at); where they meet is the drishti in virupas (60 is a full aspect; the special aspects of Mars, Jupiter and Saturn are in it), shaded darker for stronger,
+the diagonal empty; a second block of 12 more columns (the houses) is the same table with `include_houses`. PyJHora has it (`strength.planet_aspect_relationship_table`, rows aspecting, columns aspected) but **no mode of the API returns it**
+(KP_SYSTEM has the western aspects, SHADBALA only each planet's net Drik bala), although the engine's own list of what a mode holds (`opcode_matrix.py`) already names "House & Aspect Logic" as **mandatory** for CORE_STANDARD and CORE_ADVANCED: it was promised and never filled. A small change in the hub's engine (our code, version 1.2.0) adds `drishti` to CORE_STANDARD and CORE_ADVANCED; the picture's numbers were asked from the library directly
+for the sample birth, never through AstroHQ. Checked by hand: Mars (Leo) on the Moon (Pisces) is its 8th aspect, 58 virupas; Rahu and Ketu 60 on each other.
+
+**Today's sky needs no new API.** A chart for 23 Oct 2026 at the birth place gives each planet's sign that day; the person's lagna turns the sign into a house. (This corrects the earlier note that "transit today" needed the hub to take a date: only the Tajaka
+**annual chart** (the year ahead, from the solar return) does. TRANSIT_CALC and ANNUAL_CALC stay as they are.)
+
+**Condensing rules** (so every pane says more in less): dense by default and expandable (a shut pane keeps one line); tables in 12 px with 1 to 2 px of padding, no wide gaps (extra columns use the width: sign lord, D9 sign, KP lords); two tables side by side before one below the other;
+houses in two columns of six; sign names in three letters on a phone, full names on a desktop; degrees without minutes in a small chart, with them in the wide one; planets tinted as readers know them (benefics green, blue and gold, malefics red); charts the shape of their room
+(a wide rectangle where the pane is wide); a wide table scrolls **inside** its pane, never the page; touch targets 44 px on a phone.
+
+**Who may see it.** The astrologer's page is for the customer of the astrologer's own booking and only with the customer's consent line; staff in Desk; nobody else. The same panes with only `reviewed` sections are the customer's view. The page asks for the kept answers of that person
+(three calls once, the date's chart when the pane is opened).
+
+**To decide:** the first view's panes; whether an astrologer may save views of their own (a pane list is a small record per person); the hub's `drishti` (1.2.0) and its tests; the default dasha level (3).
 
 ## Notes from the pictures
 
