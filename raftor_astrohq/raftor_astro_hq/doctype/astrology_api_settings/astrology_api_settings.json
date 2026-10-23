@@ -1,0 +1,106 @@
+{
+ "actions": [],
+ "creation": "2026-10-23 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "note",
+  "enabled",
+  "section_hub",
+  "hub_address",
+  "api_key",
+  "api_name",
+  "timeout_seconds",
+  "section_check",
+  "check_connection",
+  "last_checked",
+  "last_result"
+ ],
+ "fields": [
+  {
+   "fieldname": "note",
+   "fieldtype": "HTML",
+   "label": "What this is",
+   "options": "<p>AstroHQ asks the hub's astrology API for an astrologer's charts: birth chart, dasha, panchang, KP and matching. The hub passes the request on to the astrology engine. Only the numbers the calculation needs are sent (date, time, latitude, longitude and the time zone), never a name.</p>"
+  },
+  {
+   "default": "0",
+   "description": "Off, AstroHQ asks the astrology engine nothing and no chart can be made.",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Charts Are Available"
+  },
+  {
+   "fieldname": "section_hub",
+   "fieldtype": "Section Break",
+   "label": "The Hub"
+  },
+  {
+   "description": "Where the hub is, for example https://hub.example.com. It must start with https:// (an address on this computer may start with http://).",
+   "fieldname": "hub_address",
+   "fieldtype": "Data",
+   "label": "Hub Address"
+  },
+  {
+   "description": "The key the hub gave to AstroHQ (on the hub, Desk, API Key). It is kept encrypted and is never shown again.",
+   "fieldname": "api_key",
+   "fieldtype": "Password",
+   "label": "API Key"
+  },
+  {
+   "default": "astrology",
+   "description": "The name the astrology API has in the hub's API Registry.",
+   "fieldname": "api_name",
+   "fieldtype": "Data",
+   "label": "Name of the API in the Hub"
+  },
+  {
+   "default": "20",
+   "description": "How long to wait for the hub before giving up (5 to 60). A chart takes about a second; the first one after a quiet time can take a few.",
+   "fieldname": "timeout_seconds",
+   "fieldtype": "Int",
+   "label": "Wait for an Answer (seconds)"
+  },
+  {
+   "fieldname": "section_check",
+   "fieldtype": "Section Break",
+   "label": "Is It Connected"
+  },
+  {
+   "fieldname": "check_connection",
+   "fieldtype": "Button",
+   "label": "Check the Connection"
+  },
+  {
+   "fieldname": "last_checked",
+   "fieldtype": "Datetime",
+   "label": "Last Checked",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_result",
+   "fieldtype": "Small Text",
+   "label": "What the Hub Said",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-10-30 12:00:00",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Astrology API Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
