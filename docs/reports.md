@@ -59,6 +59,8 @@ the report's page -> "Get your free report" -> ONE page: the details + mobile nu
    -> the account exists and the report is made -> "Choose a password" (can be skipped) -> the report (View report) and what next
 ```
 
+They are found on the Home page (a band at the top of Seek guidance), on the Guidance page, in the menu (Explore > Free reports) and on `/services/free-reports`, which also lists a signed-in person's own reports. The Home band and the menu link are this site's own data (`sites/<site>/site_pages/home_free.py`, kept beside `home.py` and `menu.py`), not the app's.
+
 Someone already signed in skips the number and the code: the details, and the report is made. The details form says what is wrong, field by field, before anything is made (all at once, not one at a time):
 
 | Written | Said |

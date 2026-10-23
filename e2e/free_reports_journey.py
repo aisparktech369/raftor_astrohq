@@ -222,6 +222,30 @@ def visitor_gets_the_kundli(br):
 	pg = ctx.new_page()
 	errors = []
 	pg.on("pageerror", lambda e: errors.append(str(e)))
+	# the ways to them, as a visitor finds them: Home, Guidance, the menu and the Free reports page
+	pg.goto(B + "/", wait_until="networkidle")
+	pg.wait_for_timeout(3000)
+	body = pg.inner_text("main")
+	hrefs = [a.get_attribute("href") for a in pg.locator("a:has-text('Get it free')").all()]
+	snap(pg, "visitor", "Home: the free reports at the top of Seek guidance")
+	check("Home shows the free reports at the top of Seek guidance, before the guides", "Start with a free report" in body and body.index("Start with a free report") < body.index("Choose a guide") and "Kundli report" in body and "Match making report" in body, body[:200].replace("\n", " | "))
+	check("each links to its own free page", hrefs == [f"/services/free-report?item={KUNDLI}", f"/services/free-report?item={MATCH}"], hrefs)
+	pg.goto(B + "/consult", wait_until="networkidle")
+	pg.wait_for_timeout(3000)
+	body = pg.inner_text("main")
+	check("the Guidance page leads with them, before who is online", "Start with a free report" in body and body.index("Start with a free report") < body.index("Online now"), body[:200].replace("\n", " | "))
+	pg.locator("#pwahq-menu, .pwahq-menu, button[aria-label*='enu']").first.click()
+	pg.wait_for_timeout(700)
+	pg.locator("#pwahq-drawer").get_by_text("Explore", exact=True).first.click()
+	pg.wait_for_timeout(500)
+	links_in_menu = [(a.inner_text().strip(), a.get_attribute("href")) for a in pg.locator("#pwahq-drawer a[href]").all() if a.is_visible()]
+	snap(pg, "visitor", "The menu: Explore has Free reports")
+	check("the menu's Explore has Free reports", ("Free reports", "/services/free-reports") in links_in_menu, links_in_menu)
+	pg.goto(B + "/services/free-reports", wait_until="networkidle")
+	pg.wait_for_timeout(2500)
+	body = pg.inner_text("main")
+	snap(pg, "visitor", "The Free reports page")
+	check("the Free reports page lists both, with a way in each, and no list of their own for a visitor", "Kundli report" in body and "Match making report" in body and body.count("Get it free") == 2 and "Your reports" not in body, body[:200].replace("\n", " | "))
 	pg.goto(B + "/services", wait_until="networkidle")
 	pg.wait_for_timeout(2000)
 	scroll_all(pg)
@@ -465,6 +489,11 @@ print("NAME=" + doc.first_name)
 	check("a match leaves no birth profile of its own", frappe_value(f'frappe.db.count("Astro Birth Profile", {{"parent": frappe.db.get_value("User", {{"mobile_no": "{ASHA}"}}, "name")}})') == "2")
 	check("what next offers another match making report and the kundli", "Another match making report" in body and "Kundli report" in body, body[300:700].replace("\n", " | "))
 
+	pg.goto(B + "/services/free-reports", wait_until="networkidle")
+	pg.wait_for_timeout(3000)
+	body = pg.inner_text("main")
+	snap(pg, "member", "The Free reports page of someone who has some: theirs are listed under it", full=True)
+	check("signed in, the Free reports page also lists their own, each with View report", "Your reports" in body and body.lower().count("ready") >= 3 and pg.locator("a:has-text('View report')").count() == 3, body[:300].replace("\n", " | "))
 	pg.goto(B + "/my/sessions", wait_until="networkidle")
 	pg.wait_for_timeout(2500)
 	body = pg.inner_text("main")
@@ -650,9 +679,10 @@ def main():
 import json
 left = {{}}
 left["users"] = frappe.db.count("User", {{"name": ["like", "9100000%@mobile.invalid"]}}) + frappe.db.count("User", {{"name": ["in", ["{OTHER}", "{STAFF}"]]}})
-left["free reports"] = frappe.db.count("Free Report")
-left["proofs of free reports"] = frappe.db.count("Service Proof", {{"ref_doctype": "Free Report"}})
-left["files of free reports"] = frappe.db.count("File", {{"attached_to_doctype": "Free Report"}})
+# other people use this site too (the reports are live): only what this run's own people made is counted, and what points at a report that is gone
+left["free reports"] = frappe.db.sql("select count(*) from `tabFree Report` f left join tabUser u on u.name = f.user where u.name is null or f.user like %s or f.user in %s", ("9100000%@mobile.invalid", ("{OTHER}", "{STAFF}")))[0][0]
+left["proofs of free reports"] = frappe.db.sql("select count(*) from `tabService Proof` p left join `tabFree Report` f on f.name = p.ref_name where p.ref_doctype = 'Free Report' and f.name is null")[0][0]
+left["files of free reports"] = frappe.db.sql("select count(*) from tabFile x left join `tabFree Report` f on f.name = x.attached_to_name where x.attached_to_doctype = 'Free Report' and f.name is null")[0][0]
 left["customers by number"] = frappe.db.count("Customer", {{"email_id": ["like", "9100000%@mobile.invalid"]}})
 left["contacts by number"] = len(frappe.db.sql("select name from `tabContact Email` where email_id like %s", ("9100000%@mobile.invalid",)))
 print("LEFT=" + json.dumps({{k: v for k, v in left.items() if v}}))
