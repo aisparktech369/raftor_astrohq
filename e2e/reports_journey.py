@@ -1,4 +1,5 @@
-"""The kundli report and the match making report, bought and received in a browser, as each person sees it:
+"""The kundli report and the match making report, bought and received in a browser the PAID way (the cart, the order, the payment), as each person sees it. They are free as they ship, so the run
+prices them for itself; the free way (no order at all) is free_reports_journey.py:
 
     stranger  (nobody signed in) cannot see the reports while they are drafts, and cannot open anyone's file
     customer  on a phone: finds both reports, gives the birth details (with the form saying plainly what is wrong), puts both in the cart, pays, and opens each PDF
@@ -7,7 +8,7 @@
 
 It uses the astrology service and the list of places on this computer (the real ones). The payment leg is stood in for: the order is placed in the browser and handed to the
 gateway's page (Razorpay's checkout), and then the system step the gateway's confirmation runs (the Payment Request is told it was paid) is run, because the confirmation
-reaches this computer by a webhook from outside. The two report items ship switched off; the run switches them on at test prices and puts them back exactly as they were.
+reaches this computer by a webhook from outside. The two report items ship switched off and free; the run switches them on at test prices and puts them back exactly as they were.
 Run: JOURNEY=reports_journey python3 reports_journey.py"""
 import json
 import os
@@ -306,42 +307,6 @@ def strangers_cannot_open(br, other_session, so, guest_files=True):
 	ctx.close()
 
 
-def a_free_report(br, other_session):
-	"""The business team may choose to give a report free: priced 0, the customer's order is placed and the report is made and delivered at once, with no payment to wait for."""
-	run(f'''frappe.db.set_value("Item Price", {{"item_code": "{KUNDLI}", "price_list": "Standard Selling"}}, "price_list_rate", 0)''')
-	ctx = J.context(br, state, "free", J.PHONE, other_session, mobile=True)
-	pg = ctx.new_page()
-	pg.goto(f"{B}/{route_of(KUNDLI)}", wait_until="networkidle")
-	pg.wait_for_timeout(1500)
-	snap(pg, "free", "The kundli report priced at nothing")
-	pg.locator("a:has-text('Get your report'), button:has-text('Get your report')").first.click()
-	pg.wait_for_selector("#rfhq-f-report_name")
-	pg.wait_for_timeout(700)
-	fill_person(pg, "", "Neha Kapoor", "1991-11-05", "08:15", "Jaipur, Rajasthan")
-	pg.click("button[type=submit]")
-	pg.wait_for_url("**/cart", timeout=30000)
-	pg.wait_for_timeout(2500)
-	body = pg.inner_text("body")
-	snap(pg, "free", "The cart: the free report", full=True)
-	check("the free report is in the cart at 0", "Kundli report" in body and "0.00" in body, body[:200].replace("\n", " | "))
-	pg.click("button:has-text('Place Order')")
-	pg.wait_for_timeout(8000)
-	snap(pg, "free", "After Place Order: nothing to pay", full=True)
-	out = run(f'''
-so = frappe.db.get_value("Sales Order", {{"owner": "{OTHER}"}}, ["name", "docstatus", "per_delivered"], as_dict=True, order_by="creation desc")
-print("SO=" + (so.name if so else "")); print("DOCSTATUS=%s" % (so.docstatus if so else "")); print("DELIVERED=%s" % (so.per_delivered if so else ""))
-print("PROOFS=%s" % (frappe.db.count("Service Proof", {{"ref_doctype": "Sales Order", "ref_name": so.name}}) if so else 0))
-''')
-	check("a free order is placed and its report delivered with nothing paid", val(out, "DOCSTATUS") == "1" and float(val(out, "DELIVERED") or 0) == 100 and val(out, "PROOFS") == "1", out.strip().replace("\n", " | "))
-	pg.goto(B + "/my/sessions", wait_until="networkidle")
-	pg.wait_for_timeout(3000)
-	body = pg.inner_text("body")
-	snap(pg, "free", "My sessions: the free report is Ready", full=True)
-	check("the customer sees the free report Ready with a View report", "ready" in body.lower() and pg.locator("a:has-text('View report')").count() == 1, body[:200].replace("\n", " | "))
-	J.finish(state, "free", ctx, pg)
-	run(f'''frappe.db.set_value("Item Price", {{"item_code": "{KUNDLI}", "price_list": "Standard Selling"}}, "price_list_rate", {PRICES[KUNDLI]})''')  # back to the test price
-
-
 def a_report_that_cannot_be_made(br, buyer_session, staff_session):
 	"""The astrology service is switched off for a moment (the setting, as the owner would), a customer buys a kundli, and the team is told and makes it later."""
 	run('frappe.db.set_value("Astrology API Settings", None, "enabled", 0)')
@@ -454,7 +419,6 @@ def main():
 			so = pay_on_desktop(br, buyer_session)
 			receive(br, buyer_session, so)
 			strangers_cannot_open(br, other_session, so)
-			a_free_report(br, other_session)
 			a_report_that_cannot_be_made(br, buyer_session, staff_session)
 			br.close()
 	except BaseException:
@@ -487,7 +451,7 @@ import json
 print("NOW=" + json.dumps({{code: {{"disabled": frappe.db.get_value("Item", code, "disabled"), "price": frappe.db.get_value("Item Price", {{"item_code": code, "price_list": "Standard Selling"}}, "price_list_rate"),
                                     "published": frappe.db.get_value("Website Item", {{"item_code": code}}, "published")}} for code in ("{KUNDLI}", "{MATCH}")}}))
 '''), "NOW"))
-		check("the two reports are back as they shipped: switched off, priced 1, page down", now == ORIGINAL, (now, ORIGINAL))
+		check("the two reports are back as they shipped: switched off, free, page down", now == ORIGINAL, (now, ORIGINAL))
 		check("the astrology setting is as it was", frappe_value('frappe.db.get_single_value("Astrology API Settings", "enabled")') == str(state.get("astro_was")), state.get("astro_was"))
 	videos = J.join_segments(state)
 	J.save(state)

@@ -1,10 +1,10 @@
 """The reports astrohq makes from what a customer gave. servicehq digital.py asks the maker of the item's own report (vocabulary.py "reports": the kundli report
 and the match making report below) or, for an item with no report of its own, the makers listed in the hook rfhq_report_makers (the birth summary).
 
-A maker is called as maker(item_code, details, buyer) after the order is paid and answers {"file_name", "content"}. It reads the details the customer gave (checked
-when they gave them: details.py), finds the place (places.py), asks the astrology API for the chart (astrology.py) and lays out a PDF (report_pdf.py). When it cannot
-(the astrology service is down, a place is not found) it raises an error whose message is plain words: servicehq leaves the order undelivered, writes the reason on it,
-tries again every hour and shows it to the business team."""
+A maker is called as maker(item_code, details, buyer) when the report is to be made (at once for a free report, servicehq free_reports.py; after the order is paid for one with
+a price, digital.py) and answers {"file_name", "content"}. It reads the details the customer gave (checked when they gave them: details.py), finds the place (places.py), asks the
+astrology API for the chart (astrology.py) and lays out a PDF (report_pdf.py). When it cannot (the astrology service is down, a place is not found) it raises an error whose message
+is plain words: servicehq leaves the report undelivered, writes the reason on it, tries again every hour and shows it to the business team."""
 import datetime
 import re
 import unicodedata
@@ -15,7 +15,7 @@ from frappe import _
 from frappe.utils import escape_html, format_date, getdate, today
 from frappe.utils.pdf import get_pdf
 
-from raftor_astrohq import astrology, details as detail_rules, places, report_pdf as rp
+from raftor_astrohq import astrology, details as detail_rules, places, profiles, report_pdf as rp
 
 PDF_OPTIONS = {"margin-top": "14mm", "margin-bottom": "18mm", "margin-left": "14mm", "margin-right": "14mm", "footer-center": "[page] / [topage]", "footer-font-size": "8", "footer-spacing": "5"}
 CREDIT = "Calculated with the Lahiri ayanamsa. Place data: GeoNames (geonames.org), licensed CC BY 4.0."
@@ -40,6 +40,46 @@ def birth_summary(item_code: str, details: dict, buyer: str) -> dict | None:
 			f"td{{padding:6px 0}}</style></head><body><h1>{escape_html(title)}</h1><table>{body}</table>"
 			f"<p style='margin-top:30px;color:#777'>{escape_html(_('Made for you from the details you gave.'))}</p></body></html>")
 	return {"file_name": f"{frappe.scrub(title)}.pdf", "content": get_pdf(html)}
+
+
+# ---- what a free report does besides making the file (servicehq free_reports.py, vocabulary "free") ----
+def keep_birth_profile(user: str, details: dict) -> None:
+	"""A free kundli's details become a birth profile of the person, so they are not typed again (a consultation needs one too): their own ("You") when the report is for
+	them, a family member's when it is for someone else (the person's asking is their confirmation that they may keep it). The profile the person already has is never
+	overwritten by a report, and the same person is not kept twice."""
+	relation = details.get("whose") or profiles.SELF
+	account = frappe.get_doc("User", user)
+	if relation == profiles.SELF and profiles.you_row(account):
+		return
+	name, born = str(details.get("report_name") or "").strip(), str(details.get("birth_date") or "")
+	if any(str(row.full_name).strip().lower() == name.lower() and str(row.date_of_birth) == born for row in account.get(profiles.TABLE) or []):
+		return
+	account.append(profiles.TABLE, {"relationship": relation, "full_name": name, "date_of_birth": born, "time_of_birth": details.get("birth_time") or "", "time_unknown": 0,
+									"place_of_birth": details.get("birth_place") or "", "permission_given": 0 if relation == profiles.SELF else 1})
+	account.flags.ignore_permissions = True
+	account.save()
+
+
+def kundli_account_name(details: dict) -> str:
+	"""The name for a new account: the person's own, when the kundli is theirs."""
+	return str(details.get("report_name") or "").strip() if (details.get("whose") or profiles.SELF) == profiles.SELF else ""
+
+
+def kundli_summary(details: dict) -> str:
+	return str(details.get("report_name") or "").strip()
+
+
+def match_summary(details: dict) -> str:
+	names = [str(details.get(key) or "").strip() for key in ("boy_name", "girl_name")]
+	return _("{0} and {1}").format(*names) if all(names) else ""
+
+
+def kundli_prefill(user: str) -> dict:
+	"""A signed-in person's own profile as the answers of the kundli form (their time of birth must be known: the report needs it)."""
+	row = profiles.you_row(frappe.get_doc("User", user))
+	if not row or row.time_unknown or not row.time_of_birth:
+		return {}
+	return {"whose": profiles.SELF, "report_name": row.full_name, "birth_date": str(row.date_of_birth), "birth_time": row.time_of_birth, "birth_place": row.place_of_birth}
 
 
 # ---- the kundli report ----

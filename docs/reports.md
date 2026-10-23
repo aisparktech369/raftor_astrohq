@@ -1,6 +1,7 @@
 # The kundli report and the match making report
 
-Two reports a customer buys from the shop and receives as a PDF. They are made by AstroHQ from the birth details the customer gives, using the astrology API
+Two reports a customer asks for from the shop and receives as a PDF. **Both are free, always** (the owner's decision), so they are *given*, not sold: no cart, no order, no invoice
+(`raftor_servicehq/docs/reports.md`, "Free reports"). They are made by AstroHQ from the birth details the customer gives, using the astrology API
 (`docs/astrology-api.md`) for the calculation and a list of places (GeoNames) for the latitude, longitude and time zone. Nobody makes them by hand.
 
 | | Kundli report | Match making report |
@@ -14,38 +15,51 @@ The words on the pages are English. The name must be written in English letters 
 
 ## Decided
 
-- **Both reports are free, always** (owner, 2026-10-23: the leaders' portals give them free). So their price is 0 and there is no first-one-free rule.
-- **Free digital reports skip the order cycle** (owner, 2026-10-23): it is the chance to enrol the person in the portal, and anything free should engage the customer. (Today a free report still goes through a ₹0 order, Delivery Note and invoice; that is to be replaced. A paid report keeps the order route.)
-- Consultancy is linked, not merged: reports stay on /services and consultancy on /consult (the owner's route rule).
+All by the owner, 2026-10-23, and all built:
 
-- **Signing in first holds friction** while people fill in their details (owner, 2026-10-23): the sign-up pairs with minimal details and verification.
+- **Both reports are free, always** (the leaders' portals give them free). Their price is 0 and there is no first-one-free rule.
+- **Free digital reports skip the order cycle**: it is the chance to enrol the person in the portal, and anything free should engage the customer. A report that is given paid for later would keep the order route
+  (price it in Desk and it goes that way again, nothing else changes).
+- **Signing in first holds friction** while people fill in their details, so the sign-up pairs with the details and the verification, on one page.
+- **The mobile number is the login id** (in India it is the major one), so the free report's sign-up asks for the mobile number only, and a **password is asked as the last step before the report is read**.
+  Existing accounts and the other ways to sign in stay as they are.
+- **The mobile code is stubbed to `12345678` until SMS and WhatsApp are set up** ("I will setup whatsapp and sms later"). Nothing is sent; it opens a customer's account, never a staff one; it is allowed
+  only where the site config says so (`allow_mobile_code_stub`, or developer mode) and switched on in Website HQ Settings. The go-live list (`raftor_servicehq/docs/mvp.md`) says what to do before real customers.
+- Consultancy is linked, not merged: reports stay on /services and consultancy on /consult (the owner's route rule). The next steps after a report link to it.
 
-- **Mobile number is the login id** (owner, 2026-10-23: in India mobile is the major login id), so the free report's sign-up asks for the mobile number only, and a **password is asked as the last step before the report is read**. (Existing accounts and the other ways to sign in stay as they are.)
+What AstroHQ adds to the free way (the `"free"` of each report in `vocabulary.py`; the mechanics are servicehq's):
 
-- **The mobile code is stubbed to `12345678` until SMS and WhatsApp are set up** (owner, 2026-10-23: "I will setup whatsapp and sms later"). It is the sign-in's test mode (fixed code, nothing sent, never a staff account, only where the site config allows it), with 8 digits. It is not switched on until the feature is built. The go-live list (`raftor_servicehq/docs/mvp.md`) says what to do before real customers.
+| | Kundli report | Match making report |
+|---|---|---|
+| Asks besides the details | **This kundli is for**: me, my husband or wife, my child, my mother or father, my brother or sister, someone else (the birth profile's relationships, so an admin who edits them changes this) | nothing |
+| Keeps | the details as a **birth profile**: "You" when it is for the person (never overwriting the one they have), the family member's otherwise with the person's confirmation that they may keep it; the same person is not kept twice | nothing: a match is between two people, so none is kept on its own |
+| Names the new account | after the person, only when the kundli is their own | not |
+| Says who it is for | "For Asha Rao" | "For Vikram Mehta and Priya Shah" |
+| Fills the form | for someone signed in who has their own profile with a known time of birth | not |
 
-Proposed, not built, waiting for the owner's yes: one page holds the details, the mobile number and then the code, with no jump to the sign-in screen; the sign-up needs only the mobile number (the name comes from the details when the report is for the person themselves); once the code is right the account exists and the report starts being made, while the person is asked to set a password (one field with a show button, with a Skip for now; one setting makes it required), and then reads the report; the password also signs them in later with the mobile number (a new sign-in path next to the OTP and the quick PIN, with a reset by code); the details become their birth profile (family profile when it is for someone else); one small record per free report ("Free Report", with its own Workflow); a block of next steps after the report (the free first session, a report for family, match making); a safety limit per customer per day. The code goes by SMS or WhatsApp, both switched off now: they need the owner's SMS provider (in India with DLT registration of the sender ID and the message) or the WhatsApp Business account; until then it can only be built and tried with the test code.
+The line beside the button says what is kept ("We keep these details in your birth profile so you do not have to write them again. If this is for someone else, you confirm that you may."). **The wording is for the lawyer to confirm** (the
+DPDP Act wants a clear action by the person; it is the button, with the line beside it, not a ticked box).
 
 ## Putting them on sale
 
 Both ship **switched off** as ordinary shop items (made by `servicehq.servicecatalog.sync_standard_reports`, which runs on install and migrate and never changes a report
-that already exists). Each has a comment in Desk saying what is left. The business team:
+that already exists), **at price 0** (the vocabulary says `"price": 0`). Each has a comment in Desk saying what is left. The business team:
 
 | Step | Where |
 |---|---|
-| 1. Set the price | Desk, Item Price: the row of the report in **Standard Selling**, field **Rate**. It ships as 1 so that nothing is sold at a forgotten price. **0 makes the report free**: the customer's order is placed with nothing to pay and the report is made at once. |
-| 2. Switch it on | Desk, the Item: untick **Disabled**. Its page in the shop goes up by itself (and comes down when it is ticked again). |
+| 1. Read the page | Desk, the Item and its Website Item. The price is 0 (Item Price, **Standard Selling**, field **Rate**): leave it, and the report is given. A price above 0 would sell it through the cart instead. |
+| 2. Switch it on | Desk, the Item: untick **Disabled**. Its page in the shop goes up by itself (and comes down when it is ticked again). **On this site the owner switched both on on 23 Oct 2026** ("make it available"); a new site gets them switched off. |
 
 While a report is switched off it is not in the shop, not found by search, has no page of its own, and cannot be put in a cart.
 
 ## What the customer does
 
 ```
-the report's page  ->  "Get your report"  ->  the details  ->  the cart  ->  pay  ->  made and delivered
-                                              checked here     (or free: order placed, made at once)
+the report's page -> "Get your free report" -> ONE page: the details + mobile number -> "Send me the code" -> the code (same page)
+   -> the account exists and the report is made -> "Choose a password" (can be skipped) -> the report (View report) and what next
 ```
 
-The details form says what is wrong, field by field, before anything is put in the cart:
+Someone already signed in skips the number and the code: the details, and the report is made. The details form says what is wrong, field by field, before anything is made (all at once, not one at a time):
 
 | Written | Said |
 |---|---|
@@ -55,9 +69,11 @@ The details form says what is wrong, field by field, before anything is put in t
 | a town that several places carry (Sirsa, Hyderabad, Rampur ...) | the places are listed and the customer is asked to add the state. A wrong guess would be a wrong chart, so it is never guessed. |
 | no time of birth | required: the lagna and the dasha change with it |
 
-When the order is paid the system makes the report from the details kept on the order line, saves it as a private file, records it as a Service Proof, and makes the
-Delivery Note and the invoice. The customer sees **Ready** and **View report** under *Poojas and reports* on their Sessions page, and the file on the order page.
-Only the customer and the business team can open the file.
+The report is made from the details at once (the kundli takes about a second, the match two), saved as a private file on a small record (**Free Report**), and recorded as a Service Proof. The customer sees
+it on their report page (**Ready**, **View report**, and *What would you like next?*) and among *Poojas and reports* on their Sessions page. Only the customer and the business team can open the file.
+
+*What would you like next?* (from what exists): ask about the report, with the words of the free first session while the person has not had it ("Free first session · 10 min", **Talk free**, **Book free**);
+another kundli (for someone in the family); the match making report.
 
 ## How a report is made (`reports.py`, `report_pdf.py`, `places.py`)
 
@@ -69,14 +85,14 @@ Only the customer and the business team can open the file.
 
 ## When a report cannot be made
 
-The payment is never undone. The line stays undelivered and:
+The record stays **Being made** (a paid report's payment is never undone) and:
 
 | What | How |
 |---|---|
-| The reason is written on the order | in plain words, once for the same reason ("Kundli report could not be made yet: Charts are switched off or not set up yet: see Astrology API Settings."). A failure the system did not expect gets a general sentence; the details go to the Error Log. |
-| It is tried again | every hour (`servicehq.digital.deliver_waiting`, a scheduled job; **needs the scheduler**) for 30 days |
-| The customer sees | **Being made**, with nothing to open |
-| The business team sees it | on **Needs attention** (Team pages) after 5 minutes: the report, the customer, the order and the reason, with **Try again now**. That button works without the scheduler. Trying while it is still not possible says why. |
+| The reason is written on the record | in plain words ("Charts are switched off or not set up yet: see Astrology API Settings."). A failure the system did not expect gets a general sentence; the details go to the Error Log. |
+| It is tried again | every hour (`servicehq.free_reports.make_waiting`, and `digital.deliver_waiting` for a paid one; scheduled jobs; **need the scheduler**) for 30 days |
+| The customer sees | **Being made**, "it is taking a little longer than usual", with nothing to open (never the technical reason) |
+| The business team sees it | on **Needs attention** (Team pages) after 5 minutes: "Free, not made", the person, the record and the reason, with **Try again now**. That button works without the scheduler. Trying while it is still not possible says why. |
 
 The usual reasons: the astrology API is switched off or not answering (Astrology API Settings), the list of places has not been built on this site, a place that was found
 at the form is no longer found.
@@ -87,8 +103,10 @@ at the form is no longer found.
 |---|---|
 | The astrology service | `docs/astrology-api.md` (the folder, the Procfile line, Astrology API Settings **on**, Check the Connection) |
 | The list of places | `bench --site <site> execute raftor_astrohq.places.build` (about a minute, 14 MB down, 50 MB on disk; builds `private/places/places.sqlite`). Without it the form lets the details through and the maker waits with the reason above. |
-| After an update | `bench --site <site> migrate` (puts the two items, the hourly retry and the Needs attention wording in place) |
+| After an update | `bench --site <site> migrate` (puts the two items, the Free Report record and its Workflow, the two pages, the hourly retry and the Needs attention wording in place) |
 | The scheduler | on, so that waiting reports are tried again by themselves |
+| The mobile code | for now the stub (`allow_mobile_code_stub` in the site config, Website HQ Settings > Mobile code stub, and **Default Country Code** +91); before real customers an SMS provider (in India with DLT registration of the sender ID and message) or the WhatsApp Business account |
+| Sign-up | Website HQ Settings, **Allow new accounts with OTP**, on (a visitor's code is their sign-up) |
 
 ## What the numbers rest on
 
@@ -123,8 +141,9 @@ The score is a guide, and the page says a full match is read with the charts and
 
 - Other languages and scripts (names, pages); a report from an unknown time of birth (no lagna, so none is made); places outside the GeoNames list (500 people and more).
 - More in the kundli (other divisional charts, yogas, remedies); a free kundli summary as a lighter report than the full one (price 0 on the full one works today).
-- A limit on free reports: at price 0 any signed-in customer can order as many as they like, and each costs a second or two of the astrology service and the PDF maker. A report is made
-  in the request that confirms the payment (the kundli takes about a second, the match two); if a gateway's webhook ever times out on it, make it a background job (the hourly retry already covers a miss).
+- "Report ready" messages (notifications are the last topic). The report is made in the request that confirms the code, so it is normally ready before the person looks; make it a background job if the astrology
+  service ever becomes slow.
+- The astrologer seeing the customer's report for their booking, if the customer agrees (needs the chart screen and the owner's rule on who sees whose chart).
 - The astrologer's own chart screen (who may see whose chart).
 
 ## Checks
@@ -132,5 +151,8 @@ The score is a guide, and the page says a full match is read with the charts and
 - Unit tests, on the engine's answers for two invented births (no service needed): `bench --site astrohq.local run-tests --app raftor_astrohq --module raftor_astrohq.tests.test_kundli_reports`
   (the last class asks the real service and the real list, and is skipped where they are not set up); servicehq: `--app raftor_servicehq --module raftor_servicehq.tests.test_reports`;
   places: `raftor_astrohq.tests.test_places`.
-- Browser, as a stranger, two customers and the business team (the two items are switched on at test prices and put back as they shipped; the gateway's confirmation is
-  stood in for): `JOURNEY=reports_journey python3 apps/raftor_astrohq/e2e/reports_journey.py`. Done on 2026-10-23: 45 of 45 checks.
+- The free way: `raftor_servicehq/tests/test_free_reports.py` (67), `raftor_astrohq/tests/test_free_report_hooks.py` (14) and the sign-in's own `raftor_websitehq` tests (`test_auth_mobile_stub`, `test_auth_password`).
+- Browser, a stranger from the product page to the report, then the same person signing back in with the number and the password, a report for a child, the limit, a report that cannot be made and the business team:
+  `python3 apps/raftor_astrohq/e2e/free_reports_journey.py` (the two items are switched on and put back as they shipped).
+- Browser, the paid way as a stranger, two customers and the business team (the items are priced for the run and put back as they shipped; the gateway's confirmation is stood in for):
+  `JOURNEY=reports_journey python3 apps/raftor_astrohq/e2e/reports_journey.py`.

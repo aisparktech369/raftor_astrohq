@@ -59,6 +59,14 @@ def kundli_fields() -> list[dict]:
 	return person_fields()
 
 
+def whose() -> dict:
+	"""Whose kundli it is, asked only where it is given away (servicehq free_reports.py): the person's own, or someone in the family. The answer is the birth profile's relationship, which
+	decides how the details are kept (the person's own profile is "You"; a family member's is kept with the person's confirmation that they may)."""
+	words = {profiles.SELF: _("Me"), "Spouse": _("My husband or wife"), "Child": _("My child"), "Parent": _("My mother or father"), "Sibling": _("My brother or sister"), "Other": _("Someone else")}
+	return {"name": "whose", "label": _("This kundli is for"), "type": "select", "required": True, "default": profiles.SELF,
+			"options": [{"value": relation, "label": words.get(relation, relation)} for relation in profiles.relationships()]}
+
+
 def match_fields() -> list[dict]:
 	return person_fields("boy_", _("Boy's ")) + person_fields("girl_", _("Girl's "))
 
