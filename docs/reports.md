@@ -18,7 +18,9 @@ The words on the pages are English. The name must be written in English letters 
 - **Free digital reports skip the order cycle** (owner, 2026-10-23): it is the chance to enrol the person in the portal, and anything free should engage the customer. (Today a free report still goes through a ₹0 order, Delivery Note and invoice; that is to be replaced. A paid report keeps the order route.)
 - Consultancy is linked, not merged: reports stay on /services and consultancy on /consult (the owner's route rule).
 
-Proposed, not built, waiting for the owner's yes: the sign-in code is asked after the details (it is the sign-up), the details become the person's birth profile, one small record per free report ("Free Report", with its own Workflow), a block of next steps after the report (the free first session, a report for family, match making), and a safety limit per customer per day.
+- **Signing in first holds friction** while people fill in their details (owner, 2026-10-23): the sign-up pairs with minimal details and verification.
+
+Proposed, not built, waiting for the owner's yes: one page holds the details, one contact (mobile number or email) and then the code, with no jump to the sign-in screen; the sign-up needs only the contact (the name comes from the details when the report is for the person themselves), with no password and no PIN or profile step before the report (the quick-PIN offer comes after it); a person who already has an account types the same contact and code and the report joins their list; the details become their birth profile (family profile when it is for someone else); one small record per free report ("Free Report", with its own Workflow); a block of next steps after the report (the free first session, a report for family, match making); a safety limit per customer per day. A code by mobile needs an SMS sender or the WhatsApp account (both switched off now); email codes work today.
 
 ## Putting them on sale
 
