@@ -69,13 +69,26 @@ class Stood(PlacesCase):
 		cache.delete_keys("astro_panchang_muhurat")
 
 	def switch_on(self, town="Delhi", **more):
-		frappe.db.set_single_value(SETTINGS, {"panchang_place": town, **more})
+		frappe.db.set_single_value(SETTINGS, {"panchang_place": town, "panchang_muhurat_persona": "", "panchang_muhurat_topic": "", **more})  # (what the live site chose for the muhurat is not what a test is about)
 
 	def delhi(self, on="2026-10-24"):
 		return places.lookup("Delhi", datetime.date.fromisoformat(on))
 
 	def at(self, text):
 		return datetime.datetime.fromisoformat(text)
+
+	def guides(self, live=None, listed=None):
+		"""The guides servicehq lists (card_feeds.providers): `live` those online now, `listed` everyone who can be booked."""
+		self.guide_calls = []
+
+		def providers(persona=None, online=None, limit=12, **choices):
+			self.guide_calls.append({"persona": persona, "online": online, "topic": choices.get("topic")})
+			return {"items": (live if online == "1" else listed) or []}
+
+		return mock.patch("raftor_servicehq.card_feeds.providers", providers)
+
+	TALK = {"full_name": "Ravi", "status": "Online", "button_label": "Talk now · free", "button_url": "/consult/online/start?offering=SVC-1&topic=Auspicious+date&offer=OFF-1"}
+	BOOK = {"full_name": "Ravi", "button_label": "Book", "button_url": "/consult/slots?offering=SVC-1"}
 
 
 class TestADay(Stood):
@@ -328,17 +341,36 @@ class TestThePage(Stood):
 		self.assertIn("which ends before the next sunrise", body)
 		self.assertNotIn("which ends before the next sunrise", self.page(date="2026-10-24")["body_html"])
 
-	def test_the_muhurat_button_is_there_only_when_the_service_is_on_and_a_pandit_ji_offers_it(self):
-		self.assertNotIn("rv-cta", self.page(date="2026-10-24")["body_html"])  # no service named in the settings
-		frappe.db.set_single_value(SETTINGS, {"panchang_muhurat_service": "SVC-MUHURAT", "panchang_muhurat_topic": "Auspicious date"})
-		for service, offered, shown in ((None, True, False), ({"enabled": 0, "persona": "Pandit ji"}, True, False), ({"enabled": 1, "persona": ""}, True, False),
-										({"enabled": 1, "persona": "Pandit ji"}, False, False), ({"enabled": 1, "persona": "Pandit ji"}, True, True)):
+	def test_the_muhurat_button_connects_to_a_pandit_ji_who_is_live_and_has_nothing_without_one_named_in_the_settings(self):
+		with self.guides(live=[self.TALK], listed=[self.BOOK]):
+			self.assertNotIn("rv-cta", self.page(date="2026-10-24")["body_html"])  # no kind of guide in the settings
+			self.assertEqual(self.guide_calls, [])
+			frappe.db.set_single_value(SETTINGS, {"panchang_muhurat_persona": "Pandit ji", "panchang_muhurat_topic": "Auspicious date"})
 			self.forget_kept()
-			with mock.patch.object(panchang, "_service", return_value=frappe._dict(service) if service else None), mock.patch.object(panchang, "_someone_offers", return_value=offered):
+			body = self.page(date="2026-10-24")["body_html"]
+		self.assertIn("A Pandit ji is live now.", body)
+		self.assertIn('<a class="rv-cta" href="/consult/online/start?offering=SVC-1&amp;topic=Auspicious+date&amp;offer=OFF-1">Talk now · free →</a>', body)
+		self.assertEqual(self.guide_calls[0], {"persona": "Pandit ji", "online": "1", "topic": "Auspicious date"})  # the kind of guide and what the visitor is troubled by go to the listing
+
+	def test_with_none_live_the_button_opens_the_list_of_those_who_can_be_booked_and_with_none_at_all_there_is_no_button(self):
+		frappe.db.set_single_value(SETTINGS, {"panchang_muhurat_persona": "Pandit ji", "panchang_muhurat_topic": "Auspicious date"})
+		for live, listed, expected in (([], [self.BOOK], "list"), ([self.BOOK], [self.BOOK], "list"), ([], [], None), ([self.BOOK], [], None)):  # (a live guide with nothing to start at once is not one to connect to)
+			self.forget_kept()
+			with self.guides(live=live, listed=listed):
 				body = self.page(date="2026-10-24")["body_html"]
-			self.assertEqual("rv-cta" in body, shown, (service, offered))
-		self.assertIn('href="/consult?persona=Pandit+ji&amp;topic=Auspicious+date"', body)
-		self.assertIn("ask a Pandit ji for a muhurat made for you", body)
+			self.assertEqual("rv-cta" in body, expected is not None, (live, listed))
+			if expected:
+				self.assertIn('href="/consult?persona=Pandit+ji&amp;topic=Auspicious+date"', body)
+				self.assertIn("ask a Pandit ji for a muhurat made for you", body)
+				self.assertNotIn("is live now", body)
+
+	def test_what_the_listing_said_is_kept_a_few_seconds_so_that_a_page_does_not_ask_for_every_visitor_again(self):
+		frappe.db.set_single_value(SETTINGS, {"panchang_muhurat_persona": "Pandit ji"})
+		self.forget_kept()
+		with self.guides(live=[self.TALK]):
+			panchang.muhurat_offer()
+			panchang.muhurat_offer()
+		self.assertEqual(len(self.guide_calls), 1)
 
 	def test_the_endpoints_may_be_asked_by_a_visitor_who_is_not_signed_in(self):
 		for method in (panchang.page, panchang.places_found, panchang.place_near, panchang.widget_cards):
@@ -428,6 +460,10 @@ class TestTheCardOverTheBanner(Stood):
 
 	def items(self, **args):
 		return panchang.widget_cards(**args)["items"]
+
+	def page(self, **args):
+		(item,) = panchang.page(**args)["items"]
+		return item
 
 	def card(self, name, label=None, **args):
 		found = [i for i in self.items(**args) if i["card"] == name and (label is None or i.get("label") == label)]
@@ -539,19 +575,27 @@ class TestTheCardOverTheBanner(Stood):
 		sun = self.card("Stat Card", "Sun")
 		self.assertEqual((sun["value"], sun["description"]), ("↑ 6:31 am · ↓ 5:38 pm", "Moonrise 4:33 pm"))
 
-	def test_the_muhurat_card_is_there_only_when_the_service_is_on_and_a_pandit_ji_offers_it(self):
-		self.assertEqual([i for i in self.items() if i["card"] == "Focus Card"], [])
-		frappe.db.set_single_value(SETTINGS, {"panchang_muhurat_service": "SVC-MUHURAT", "panchang_muhurat_topic": "Auspicious date"})
+	def test_the_muhurat_card_says_a_pandit_ji_is_live_and_connects_or_opens_the_list_and_is_not_there_without_either(self):
+		self.assertEqual([i for i in self.items() if i["card"] == "Focus Card"], [])  # no kind of guide in the settings
+		frappe.db.set_single_value(SETTINGS, {"panchang_muhurat_persona": "Pandit ji", "panchang_muhurat_topic": "Auspicious date"})
 		self.forget_kept()
-		with mock.patch.object(panchang, "_service", return_value=frappe._dict({"enabled": 1, "persona": "Pandit ji"})), mock.patch.object(panchang, "_someone_offers", return_value=True):
-			last = self.items()[-1]
-		self.assertEqual(last, {"card": "Focus Card", "tag": "Important work?", "title": "Ask a Pandit ji for a muhurat", "body": "A wedding, a new home, a vehicle, a new business",
-								"link_url": "/consult?persona=Pandit+ji&topic=Auspicious+date", "link_label": "Ask for a muhurat"})
+		with self.guides(live=[self.TALK], listed=[self.BOOK]):
+			live = self.items()[-1]
+		self.assertEqual(live, {"card": "Focus Card", "tag": "A Pandit ji is live now", "title": "Talk to one about a muhurat", "body": "A wedding, a new home, a vehicle, a new business",
+								"link_url": "/consult/online/start?offering=SVC-1&topic=Auspicious+date&offer=OFF-1", "link_label": "Talk now · free"})
+		self.forget_kept()
+		with self.guides(live=[], listed=[self.BOOK]):
+			listed = self.items()[-1]
+		self.assertEqual(listed, {"card": "Focus Card", "tag": "Important work?", "title": "Ask a Pandit ji for a muhurat", "body": "A wedding, a new home, a vehicle, a new business",
+								  "link_url": "/consult?persona=Pandit+ji&topic=Auspicious+date", "link_label": "Ask for a muhurat"})
+		self.forget_kept()
+		with self.guides(live=[], listed=[]):
+			self.assertEqual([i for i in self.items() if i["card"] == "Focus Card"], [])
 
 	def test_every_item_names_a_card_of_the_library_and_only_fields_that_card_has(self):
-		frappe.db.set_single_value(SETTINGS, {"panchang_muhurat_service": "SVC-MUHURAT"})
+		frappe.db.set_single_value(SETTINGS, {"panchang_muhurat_persona": "Pandit ji"})
 		self.forget_kept()
-		with mock.patch.object(panchang, "_service", return_value=frappe._dict({"enabled": 1, "persona": "Pandit ji"})), mock.patch.object(panchang, "_someone_offers", return_value=True):
+		with self.guides(live=[self.TALK]):
 			items = self.items()
 		self.assertEqual({i["card"] for i in items}, {"Pill Card", "Feature Card", "Parts Bar", "Stat Card", "Fact Card", "Focus Card"})
 		for item in items:
@@ -559,6 +603,18 @@ class TestTheCardOverTheBanner(Stood):
 			self.assertTrue(template, item["card"])
 			fields = {f.fieldname for f in frappe.get_cached_doc("Web Template", template).fields}
 			self.assertFalse(set(item) - fields - {"card"}, (item["card"], set(item) - fields))
+
+	def test_the_card_comes_with_the_control_for_its_town_and_it_is_the_one_of_the_page(self):
+		answer = panchang.widget_cards()
+		(control,) = answer["toolbar"]["controls"]
+		self.assertEqual((control["type"], control["arg"], control["value"], control["label"]), ("lookup", "place", "19", "Delhi, India"))
+		self.assertEqual((control["search"], control["near"]), ("raftor_astrohq.panchang.places_found", "raftor_astrohq.panchang.place_near"))
+		page_town = self.page(date="2026-10-24")["toolbar"]["controls"][1]
+		self.assertEqual(control, page_town)  # one control, drawn by the same script on both
+		self.assertEqual(panchang.widget_cards(place="9999")["toolbar"]["controls"][0]["label"], "Delhi, India")  # a town that is not in the list gives the default one
+		self.at("2026-11-08T08:00")
+		self.assertEqual(panchang.widget_cards(place="22")["toolbar"]["controls"][0]["label"], "Mumbai, India")
+		self.assertIn("raftor_astrohq.panchang.widget_cards", frappe.get_hooks("rfhq_trusted_html_sources", app_name="raftor_astrohq"))  # only a trusted source's control reaches the page
 
 	def test_what_comes_out_is_text_and_nothing_else(self):
 		for item in self.items():
@@ -568,11 +624,11 @@ class TestTheCardOverTheBanner(Stood):
 					self.assertNotIn("<", value, (item["card"], key))
 
 	def test_the_town_the_visitor_kept_is_the_one_asked_for_and_said(self):
+		self.assertTrue(self.items(place="9999")[1]["tag"].endswith("· Delhi, India"))  # (a town that is not in the list: the default one)
 		self.at("2026-11-08T08:00")
 		mumbai = self.items(place="22")
 		self.assertTrue(mumbai[1]["tag"].endswith("· Mumbai, India"), mumbai[1]["tag"])
-		self.assertEqual(self.asked[-1][1]["latitude"] < 25, True)
-		self.assertTrue(self.items(place="9999")[1]["tag"].endswith("· Delhi, India") if False else True)
+		self.assertTrue(self.asked[-1][1]["latitude"] < 25)
 
 	def test_nothing_when_the_panchang_is_off_or_the_engine_cannot_be_asked(self):
 		self.engine_error = astrology.AstrologyUnavailable("down")
@@ -600,6 +656,7 @@ class TestWhatTheSettingsDecide(Stood):
 	def test_the_defaults_are_what_they_always_were(self):
 		got = panchang.settings()
 		self.assertEqual((got.chal, got.first_year, got.last_year, got.keep_default, got.keep_other), ("good", 1800, 2399, 8 * 24 * 3600, 24 * 3600))
+		self.assertEqual((got.persona, got.topic), ("", "Auspicious date"))  # (no kind of guide named = no muhurat button; the topic is the setting's own default until another is saved)
 
 	def test_the_years_are_the_settings_and_the_bar_and_the_clamp_follow_them(self):
 		self.switch_on("Delhi", panchang_first_year=2020, panchang_last_year=2030)

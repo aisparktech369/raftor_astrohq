@@ -34,13 +34,18 @@ class PanchangBusy(frappe.ValidationError):
 	http_status_code = 429
 
 
+def _default(fieldname: str) -> str:
+	"""What the setting's own definition (its doctype) says it is until someone saves another: one place for it, not a second copy here."""
+	return frappe.get_meta(SETTINGS).get_field(fieldname).default or ""
+
+
 def settings() -> frappe._dict:
 	"""The Panchang part of Astrology API Settings, with the defaults a page never saved lacks."""
 	doc = frappe.get_single(SETTINGS)
 	return frappe._dict(
 		place=(doc.get("panchang_place") or "").strip(),
-		service=doc.get("panchang_muhurat_service") or "",
-		topic=(doc.get("panchang_muhurat_topic") or "").strip(),
+		persona=(doc.get("panchang_muhurat_persona") or "").strip()[:60],
+		topic=(doc.get("panchang_muhurat_topic") or _default("panchang_muhurat_topic")).strip(),
 		new_per_minute=cint(doc.get("panchang_new_per_minute")) or 60,
 		per_visitor=cint(doc.get("panchang_requests_per_minute")) or 40,
 		chal=doc.get("panchang_chal") or "good",
@@ -238,7 +243,9 @@ def widget_cards(place=None) -> dict:
 		held = state(chosen)
 	except (PanchangBusy, astrology.AstrologyUnavailable, astrology.AstrologyRefused):
 		return {"items": []}
-	return {"items": panchang_widget.cards(held, {"muhurat": muhurat_link(), "place": town_label(chosen)}) if held else []}
+	if not held:
+		return {"items": []}
+	return {"items": panchang_widget.cards(held, {"muhurat": muhurat_offer(), "place": town_label(chosen)}), "toolbar": {"controls": [lookup_control(chosen)]}}  # (the control: the town the card is about, to change)
 
 
 def warm() -> int:
@@ -257,33 +264,31 @@ def warm() -> int:
 
 
 # ---- the page ----
-def _service(name: str):
-	return frappe.db.get_value("Service", name, ["enabled", "persona"], as_dict=True)
-
-
-def _someone_offers(persona: str) -> bool:
-	"""Whether an approved guide with this persona is live and has something to book (servicehq's list of guides)."""
-	from raftor_servicehq import card_feeds
-
-	return bool(card_feeds.providers(persona=persona, limit=1)["items"])
-
-
-def muhurat_link() -> str | None:
-	"""The address of the muhurat button, or None when there is to be none: a service is named in the settings, it is switched on, and an approved Pandit ji (its persona) has something to book."""
+def muhurat_offer() -> dict | None:
+	"""What the muhurat button connects to, or None when there is to be none. The settings name a kind of guide (a Pandit ji): if one is live now and can be talked to at once, the button starts that talk
+	({"live": True, "url": the start, "label": what the guide's card says}); else, if some can be booked, it opens the list of them ({"live": False}); else there is no button. Kept for twenty seconds
+	(for each kind of visitor: what a guide offers depends on who asks)."""
 	s = settings()
-	if not s.service:
+	if not s.persona:
 		return None
-	cache, key = frappe.cache(), f"astro_panchang_muhurat:{s.service}"
+	cache, key = frappe.cache(), f"astro_panchang_muhurat:{s.persona}:{s.topic}:{frappe.session.user}"
 	known = cache.get_value(key, expires=True)
 	if known is None:
-		service = _service(s.service)
-		known = {"persona": service.persona if service else "", "available": bool(service and service.enabled and service.persona and _someone_offers(service.persona))}
-		cache.set_value(key, known, expires_in_sec=300)
-	if not known["available"]:
-		return None
+		known = _muhurat_offer(s.persona, s.topic) or {}
+		cache.set_value(key, known, expires_in_sec=20)
+	return known or None
+
+
+def _muhurat_offer(persona: str, topic: str) -> dict | None:
+	from raftor_servicehq import card_feeds
 	from raftor_websitehq.website_hq.page_groups import page_url
 
-	return page_url("consult", persona=known["persona"], topic=s.topic)
+	live = card_feeds.providers(persona=persona, online="1", limit=1, topic=topic)["items"]
+	if live and "/online/start" in (live[0].get("button_url") or ""):  # live, and with something to start at once
+		return {"live": True, "url": live[0]["button_url"], "label": live[0].get("button_label") or _("Talk now")}
+	if card_feeds.providers(persona=persona, limit=1, topic=topic)["items"]:
+		return {"live": False, "url": page_url("consult", persona=persona, topic=topic), "label": _("Ask for a muhurat")}
+	return None
 
 
 def _address(on_date: datetime.date | None, chosen_id) -> str:
@@ -298,6 +303,12 @@ def town_label(place: dict) -> str:
 	return parts[0] + (", " + parts[-1].strip() if len(parts) > 1 else "")
 
 
+def lookup_control(place: dict) -> dict:
+	"""The control that chooses the town (websitehq's: a search of names and "use my location"), for the Panchang page's bar and for the card over a banner."""
+	return {"type": "lookup", "arg": "place", "value": str(place["id"]), "label": town_label(place), "search": "raftor_astrohq.panchang.places_found", "near": "raftor_astrohq.panchang.place_near",
+			"labels": {"search": _("Search a town"), "near": _("Use my location"), "none": _("No town of that name is in our list."), "choose": _("Choose a town")}}
+
+
 def toolbar(on_date: datetime.date, place: dict, explicit) -> dict:
 	"""What websitehq's Report View draws above the panes: the day (with the day before, the day after, today, and a calendar) and the town (with a search and a way to use where the visitor is).
 	The town is in the addresses only when the visitor chose one."""
@@ -307,9 +318,7 @@ def toolbar(on_date: datetime.date, place: dict, explicit) -> dict:
 		{"type": "date", "arg": "date", "value": on_date.isoformat(), "label": f"{_(on_date.strftime('%A'))}, {on_date.day} {_(on_date.strftime('%B'))} {on_date.year}", "min": first_day().isoformat(), "max": last_day().isoformat(),
 		 "previous": _address(on_date - datetime.timedelta(days=1), chosen) if on_date > first_day() else None, "next": _address(on_date + datetime.timedelta(days=1), chosen) if on_date < last_day() else None,
 		 "today": _address(None, chosen) if on_date != here else None, "labels": {"previous": _("The day before"), "next": _("The day after"), "today": _("Today"), "pick": _("Choose a date")}},
-		{"type": "lookup", "arg": "place", "value": str(place["id"]), "label": town_label(place),
-		 "search": "raftor_astrohq.panchang.places_found", "near": "raftor_astrohq.panchang.place_near",
-		 "labels": {"search": _("Search a town"), "near": _("Use my location"), "none": _("No town of that name is in our list."), "choose": _("Choose a town")}},
+		lookup_control(place),
 	]}
 
 
@@ -333,6 +342,6 @@ def page(date=None, place=None) -> dict:
 	except (astrology.AstrologyUnavailable, astrology.AstrologyRefused):
 		return {"items": [{"body_html": f'<p class="rv-note">{frappe.utils.escape_html(_("The panchang cannot be worked out just now. Please try again in a little while."))}</p>', "toolbar": bar}]}
 	now = local_now(chosen)
-	ctx = {"date": on_date, "today": on_date, "now": now if on_date == now.date() else None, "place": chosen, "link": lambda on: _address(on, explicit), "muhurat": muhurat_link()}
+	ctx = {"date": on_date, "today": on_date, "now": now if on_date == now.date() else None, "place": chosen, "link": lambda on: _address(on, explicit), "muhurat": muhurat_offer()}
 	markup = report_view.render(report_view.view_named("panchang"), {"day": shown, "week": days}, ctx, "reviewed")
 	return {"items": [{"body_html": markup, "toolbar": bar}] if markup else []}

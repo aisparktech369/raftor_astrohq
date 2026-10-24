@@ -22,7 +22,7 @@
   "panchang_section",
   "panchang_note",
   "panchang_place",
-  "panchang_muhurat_service",
+  "panchang_muhurat_persona",
   "panchang_muhurat_topic",
   "panchang_new_per_minute",
   "panchang_requests_per_minute",
@@ -144,11 +144,10 @@
    "description": "The town shown to a visitor who has not chosen another, written as Town, State, for example Delhi, India. Blank: the Panchang is off."
   },
   {
-   "fieldname": "panchang_muhurat_service",
-   "fieldtype": "Link",
-   "options": "Service",
-   "label": "Service the Muhurat Button Leads To",
-   "description": "The service of a Pandit ji for a muhurat. The button shows only when this service is switched on and an approved Pandit ji offers it. Blank: no button."
+   "fieldname": "panchang_muhurat_persona",
+   "fieldtype": "Data",
+   "label": "Kind of Guide the Muhurat Button Connects To",
+   "description": "For example Pandit ji. The button connects the visitor to a guide of this kind who is live now (a Talk now with the topic below); when none is live it opens the list of those who can be booked. Blank: no button."
   },
   {
    "fieldname": "panchang_muhurat_topic",
@@ -216,7 +215,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-11-05 00:00:00.000000",
+ "modified": "2026-11-06 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Astrology API Settings",

@@ -287,7 +287,7 @@ servicehq_vocabulary = {"astrohq": "raftor_astrohq.vocabulary.vocabulary"}
 rfhq_report_makers = ["raftor_astrohq.reports.birth_summary"]
 
 # The methods whose markup websitehq lets reach a page (website_hq/report_html.py cleans it first): the astrologer's page of a customer's chart, and the Panchang page.
-rfhq_trusted_html_sources = ["raftor_astrohq.report_view.chart_view", "raftor_astrohq.panchang.page"]
+rfhq_trusted_html_sources = ["raftor_astrohq.report_view.chart_view", "raftor_astrohq.panchang.page", "raftor_astrohq.panchang.widget_cards"]
 
 # Shortly after midnight the Panchang's town is worked out for the week ahead (panchang.warm).
 scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"]}}

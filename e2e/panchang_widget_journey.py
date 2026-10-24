@@ -1,8 +1,9 @@
 """The glass card over a banner, as a visitor meets it (nobody signed in): a pill in the corner that opens the day's panchang and chaugharia, from websitehq's Pop-over section and library cards.
 
-It builds a throwaway page (a pop-over section just before the Home banner's own section, which it only reads), names a town for the Panchang for the run, and removes both afterwards; the Home page is never touched.
+It builds a throwaway page (a pop-over section just before the Home banner's own section, which it only reads), names a town for the Panchang for the run, and removes both afterwards; the Home page is only read.
     desk    the pill in the corner of the banner with the glass, one card on view; a tap opens the card (bar of eight parts, the tiles, the link to the Panchang page); Escape and a tap elsewhere shut it
     kept    a town chosen on the Panchang page (kept in the browser) is the one the card is about
+    town    the open card has the town it is about, to change: a search of names, a choice, and the card is drawn again for that town, in place, the page not moving
     phone   the pill in the middle; the open card is a sheet from the bottom over a dimmed page; nothing runs off the screen
 Run: python3 panchang_widget_journey.py        (SHOTS=/some/folder to keep the pictures)"""
 import json
@@ -70,6 +71,37 @@ clear_cache()
 ''')
 
 
+def town_in_card(page, label, tap=False):
+	"""The town chooser in the open card: shown under the pill, searched, chosen; the card is about the new town and the page has not moved. `page` has the card open."""
+	press = page.tap if tap else page.click
+	bar = "[data-rfhq-popover] .rfhq-record-bar"
+	check(f"{label}: the card has the town it is about, to change", page.locator(bar + " .rv-ctl-town").is_visible(), page.inner_text(bar + " .rv-ctl-town") if page.locator(bar).count() else "no bar")
+	check(f"{label}: it says the town (Delhi, as the setting)", "delhi, india" in page.inner_text(bar + " .rv-ctl-town").lower(), page.inner_text(bar + " .rv-ctl-town"))
+	under = page.evaluate("(() => { const a = document.querySelector('[data-rfhq-popover] .rfhq-record-cell:first-child').getBoundingClientRect(), b = document.querySelector('[data-rfhq-popover] .rfhq-record-bar').getBoundingClientRect(); return [a.bottom, b.top]; })()")
+	check(f"{label}: it sits under the pill", under[1] >= under[0] - 1, str(under))
+	page.evaluate("window.__stayed = 1")
+	press(bar + " .rv-ctl-town")
+	check(f"{label}: the search box is ready", page.evaluate("document.activeElement.classList.contains('rv-ctl-search')") or tap)
+	page.fill(bar + " .rv-ctl-search", "Mum")
+	page.wait_for_selector(bar + " .rv-ctl-options li", timeout=8000)
+	names = page.evaluate("[...document.querySelectorAll('[data-rfhq-popover] .rv-ctl-options li b')].map(b => b.innerText)")
+	check(f"{label}: Mumbai is the first of the towns that start so", names[:1] == ["Mumbai"], str(names))
+	room = page.evaluate("""(() => { const l = document.querySelector('[data-rfhq-popover] .rv-ctl-list').getBoundingClientRect(), p = document.querySelector('[data-rfhq-popover] .rfhq-app-records').getBoundingClientRect();
+		return [l.left, l.right, l.top, l.bottom, p.left, p.right, p.top, p.bottom, innerWidth, innerHeight, document.documentElement.scrollWidth]; })()""")
+	check(f"{label}: the list of names is on the screen", room[0] >= 0 and room[1] <= room[8] and room[2] >= 0 and room[3] <= room[9] and room[10] <= room[8], str(room))
+	shot(page, f"widget-town-search-{label}.png")
+	press(bar + " .rv-ctl-options li:first-child")
+	page.wait_for_function("document.querySelector('[data-rfhq-popover] .rfhq-fc-tag') && document.querySelector('[data-rfhq-popover] .rfhq-fc-tag').innerText.toLowerCase().includes('mumbai, india')", timeout=15000)
+	check(f"{label}: the card is about the new town", "mumbai, india" in page.inner_text("[data-rfhq-popover] .rfhq-fc-tag").lower(), page.inner_text("[data-rfhq-popover] .rfhq-fc-tag"))
+	check(f"{label}: the page did not move", page.evaluate("window.__stayed === 1"))
+	check(f"{label}: the card is still open", page.get_attribute("[data-rfhq-popover]", "data-open") is not None)
+	check(f"{label}: the chip says the new town", "mumbai, india" in page.inner_text(bar + " .rv-ctl-town").lower(), page.inner_text(bar + " .rv-ctl-town"))
+	kept = page.evaluate("JSON.parse(localStorage.getItem('rfhq:lookup:place') || 'null')")
+	check(f"{label}: the town is kept in the browser for the Panchang page", bool(kept) and kept["label"] == "Mumbai, India" and bool(kept["value"]), str(kept))
+	shot(page, f"widget-town-chosen-{label}.png")
+	return kept
+
+
 def desk(browser):
 	context = browser.new_context(viewport={"width": 1440, "height": 900})
 	page = context.new_page()
@@ -105,8 +137,17 @@ def desk(browser):
 	check("a tap elsewhere shuts it", page.get_attribute("[data-rfhq-popover]", "data-open") is None)
 	check("no horizontal scroll", page.evaluate("document.documentElement.scrollWidth <= innerWidth"))
 	home = page.request.get(B + "/").text()
-	check("the Home page has no pop-over (it is not switched on there)", "data-rfhq-popover" not in home)
+	check("the Home page has the card over its banner, once (the owner asked for it there)", home.count("data-rfhq-popover=") == 1)
 
+	check("the control for the town is not on view while the card is shut", not page.locator("[data-rfhq-popover] .rfhq-record-bar").is_visible())
+	page.click("[data-rfhq-popover] .rfhq-record-cell:first-child")
+	kept = town_in_card(page, "desk")
+	page.keyboard.press("Escape")
+	page.goto(B + "/" + ROUTE, wait_until="networkidle")
+	page.wait_for_selector(".rfhq-record-cell", timeout=15000)
+	page.click("[data-rfhq-popover] .rfhq-record-cell:first-child")
+	check("desk: the town chosen in the card is the one on the next visit", "mumbai, india" in page.inner_text("[data-rfhq-popover] .rv-ctl-town").lower() and "mumbai, india" in page.inner_text("[data-rfhq-popover] .rfhq-fc-tag").lower())
+	check("desk: the card did not take the visitor to another address", ROUTE in page.url and "place=" not in page.url, page.url)
 	page.evaluate("localStorage.setItem('rfhq:lookup:place', JSON.stringify({value: '1275339', label: 'Mumbai, India'}))")
 	page.goto(B + "/" + ROUTE, wait_until="networkidle")
 	page.wait_for_selector(".rfhq-record-cell", timeout=15000)
@@ -132,6 +173,7 @@ def phone(browser):
 	dim = page.evaluate("getComputedStyle(document.querySelector('[data-rfhq-popover]'), '::before').backgroundColor")
 	check("phone: the page behind is dimmed", dim != "rgba(0, 0, 0, 0)", dim)
 	shot(page, "widget-phone-open.png")
+	town_in_card(page, "phone", tap=True)
 	page.tap("[data-rfhq-popover] .rfhq-record-cell:first-child")
 	check("phone: a tap on the pill shuts it", page.get_attribute("[data-rfhq-popover]", "data-open") is None)
 	context.close()

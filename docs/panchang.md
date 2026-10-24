@@ -1,6 +1,6 @@
 # Today's panchang and chaugharia (built 24 Oct 2026, after the owner's "Yes")
 
-**Status: the engine, the data and limits, the Panchang page and the glass card over a banner are built and tested. Nothing is switched on at Home; the page and the card are quiet until the owner names a town in Settings, and the card is on no page until the owner says.**
+**Status: the engine, the data and limits, the Panchang page and the glass card over a banner are built, tested and checked in a browser (a laptop and a phone). The card is on the dev site's Home (the owner asked for it there); nothing is deployed anywhere else: going live is the owner's word, and the move to AWS comes later.**
 
 The owner asked (24 Oct 2026): today's panchang over the Home banner "like showing weather in overlay, transparent, very intuitive", the numbers from **our own astrology API**; chaugharia added, panchang first and chaugharia second but prominent; the page to go to **any date and any town**, with the next 7 days; a small muhurat button kept.
 
@@ -8,11 +8,11 @@ The owner asked (24 Oct 2026): today's panchang over the Home banner "like showi
 
 | # | Piece | Where | State |
 |---|---|---|---|
-| 1 | The day's numbers (opcode `PANCHANGA_DAY`, hub engine 1.3.0): the tithi, nakshatra (with pada), yoga and karana with when each begins and ends and what follows, sunrise and sunset, moonrise, moonset and how much of the moon is lit, Rahu Kaal, Gulika, Yamaganda, Abhijit, and the chaugharia (eight by day, eight by night, good or avoid) | hub `astro_pipeline/engine/panchang_day.py`, `deploy/astrology-lambda/README.md` | built, tested; local branch `astrology-lambda`, **not pushed** |
+| 1 | The day's numbers (opcode `PANCHANGA_DAY`, hub engine 1.4.0): the tithi, nakshatra (with pada), yoga and karana with when each begins and ends and what follows, sunrise and sunset, moonrise, moonset and how much of the moon is lit, Rahu Kaal, Gulika, Yamaganda, Abhijit, and the chaugharia (eight by day, eight by night, good or avoid) | hub `astro_pipeline/engine/panchang_day.py`, `deploy/astrology-lambda/README.md` | built, tested; local branch `astrology-lambda`, **not pushed** |
 | 2 | A day at a town, kept once, with limits, and a town found by its first letters or by where the visitor is | `panchang.py`, `places.py` | built, tested |
 | 3 | The Panchang page: the bar (day and town) and the panes | `panchang_panes.py`, `views/panchang.json`, websitehq Report View | built, tested in a browser (desktop and phone) |
 | 4 | The glass pill and card over a banner | websitehq's Pop-over section + library cards; AstroHQ answers only field values (`panchang.widget_cards`, `panchang_widget.py`) | built, tested in a browser (desktop and phone) on a throwaway page |
-| 5 | Switched on at Home | `sites/astrohq.local/site_pages/home.py` (one section just before the banner's, see below) | **only when the owner says** |
+| 5 | Switched on at Home | `sites/astrohq.local/site_pages/home.py` (one section just before the banner's, see below) | on the dev site; **the live site only when the owner says** |
 
 ## What a visitor sees on /panchang
 
@@ -31,8 +31,8 @@ Any day from 1 Jan 1800 to 31 Dec 2399 (the years the engine was checked over); 
 | Setting | What it does | Default |
 |---|---|---|
 | Place for the Panchang | The town shown to a visitor who has chosen none ("Delhi, India"). **Blank = the Panchang is off** (the page shows nothing) | blank |
-| Service the Muhurat Button Leads To | The service of a Pandit ji for a muhurat. The button shows only when it is switched on and an approved Pandit ji offers it | blank |
-| Topic Sent With the Muhurat Button | What the booking says it is about | Auspicious date |
+| Kind of Guide the Muhurat Button Connects To | For example Pandit ji. The button connects the visitor to a guide of this kind who is **live now** (a Talk now, with the topic below); when none is live it opens the list of those who can be booked; when none can be booked there is no button. **Blank = no muhurat button** | blank |
+| Topic Sent With the Muhurat Button | What the booking says it is about (the setting's own default is used until another is saved) | Auspicious date |
 | New Days Worked Out In A Minute, At Most | The safety limit on days and towns the engine has not worked out yet; over it a visitor is asked to try again in a moment (what is kept is always shown) | 60 |
 | Requests A Visitor May Make In A Minute | Per visitor, for the page and the town search | 40 |
 | Sunrise and Moonrise Are When | apparent (the upper edge of the sun or moon on the horizon, the light bent by the air: what printed panchangs and most apps use) or centre (the library's own rule, about 4 minutes later for the sun and 10 for the moon). Rahu Kaal and the chaugharia are counted from it | apparent |
@@ -47,7 +47,7 @@ Any day from 1 Jan 1800 to 31 Dec 2399 (the years the engine was checked over); 
 - **A visitor cannot make the engine do unlimited work**: a limit on new days a minute, a limit per visitor, and a town is only ever one the list knows (a number from the list, never free text).
 - **What the engine writes is never markup**: every word is escaped and the page's markup is cleaned by websitehq (`report_html`), which keeps only tags, attributes and classes it knows.
 - **The town list** is the astrology service's own, one list for every app (GeoNames' cities500, CC BY; the service's README, "the places"): AstroHQ keeps none and asks for a search, a town by its id (with the time zone offset on a date), a town written out, and the town nearest a point (`places.py`, which keeps what it was told for an hour or a day). The service ranks a name written whole first, then the bigger towns; another name of a place ("Bombay") counts as its name from four letters, so that a short nickname of a small place does not come before Mumbai. The same list serves the places of birth.
-- **Not a promise of the sky.** The numbers are the engine's (Lahiri, true positions, the sun rising at the centre of the disc with no refraction, the library's convention); the page does not claim more. The hub's tests check the engine against independent calculations; an astrologer should still read one day against a printed panchang before this goes live (see "The owner's").
+- **Not a promise of the sky.** The numbers are the engine's (Lahiri, true positions, the sun and moon rising when their upper edge is on the horizon with the light bent by the air, unless the settings say centre); the page does not claim more. The hub's tests check the engine against independent calculations; an astrologer should still read one day against a printed panchang before this goes live (see "The owner's").
 
 ## Tests
 
@@ -63,8 +63,8 @@ Any day from 1 Jan 1800 to 31 Dec 2399 (the years the engine was checked over); 
 |---|---|
 | The town the page shows first (Delhi in the pictures) | blank = off; the page is quiet until it is named |
 | Whether "Chal" is good or neutral | the library says good; many printed chaugharia say neutral: it is a setting now (Desk, Astrology API Settings), good until the owner changes it |
-| The muhurat service (price, minutes, switch on) and a Pandit ji for it | the button shows only then; SVC-07174 "Muhurat" and SVC-07175 "Shadi date" exist as drafts |
-| When to put the pill over the Home banner | built next; switched on only on the owner's word |
+| A Pandit ji who offers an instant session ("Talk now") on the topic, with a price | the button connects to one who is live only then; until one does, it opens the list of those who can be booked (the sample Pandit ji offer bookings only) |
+| When the pill goes on the **live** Home banner | it is on the dev site's Home now; the live site only on the owner's word |
 | Deploying hub 1.2.0 and 1.3.0 to the live server | the live server still runs the older engine; never push the hub's `main` without the owner (a push deploys) |
 | A check by an astrologer against a printed panchang for a day or two | the numbers are the engine's, not an authority |
 
@@ -79,10 +79,27 @@ AstroHQ writes no markup and no look. It answers a list of items, each naming a 
 | the chaugharia as a bar of its eight parts, the one running marked, what comes next | Parts Bar | `steps`, `tones`, `current`, `heading`, `heading_note`, the two ends, `note` |
 | nakshatra, sun, Rahu Kaal, Abhijit (as they stand now: starts in, on now, over) | Stat Card | `label`, `value`, `description`, `tone` |
 | yoga, karana | Fact Card | `label`, `value`, `description` |
-| "Important work? Ask a Pandit ji for a muhurat" (only when it can be asked for) | Focus Card | `tag`, `title`, `body`, `link_url`, `link_label` |
+| "A Pandit ji is live now · Talk to one about a muhurat" (to one who is live, else "Important work? Ask a Pandit ji for a muhurat"; not there when none can be asked) | Focus Card | `tag`, `title`, `body`, `link_url`, `link_label` |
+| the town the card is about, **to change** (under the pill, in the open card) | websitehq's `lookup` control, the one of the Panchang page's bar | `widget_cards` answers `{"items": [...], "toolbar": {"controls": [lookup_control(town)]}}`; the method is in `rfhq_trusted_html_sources` (hooks), which is what lets its control through |
 
-It is about this moment: the tithi, nakshatra, yoga and karana **running now** (the page shows the ones at sunrise, as a printed panchang does), found in the answer of the day that holds the moment and the day after, so that it is right across midnight and sunrise. The town is the one the visitor kept on the Panchang page (`rfhq:lookup:place`), else the default town; the card says which, and its link goes to the Panchang page, where the town and the day are changed. The card asks again every 60 seconds while the page is on screen.
+It is about this moment: the tithi, nakshatra, yoga and karana **running now** (the page shows the ones at sunrise, as a printed panchang does), found in the answer of the day that holds the moment and the day after, so that it is right across midnight and sunrise. The town is the one the visitor kept (`rfhq:lookup:place`), else the default town; the card says which. The visitor changes it **in the card**: the chip under the pill opens a search of towns (and "Use my location"); a choice draws the card again for that town, in place, the page does not move, and the Panchang page opens on the same town. The link at the bottom goes to the Panchang page, where the day is changed too. The card asks again every 60 seconds while the page is on screen.
 
-To put it on Home (only when the owner says): in `home.py`, one more section placed just before the banner's section:
+To put it on a page: in `home.py`, one more section placed just before the banner's section:
 `section("panchang", content_source="App Records", records_source="raftor_astrohq.panchang.widget_cards", records_card="Stat Card", records_args="{}", records_kept="place", records_refresh=60, columns="2", popover="Top Right", surface="Glass", section_padding="None", gap="Small", records_links=json.dumps([{"label": "The full panchang, night chaugharia and the next 7 days →", "href": "/panchang", "kind": "secondary", "where": "bottom"}]))`
-Tests: `test_panchang` (`TestTheCardOverTheBanner`, `TestTheMoonMark`); browser: `python3 apps/raftor_astrohq/e2e/panchang_widget_journey.py` (builds a throwaway page, names a town for the run, removes both).
+Tests: `test_panchang` (`TestTheCardOverTheBanner`, `TestTheMoonMark`); browser: `python3 apps/raftor_astrohq/e2e/panchang_widget_journey.py` (builds a throwaway page, names a town for the run, removes both; searches a town in the card, chooses it, checks the card is about it and the page did not move, on a laptop and on a phone) and `panchang_mobile_check.py` (320 to 768 px wide).
+
+## Checked against another app (24 Oct 2026, New Delhi)
+
+The owner's own check, from a screenshot of an app they use. A time is shown with its seconds dropped, so a time that ends at 8:00:44 reads 8:00.
+
+| What | The other app | Ours |
+|---|---|---|
+| Tithi, nakshatra, karana: what they are and when each ends | Trayodashi till 1:38 pm; Uttara Bhadrapada till 8:32 pm; Taitila till 1:38 pm, then Gara till 12:52 am | the same, to the minute |
+| Sunrise, moonrise | 6:27 am, 4:22 pm | the same (the setting "Sunrise and Moonrise Are When" is *apparent*, the rule they use; the library's own centre rule is 4 minutes later for the sun and 10 for the moon) |
+| Abhijit, Rahu Kaal, Gulika | 11:42–12:27, 9:16–10:40 am, 6:27–7:51 am | the same |
+| Yoga | Vyaghata till 8:01 pm | Vyaghata till 8:00 pm (it ends at 8:00:44) |
+| Sunset | 5:43 pm | 5:42 pm (it sets at 5:42:47) |
+| Yamaganda, and Labh of the chaugharia (the same hours) | 1:29–2:54 pm | 1:29–2:53 pm (it ends at 2:53:57) |
+| Moonset | 5:19 am | 5:21 am (2 minutes: the moon's edge and the bending of light are worked out a little differently) |
+
+Neither dropping seconds nor rounding to the nearest minute gives their figure everywhere (their own numbers differ from ours by tens of seconds in places), so the page does not pretend to the last minute. An astrologer should still read one day against a printed panchang before this goes live.

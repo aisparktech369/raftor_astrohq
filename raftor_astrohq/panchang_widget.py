@@ -101,7 +101,7 @@ def _window(label: str, window: dict, now: datetime.datetime, good: bool) -> dic
 
 
 def cards(state: dict, links: dict) -> list[dict]:
-	"""The items of the widget for this moment. `state` is panchang.state(place); `links` has "muhurat" (the address of the muhurat button, or None) and "place" (the town's name, for the line above the tithi)."""
+	"""The items of the widget for this moment. `state` is panchang.state(place); `links` has "muhurat" (what the muhurat button connects to, panchang.muhurat_offer, or None) and "place" (the town's name, for the line above the tithi)."""
 	now, base = state["now"], state["now"].date()
 	held, after, today, cur = state["held"], state["after"], state["calendar"], state["running"]
 	tithi, then = running("tithi", (held, after), now)
@@ -126,7 +126,9 @@ def cards(state: dict, links: dict) -> list[dict]:
 		out.append({"card": "Fact Card", "label": _("Yoga"), "value": yoga["name"], "description": f"{_('till')} {when(moment(yoga['ends']), base)}"})
 	if karana:
 		out.append({"card": "Fact Card", "label": _("Karana"), "value": karana["name"]})
-	if links.get("muhurat"):
-		out.append({"card": "Focus Card", "tag": _("Important work?"), "title": _("Ask a Pandit ji for a muhurat"), "body": _("A wedding, a new home, a vehicle, a new business"),
-					"link_url": links["muhurat"], "link_label": _("Ask for a muhurat")})
+	offer = links.get("muhurat")
+	if offer:  # a Pandit ji who is live now, to talk to at once; else the list of those who can be booked
+		out.append({"card": "Focus Card", "tag": _("A Pandit ji is live now") if offer["live"] else _("Important work?"),
+					"title": _("Talk to one about a muhurat") if offer["live"] else _("Ask a Pandit ji for a muhurat"), "body": _("A wedding, a new home, a vehicle, a new business"),
+					"link_url": offer["url"], "link_label": offer["label"]})
 	return out

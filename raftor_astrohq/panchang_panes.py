@@ -124,12 +124,14 @@ def times(data: dict, ctx: dict) -> dict | None:
 
 
 def muhurat(data: dict, ctx: dict) -> dict | None:
-	link = ctx.get("muhurat")
-	if not link:
+	offer = ctx.get("muhurat")
+	if not offer:
 		return None
-	return {"body": f'<div class="rv-banner"><p class="rv-lede"><b>{esc(_("Choosing a time for something important?"))}</b> '
-			f'{esc(_("A wedding, a new home, a vehicle, a new business: ask a Pandit ji for a muhurat made for you."))}</p>'
-			f'<a class="rv-cta" href="{esc(link)}">{esc(_("Ask for a muhurat"))} →</a></div>', "summary": _("Ask a Pandit ji for a muhurat")}
+	if offer["live"]:
+		said = f'<b>{esc(_("A Pandit ji is live now."))}</b> {esc(_("Talk to one about a muhurat for a wedding, a new home, a vehicle, a new business."))}'
+	else:
+		said = f'<b>{esc(_("Choosing a time for something important?"))}</b> {esc(_("A wedding, a new home, a vehicle, a new business: ask a Pandit ji for a muhurat made for you."))}'
+	return {"body": f'<div class="rv-banner"><p class="rv-lede">{said}</p><a class="rv-cta" href="{esc(offer["url"])}">{esc(offer["label"])} →</a></div>', "summary": _("Ask a Pandit ji for a muhurat")}
 
 
 def _parts(title: str, note: str, parts: list[dict], base: datetime.date, now: datetime.datetime | None) -> str:
