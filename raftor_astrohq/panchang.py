@@ -25,9 +25,7 @@ from raftor_astrohq import astrology, places
 
 SETTINGS = "Astrology API Settings"
 MODE = "PANCHANGA_DAY"
-FIRST, LAST = datetime.date(1800, 1, 1), datetime.date(2399, 12, 31)  # the years the engine was checked over
-WEEK = 7
-KEEP_DEFAULT, KEEP_OTHER = 8 * 24 * 3600, 24 * 3600  # seconds a worked-out day is kept: a week ahead for the default town, a day for any other
+WEEK = 7  # the days of the strip: a week
 
 
 class PanchangBusy(frappe.ValidationError):
@@ -45,7 +43,20 @@ def settings() -> frappe._dict:
 		topic=(doc.get("panchang_muhurat_topic") or "").strip(),
 		new_per_minute=cint(doc.get("panchang_new_per_minute")) or 60,
 		per_visitor=cint(doc.get("panchang_requests_per_minute")) or 40,
+		chal=doc.get("panchang_chal") or "good",
+		first_year=cint(doc.get("panchang_first_year")) or 1800,  # the years the engine works a day out for
+		last_year=cint(doc.get("panchang_last_year")) or 2399,
+		keep_default=(cint(doc.get("panchang_keep_days")) or 8) * 24 * 3600,  # seconds a worked-out day is kept: a week ahead for the default town, a day for any other
+		keep_other=(cint(doc.get("panchang_keep_other_days")) or 1) * 24 * 3600,
 	)
+
+
+def first_day() -> datetime.date:
+	return datetime.date(settings().first_year, 1, 1)
+
+
+def last_day() -> datetime.date:
+	return datetime.date(settings().last_year, 12, 31)
 
 
 def on() -> bool:
@@ -97,12 +108,12 @@ def date_of(text, place: dict) -> datetime.date:
 	except Exception:
 		picked = None
 	picked = picked or today(place)
-	return min(max(picked, FIRST), LAST)
+	return min(max(picked, first_day()), last_day())
 
 
 # ---- one day, kept ----
 def _key(place: dict, on_date: datetime.date) -> str:
-	return f"astro_panchang:{place['latitude']:.3f}:{place['longitude']:.3f}:{on_date.isoformat()}"
+	return f"astro_panchang:{place['latitude']:.3f}:{place['longitude']:.3f}:{on_date.isoformat()}:{settings().chal}"
 
 
 def _fresh(kept) -> bool:
@@ -114,7 +125,7 @@ def _fresh(kept) -> bool:
 def _keep_for(place: dict) -> int:
 	chosen = default_place()
 	same = bool(chosen) and abs(chosen["latitude"] - place["latitude"]) < 0.001 and abs(chosen["longitude"] - place["longitude"]) < 0.001
-	return KEEP_DEFAULT if same else KEEP_OTHER
+	return settings().keep_default if same else settings().keep_other
 
 
 def _allow_new() -> None:
@@ -138,7 +149,7 @@ def day(on_date: datetime.date, place: dict) -> dict:
 	_allow_new()
 	offset = places.offset_hours(place["timezone"], datetime.datetime(on_date.year, on_date.month, on_date.day, 12))
 	answer = astrology.chart({"year": on_date.year, "month": on_date.month, "day": on_date.day, "hour": 12, "minute": 0, "second": 0,
-							  "latitude": place["latitude"], "longitude": place["longitude"], "timezone_offset": offset}, MODE)
+							  "latitude": place["latitude"], "longitude": place["longitude"], "timezone_offset": offset, "chal": settings().chal}, MODE)
 	cache.set_value(key, zlib.compress(json.dumps({"made": now_datetime().isoformat(), "day": answer}, separators=(",", ":")).encode()), expires_in_sec=_keep_for(place))
 	return answer
 
@@ -148,7 +159,7 @@ def week(start: datetime.date, place: dict) -> list[dict]:
 	out = []
 	for offset in range(WEEK):
 		on_date = start + datetime.timedelta(days=offset)
-		if on_date > LAST:
+		if on_date > last_day():
 			break
 		out.append(day(on_date, place))
 	return out
@@ -292,8 +303,8 @@ def toolbar(on_date: datetime.date, place: dict, explicit) -> dict:
 	chosen = place["id"] if explicit not in (None, "") else None
 	here = today(place)
 	return {"controls": [
-		{"type": "date", "arg": "date", "value": on_date.isoformat(), "label": f"{_(on_date.strftime('%A'))}, {on_date.day} {_(on_date.strftime('%B'))} {on_date.year}", "min": FIRST.isoformat(), "max": LAST.isoformat(),
-		 "previous": _address(on_date - datetime.timedelta(days=1), chosen) if on_date > FIRST else None, "next": _address(on_date + datetime.timedelta(days=1), chosen) if on_date < LAST else None,
+		{"type": "date", "arg": "date", "value": on_date.isoformat(), "label": f"{_(on_date.strftime('%A'))}, {on_date.day} {_(on_date.strftime('%B'))} {on_date.year}", "min": first_day().isoformat(), "max": last_day().isoformat(),
+		 "previous": _address(on_date - datetime.timedelta(days=1), chosen) if on_date > first_day() else None, "next": _address(on_date + datetime.timedelta(days=1), chosen) if on_date < last_day() else None,
 		 "today": _address(None, chosen) if on_date != here else None, "labels": {"previous": _("The day before"), "next": _("The day after"), "today": _("Today"), "pick": _("Choose a date")}},
 		{"type": "lookup", "arg": "place", "value": str(place["id"]), "label": town_label(place),
 		 "search": "raftor_astrohq.panchang.places_found", "near": "raftor_astrohq.panchang.place_near",

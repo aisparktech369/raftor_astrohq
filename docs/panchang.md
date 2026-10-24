@@ -35,6 +35,9 @@ Any day from 1 Jan 1800 to 31 Dec 2399 (the years the engine was checked over); 
 | Topic Sent With the Muhurat Button | What the booking says it is about | Auspicious date |
 | New Days Worked Out In A Minute, At Most | The safety limit on days and towns the engine has not worked out yet; over it a visitor is asked to try again in a moment (what is kept is always shown) | 60 |
 | Requests A Visitor May Make In A Minute | Per visitor, for the page and the town search | 40 |
+| Chal in the Chaugharia Is | good or neutral: Chal is good in the library's own division and neutral in some books; neutral is shown in its own colour and is not one to wait for. Sent to the engine with every day; a day kept for the other choice is not used | good |
+| First Year / Last Year of the Panchang | The years the astrology service works a day out for; a date outside them is taken to the nearest end, and the calendar's ends follow | 1800 / 2399 |
+| Days a Day of the Default Town / of Any Other Town Is Kept | How long a worked-out day is kept | 8 / 1 |
 
 ## How it is made safe and cheap
 
@@ -58,7 +61,7 @@ Any day from 1 Jan 1800 to 31 Dec 2399 (the years the engine was checked over); 
 | To decide or give | Why |
 |---|---|
 | The town the page shows first (Delhi in the pictures) | blank = off; the page is quiet until it is named |
-| Whether "Chal" is good or neutral | the library says good; many printed chaugharia say neutral |
+| Whether "Chal" is good or neutral | the library says good; many printed chaugharia say neutral: it is a setting now (Desk, Astrology API Settings), good until the owner changes it |
 | The muhurat service (price, minutes, switch on) and a Pandit ji for it | the button shows only then; SVC-07174 "Muhurat" and SVC-07175 "Shadi date" exist as drafts |
 | When to put the pill over the Home banner | built next; switched on only on the owner's word |
 | Deploying hub 1.2.0 and 1.3.0 to the live server | the live server still runs the older engine; never push the hub's `main` without the owner (a push deploys) |

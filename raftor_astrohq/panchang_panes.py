@@ -137,8 +137,8 @@ def _parts(title: str, note: str, parts: list[dict], base: datetime.date, now: d
 	for part in parts:
 		running = bool(now) and moment(part["from"]) <= now < moment(part["to"])
 		here = here or running
-		tone = "rv-good" if part["quality"] == "good" else "rv-avoid"
-		words = _("good") if part["quality"] == "good" else _("avoid")
+		tone = {"good": "rv-good", "neutral": "rv-neutral"}.get(part["quality"], "rv-avoid")
+		words = {"good": _("good"), "neutral": _("neutral")}.get(part["quality"], _("avoid"))
 		rows.append(f'<tr class="{tone}{" rv-now" if running else ""}"><th scope="row">{esc(_(part["name"]))}</th><td>{esc(words)}{esc(" · " + _("now")) if running else ""}</td>'
 					f'<td>{esc(clock(moment(part["from"])))} – {esc(when(moment(part["to"]), base))}</td></tr>')
 	first = ' class="rv-first"' if here else ""  # (on a phone the table with the part running now comes first)
@@ -150,8 +150,10 @@ def chaugharia(data: dict, ctx: dict) -> dict | None:
 	parts = day["chaugharia"]
 	rise, sset = clock(moment(day["sun"]["rise"])), clock(moment(day["sun"]["set"]))
 	good = sorted({p["name"] for p in parts["day"] + parts["night"] if p["quality"] == "good"})
-	avoid = sorted({p["name"] for p in parts["day"] + parts["night"] if p["quality"] != "good"})
-	legend = f'{_("Good")}: {", ".join(_(n) for n in good)}. {_("Avoid")}: {", ".join(_(n) for n in avoid)}.'
+	neutral = sorted({p["name"] for p in parts["day"] + parts["night"] if p["quality"] == "neutral"})
+	avoid = sorted({p["name"] for p in parts["day"] + parts["night"] if p["quality"] not in ("good", "neutral")})
+	middle = f' {_("Neutral")}: {", ".join(_(n) for n in neutral)}.' if neutral else ""
+	legend = f'{_("Good")}: {", ".join(_(n) for n in good)}.{middle} {_("Avoid")}: {", ".join(_(n) for n in avoid)}.'
 	body = (f'<div class="rv-split">{_parts(_("Day"), _("sunrise {0} to sunset {1}").format(rise, sset), parts["day"], base, now)}'
 			f'{_parts(_("Night"), _("sunset to the next sunrise"), parts["night"], base, now)}</div><p class="rv-cap">{esc(legend)}</p>')
 	running = next((p for p in parts["day"] + parts["night"] if now and moment(p["from"]) <= now < moment(p["to"])), None)

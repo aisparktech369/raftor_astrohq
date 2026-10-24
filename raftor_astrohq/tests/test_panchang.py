@@ -94,7 +94,7 @@ class TestADay(Stood):
 		panchang.day(datetime.date(2026, 10, 24), self.delhi())
 		(mode, numbers), = self.asked
 		self.assertEqual(mode, "PANCHANGA_DAY")
-		self.assertEqual(set(numbers), {"year", "month", "day", "hour", "minute", "second", "latitude", "longitude", "timezone_offset"})
+		self.assertEqual(set(numbers), {"year", "month", "day", "hour", "minute", "second", "latitude", "longitude", "timezone_offset", "chal"})
 		self.assertEqual((numbers["hour"], numbers["timezone_offset"]), (12, 5.5))
 
 	def test_the_offset_is_that_of_the_day_asked_for(self):
@@ -117,7 +117,7 @@ class TestADay(Stood):
 		with mock.patch.object(frappe.cache(), "set_value", wraps=frappe.cache().set_value) as kept:
 			panchang.day(datetime.date(2026, 10, 24), self.delhi())
 			panchang.day(datetime.date(2026, 11, 8), places.lookup("Mumbai", datetime.date(2026, 11, 8)))
-		self.assertEqual([call.kwargs["expires_in_sec"] for call in kept.call_args_list if str(call.args[0]).startswith("astro_panchang:")], [panchang.KEEP_DEFAULT, panchang.KEEP_OTHER])  # (the days; the towns kept beside them are the client's)
+		self.assertEqual([call.kwargs["expires_in_sec"] for call in kept.call_args_list if str(call.args[0]).startswith("astro_panchang:")], [8 * 24 * 3600, 24 * 3600])  # (the days; the towns kept beside them are the client's)
 
 	def test_only_so_many_new_days_are_worked_out_in_a_minute_and_what_is_kept_is_always_shown(self):
 		self.switch_on("Delhi", panchang_new_per_minute=2)
@@ -143,8 +143,8 @@ class TestADay(Stood):
 	def test_the_dates_are_read_from_the_address_and_never_outside_the_years_the_engine_answers_for(self):
 		delhi = self.delhi()
 		self.assertEqual(panchang.date_of("2026-11-08", delhi), datetime.date(2026, 11, 8))
-		self.assertEqual(panchang.date_of("1700-01-01", delhi), panchang.FIRST)
-		self.assertEqual(panchang.date_of("2500-01-01", delhi), panchang.LAST)
+		self.assertEqual(panchang.date_of("1700-01-01", delhi), datetime.date(1800, 1, 1))
+		self.assertEqual(panchang.date_of("2500-01-01", delhi), datetime.date(2399, 12, 31))
 		for text in (None, "", "not a date", "2026-13-45"):
 			self.assertEqual(panchang.date_of(text, delhi), panchang.today(delhi))
 
@@ -592,3 +592,74 @@ class TestTheMoonMark(TestCase):
 		self.assertEqual([mark(0.8, False), mark(0.5, False), mark(0.1, False)], ["🌖", "🌗", "🌘"])
 		self.assertEqual([mark(0.03, True), mark(0.35, True), mark(0.65, True)], ["🌒", "🌓", "🌔"])  # the edges belong to the phase that begins there
 		self.assertEqual([mark(-1, True), mark(7, True)], ["🌑", "🌕"])
+
+
+class TestWhatTheSettingsDecide(Stood):
+	"""Nothing here is fixed in the code: the years, how long a day is kept, and whether Chal is good or neutral are in Astrology API Settings (the defaults are what they always were)."""
+
+	def test_the_defaults_are_what_they_always_were(self):
+		got = panchang.settings()
+		self.assertEqual((got.chal, got.first_year, got.last_year, got.keep_default, got.keep_other), ("good", 1800, 2399, 8 * 24 * 3600, 24 * 3600))
+
+	def test_the_years_are_the_settings_and_the_bar_and_the_clamp_follow_them(self):
+		self.switch_on("Delhi", panchang_first_year=2020, panchang_last_year=2030)
+		delhi = self.delhi()
+		self.assertEqual(panchang.date_of("1999-05-05", delhi), datetime.date(2020, 1, 1))
+		self.assertEqual(panchang.date_of("2500-01-01", delhi), datetime.date(2030, 12, 31))
+		date = self.page(date="2026-10-24")["toolbar"]["controls"][0]
+		self.assertEqual((date["min"], date["max"]), ("2020-01-01", "2030-12-31"))
+		with mock.patch.object(panchang, "day", lambda on, place: {"date": on.isoformat()}):
+			self.assertEqual([d["date"] for d in panchang.week(datetime.date(2030, 12, 29), delhi)], ["2030-12-29", "2030-12-30", "2030-12-31"])  # the days that are left of the last year
+
+	def page(self, **args):
+		(item,) = panchang.page(**args)["items"]
+		return item
+
+	def test_how_long_a_day_is_kept_is_the_settings(self):
+		self.switch_on("Delhi", panchang_keep_days=3, panchang_keep_other_days=2)
+		with mock.patch.object(frappe.cache(), "set_value", wraps=frappe.cache().set_value) as kept:
+			panchang.day(datetime.date(2026, 10, 24), self.delhi())
+			panchang.day(datetime.date(2026, 11, 8), places.lookup("Mumbai", datetime.date(2026, 11, 8)))
+		self.assertEqual([call.kwargs["expires_in_sec"] for call in kept.call_args_list if str(call.args[0]).startswith("astro_panchang:")], [3 * 24 * 3600, 2 * 24 * 3600])
+
+	def test_the_chal_the_settings_name_is_asked_of_the_engine_and_a_day_is_asked_again_when_it_changes(self):
+		panchang.day(datetime.date(2026, 10, 24), self.delhi())
+		self.assertEqual(self.asked[-1][1]["chal"], "good")
+		self.switch_on("Delhi", panchang_chal="neutral")
+		panchang.day(datetime.date(2026, 10, 24), self.delhi())
+		self.assertEqual((len(self.asked), self.asked[-1][1]["chal"]), (2, "neutral"))  # not the day kept for the other choice
+		panchang.day(datetime.date(2026, 10, 24), self.delhi())
+		self.assertEqual(len(self.asked), 2)
+
+	def neutral_days(self):
+		for answer in (a for a in self.days.values() if isinstance(a, dict)):
+			for which in ("day", "night"):
+				for part in answer["chaugharia"][which]:
+					if part["name"] == "Chal":
+						part["quality"] = "neutral"
+
+	def test_a_neutral_chal_is_said_on_the_page_in_its_own_colour_and_in_the_legend(self):
+		self.neutral_days()
+		body = self.page(date="2026-10-24")["body_html"]
+		self.assertRegex(body, r'<tr class="rv-neutral"><th scope="row">Chal</th><td>neutral</td>')
+		self.assertIn("Good: Amrit, Labh, Shubh. Neutral: Chal. Avoid: Kaal, Rog, Udveg.", body)
+		self.assertNotIn("Chal</th><td>good", body)
+
+	def test_a_neutral_chal_is_a_warning_tone_on_the_card_and_is_not_a_good_part_to_wait_for(self):
+		self.neutral_days()
+		self.at("2026-10-24T12:30")  # 12:05 to 1:28 pm is Chal
+		pill = self.items()[0]
+		self.assertEqual((pill["body"], pill["tone"]), ("Chaugharia: Chal · neutral", "warning"))
+		bar = self.card("Parts Bar")
+		self.assertEqual((bar["heading_tone"], bar["heading_note"]), ("warning", "Chal · neutral · till 1:28 pm"))
+		self.assertEqual(bar["tones"].split("\n")[4], "warning")
+		self.assertTrue(bar["note"].startswith("Next good: Labh"), bar["note"])  # a neutral part is not one to wait for
+
+	def at(self, text):
+		self.now = datetime.datetime.fromisoformat(text).replace(tzinfo=KOLKATA)
+
+	def items(self):
+		return panchang.widget_cards()["items"]
+
+	def card(self, name):
+		return next(i for i in self.items() if i["card"] == name)

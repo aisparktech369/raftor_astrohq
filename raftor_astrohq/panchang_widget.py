@@ -13,7 +13,7 @@ from frappe import _
 
 from raftor_astrohq.panchang_panes import clock, moment, span, tithi_name, when
 
-TONE = {"good": "success", "avoid": "danger"}  # the library's tones for what the engine calls good and avoid
+TONE = {"good": "success", "avoid": "danger", "neutral": "warning"}  # the library's tones for what the engine calls good, avoid and (Chal, when the settings say so) neutral
 
 
 def lasting(gap: datetime.timedelta) -> str:
@@ -56,7 +56,7 @@ def moon_mark(illumination: float, waxing: bool) -> str:
 
 
 def _words(part: dict) -> str:
-	return _("good") if part["quality"] == "good" else _("avoid")
+	return {"good": _("good"), "neutral": _("neutral")}.get(part["quality"], _("avoid"))
 
 
 def _parts(answer: dict, which: str) -> list[dict]:

@@ -25,7 +25,12 @@
   "panchang_muhurat_service",
   "panchang_muhurat_topic",
   "panchang_new_per_minute",
-  "panchang_requests_per_minute"
+  "panchang_requests_per_minute",
+  "panchang_chal",
+  "panchang_first_year",
+  "panchang_last_year",
+  "panchang_keep_days",
+  "panchang_keep_other_days"
  ],
  "fields": [
   {
@@ -163,12 +168,46 @@
    "fieldtype": "Int",
    "label": "Requests A Visitor May Make In A Minute",
    "default": "40"
+  },
+  {
+   "fieldname": "panchang_chal",
+   "fieldtype": "Select",
+   "label": "Chal in the Chaugharia Is",
+   "options": "good\nneutral",
+   "default": "good",
+   "description": "Chal is good in the astrology library's own division and neutral in some books. Good: it is green with Labh, Amrit and Shubh. Neutral: it is shown as neutral, neither to choose nor to avoid. Changing it asks the engine again for the days kept."
+  },
+  {
+   "fieldname": "panchang_first_year",
+   "fieldtype": "Int",
+   "label": "First Year of the Panchang",
+   "default": "1800",
+   "description": "The years the astrology service works the panchang of a day out for (its README). A date outside them is taken to the nearest end."
+  },
+  {
+   "fieldname": "panchang_last_year",
+   "fieldtype": "Int",
+   "label": "Last Year of the Panchang",
+   "default": "2399"
+  },
+  {
+   "fieldname": "panchang_keep_days",
+   "fieldtype": "Int",
+   "label": "Days a Day of the Default Town Is Kept",
+   "default": "8",
+   "description": "A day worked out for the default town is kept this long, so that the first visitor of a day waits for nothing."
+  },
+  {
+   "fieldname": "panchang_keep_other_days",
+   "fieldtype": "Int",
+   "label": "Days a Day of Any Other Town Is Kept",
+   "default": "1"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-10-24 12:00:00.000000",
+ "modified": "2026-11-04 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Astrology API Settings",
