@@ -401,7 +401,8 @@ class TestWhatTheFormAsksAndChecks(Stood):
 			self.assertEqual(details.match_rules(MATCH_DETAILS, "x@example.com"), {})
 
 	def test_with_no_list_of_places_a_sale_is_not_refused_for_it(self):
-		with mock.patch.object(places, "lookup", REAL_LOOKUP), mock.patch.object(places, "ready", lambda: False):
+		frappe.cache().delete_keys("astro_places")  # (what an earlier test asked and the cache kept)
+		with mock.patch.object(places, "lookup", REAL_LOOKUP), mock.patch.object(astrology, "_ask", side_effect=astrology.AstrologyUnavailable("down")):
 			with self.assertRaises(places.PlacesNotReady):
 				places.lookup("Delhi", datetime.date(1980, 6, 8))
 			self.assertEqual(details.person_rules(KUNDLI_DETAILS), {})  # the maker will say so on the order, and the team sees it

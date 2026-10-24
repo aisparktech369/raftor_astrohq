@@ -1,4 +1,4 @@
-"""The Panchang (panchang.py, panchang_panes.py, places.suggest/near/by_id): any day at any town, kept once, what is running now, and the page's markup.
+"""The Panchang (panchang.py, panchang_panes.py): any day at any town, kept once, what is running now, and the page's markup.
 
 The engine is stood in for by its own answers for Delhi and Mumbai (tests/fixtures/panchang_days.json.gz, recorded from engine 1.3.0 with the small list of places the tests use).
 
@@ -20,7 +20,7 @@ import frappe
 from raftor_astrohq import astrology, page_definitions, panchang, panchang_panes, panchang_widget, places, report_view
 from raftor_websitehq.website_hq import components
 from raftor_websitehq.website_hq import report_html
-from raftor_astrohq.tests.test_places import PlacesCase
+from raftor_astrohq.tests.places_fake import PlacesCase
 
 FIXTURE = Path(__file__).parent / "fixtures" / "panchang_days.json.gz"
 KOLKATA = ZoneInfo("Asia/Kolkata")
@@ -78,81 +78,6 @@ class Stood(PlacesCase):
 		return datetime.datetime.fromisoformat(text)
 
 
-class TestFindingATown(PlacesCase):
-	def test_a_place_has_an_id_and_is_found_again_by_it_with_the_offset_of_the_day(self):
-		found = places.lookup("Delhi", datetime.date(2026, 10, 24))
-		self.assertEqual(found["id"], 19)
-		again = places.by_id(19, datetime.date(2026, 10, 24))
-		self.assertEqual((again["name"], again["timezone_offset"], again["latitude"]), (found["name"], 5.5, found["latitude"]))
-		self.assertEqual(places.by_id("21", datetime.date(1990, 1, 1))["timezone_offset"], 5.75)  # an id may come as text from an address (Kathmandu, whose clock has been +5:45 since 1986)
-		for bad in (None, "", "x", 9999, -1):
-			with self.assertRaises(places.PlaceNotFound):
-				places.by_id(bad, datetime.date(2026, 10, 24))
-
-	def test_the_first_letters_find_the_town_and_a_name_written_whole_comes_first(self):
-		self.assertEqual([(r["name"], r["region"]) for r in places.suggest("Pun")][:1], [("Pune", "Maharashtra, India")])
-		self.assertEqual(places.suggest("poo")[0]["name"], "Pune")  # another name of the town (Poona)
-		self.assertEqual(places.suggest("Mumb")[0], {"id": 22, "name": "Mumbai", "region": "Maharashtra, India"})
-		self.assertEqual(places.suggest("bombay")[0]["name"], "Mumbai")
-		everything = [r["id"] for r in places.suggest("pune")]
-		self.assertEqual(len(everything), len(set(everything)))
-		pune = [(r["name"], r["region"]) for r in places.suggest("pune")]
-		self.assertEqual(pune.count(("Pune", "Maharashtra, India")), 1)  # the same town listed twice is shown once
-		self.assertIn(("Pune", "Bagmati, Nepal"), pune)
-		hyderabad = places.suggest("hyderabad")
-		self.assertEqual([r["region"] for r in hyderabad], ["Telangana, India", "Sindh, Pakistan"])  # the bigger town first
-
-	def test_a_name_written_whole_comes_before_a_bigger_town_that_only_starts_with_it(self):
-		from raftor_astrohq.tests.test_places import ADMIN1, ADMIN2, CITIES, COUNTRIES, city
-
-		bigger = city(30, "Punekar Nagar", 19.0, 74.0, "IN", "16", "521", 9000000, "Asia/Kolkata")
-		places.build_from_text(CITIES + "\n" + bigger, ADMIN1, ADMIN2, COUNTRIES, self.file)
-		self.assertEqual([r["name"] for r in places.suggest("pune")][:2], ["Pune", "Pune"])  # the two that are called Pune, the bigger one of the other name after them
-		self.assertEqual(places.suggest("pune")[-1]["name"], "Punekar Nagar")
-		self.assertEqual(places.suggest("punek")[0]["name"], "Punekar Nagar")
-
-	def test_a_short_nickname_of_a_small_place_does_not_come_before_a_big_town_but_a_longer_other_name_does(self):
-		from raftor_astrohq.tests.test_places import ADMIN1, ADMIN2, CITIES, COUNTRIES, city
-
-		small = city(31, "Muli", 2.9, 73.5, "IN", "16", "519", 900, "Asia/Kolkata", "Mum,Bombayy")
-		places.build_from_text(CITIES + "\n" + small, ADMIN1, ADMIN2, COUNTRIES, self.file)
-		found = [r["name"] for r in places.suggest("mum")]
-		self.assertEqual(found[0], "Mumbai")  # Mumbai begins with it and is far bigger: Muli is only known as Mum to a few
-		self.assertIn("Muli", found)
-		self.assertEqual(places.suggest("muli")[0]["name"], "Muli")  # its own name written whole
-		self.assertEqual(places.suggest("bombay")[0]["name"], "Mumbai")  # another name of 4 letters or more is a name: the bigger town first
-		self.assertEqual([r["name"] for r in places.suggest("bombayy")][:1], ["Muli"])
-		more = city(32, "Bombay", -37.0, 174.9, "IN", "16", "519", 2000, "Pacific/Auckland") + "\n" + city(33, "Goa", 15.5, 73.8, "IN", "16", "519", 500, "Asia/Kolkata") + "\n" + city(34, "Goalpara", 26.2, 90.6, "IN", "16", "519", 50000, "Asia/Kolkata")
-		places.build_from_text(CITIES + "\n" + small + "\n" + more, ADMIN1, ADMIN2, COUNTRIES, self.file)
-		self.assertEqual([r["name"] for r in places.suggest("bombay")][:2], ["Mumbai", "Bombay"])  # Bombay is a name of Mumbai and of a small place: the bigger town first
-		self.assertEqual([r["name"] for r in places.suggest("goa")][:2], ["Goa", "Goalpara"])  # a place called Goa is written whole, though a bigger one starts with it
-
-	def test_a_few_letters_that_many_places_start_with_still_find_the_biggest_town(self):
-		from raftor_astrohq.tests.test_places import ADMIN1, ADMIN2, CITIES, COUNTRIES, city
-
-		crowd = "\n".join(city(1000 + n, f"Lonaly{n:04d}", 20.0 + n / 1000, 75.0, "IN", "16", "519", 100 + n % 50, "Asia/Kolkata") for n in range(900))  # nine hundred small places that start with \"lon\" and come before London in the list and in its order of names, more than the search reads
-		places.build_from_text(crowd + "\n" + CITIES, ADMIN1, ADMIN2, COUNTRIES, self.file)
-		self.assertEqual(places.suggest("lon")[0]["name"], "London")  # the biggest of them all, though the crowd came before it in the list
-		self.assertEqual([r["region"] for r in places.suggest("lon")][:2], ["England, United Kingdom", "Ontario, Canada"])
-
-	def test_one_letter_or_nothing_finds_nothing_and_the_most_is_asked_for(self):
-		for text in ("", "p", " ", None, "zzzz"):
-			self.assertEqual(places.suggest(text), [])
-		rampur = places.suggest("ramp")
-		self.assertEqual([r["region"] for r in rampur], ["Moradabad, Uttar Pradesh, India", "Jaunpur, Uttar Pradesh, India", "Hardoi, Uttar Pradesh, India"])  # three towns of one name: the district says which
-		self.assertEqual(len(places.suggest("ramp", limit=2)), 2)
-
-	def test_where_someone_is_gives_the_town_nearest_and_a_bigger_town_beats_a_nearer_village(self):
-		self.assertEqual(places.near(18.52, 73.85, datetime.date(2026, 10, 24))["name"].split(",")[0], "Pune")
-		self.assertEqual(places.near(28.70, 77.10, datetime.date(2026, 10, 24))["id"], 19)
-		self.assertEqual(places.near(18.54, 73.80, datetime.date(2026, 10, 24))["id"], 1)  # standing on the village of 5,000 listed beside Pune: the town of 3 million is meant
-		self.assertIsNone(places.near(0.0, -30.0, datetime.date(2026, 10, 24)))  # mid-Atlantic
-		self.assertIsNone(places.near(19.2, 74.6, datetime.date(2026, 10, 24)))  # half way between Pune and Aurangabad: neither is within 60 km
-		self.assertIsNone(places.near(19.7, 74.0, datetime.date(2026, 10, 24)))  # Aurangabad is in the square looked at, but 104 km off
-		for bad in (("x", "y"), (None, None), (91, 0), (0, 181)):
-			self.assertIsNone(places.near(*bad, datetime.date(2026, 10, 24)))
-
-
 class TestADay(Stood):
 	def test_a_day_is_asked_for_once_and_then_read_back(self):
 		first = panchang.day(datetime.date(2026, 10, 24), self.delhi())
@@ -192,7 +117,7 @@ class TestADay(Stood):
 		with mock.patch.object(frappe.cache(), "set_value", wraps=frappe.cache().set_value) as kept:
 			panchang.day(datetime.date(2026, 10, 24), self.delhi())
 			panchang.day(datetime.date(2026, 11, 8), places.lookup("Mumbai", datetime.date(2026, 11, 8)))
-		self.assertEqual([call.kwargs["expires_in_sec"] for call in kept.call_args_list], [panchang.KEEP_DEFAULT, panchang.KEEP_OTHER])
+		self.assertEqual([call.kwargs["expires_in_sec"] for call in kept.call_args_list if str(call.args[0]).startswith("astro_panchang:")], [panchang.KEEP_DEFAULT, panchang.KEEP_OTHER])  # (the days; the towns kept beside them are the client's)
 
 	def test_only_so_many_new_days_are_worked_out_in_a_minute_and_what_is_kept_is_always_shown(self):
 		self.switch_on("Delhi", panchang_new_per_minute=2)
