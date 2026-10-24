@@ -4,9 +4,10 @@ These do not depend on Desk permissions: every call works on the caller's own Us
 shared rules (profiles.py), and answers in the shapes websitehq's page kit expects."""
 import frappe
 from frappe import _
+from frappe.rate_limiter import rate_limit
 from frappe.utils import formatdate
 
-from raftor_astrohq import profiles
+from raftor_astrohq import panchang, places, profiles
 from raftor_astrohq.journey import APP_KEY
 from raftor_websitehq.website_hq.page_groups import page_url
 
@@ -135,3 +136,11 @@ def _refresh_onboarding(user: str) -> None:
 		return
 	for name in open_applications(user, APP_KEY):
 		run_completion_checks(name)
+
+
+@frappe.whitelist(allow_guest=True, methods=["POST"])
+@rate_limit(limit=panchang._per_visitor, seconds=60)
+def place_options(query=None) -> list[dict]:
+	"""For the place-of-birth box of a form (websitehq's lookup field): the towns that start with what was typed, as {"value", "label"}, the label being the town written the way the form reads it back
+	("Pune, Maharashtra, India"). The towns are the astrology service's (places.suggest); the limit a visitor may ask at is the Panchang's town search's."""
+	return [{"value": text, "label": text} for text in (f"{p['name']}, {p['region']}" for p in places.suggest(str(query or "")[:60], 8))]

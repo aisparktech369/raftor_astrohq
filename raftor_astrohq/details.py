@@ -19,13 +19,22 @@ def wish() -> dict:
 	return {"name": "wish", "label": _("Your wish or purpose"), "type": "textarea", "placeholder": _("Optional")}
 
 
+PLACE_SOURCE = "raftor_astrohq.api.place_options"  # the method that answers the towns that start with what was typed (websitehq's lookup field)
+
+
+def place_field(name: str, label: str) -> dict:
+	"""The place of birth as a form asks for it: type the town and choose it from the list (the astrology service's towns); what is typed and not on the list is read as written, so that it can be told what to try."""
+	return {"name": name, "label": label, "type": "lookup", "source": PLACE_SOURCE, "free_text": True, "required": True, "placeholder": _("Start typing the town"),
+			"hint": _("Choose your town from the list, with its state. If it is not there, write the town and its state, or choose the nearest bigger town.")}
+
+
 def birth_details() -> list[dict]:
 	"""What a report made from someone's birth asks: who, the day, the time and the place."""
 	return [
 		{"name": "report_name", "label": _("Name"), "required": True, "placeholder": _("Full name for the report")},
 		{"name": "birth_date", "label": _("Date of birth"), "type": "date", "required": True},
 		{"name": "birth_time", "label": _("Time of birth"), "type": "time_text", "required": True, "placeholder": "HH:MM", "hint": _("If you do not know it, write 12:00.")},
-		{"name": "birth_place", "label": _("Place of birth"), "required": True, "placeholder": _("Town or city")},
+		place_field("birth_place", _("Place of birth")),
 	]
 
 
@@ -50,8 +59,7 @@ def person_fields(prefix: str = "", whose: str = "") -> list[dict]:
 		{"name": k["date"], "label": own(_("date of birth")), "type": "date", "required": True},
 		{"name": k["time"], "label": own(_("time of birth")), "type": "time_text", "required": True, "placeholder": "HH:MM",
 		 "hint": _("The exact time matters: the lagna and the dasha change with it. If you do not know it, ask your family or look at the birth certificate.")},
-		{"name": k["place"], "label": own(_("place of birth")), "required": True, "placeholder": _("Town, State (e.g. Pune, Maharashtra)"),
-		 "hint": _("Write the town and its state or country. If you are not sure of the town, the nearest bigger one will do.")},
+		place_field(k["place"], own(_("place of birth"))),
 	]
 
 

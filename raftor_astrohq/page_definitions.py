@@ -4,7 +4,7 @@ site's. Addresses are `<group>/<page>`: a person's own birth details under `my`,
 import frappe
 from frappe import _
 
-from raftor_astrohq import profiles
+from raftor_astrohq import details, profiles
 from raftor_servicehq.roles import SERVICE_PROVIDER_ROLE
 from raftor_websitehq.website_hq.page_groups import page_url
 
@@ -27,7 +27,7 @@ def _you_fields():
 		{"name": "full_name", "label": _("Full name"), "required": True, "placeholder": _("e.g. Asha Rao"), "hint": _("Shown on your chart.")},
 		{"name": "date_of_birth", "label": _("Date of birth"), "type": "date", "required": True},
 		*_time_fields(),
-		{"name": "place_of_birth", "label": _("Place of birth"), "required": True, "placeholder": _("Town or city, country")},
+		details.place_field("place_of_birth", _("Place of birth")),
 	]
 
 
@@ -38,7 +38,7 @@ def _person_fields():
 		{"name": "full_name", "label": _("Full name"), "required": True},
 		{"name": "date_of_birth", "label": _("Date of birth"), "type": "date", "required": True},
 		*_time_fields(),
-		{"name": "place_of_birth", "label": _("Place of birth"), "required": True, "placeholder": _("Town or city, country")},
+		details.place_field("place_of_birth", _("Place of birth")),
 		{"name": "permission_given", "label": _("I have permission to keep this person's details"), "type": "checkbox",
 		 "hint": _("Needed for anyone but yourself.")},
 	]

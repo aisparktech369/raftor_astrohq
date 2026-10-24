@@ -6,7 +6,9 @@ Run with: bench --site astrohq.local run-tests --app raftor_astrohq --module raf
 import datetime
 from unittest import mock
 
-from raftor_astrohq import astrology, places
+import frappe
+
+from raftor_astrohq import api, astrology, details, page_definitions, places
 from raftor_astrohq.tests.places_fake import PlacesCase
 
 BORN = datetime.datetime(1980, 6, 8, 13, 49)
@@ -92,3 +94,31 @@ class TestAskingForATown(PlacesCase):
 		with self.assertRaises(places.PlaceNotFound):
 			places.offset_hours("Nowhere/Land", datetime.datetime(2026, 8, 15, 12))
 		self.assertEqual(places.ATTRIBUTION, "Place data: GeoNames (geonames.org), licensed CC BY 4.0.")
+
+
+class TestTheBirthPlaceBox(PlacesCase):
+	"""The place of birth of a form is websitehq's lookup field: type, choose the town from the list, or write it out."""
+
+	def test_the_towns_that_start_with_what_was_typed_come_back_as_the_text_the_form_reads_back(self):
+		self.assertEqual(api.place_options("Mum"), [{"value": "Mumbai, Maharashtra, India", "label": "Mumbai, Maharashtra, India"}])
+		self.assertEqual(places.lookup(api.place_options("Mum")[0]["value"], BORN)["id"], 22)  # what was chosen is found again, the same town
+		self.assertEqual(api.place_options("m"), [])
+		self.assertEqual(api.place_options(None), [])
+		self.assertEqual(api.place_options("<b>Mum</b>"), [])  # (typed markup is only letters to look for)
+		api.place_options("x" * 500)
+		self.assertLessEqual(len(self.places_asked[-1]["place"]["text"]), 60)
+
+	def test_a_visitor_who_is_not_signed_in_may_ask_for_towns(self):
+		self.assertIn(api.place_options, frappe.guest_methods)
+
+	def test_every_form_that_asks_for_a_place_of_birth_uses_the_box(self):
+		from raftor_websitehq.website_hq import page_sync
+
+		fields = [f for f in (*details.person_fields(), *details.person_fields("boy_", "Boy's "), *details.person_fields("girl_", "Girl's "), *details.birth_details(), *page_definitions._you_fields(),
+							  *page_definitions._person_fields()) if "place" in f["name"]]
+		self.assertEqual(len(fields), 6)  # a kundli, a boy and a girl, a report's details, the account holder, a family member
+		for field in fields:
+			self.assertEqual((field["type"], field["source"], field["free_text"], field["required"]), ("lookup", "raftor_astrohq.api.place_options", True, True), field["name"])
+			clean = page_sync.check_field(field)  # a page's form takes it as it is
+			self.assertEqual((clean["source"], clean["free_text"]), (field["source"], True))
+		self.assertTrue(frappe.get_attr(fields[0]["source"]))  # the method exists

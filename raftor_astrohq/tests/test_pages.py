@@ -29,9 +29,9 @@ class TestPages(TestCase):
 
 	def test_every_page_passes_the_kits_checks_and_needs_a_sign_in(self):
 		self.assertEqual(set(pages()), {"onboarding/birth-details", "onboarding/birth-details/done", "my/birth-profiles", "my/birth-profiles/new", "my/birth-profiles/edit", "my/birth-profiles/you",
-										"onboarding/astrologer-personas", "onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new"})
+										"onboarding/astrologer-personas", "onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new", "provider/chart", "panchang"})
 		for route, page in pages().items():
-			self.assertTrue(check(page)["login_required"], route)
+			self.assertEqual(check(page)["login_required"], route != "panchang", route)  # the Panchang is for everyone, every other page is for someone signed in
 
 	def test_onboarding_form_is_for_you_and_has_the_short_field_set(self):
 		form = form_of(pages()["onboarding/birth-details"])

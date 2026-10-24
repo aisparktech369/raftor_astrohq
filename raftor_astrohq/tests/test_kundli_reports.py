@@ -367,7 +367,7 @@ class TestWhatTheFormAsksAndChecks(Stood):
 		for field in details.kundli_fields() + details.match_fields():
 			self.assertTrue(field["required"], field["name"])  # the time too: the lagna and the dasha change with it
 		self.assertEqual([f["label"] for f in details.match_fields()][:2], ["Boy's name", "Boy's date of birth"])
-		self.assertEqual([f.get("type", "text") for f in details.kundli_fields()], ["text", "date", "time_text", "text"])
+		self.assertEqual([f.get("type", "text") for f in details.kundli_fields()], ["text", "date", "time_text", "lookup"])
 
 	def test_the_makers_read_the_same_names_the_forms_use(self):
 		self.assertEqual(set(details.person_keys().values()), {f["name"] for f in details.kundli_fields()})
