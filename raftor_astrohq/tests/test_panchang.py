@@ -289,7 +289,7 @@ class TestThePage(Stood):
 		text = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", body)))
 		for expected in ("Tithi Shukla Trayodashi till 1:38 pm, then Shukla Chaturdashi", "Nakshatra Uttara Bhadrapada, pada 2 till 8:32 pm, then Revati", "Yoga Vyaghata till 8:00 pm, then Harshana",
 						 "Karana Taitila till 1:38 pm, then Gara", "Weekday Saturday", "Sunrise 6:31 am", "Sunset 5:38 pm", "Moonrise 4:33 pm", "Rahu Kaal 9:18–10:41 am avoid", "Gulika 6:31–7:54 am avoid",
-						 "Yamaganda 1:28–2:52 pm avoid", "Abhijit muhurat 11:42 am–12:27 pm good", "Moonset 5:20 am next day", "Waxing · 94% lit", "The day's tithi and nakshatra are the ones at sunrise (6:31 am)"):
+						 "Yamaganda 1:28–2:52 pm avoid", "Abhijit muhurat 11:42 am–12:27 pm good", "Moonset 5:20 am next day", "Waxing · 94% lit", "The day's tithi and nakshatra are the ones at sunrise (6:31 am)", "Place data: GeoNames (geonames.org), licensed CC BY 4.0."):
 			self.assertIn(expected, text)
 
 	def test_the_chaugharia_are_a_table_for_the_day_and_one_for_the_night_with_good_and_avoid(self):

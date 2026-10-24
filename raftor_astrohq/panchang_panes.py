@@ -10,6 +10,7 @@ import math
 
 from frappe import _
 
+from raftor_astrohq import places
 from raftor_astrohq.panes import esc, table
 
 NEXT_DAY, DAY_BEFORE = " next day", " the day before"
@@ -106,7 +107,8 @@ def panchang(data: dict, ctx: dict) -> dict | None:
 		rows.append([esc(_label(kind)), f"<b>{esc(value)}</b>", esc(ends)])
 	rows.append([esc(_label("weekday")), f"<b>{esc(_(day['weekday']))}</b>", ""])
 	head = esc(_("The day's tithi and nakshatra are the ones at sunrise ({0})").format(clock(moment(day["sun"]["rise"]))))
-	body = f'<div class="rv-split"><div><div class="rv-wrap">{table([], rows, "rv-table rv-keys")}</div><p class="rv-cap">{head}</p></div>{_sky(day, base)}</div>'
+	credit = f'<p class="rv-cap">{esc(places.ATTRIBUTION)}</p>'  # the towns of the list are GeoNames' (CC BY 4.0), which asks for this line wherever its places are used
+	body = f'<div class="rv-split"><div><div class="rv-wrap">{table([], rows, "rv-table rv-keys")}</div><p class="rv-cap">{head}</p>{credit}</div>{_sky(day, base)}</div>'
 	return {"body": body, "summary": f"{tithi_name(day['tithi'])} {_('till')} {when(moment(day['tithi']['ends']), base)}"}
 
 
