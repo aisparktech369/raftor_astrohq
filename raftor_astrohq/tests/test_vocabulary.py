@@ -3,6 +3,7 @@ from unittest import TestCase
 
 import frappe
 
+from raftor_astrohq import vocabulary
 from raftor_servicehq import kinds
 
 
@@ -19,3 +20,15 @@ class TestVocabulary(TestCase):
 		self.assertEqual(kinds.words("astrohq", "Event")["service"], "havan")
 		self.assertEqual(kinds.words("astrohq", "Subscription")["unit"], "day")
 		self.assertEqual(kinds.words("astrohq", "Consultation")["provider"], "astrologer")
+
+
+class TestTheKindsOfGuide(TestCase):
+	def test_they_come_in_the_order_leaders_list_them(self):
+		self.assertEqual(list(vocabulary.vocabulary()["personas"]), ["Astrologer", "KP astrologer", "Numerologist", "Tarot reader", "Pandit ji", "Vastu expert", "Palmist"])
+
+	def test_every_free_report_belongs_to_one_of_them(self):
+		vocab = vocabulary.vocabulary()
+		for name, report in vocab["reports"].items():
+			self.assertIn(report.get("kind"), vocab["personas"], name)
+		self.assertEqual(vocab["reports"]["kp"]["kind"], "KP astrologer")
+

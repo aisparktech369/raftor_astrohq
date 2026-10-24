@@ -27,18 +27,18 @@ def arranged_reports() -> dict:
 	person = {"fields": kundli_fields(), "validate": "raftor_astrohq.details.kundli_rules"}
 	maker = "raftor_astrohq.reports.arranged_report"
 	return {
-		"detailed": {"title": _("Detailed kundli report"), "blurb": _("Your kundli in full: the houses, the strength of each planet, the divisional charts, ashtakavarga, doshas and more."), "price": 0,
+		"detailed": {"kind": "Astrologer", "title": _("Detailed kundli report"), "blurb": _("Your kundli in full: the houses, the strength of each planet, the divisional charts, ashtakavarga, doshas and more."), "price": 0,
 					 "description": _("Everything the kundli report has, and more: the houses, the strength of each planet, the divisional charts, ashtakavarga, arudhas, doshas and the panchang of the day you were born.\n\n"
 									  "Made for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
 					 "details": person, "maker": maker, "layout": "advanced", "modes": ["CORE_ADVANCED"], "view": "raftor_astrohq.report_view.customer_view", "free": person_free()},
-		"dasha": {"title": _("Dasha periods report"), "blurb": _("Every dasha system and the period you are in now."), "price": 0,
+		"dasha": {"kind": "Astrologer", "title": _("Dasha periods report"), "blurb": _("Every dasha system and the period you are in now."), "price": 0,
 				  "description": _("The dasha periods of your life, system by system, with the one running today marked.\n\nMade for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
 				  "details": person, "maker": maker, "layout": "dasha", "modes": ["DASHA_CALC"], "free": person_free()},
-		"kp": {"title": _("KP chart report"), "blurb": _("Your chart the Krishnamurti way: cusps, star and sub lords, significators."), "price": 0,
+		"kp": {"kind": "KP astrologer", "title": _("KP chart report"), "blurb": _("Your chart the Krishnamurti way: cusps, star and sub lords, significators."), "price": 0,
 			   "description": _("Your chart as a KP astrologer reads it: the ruling planets, each planet and house cusp with its sign, star, sub and sub-sub lord, the significators and the aspects.\n\n"
 								"Made for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
 			   "details": person, "maker": maker, "layout": "kp", "modes": ["KP_SYSTEM"], "free": person_free()},
-		"panchang": {"title": _("Panchang of your birth day"), "blurb": _("The tithi, nakshatra, yoga and karana you were born in, with when each begins and ends."), "price": 0,
+		"panchang": {"kind": "Astrologer", "title": _("Panchang of your birth day"), "blurb": _("The tithi, nakshatra, yoga and karana you were born in, with when each begins and ends."), "price": 0,
 					 "description": _("The panchang of the day and moment you were born, with the times each part begins and ends.\n\nMade for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
 					 "details": person, "maker": maker, "layout": "panchang", "modes": ["PANCHANGA"], "free": person_free()},
 	}
@@ -55,13 +55,14 @@ def vocabulary() -> dict:
 		"event_filters": "raftor_astrohq.event_filters.wish_filters",
 		"event_labels": "raftor_astrohq.event_filters.wish_labels",
 		"personas": {
+			# the order the page shows them in: leaders open with the astrologer, then the specialities by how much they are asked for (KP, numerology, tarot), then the pandit, vastu and palmistry
 			"Astrologer": {"word": "astrologer", "plural": "astrologers"},
 			"KP astrologer": {"word": "KP astrologer", "plural": "KP astrologers"},
+			"Numerologist": {"word": "numerologist", "plural": "numerologists"},
 			"Tarot reader": {"word": "tarot reader", "plural": "tarot readers"},
 			"Pandit ji": {"word": "pandit ji", "plural": "pandit ji"},
-			"Palmist": {"word": "palmist", "plural": "palmists"},
-			"Numerologist": {"word": "numerologist", "plural": "numerologists"},
 			"Vastu expert": {"word": "vastu expert", "plural": "vastu experts"},
+			"Palmist": {"word": "palmist", "plural": "palmists"},
 		},
 		# The standard services providers enrol in. Fixed work has set minutes; readings let the provider choose theirs.
 		"services": [
@@ -81,13 +82,13 @@ def vocabulary() -> dict:
 		# The reports a customer asks for from the shop, made from their own birth details (servicehq digital.py, free_reports.py). Each ships as an item switched off, at price 0
 		# (both are free, always: they are given, not sold), for the business team to switch on; servicehq asks the details and delivers the PDF the maker returns.
 		"reports": {
-			"kundli": {"title": _("Kundli report"), "blurb": _("Your birth chart made from your date, time and place of birth."), "price": 0,
+			"kundli": {"kind": "Astrologer", "title": _("Kundli report"), "blurb": _("Your birth chart made from your date, time and place of birth."), "price": 0,
 					   "description": _("Your kundli: the lagna, where each planet stood, the houses, the navamsa chart, your dasha periods and the panchang of the day you were born.\n\n"
 										"Made for you from the details you give, by the same calculation astrologers use (Lahiri ayanamsa). It is free: you can read it as a PDF as soon as it is made."),
 					   "details": {"fields": kundli_fields(), "validate": "raftor_astrohq.details.kundli_rules"}, "maker": "raftor_astrohq.reports.kundli_report", "view": "raftor_astrohq.report_view.customer_view",
 					   # What only the free way does (servicehq free_reports.py): asks whose it is, keeps the details as a birth profile, says whose it is, and fills the form from the person's own profile.
 					   "free": person_free()},
-			"match": {"title": _("Match making report"), "blurb": _("How well two birth charts match, by the eight kootas out of 36."), "price": 0,
+			"match": {"kind": "Astrologer", "title": _("Match making report"), "blurb": _("How well two birth charts match, by the eight kootas out of 36."), "price": 0,
 					  "description": _("The Ashtakoota (Guna Milan) score for a boy and a girl, koota by koota, out of 36, with the Moon sign and nakshatra of each and their manglik check.\n\n"
 									   "Made from the details you give for both. It is free: you can read it as a PDF as soon as it is made."),
 					  "details": {"fields": match_fields(), "validate": "raftor_astrohq.details.match_rules"}, "maker": "raftor_astrohq.reports.match_report",
