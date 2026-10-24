@@ -307,19 +307,24 @@ def by_id(place_id, on: datetime.datetime | datetime.date | str) -> dict:
 	return _as_place(row, _moment(on))
 
 
+OTHER_NAME_FROM = 4  # letters typed before another name of a place (not its own) counts as the name written whole
+
+
 def suggest(text: str, limit: int = 6) -> list[dict]:
-	"""The places whose name starts with what has been typed so far, best first: [{"id", "name", "region"}] ("Mumbai", "Maharashtra, India"). A name written exactly comes first, then the places whose
-	own name starts with it, then the others, the bigger towns before the smaller. Nothing for less than two letters."""
+	"""The places whose name starts with what has been typed so far, best first: [{"id", "name", "region"}] ("Mumbai", "Maharashtra, India"). A name written exactly comes first (the bigger town before the
+	smaller), then the places whose own name starts with it, then the others, the bigger towns before the smaller. Nothing for less than two letters.
+	Another name of a place ("Bombay") counts as its name only from four letters: a short nickname of a small place ("Mum" of Muli) must not come before Mumbai."""
 	typed = normal(text)
 	if len(typed) < 2 or not ready():
 		return []
 	db = _connect()
 	try:
-		rows = db.execute("select distinct p.* from alias a join place p on p.id = a.place_id where a.norm like ? limit 400", (typed + "%",)).fetchall()
-		exact = {r["place_id"] for r in db.execute("select place_id from alias where norm = ? limit 400", (typed,)).fetchall()}
+		rows = db.execute("select distinct p.* from alias a join place p on p.id = a.place_id where a.norm like ? order by p.pop desc limit 400", (typed + "%",)).fetchall()  # (the biggest 400: "lon" has more than that)
+		exact = {r["place_id"] for r in db.execute("select place_id from alias where norm = ? limit 400", (typed,)).fetchall()} if len(typed) >= OTHER_NAME_FROM else set()
 	finally:
 		db.close()
-	ranked = sorted(rows, key=lambda r: (r["id"] not in exact, not normal(r["name"]).startswith(typed), -(r["pop"] or 0)))
+	exact |= {r["id"] for r in rows if normal(r["name"]) == typed}
+	ranked = sorted(rows, key=lambda r: (r["id"] not in exact, r["id"] not in exact and not normal(r["name"]).startswith(typed), -(r["pop"] or 0)))
 	plain = lambda row: ", ".join(part for part in (row["admin1"], row["country"]) if part)
 	same = {}  # the places that would read the same ("Rampur, Uttar Pradesh, India"), to tell apart the ones that are not the one town listed twice
 	for row in ranked:

@@ -188,6 +188,16 @@ class TestTheBoard(AstroTestCase):
 			self.assertTrue(html.startswith('<div class="rv-board rv-board-lite"'), board)
 			self.assertNotIn("onclick", html)
 
+	def test_a_look_is_one_of_ours_or_nothing_and_a_board_without_one_is_as_it_was(self):
+		spec = {"pane": "planets", "title": "Planets", "reviewed": True}
+		self.assertTrue(report_view.render({"board": "lite", "look": "roomy", "title": "T", "panes": [spec]}, answers_of(), CTX, "all").startswith('<div class="rv-board rv-board-lite rv-look-roomy"'))
+		for look in ("", None, "huge", 'roomy" onclick="x'):
+			html = report_view.render({"board": "lite", "look": look, "title": "T", "panes": [spec]}, answers_of(), CTX, "all")
+			self.assertTrue(html.startswith('<div class="rv-board rv-board-lite"'), look)
+			self.assertNotIn("onclick", html)
+		for name in ("customer", "astrologer"):
+			self.assertNotIn("rv-look", report_view.render(report_view.view_named(name), answers_of(), CTX, "all"), name)
+
 	def test_the_panes_that_fold_on_a_phone_are_marked_and_nothing_else_is(self):
 		html = report_view.render(report_view.view_named("customer"), answers_of(), CTX, "reviewed")
 		shut = re.findall(r'<details class="rv-pane" open[^>]*?( data-shut)?>', html)
@@ -220,6 +230,7 @@ class TestTheBoard(AstroTestCase):
 				taken |= cells
 				self.assertTrue(spec.get("title"))
 			self.assertIn(view["board"], report_view.BOARDS)
+			self.assertTrue(not view.get("look") or view["look"] in report_view.LOOKS)
 			self.assertTrue(set(view["modes"]) <= set(MODES))
 
 

@@ -8,15 +8,17 @@ import datetime
 import gzip
 import html
 import json
+import math
 import re
 import zlib
 from pathlib import Path
-from unittest import mock
+from unittest import TestCase, mock
 from zoneinfo import ZoneInfo
 
 import frappe
 
 from raftor_astrohq import astrology, page_definitions, panchang, panchang_panes, places, report_view
+from raftor_websitehq.website_hq import report_html
 from raftor_astrohq.tests.test_places import PlacesCase
 
 FIXTURE = Path(__file__).parent / "fixtures" / "panchang_days.json.gz"
@@ -107,6 +109,30 @@ class TestFindingATown(PlacesCase):
 		self.assertEqual([r["name"] for r in places.suggest("pune")][:2], ["Pune", "Pune"])  # the two that are called Pune, the bigger one of the other name after them
 		self.assertEqual(places.suggest("pune")[-1]["name"], "Punekar Nagar")
 		self.assertEqual(places.suggest("punek")[0]["name"], "Punekar Nagar")
+
+	def test_a_short_nickname_of_a_small_place_does_not_come_before_a_big_town_but_a_longer_other_name_does(self):
+		from raftor_astrohq.tests.test_places import ADMIN1, ADMIN2, CITIES, COUNTRIES, city
+
+		small = city(31, "Muli", 2.9, 73.5, "IN", "16", "519", 900, "Asia/Kolkata", "Mum,Bombayy")
+		places.build_from_text(CITIES + "\n" + small, ADMIN1, ADMIN2, COUNTRIES, self.file)
+		found = [r["name"] for r in places.suggest("mum")]
+		self.assertEqual(found[0], "Mumbai")  # Mumbai begins with it and is far bigger: Muli is only known as Mum to a few
+		self.assertIn("Muli", found)
+		self.assertEqual(places.suggest("muli")[0]["name"], "Muli")  # its own name written whole
+		self.assertEqual(places.suggest("bombay")[0]["name"], "Mumbai")  # another name of 4 letters or more is a name: the bigger town first
+		self.assertEqual([r["name"] for r in places.suggest("bombayy")][:1], ["Muli"])
+		more = city(32, "Bombay", -37.0, 174.9, "IN", "16", "519", 2000, "Pacific/Auckland") + "\n" + city(33, "Goa", 15.5, 73.8, "IN", "16", "519", 500, "Asia/Kolkata") + "\n" + city(34, "Goalpara", 26.2, 90.6, "IN", "16", "519", 50000, "Asia/Kolkata")
+		places.build_from_text(CITIES + "\n" + small + "\n" + more, ADMIN1, ADMIN2, COUNTRIES, self.file)
+		self.assertEqual([r["name"] for r in places.suggest("bombay")][:2], ["Mumbai", "Bombay"])  # Bombay is a name of Mumbai and of a small place: the bigger town first
+		self.assertEqual([r["name"] for r in places.suggest("goa")][:2], ["Goa", "Goalpara"])  # a place called Goa is written whole, though a bigger one starts with it
+
+	def test_a_few_letters_that_many_places_start_with_still_find_the_biggest_town(self):
+		from raftor_astrohq.tests.test_places import ADMIN1, ADMIN2, CITIES, COUNTRIES, city
+
+		crowd = "\n".join(city(1000 + n, f"Lonaly{n:04d}", 20.0 + n / 1000, 75.0, "IN", "16", "519", 100 + n % 50, "Asia/Kolkata") for n in range(900))  # nine hundred small places that start with \"lon\" and come before London in the list and in its order of names, more than the search reads
+		places.build_from_text(crowd + "\n" + CITIES, ADMIN1, ADMIN2, COUNTRIES, self.file)
+		self.assertEqual(places.suggest("lon")[0]["name"], "London")  # the biggest of them all, though the crowd came before it in the list
+		self.assertEqual([r["region"] for r in places.suggest("lon")][:2], ["England, United Kingdom", "Ontario, Canada"])
 
 	def test_one_letter_or_nothing_finds_nothing_and_the_most_is_asked_for(self):
 		for text in ("", "p", " ", None, "zzzz"):
@@ -248,8 +274,9 @@ class TestThePage(Stood):
 	def test_it_has_the_panes_in_their_order_and_the_bar_to_move_by(self):
 		item = self.page(date="2026-10-24")
 		titles = re.findall(r'<h3 class="rv-title">([^<]*)', item["body_html"])
-		self.assertEqual(titles, ["Panchang", "Sun and Moon", "Times to know", "Chaugharia", "The next 7 days"])  # (no muhurat pane: nothing for it to lead to)
+		self.assertEqual(titles, ["Panchang", "Chaugharia", "Times to know", "The next 7 days"])  # (a phone reads them in this order; no muhurat pane: nothing for it to lead to)
 		self.assertNotIn("rv-draft", item["body_html"])
+		self.assertIn('class="rv-board rv-board-lite rv-look-roomy"', item["body_html"])
 		date, town = item["toolbar"]["controls"]
 		self.assertEqual((date["type"], date["value"], date["label"]), ("date", "2026-10-24", "Saturday, 24 October 2026"))
 		self.assertEqual((date["previous"], date["next"]), ("/panchang?date=2026-10-23", "/panchang?date=2026-10-25"))
@@ -260,8 +287,8 @@ class TestThePage(Stood):
 		body = self.page(date="2026-10-24")["body_html"]
 		text = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", body)))
 		for expected in ("Tithi Shukla Trayodashi till 1:38 pm, then Shukla Chaturdashi", "Nakshatra Uttara Bhadrapada, pada 2 till 8:32 pm, then Revati", "Yoga Vyaghata till 8:00 pm, then Harshana",
-						 "Karana Taitila till 1:38 pm, then Gara", "Weekday Saturday", "Sunrise 6:31 am", "Sunset 5:38 pm", "Moonrise 4:33 pm", "Rahu Kaal 9:18–10:41 am", "Gulika 6:31–7:54 am",
-						 "Yamaganda 1:28–2:52 pm", "Abhijit muhurat 11:42 am–12:27 pm", "The day's tithi and nakshatra are the ones at sunrise (6:31 am)"):
+						 "Karana Taitila till 1:38 pm, then Gara", "Weekday Saturday", "Sunrise 6:31 am", "Sunset 5:38 pm", "Moonrise 4:33 pm", "Rahu Kaal 9:18–10:41 am avoid", "Gulika 6:31–7:54 am avoid",
+						 "Yamaganda 1:28–2:52 pm avoid", "Abhijit muhurat 11:42 am–12:27 pm good", "Moonset 5:20 am next day", "Waxing · 94% lit", "The day's tithi and nakshatra are the ones at sunrise (6:31 am)"):
 			self.assertIn(expected, text)
 
 	def test_the_chaugharia_are_a_table_for_the_day_and_one_for_the_night_with_good_and_avoid(self):
@@ -280,7 +307,29 @@ class TestThePage(Stood):
 		self.assertNotIn("rv-now", self.page(date="2026-10-26")["body_html"])  # a day to come has no running part
 		self.assertNotIn("rv-now", self.page(date="2026-10-23")["body_html"])
 		self.now = datetime.datetime(2026, 10, 24, 10, 0, tzinfo=KOLKATA)  # the middle of Rahu Kaal
-		self.assertIn('<tr class="rv-now"><th scope="row">Rahu Kaal</th><td>9:18–10:41 am · on now</td></tr>', self.page(date="2026-10-24")["body_html"])
+		body = self.page(date="2026-10-24")["body_html"]
+		self.assertIn('<div class="rv-win rv-avoid rv-now"><span class="rv-k">Rahu Kaal</span><b>9:18–10:41 am</b><span>avoid · on now</span></div>', body)
+		self.assertIn('<div class="rv-win rv-good"><span class="rv-k">Abhijit muhurat</span><b>11:42 am–12:27 pm</b><span>good</span></div>', body)
+		self.assertEqual(body.count("rv-win rv-"), 4)
+		self.assertEqual(body.count("rv-now"), 2)  # (the part of the chaugharia and the window: nothing else)
+
+	def test_the_table_that_holds_the_running_part_is_marked_to_come_first_on_a_phone(self):
+		self.assertEqual(self.page(date="2026-10-24")["body_html"].count('<div class="rv-first">'), 1)
+		self.assertRegex(self.page(date="2026-10-24")["body_html"], r'<div class="rv-first"><div class="rv-sub"><b>Day</b>')  # at 8 am it is the day's
+		self.now = datetime.datetime(2026, 10, 24, 22, 0, tzinfo=KOLKATA)
+		night = self.page(date="2026-10-24")["body_html"]
+		self.assertRegex(night, r'<div class="rv-first"><div class="rv-sub"><b>Night</b>')
+		self.assertEqual(night.count("rv-first"), 1)
+		self.assertNotIn("rv-first", self.page(date="2026-10-26")["body_html"])  # a day to come has no running part
+
+	def test_the_moon_is_drawn_as_it_is_lit_and_says_so_in_words(self):
+		body = self.page(date="2026-10-24")["body_html"]  # 94% lit and waxing
+		self.assertIn('<svg class="rv-moon" viewBox="-11 -11 22 22" role="img" aria-label="Waxing moon, 94% lit">', body)
+		self.assertIn('<p class="rv-phase"><b>Waxing</b> · 94% lit</p>', body)
+		waning = self.days["delhi:2026-10-24"]
+		waning["moon"].update(illumination=0.1, waxing=False)
+		self.forget_kept()
+		self.assertIn('<p class="rv-phase"><b>Waning</b> · 10% lit</p>', self.page(date="2026-10-24")["body_html"])
 
 	def test_the_next_seven_days_are_links_with_the_shown_day_marked_and_the_town_kept_in_them_only_when_chosen(self):
 		body = self.page(date="2026-10-24")["body_html"]
@@ -395,3 +444,49 @@ class TestTheNight(Stood):
 	def test_the_nightly_work_stops_quietly_when_the_engine_is_not_there(self):
 		self.engine_error = astrology.AstrologyUnavailable("down")
 		self.assertEqual(panchang.warm(), 0)
+
+
+class TestTheMoonPicture(TestCase):
+	def points(self, markup):
+		(found,) = re.findall(r'<polygon class="rv-moon-lit" points="([^"]*)"(?:/>|></polygon>)', markup)
+		return [tuple(float(n) for n in pair.split(",")) for pair in found.split()]
+
+	def area(self, points):
+		return abs(sum(x1 * y2 - x2 * y1 for (x1, y1), (x2, y2) in zip(points, points[1:] + points[:1]))) / 2
+
+	def test_the_lit_part_is_as_much_of_the_disc_as_the_engine_says(self):
+		for lit in (0.02, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99, 1.0):
+			for waxing in (True, False):
+				got = self.area(self.points(panchang_panes.moon_picture(lit, waxing, "x"))) / (math.pi * 10 ** 2)
+				self.assertAlmostEqual(got, lit, delta=0.006, msg=(lit, waxing))
+
+	def test_a_waxing_moon_is_lit_on_the_right_a_waning_one_on_the_left_and_a_half_is_cut_straight(self):
+		for lit in (0.2, 0.5, 0.8):
+			right = self.points(panchang_panes.moon_picture(lit, True, "x"))
+			left = self.points(panchang_panes.moon_picture(lit, False, "x"))
+			self.assertAlmostEqual(max(x for x, _y in right), 10.0, delta=0.01)
+			self.assertAlmostEqual(min(x for x, _y in left), -10.0, delta=0.01)
+		half = self.points(panchang_panes.moon_picture(0.5, True, "x"))
+		self.assertGreaterEqual(min(x for x, _y in half), -1e-9)  # nothing of the dark half
+		crescent = self.points(panchang_panes.moon_picture(0.2, True, "x"))
+		self.assertGreaterEqual(min(x for x, _y in crescent), -1e-9)  # a crescent keeps to its own side
+		gibbous = self.points(panchang_panes.moon_picture(0.8, True, "x"))
+		self.assertAlmostEqual(min(x for x, _y in gibbous), -6.0, delta=0.01)  # a gibbous moon is lit a little past the middle
+
+	def test_the_new_moon_is_a_dark_disc_and_the_full_moon_is_lit_all_over(self):
+		self.assertNotIn("<polygon", panchang_panes.moon_picture(0.0, True, "x"))
+		self.assertNotIn("<polygon", panchang_panes.moon_picture(0.003, False, "x"))
+		full = self.points(panchang_panes.moon_picture(1.0, True, "x"))
+		self.assertAlmostEqual(max(x for x, _y in full), 10.0, delta=0.01)
+		self.assertAlmostEqual(min(x for x, _y in full), -10.0, delta=0.01)
+		for odd in (-3, 7, 1.0000001):
+			self.assertTrue(self.area(self.points(panchang_panes.moon_picture(odd, True, "x"))) <= math.pi * 100 + 1e-6 if odd > 0 else "<polygon" not in panchang_panes.moon_picture(odd, True, "x"))
+
+	def test_the_words_of_the_picture_are_text_and_the_whole_picture_survives_the_report_filter(self):
+		made = panchang_panes.moon_picture(0.6, True, 'Waxing moon <b>"60%"</b>')
+		self.assertNotIn("<b>", made)
+		cleaned = report_html.clean(f"<div>{made}</div>")
+		self.assertIn('<svg class="rv-moon"', cleaned)
+		self.assertIn('<rect class="rv-moon-dark" x="-10" y="-10" width="20" height="20" rx="10" ry="10">', cleaned)
+		self.assertEqual(len(self.points(cleaned)), len(self.points(made)))
+		self.assertIn('class="rv-moon-lit"', cleaned)

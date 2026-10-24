@@ -26,6 +26,7 @@ from raftor_astrohq import panes as pane_library
 VIEWS = Path(__file__).parent / "views"
 DRAFT = '<span class="rv-draft">Draft</span>'
 BOARDS = ("lite", "wide")
+LOOKS = ("roomy",)  # a board with more room: the panes of a row stand level and the writing is larger (the Panchang page)
 
 
 @functools.cache
@@ -84,7 +85,8 @@ def render(view: dict, data: dict, ctx: dict, show: str = "reviewed") -> str:
 		out.append(f'<details class="rv-pane" open{place_of(spec)}{" data-shut" if spec.get("shut") else ""}><summary>{title}<span class="rv-sum">{escape(made.get("summary") or "")}</span></summary>'
 				   f'<div class="rv-body">{made["body"]}</div></details>')
 	board = view.get("board") if view.get("board") in BOARDS else "lite"
-	return f'<div class="rv-board rv-board-{board}" role="group" aria-label="{escape(view.get("title") or "")}">{"".join(out)}</div>' if out else ""
+	look = f' rv-look-{view["look"]}' if view.get("look") in LOOKS else ""
+	return f'<div class="rv-board rv-board-{board}{look}" role="group" aria-label="{escape(view.get("title") or "")}">{"".join(out)}</div>' if out else ""
 
 
 def customer_view(item_code: str, details: dict, user: str) -> str:
