@@ -18,7 +18,14 @@
   "last_result",
   "answers_section",
   "answers_valid_from",
-  "show_unreviewed"
+  "show_unreviewed",
+  "panchang_section",
+  "panchang_note",
+  "panchang_place",
+  "panchang_muhurat_service",
+  "panchang_muhurat_topic",
+  "panchang_new_per_minute",
+  "panchang_requests_per_minute"
  ],
  "fields": [
   {
@@ -113,12 +120,55 @@
    "fieldname": "show_unreviewed",
    "fieldtype": "Check",
    "label": "Show Sections Nobody Has Checked To Customers"
+  },
+  {
+   "fieldname": "panchang_section",
+   "fieldtype": "Section Break",
+   "label": "Today's Panchang"
+  },
+  {
+   "fieldname": "panchang_note",
+   "fieldtype": "HTML",
+   "options": "<p>The Panchang page and the card over the Home banner show the panchang and the chaugharia of any day and any town. Fill in the place below to switch them on; blank means they show nothing.</p>"
+  },
+  {
+   "fieldname": "panchang_place",
+   "fieldtype": "Data",
+   "label": "Place for the Panchang",
+   "description": "The town shown to a visitor who has not chosen another, written as Town, State, for example Delhi, India. Blank: the Panchang is off."
+  },
+  {
+   "fieldname": "panchang_muhurat_service",
+   "fieldtype": "Link",
+   "options": "Service",
+   "label": "Service the Muhurat Button Leads To",
+   "description": "The service of a Pandit ji for a muhurat. The button shows only when this service is switched on and an approved Pandit ji offers it. Blank: no button."
+  },
+  {
+   "fieldname": "panchang_muhurat_topic",
+   "fieldtype": "Data",
+   "label": "Topic Sent With the Muhurat Button",
+   "default": "Auspicious date",
+   "description": "What the visitor's booking says it is about, one of the topics a visitor can choose when booking."
+  },
+  {
+   "fieldname": "panchang_new_per_minute",
+   "fieldtype": "Int",
+   "label": "New Days Worked Out In A Minute, At Most",
+   "default": "60",
+   "description": "A visitor may ask for any date and town. Each day and town the engine has not worked out yet takes it a fraction of a second. Over this many a minute, visitors are asked to wait a moment; days already worked out are always shown."
+  },
+  {
+   "fieldname": "panchang_requests_per_minute",
+   "fieldtype": "Int",
+   "label": "Requests A Visitor May Make In A Minute",
+   "default": "40"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-10-31 00:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Astrology API Settings",

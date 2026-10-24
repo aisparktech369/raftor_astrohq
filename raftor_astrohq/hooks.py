@@ -286,5 +286,11 @@ standard_portal_menu_items = [
 servicehq_vocabulary = {"astrohq": "raftor_astrohq.vocabulary.vocabulary"}
 rfhq_report_makers = ["raftor_astrohq.reports.birth_summary"]
 
-# The methods whose markup websitehq lets reach a page (website_hq/report_html.py cleans it first): the astrologer's page of a customer's chart.
-rfhq_trusted_html_sources = ["raftor_astrohq.report_view.chart_view"]
+# The methods whose markup websitehq lets reach a page (website_hq/report_html.py cleans it first): the astrologer's page of a customer's chart, and the Panchang page.
+rfhq_trusted_html_sources = ["raftor_astrohq.report_view.chart_view", "raftor_astrohq.panchang.page"]
+
+# Shortly after midnight the Panchang's town is worked out for the week ahead (panchang.warm).
+scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"]}}
+
+# The Panchang is a page group of its own: /panchang is its page (page_definitions.py).
+rfhq_page_groups = {"panchang": "Panchang"}

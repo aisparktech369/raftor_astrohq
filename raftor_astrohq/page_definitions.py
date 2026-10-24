@@ -79,6 +79,13 @@ def chart_page() -> dict:
 		{"key": "chart", "source": {"method": VIEW + "chart_view", "card": "Report View", "url_args": "booking,profile", "empty": _("There is no chart to show for this booking.")}, "look": TIGHT}]}
 
 
+def panchang_page() -> dict:
+	"""The Panchang page (panchang.py), public: the panchang and the chaugharia of any day and town, and the next seven days. The address takes ?date=2026-10-24&place=<the town's id>."""
+	return {"route": "panchang", "title": _("Panchang"), "login_required": False, "sections": [
+		{"key": "day", "title": _("Panchang"), "subtitle": _("Today's tithi, nakshatra, Rahu Kaal and chaugharia, for any day and any town."),
+		 "source": {"method": "raftor_astrohq.panchang.page", "card": "Report View", "url_args": "date,place", "empty": _("The panchang is not available yet.")}, "look": TIGHT}]}
+
+
 def definitions() -> list[dict]:
 	profile_list = _my("birth-profiles")
 	you = {"relationship": profiles.SELF}
@@ -125,4 +132,5 @@ def definitions() -> list[dict]:
 				{"name": "year", "label": _("Year"), "placeholder": "YYYY"}],
 			"success_redirect": _start("astrologer-credentials")}),
 		chart_page(),
+		panchang_page(),
 	]

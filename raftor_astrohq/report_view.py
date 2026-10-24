@@ -20,6 +20,7 @@ from frappe import _
 from frappe.utils import cint
 
 from raftor_astrohq import answers, astrology, places, profiles, reports
+from raftor_astrohq import panchang_panes
 from raftor_astrohq import panes as pane_library
 
 VIEWS = Path(__file__).parent / "views"
@@ -73,7 +74,7 @@ def render(view: dict, data: dict, ctx: dict, show: str = "reviewed") -> str:
 		if show == "reviewed" and not checked:
 			continue
 		try:
-			made = pane_library.PANES[spec["pane"]](data, ctx, **(spec.get("options") or {}))
+			made = (pane_library.PANES.get(spec["pane"]) or panchang_panes.PANES[spec["pane"]])(data, ctx, **(spec.get("options") or {}))
 		except Exception:  # one pane that cannot be drawn is not a page that cannot be shown
 			frappe.log_error(title=f"Report view: pane {spec.get('pane')}")
 			continue

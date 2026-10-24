@@ -248,14 +248,23 @@ def offset_hours(tz: str, on: datetime.datetime) -> float:
 	return delta.total_seconds() / 3600.0
 
 
-def lookup(text: str, on: datetime.datetime | datetime.date | str) -> dict:
-	"""{"name", "latitude", "longitude", "timezone", "timezone_offset", "population"} for the place written in `text`, with the time zone offset in force
-	on `on` (the local date and time of birth). Raises PlaceNotFound (nothing fits, with what to try), PlaceAmbiguous (it lists the choices) or
-	PlacesNotReady (the list has not been built here)."""
+def _moment(on: datetime.datetime | datetime.date | str) -> datetime.datetime:
 	if isinstance(on, str):
 		on = frappe.utils.get_datetime(on)
 	if not isinstance(on, datetime.datetime):
 		on = datetime.datetime(on.year, on.month, on.day, 12, 0)
+	return on
+
+
+def _as_place(row, on: datetime.datetime) -> dict:
+	return {"id": row["id"], "name": _label(row), "latitude": row["lat"], "longitude": row["lon"], "timezone": row["tz"], "timezone_offset": offset_hours(row["tz"], on), "population": row["pop"]}
+
+
+def lookup(text: str, on: datetime.datetime | datetime.date | str) -> dict:
+	"""{"id", "name", "latitude", "longitude", "timezone", "timezone_offset", "population"} for the place written in `text`, with the time zone offset in force
+	on `on` (the local date and time of birth). Raises PlaceNotFound (nothing fits, with what to try), PlaceAmbiguous (it lists the choices) or
+	PlacesNotReady (the list has not been built here)."""
+	on = _moment(on)
 	readings = _parts(text)
 	if not readings:
 		raise PlaceNotFound(_("Please write the place of birth in English letters, for example Pune, Maharashtra.") if str(text or "").strip() else _("Please write the place of birth."))
@@ -271,8 +280,7 @@ def lookup(text: str, on: datetime.datetime | datetime.date | str) -> dict:
 			except PlaceAmbiguous as error:
 				ambiguity = ambiguity or error
 				continue
-			return {"name": _label(place), "latitude": place["lat"], "longitude": place["lon"], "timezone": place["tz"], "timezone_offset": offset_hours(place["tz"], on),
-					"population": place["pop"]}
+			return _as_place(place, on)
 		if ambiguity:
 			raise ambiguity
 		town = readings[0][0]
@@ -281,6 +289,80 @@ def lookup(text: str, on: datetime.datetime | datetime.date | str) -> dict:
 		raise PlaceNotFound(_("We could not find {0}. Check the spelling, write the town and its state (for example Pune, Maharashtra), or use the nearest bigger town.").format(readings[0][0].title() or text))
 	finally:
 		db.close()
+
+
+def by_id(place_id, on: datetime.datetime | datetime.date | str) -> dict:
+	"""The place with this id in the list (the `id` that `lookup` and `suggest` give), as `lookup` gives it. Raises PlaceNotFound when there is none."""
+	try:
+		number = int(place_id)
+	except (TypeError, ValueError):
+		raise PlaceNotFound(_("That place is not in the list.")) from None
+	db = _connect()
+	try:
+		row = db.execute("select * from place where id = ?", (number,)).fetchone()
+	finally:
+		db.close()
+	if not row:
+		raise PlaceNotFound(_("That place is not in the list."))
+	return _as_place(row, _moment(on))
+
+
+def suggest(text: str, limit: int = 6) -> list[dict]:
+	"""The places whose name starts with what has been typed so far, best first: [{"id", "name", "region"}] ("Mumbai", "Maharashtra, India"). A name written exactly comes first, then the places whose
+	own name starts with it, then the others, the bigger towns before the smaller. Nothing for less than two letters."""
+	typed = normal(text)
+	if len(typed) < 2 or not ready():
+		return []
+	db = _connect()
+	try:
+		rows = db.execute("select distinct p.* from alias a join place p on p.id = a.place_id where a.norm like ? limit 400", (typed + "%",)).fetchall()
+		exact = {r["place_id"] for r in db.execute("select place_id from alias where norm = ? limit 400", (typed,)).fetchall()}
+	finally:
+		db.close()
+	ranked = sorted(rows, key=lambda r: (r["id"] not in exact, not normal(r["name"]).startswith(typed), -(r["pop"] or 0)))
+	plain = lambda row: ", ".join(part for part in (row["admin1"], row["country"]) if part)
+	same = {}  # the places that would read the same ("Rampur, Uttar Pradesh, India"), to tell apart the ones that are not the one town listed twice
+	for row in ranked:
+		same.setdefault((normal(row["name"]), plain(row)), []).append(row)
+	out = []
+	for row in ranked:
+		group = same[(normal(row["name"]), plain(row))]
+		if any(_km(row, other) > SAME_PLACE_KM for other in group):  # more than one town of this name here: say which district
+			region = ", ".join(part for part in (row["admin2"] if row["admin2"] != row["name"] else "", row["admin1"], row["country"]) if part)
+		else:
+			region = plain(row)
+		if any(item["name"] == row["name"] and item["region"] == region for item in out):
+			continue  # the same town listed twice (see SAME_PLACE_KM)
+		out.append({"id": row["id"], "name": row["name"], "region": region})
+		if len(out) >= limit:
+			break
+	return out
+
+
+NEAR_KM = 60  # how far from a point to look for a town when someone shares where they are
+SMALL_TOWN = 20000  # a town this big or bigger is preferred to a nearer village
+
+
+def near(latitude: float, longitude: float, on: datetime.datetime | datetime.date | str) -> dict | None:
+	"""The town nearest to a point, as `lookup` gives it: the nearest of the places of 20,000 people and more within 60 km, else the nearest place of any size within 60 km, else None."""
+	try:
+		lat, lon = float(latitude), float(longitude)
+	except (TypeError, ValueError):
+		return None
+	if not (-90 <= lat <= 90 and -180 <= lon <= 180) or not ready():
+		return None
+	spread = NEAR_KM / 111.0
+	db = _connect()
+	try:
+		rows = db.execute("select * from place where lat between ? and ? and lon between ? and ?", (lat - spread, lat + spread, lon - spread * 3, lon + spread * 3)).fetchall()
+	finally:
+		db.close()
+	here = {"lat": lat, "lon": lon}
+	close = sorted(((_km(here, row), row) for row in rows), key=lambda pair: pair[0])
+	close = [pair for pair in close if pair[0] <= NEAR_KM]
+	big = [pair for pair in close if (pair[1]["pop"] or 0) >= SMALL_TOWN]
+	pick = (big or close or [None])[0]
+	return _as_place(pick[1], _moment(on)) if pick else None
 
 
 def problem(text: str, on: datetime.datetime | datetime.date | str) -> str:
