@@ -181,6 +181,18 @@ def _running(answer: dict, now: datetime.datetime) -> dict | None:
 	return None
 
 
+def state(place: dict, now: datetime.datetime | None = None) -> dict | None:
+	"""What the card over the banner says at this moment: the chaugharia running (`current`), the answer of the day (sunrise to sunrise) that holds it, the answer of the day after it, and the answer
+	of the calendar day (for the sun, the moon and Rahu Kaal of today). None when no part is running (the engine's answer has a hole)."""
+	now = now or local_now(place)
+	running = current(place, now)
+	if running is None:
+		return None
+	held = running["day"]
+	after = day(datetime.date.fromisoformat(held["date"]) + datetime.timedelta(days=1), place)
+	return {"now": now, "running": running, "held": held, "after": after, "calendar": day(now.date(), place)}
+
+
 # ---- the page's own endpoints ----
 @frappe.whitelist(allow_guest=True, methods=["POST"])
 @rate_limit(limit=_per_visitor, seconds=60)
@@ -197,6 +209,24 @@ def place_near(latitude=None, longitude=None) -> dict | None:
 		return None
 	found = places.near(latitude, longitude, datetime.date.today())
 	return {"id": found["id"], "label": found["name"]} if found else None
+
+
+@frappe.whitelist(allow_guest=True, methods=["POST"])
+@rate_limit(limit=_per_visitor, seconds=60)
+def widget_cards(place=None) -> dict:
+	"""The cards of the card over the Home banner, as websitehq's Pop-over section draws them: {"items": [{"card": a card of the library, ... its fields}]}, about this moment and the visitor's town
+	(`place`: its id, which the browser kept when the visitor chose a town on the Panchang page; none or one that is not in the list gives the default town). Nothing when the Panchang is off or the engine
+	cannot be asked just now: the card is then not there, and nothing else on the page is any the worse."""
+	from raftor_astrohq import panchang_widget
+
+	if default_place() is None:
+		return {"items": []}
+	chosen = place_of(place, datetime.date.today())
+	try:
+		held = state(chosen)
+	except (PanchangBusy, astrology.AstrologyUnavailable, astrology.AstrologyRefused):
+		return {"items": []}
+	return {"items": panchang_widget.cards(held, {"muhurat": muhurat_link(), "place": town_label(chosen)}) if held else []}
 
 
 def warm() -> int:
@@ -250,6 +280,12 @@ def _address(on_date: datetime.date | None, chosen_id) -> str:
 	return page_url("panchang", "", date=on_date.isoformat() if on_date else "", place=chosen_id or "")
 
 
+def town_label(place: dict) -> str:
+	"""Delhi, India: the town and its country, as the bar and the card say it."""
+	parts = place["name"].split(",")
+	return parts[0] + (", " + parts[-1].strip() if len(parts) > 1 else "")
+
+
 def toolbar(on_date: datetime.date, place: dict, explicit) -> dict:
 	"""What websitehq's Report View draws above the panes: the day (with the day before, the day after, today, and a calendar) and the town (with a search and a way to use where the visitor is).
 	The town is in the addresses only when the visitor chose one."""
@@ -259,7 +295,7 @@ def toolbar(on_date: datetime.date, place: dict, explicit) -> dict:
 		{"type": "date", "arg": "date", "value": on_date.isoformat(), "label": f"{_(on_date.strftime('%A'))}, {on_date.day} {_(on_date.strftime('%B'))} {on_date.year}", "min": FIRST.isoformat(), "max": LAST.isoformat(),
 		 "previous": _address(on_date - datetime.timedelta(days=1), chosen) if on_date > FIRST else None, "next": _address(on_date + datetime.timedelta(days=1), chosen) if on_date < LAST else None,
 		 "today": _address(None, chosen) if on_date != here else None, "labels": {"previous": _("The day before"), "next": _("The day after"), "today": _("Today"), "pick": _("Choose a date")}},
-		{"type": "lookup", "arg": "place", "value": str(place["id"]), "label": place["name"].split(",")[0] + (", " + place["name"].split(",")[-1].strip() if "," in place["name"] else ""),
+		{"type": "lookup", "arg": "place", "value": str(place["id"]), "label": town_label(place),
 		 "search": "raftor_astrohq.panchang.places_found", "near": "raftor_astrohq.panchang.place_near",
 		 "labels": {"search": _("Search a town"), "near": _("Use my location"), "none": _("No town of that name is in our list."), "choose": _("Choose a town")}},
 	]}

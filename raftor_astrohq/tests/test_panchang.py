@@ -17,7 +17,8 @@ from zoneinfo import ZoneInfo
 
 import frappe
 
-from raftor_astrohq import astrology, page_definitions, panchang, panchang_panes, places, report_view
+from raftor_astrohq import astrology, page_definitions, panchang, panchang_panes, panchang_widget, places, report_view
+from raftor_websitehq.website_hq import components
 from raftor_websitehq.website_hq import report_html
 from raftor_astrohq.tests.test_places import PlacesCase
 
@@ -415,7 +416,7 @@ class TestThePage(Stood):
 		self.assertIn("ask a Pandit ji for a muhurat made for you", body)
 
 	def test_the_endpoints_may_be_asked_by_a_visitor_who_is_not_signed_in(self):
-		for method in (panchang.page, panchang.places_found, panchang.place_near):
+		for method in (panchang.page, panchang.places_found, panchang.place_near, panchang.widget_cards):
 			self.assertIn(method, frappe.whitelisted)
 			self.assertIn(method, frappe.guest_methods)
 
@@ -490,3 +491,179 @@ class TestTheMoonPicture(TestCase):
 		self.assertIn('<rect class="rv-moon-dark" x="-10" y="-10" width="20" height="20" rx="10" ry="10">', cleaned)
 		self.assertEqual(len(self.points(cleaned)), len(self.points(made)))
 		self.assertIn('class="rv-moon-lit"', cleaned)
+
+
+class TestTheCardOverTheBanner(Stood):
+	"""What the pop-over section draws is a list of library cards, each with only its own fields; AstroHQ writes no markup (see panchang_widget.py)."""
+
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+		components.sync()
+
+	def items(self, **args):
+		return panchang.widget_cards(**args)["items"]
+
+	def card(self, name, label=None, **args):
+		found = [i for i in self.items(**args) if i["card"] == name and (label is None or i.get("label") == label)]
+		self.assertEqual(len(found), 1, (name, label, [i["card"] for i in self.items(**args)]))
+		return found[0]
+
+	def at(self, text):
+		self.now = datetime.datetime.fromisoformat(text).replace(tzinfo=KOLKATA)
+
+	def test_the_first_card_is_a_pill_with_the_moon_the_tithi_and_the_chaugharia_running_now(self):
+		first = self.items()[0]
+		self.assertEqual(first, {"card": "Pill Card", "icon": "🌔", "title": "Shukla Trayodashi", "body": "Chaugharia: Shubh · good", "tone": "success"})  # 94% lit and waxing; 7:54 to 9:18 is Shubh
+		self.at("2026-10-24T10:00")
+		self.assertEqual(self.items()[0]["body"], "Chaugharia: Rog · avoid")
+		self.assertEqual(self.items()[0]["tone"], "danger")
+
+	def test_when_the_tithi_has_ended_the_next_one_is_the_one_running_and_what_follows_it_is_named(self):
+		self.at("2026-10-24T15:00")  # Trayodashi ended at 1:38 pm
+		head = self.card("Feature Card")
+		self.assertEqual(head["title"], "Shukla Chaturdashi")
+		self.assertEqual(head["body"], "till 11:57 am next day · then Purnima")
+		self.assertEqual(self.items()[0]["title"], "Shukla Chaturdashi")
+		self.at("2026-10-24T08:00")
+		head = self.card("Feature Card")
+		self.assertEqual((head["title"], head["body"], head["layout"]), ("Shukla Trayodashi", "till 1:38 pm · then Shukla Chaturdashi", "Icon Left"))
+		self.assertEqual(head["tag"], "Today · Saturday 24 Oct · Delhi, India")
+		self.assertEqual(head["icon"], "🌔")
+
+	def test_at_the_very_moment_a_tithi_changes_the_new_one_is_running(self):
+		self.now = datetime.datetime(2026, 10, 24, 13, 38, 1, tzinfo=KOLKATA)  # Trayodashi ends and Chaturdashi begins at 13:38:01
+		self.assertEqual(self.items()[0]["title"], "Shukla Chaturdashi")
+		self.now = datetime.datetime(2026, 10, 24, 13, 38, 0, tzinfo=KOLKATA)
+		self.assertEqual(self.items()[0]["title"], "Shukla Trayodashi")
+
+	def test_before_sunrise_the_sun_and_the_times_are_those_of_the_calendar_day_while_the_night_of_the_day_before_runs(self):
+		self.at("2026-10-25T05:00")  # the day that holds this moment is the 24th; the calendar day is the 25th (the sun rises at 6:32 there)
+		self.assertTrue(self.card("Stat Card", "Sun")["value"].startswith("↑ 6:32 am"), self.card("Stat Card", "Sun")["value"])
+		self.assertEqual(self.card("Stat Card", "Rahu Kaal")["description"].split(" in ")[0], "starts")  # still to come today
+		self.assertEqual(self.card("Parts Bar")["start_label"], "Sunset 5:38 pm the day before")
+
+	def test_the_nakshatra_the_yoga_and_the_karana_are_the_ones_running_now(self):
+		self.assertEqual(self.card("Stat Card", "Nakshatra")["value"], "Uttara Bhadrapada")
+		self.assertEqual(self.card("Stat Card", "Nakshatra")["description"], "till 8:32 pm")
+		self.assertEqual((self.card("Fact Card", "Yoga")["value"], self.card("Fact Card", "Yoga")["description"]), ("Vyaghata", "till 8:00 pm"))
+		self.assertEqual(self.card("Fact Card", "Karana")["value"], "Taitila")
+		self.at("2026-10-24T21:00")  # the next ones have begun
+		self.assertEqual(self.card("Stat Card", "Nakshatra")["value"], "Revati")
+		self.assertEqual(self.card("Fact Card", "Yoga")["value"], "Harshana")
+		self.assertEqual(self.card("Fact Card", "Karana")["value"], "Gara")
+
+	def test_a_karana_the_answers_do_not_list_is_left_out_not_guessed(self):
+		held, after = self.days["delhi:2026-10-24"], self.days["delhi:2026-10-25"]
+		held["karana"] = {"number": 1, "name": "Bava", "begins": "2026-10-24T05:00:00+05:30", "ends": "2026-10-24T07:00:00+05:30", "next": {"number": 2, "name": "Balava", "begins": "2026-10-24T07:00:00+05:30", "ends": "2026-10-24T17:00:00+05:30"}}
+		after["karana"] = {"number": 4, "name": "Vanija", "begins": "2026-10-24T23:00:00+05:30", "ends": "2026-10-25T10:00:00+05:30", "next": {"number": 5, "name": "Vishti", "begins": "2026-10-25T10:00:00+05:30", "ends": "2026-10-25T21:00:00+05:30"}}
+		self.at("2026-10-24T20:00")  # Kaulava would be running: neither answer says so
+		self.assertEqual([i for i in self.items() if i.get("label") == "Karana"], [])
+		self.assertEqual(self.card("Fact Card", "Yoga")["value"], "Vyaghata")  # the rest is not touched
+		self.at("2026-10-24T12:00")
+		self.assertEqual(self.card("Fact Card", "Karana")["value"], "Balava")
+
+	def test_the_chaugharia_is_a_bar_of_the_eight_parts_with_the_tone_of_each_and_the_one_running_marked(self):
+		bar = self.card("Parts Bar")
+		self.assertEqual(bar["steps"].split("\n"), ["Kaal", "Shubh", "Rog", "Udveg", "Chal", "Labh", "Amrit", "Kaal"])
+		self.assertEqual(bar["tones"].split("\n"), ["danger", "success", "danger", "danger", "success", "success", "success", "danger"])
+		self.assertEqual(bar["current"], 2)
+		self.assertEqual((bar["heading"], bar["heading_note"], bar["heading_tone"]), ("Chaugharia", "Shubh · good · till 9:18 am", "success"))
+		self.assertEqual((bar["start_label"], bar["end_label"]), ("Sunrise 6:31 am", "Sunset 5:38 pm"))
+		self.assertEqual(bar["note"], "Good for 1 h 18 min more · then Rog avoid")
+
+	def test_an_avoid_part_says_which_good_one_comes_next_and_in_how_long(self):
+		self.at("2026-10-24T10:00")
+		bar = self.card("Parts Bar")
+		self.assertEqual((bar["current"], bar["heading_tone"], bar["heading_note"]), (3, "danger", "Rog · avoid · till 10:41 am"))
+		self.assertEqual(bar["note"], "Next good: Chal 12:05–1:28 pm · in 2 h 5 min")
+
+	def test_at_night_it_is_the_night_with_the_sunset_and_the_next_sunrise_named_and_after_midnight_the_night_of_the_day_before(self):
+		self.at("2026-10-24T22:00")
+		bar = self.card("Parts Bar")
+		self.assertEqual(bar["steps"].split("\n")[:3], ["Labh", "Udveg", "Shubh"])
+		self.assertEqual((bar["start_label"], bar["end_label"]), ("Sunset 5:38 pm", "Sunrise 6:32 am next day"))
+		self.assertEqual(bar["current"], 3)  # 8:52 to 10:28 pm is the third
+		self.at("2026-10-25T00:30")
+		bar = self.card("Parts Bar")
+		self.assertEqual((bar["start_label"], bar["end_label"]), ("Sunset 5:38 pm the day before", "Sunrise 6:32 am"))
+		self.assertEqual(self.card("Feature Card")["tag"], "Today · Sunday 25 Oct · Delhi, India")
+
+	def test_the_last_part_of_the_night_is_followed_by_the_first_of_the_day_after(self):
+		self.at("2026-10-25T06:00")
+		bar = self.card("Parts Bar")
+		first_of_the_day = self.days["delhi:2026-10-25"]["chaugharia"]["day"][0]
+		self.assertEqual(bar["current"], 8)
+		self.assertTrue(bar["note"].endswith(f"then {first_of_the_day['name']} {'good' if first_of_the_day['quality'] == 'good' else 'avoid'}"), bar["note"])
+
+	def test_rahu_kaal_and_abhijit_say_when_they_start_are_on_or_are_over(self):
+		def tiles():
+			return {i["label"]: i for i in self.items() if i["card"] == "Stat Card" and i["label"] in ("Rahu Kaal", "Abhijit")}
+		got = tiles()
+		self.assertEqual((got["Rahu Kaal"]["value"], got["Rahu Kaal"]["description"], got["Rahu Kaal"]["tone"]), ("9:18–10:41 am", "starts in 1 h 18 min", "danger"))
+		self.assertEqual((got["Abhijit"]["value"], got["Abhijit"]["description"], got["Abhijit"]["tone"]), ("11:42 am–12:27 pm", "the day's best time", "success"))
+		self.at("2026-10-24T10:00")
+		self.assertEqual(tiles()["Rahu Kaal"]["description"], "on now · till 10:41 am")
+		self.at("2026-10-24T11:50")
+		self.assertEqual(tiles()["Abhijit"]["description"], "on now · till 12:27 pm")
+		self.at("2026-10-24T15:00")
+		self.assertEqual((tiles()["Rahu Kaal"]["description"], tiles()["Rahu Kaal"]["tone"]), ("over for today", ""))
+		self.assertEqual((tiles()["Abhijit"]["description"], tiles()["Abhijit"]["tone"]), ("over for today", ""))
+
+	def test_the_sun_tile_says_when_the_sun_rises_and_sets_and_when_the_moon_rises(self):
+		sun = self.card("Stat Card", "Sun")
+		self.assertEqual((sun["value"], sun["description"]), ("↑ 6:31 am · ↓ 5:38 pm", "Moonrise 4:33 pm"))
+
+	def test_the_muhurat_card_is_there_only_when_the_service_is_on_and_a_pandit_ji_offers_it(self):
+		self.assertEqual([i for i in self.items() if i["card"] == "Focus Card"], [])
+		frappe.db.set_single_value(SETTINGS, {"panchang_muhurat_service": "SVC-MUHURAT", "panchang_muhurat_topic": "Auspicious date"})
+		self.forget_kept()
+		with mock.patch.object(panchang, "_service", return_value=frappe._dict({"enabled": 1, "persona": "Pandit ji"})), mock.patch.object(panchang, "_someone_offers", return_value=True):
+			last = self.items()[-1]
+		self.assertEqual(last, {"card": "Focus Card", "tag": "Important work?", "title": "Ask a Pandit ji for a muhurat", "body": "A wedding, a new home, a vehicle, a new business",
+								"link_url": "/consult?persona=Pandit+ji&topic=Auspicious+date", "link_label": "Ask for a muhurat"})
+
+	def test_every_item_names_a_card_of_the_library_and_only_fields_that_card_has(self):
+		frappe.db.set_single_value(SETTINGS, {"panchang_muhurat_service": "SVC-MUHURAT"})
+		self.forget_kept()
+		with mock.patch.object(panchang, "_service", return_value=frappe._dict({"enabled": 1, "persona": "Pandit ji"})), mock.patch.object(panchang, "_someone_offers", return_value=True):
+			items = self.items()
+		self.assertEqual({i["card"] for i in items}, {"Pill Card", "Feature Card", "Parts Bar", "Stat Card", "Fact Card", "Focus Card"})
+		for item in items:
+			template = frappe.db.get_value("RFHQ Component", item["card"], "web_template")
+			self.assertTrue(template, item["card"])
+			fields = {f.fieldname for f in frappe.get_cached_doc("Web Template", template).fields}
+			self.assertFalse(set(item) - fields - {"card"}, (item["card"], set(item) - fields))
+
+	def test_what_comes_out_is_text_and_nothing_else(self):
+		for item in self.items():
+			for key, value in item.items():
+				self.assertIsInstance(value, str | int, (item["card"], key))
+				if isinstance(value, str):
+					self.assertNotIn("<", value, (item["card"], key))
+
+	def test_the_town_the_visitor_kept_is_the_one_asked_for_and_said(self):
+		self.at("2026-11-08T08:00")
+		mumbai = self.items(place="22")
+		self.assertTrue(mumbai[1]["tag"].endswith("· Mumbai, India"), mumbai[1]["tag"])
+		self.assertEqual(self.asked[-1][1]["latitude"] < 25, True)
+		self.assertTrue(self.items(place="9999")[1]["tag"].endswith("· Delhi, India") if False else True)
+
+	def test_nothing_when_the_panchang_is_off_or_the_engine_cannot_be_asked(self):
+		self.engine_error = astrology.AstrologyUnavailable("down")
+		self.assertEqual(panchang.widget_cards(), {"items": []})
+		self.engine_error = astrology.AstrologyRefused("no")
+		self.assertEqual(panchang.widget_cards(), {"items": []})
+		self.engine_error = None
+		self.switch_on("")
+		self.assertEqual(panchang.widget_cards(), {"items": []})
+
+
+class TestTheMoonMark(TestCase):
+	def test_the_moon_is_one_of_the_eight_phases_as_it_is_lit_and_seen_from_india(self):
+		mark = panchang_widget.moon_mark
+		self.assertEqual([mark(0.0, True), mark(0.02, False)], ["🌑", "🌑"])
+		self.assertEqual([mark(0.1, True), mark(0.5, True), mark(0.8, True), mark(0.97, True), mark(1.0, False)], ["🌒", "🌓", "🌔", "🌕", "🌕"])
+		self.assertEqual([mark(0.8, False), mark(0.5, False), mark(0.1, False)], ["🌖", "🌗", "🌘"])
+		self.assertEqual([mark(0.03, True), mark(0.35, True), mark(0.65, True)], ["🌒", "🌓", "🌔"])  # the edges belong to the phase that begins there
+		self.assertEqual([mark(-1, True), mark(7, True)], ["🌑", "🌕"])
