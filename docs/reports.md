@@ -123,7 +123,7 @@ the engine's own verification block, and the placeholders for dasha systems the 
 system but Vimshottari, KP lords and significators, the 14 divisional charts but D1 and D9. **The yogas are not reliable:** of six checked by hand two are wrong (Sareera Soukhya needs the lagna lord, Jupiter and Venus in kendras,
 Bhaga Chumbana the 7th lord in the 4th with Venus; Jupiter is in the 12th). Match: both people show Manglik and Pitru dosha "Yes" in the sample.
 
-**Tests:** `raftor_astrohq/tests/test_arrange.py` (32; the ten layouts on the engine's own answers for one invented birth, `tests/fixtures/engine_answers_all_modes.json.gz`) and the chart drawing in `test_kundli_reports.py`;
+**Tests:** `raftor_astrohq/tests/test_arrange.py` (38; the ten layouts on the engine's own answers for one invented birth, `tests/fixtures/engine_answers_all_modes.json.gz`) and the chart drawing in `test_kundli_reports.py`;
 13 deliberate breakages were each caught. The pictures: lay each mode out with `arrange.html(answer, layout, subject=..., today=...)` and `frappe.utils.pdf.get_pdf`.
 
 ## What a report wears (the site's brand)
@@ -150,6 +150,46 @@ A report none of whose sections is checked cannot be given ("Nothing in this rep
 second report from the same birth, a page and a PDF cost no new call (a second detailed report took 0.4 s instead of 1.3 s; three calls per person feed seven of the ten modes). It is gzip-packed (about a tenth of its size), goes with the person (a User's deletion removes it),
 is never shared between two people with the same birth, and is asked for again when it was made before **Astrology API Settings, Kept Answers Are Good From** (put today's date there after the engine has been updated).
 The sky of another moment (today's planets) is kept for a day in the cache, for anyone, since it is about no person.
+
+## The web page of a report, and the astrologer's page (`panes.py`, `report_view.py`, `views/`)
+
+The same kept answers also make a page of **panes** (design: `report-pages.md`). A *pane* shows one part of an answer in a titled box: `chart` (the lagna chart, with facts beside it in the wide board), `varga` (any divisional chart), `planets`, `dasha`
+(Vimshottari, the running period marked, the next ones), `drishti` (the matrix: each planet a row and a column, where they meet the strength in virupas, darker is stronger), `shadbala` (bars), `karakas` (with the special lagnas and arudhas), `houses`, `facts`
+(birth, star, tithi, yoga, karana, manglik) and `today` (today's planets in the person's houses). A pane is a function in `panes.py` that answers `{body, summary}` or nothing when the answer has no data for it: it is then left out. The summary is the one line a pane shows when it is folded on a phone.
+
+A *view* is a small JSON file in `views/` that places panes on a board: `board` ("lite" is three columns, "wide" four), `modes` (the engine modes it is made from), and for each pane `at` [column, row, columns wide, rows tall], `reviewed` and `shut`. Two views ship:
+
+| View | For | Board | Panes |
+|---|---|---|---|
+| `customer` ("Your chart") | the person who asked for a report | lite, 3 columns | chart, planets, at a glance, Vimshottari and D9 checked; drishti, shad bala, houses, karakas, today are Draft |
+| `astrologer` ("Birth chart wide") | the astrologer of a booking | wide, 4 columns, about 1100 px tall | chart and D1 facts, D9, D10, D7, D24, D60, D4, planets, Vimshottari, drishti, shad bala, karakas, today, houses |
+
+**The customer sees only the checked panes** (the same rule as the PDF, `reports.shown()`); the astrologer sees all, the unchecked ones marked **Draft**. A pane that is folded on a phone says its one line; on a desktop every pane is open. A pane that cannot be drawn is left out
+and logged; it never takes the page down.
+
+**Where it is.** The customer's page is servicehq's `my/report` (a section `Report View` fed by `free_reports.report_view`, which answers only the person's own report, and only once it is Ready; the vertical's entry in the vocabulary says which view: `"view": "raftor_astrohq.report_view.customer_view"`).
+The astrologer's page is **`provider/chart?booking=<booking>`** (role Service Provider only; anyone else goes to the join page). It is a *wide* page (websitehq: no left menu, no page container, the whole window): a strip across the top (the person's name, who
+they are to the customer, the birth line, **Back to your bookings** and **See <name>'s chart** for each other person the customer shares) and under it the board of panes, four columns on a big screen (about 1050 px tall at 1920 px wide), three on a laptop, one on a phone with
+the chart, the planets and the running period open and the other panes folded to one line. The astrologer reaches it from **View chart** on the booking in their bookings list (servicehq asks the vertical for `booking_actions`; the action is there only when the booking
+is the astrologer's own and the customer shares a birth profile). One endpoint answers the whole page (`report_view.chart_view`).
+
+**Who may open a customer's chart** (`report_view.chart_view`; nothing else is ever checked on the page itself):
+
+| Rule | How |
+|---|---|
+| Only the astrologer of that booking, and the team | any other signed-in person gets the same "That was not found." as for a booking that does not exist |
+| Only a booking that is Requested, Confirmed or Delivered | not a declined, cancelled, missed or expired one |
+| Only a birth profile the customer shares | their own ("Themselves"), and a family member's only when the customer ticked **Permission Given** for it; the other people the customer shares are links in the strip at the top of the page |
+| A birth time is needed | without it the page says so in words (no chart can be drawn), and the strip is still there to go to another person |
+| What is kept | the engine's answers are kept for the customer, never for the astrologer, and go with the customer |
+
+**Safe to put on a page.** An app may send a block of markup only by a method it lists in the hook `rfhq_trusted_html_sources` (astrohq lists the chart page, servicehq the report page), and websitehq's `report_html.clean` keeps an allowlist of tags and attributes before it reaches the page:
+layout and table tags, `details` and `summary`, a link to a page of this site (a path: never one with a scheme or `//`) and the tags of a small inline drawing; classes that begin `rv-`; colours that are numbers, hex, or `var(--rv-...)`; never a script, form, frame, image from an address,
+`style` (except the colour variables on the root) or `url()`.
+The colours come from the site's theme (the report view reads them as variables), so a site's brand shows without a line of code here.
+
+**The drishti** is the hub's (engine 1.2.0, CORE_STANDARD and CORE_ADVANCED carry `drishti`): `astrohq` imports no astrology library. Until the running engine is 1.2.0 the pane is simply not shown; after the engine is updated put today's date in
+**Astrology API Settings, Kept Answers Are Good From**, so that a person's earlier kept answer is asked for again and carries it.
 
 ## When a report cannot be made
 
@@ -180,7 +220,7 @@ at the form is no longer found.
 
 The calculation is done by the astrology API (PyJHora 4.6.0 and the Swiss Ephemeris) and was checked against an independent Swiss Ephemeris calculation (hub
 `tests/test_astrology_engine.py`). The **Ashtakoota** needed more: PyJHora's own was compared with the published rules over all 11,664 pairs of nakshatra padas and
-found wrong for about four couples in ten. The API (1.1.1) now works four points out itself and takes four from the library; every one is tested against the published rules
+found wrong for about four couples in ten. The API (1.1.1, and 1.2.0 after it) works four points out itself and takes four from the library; every one is tested against the published rules
 (hub `tests/test_astrology_ashtakoota.py`):
 
 | Koota | Out of | From | Note |
@@ -208,18 +248,19 @@ The score is a guide, and the page says a full match is read with the charts and
 ## Not built
 
 - Other languages and scripts (names, pages); a report from an unknown time of birth (no lagna, so none is made); places outside the GeoNames list (500 people and more).
-- The web page of a report, one tap for the next report, the astrologer's page and the drishti matrix (design: `report-pages.md`). Remedies.
+- One tap for the next report from the answers already kept; the layouts as records in Desk (a team member ticking a section checked there instead of in the file); web pages for the dasha, KP, panchang and match reports (only the kundli and the detailed report have a page of panes today);
+  the Tajaka chart of the year ahead (needs the hub to take a year). Remedies.
 - "Report ready" messages (notifications are the last topic). The report is made in the request that confirms the code, so it is normally ready before the person looks; make it a background job if the astrology
   service ever becomes slow.
-- The astrologer seeing the customer's report for their booking, if the customer agrees (needs the chart screen and the owner's rule on who sees whose chart).
-- The astrologer's own chart screen (who may see whose chart).
+- Views of the astrologer's own (a saved list of panes per astrologer), and a tab bar of more views (Dashas, Strength, KP, Yogas); today there is one wide view.
 
 ## Checks
 
 - Unit tests, on the engine's answers for two invented births (no service needed): `bench --site astrohq.local run-tests --app raftor_astrohq --module raftor_astrohq.tests.test_kundli_reports`
   (the last class asks the real service and the real list, and is skipped where they are not set up); servicehq: `--app raftor_servicehq --module raftor_servicehq.tests.test_reports`;
   places: `raftor_astrohq.tests.test_places`.
-- The free way: `raftor_servicehq/tests/test_free_reports.py` (67), `raftor_astrohq/tests/test_free_report_hooks.py` (14) and the sign-in's own `raftor_websitehq` tests (`test_auth_mobile_stub`, `test_auth_password`).
+- The panes, the web page and the astrologer's page: `raftor_astrohq/tests/test_report_view.py` (27), `test_astrologer_chart.py` (15), `raftor_websitehq` `test_report_html` (what may reach a page), `test_feed` and `test_page_sync` (the wide page); servicehq `test_booking_api` (the "View chart" action). Each was also broken on purpose, one way at a time (who may open a chart, what a customer is shown, the link rule, the wide page, the sub-lord columns): every break was caught.
+- The free way: `raftor_servicehq/tests/test_free_reports.py` (79), `raftor_astrohq/tests/test_free_report_hooks.py` (14) and the sign-in's own `raftor_websitehq` tests (`test_auth_mobile_stub`, `test_auth_password`).
 - Browser, a stranger from the product page to the report, then the same person signing back in with the number and the password, a report for a child, the limit, a report that cannot be made and the business team:
   `python3 apps/raftor_astrohq/e2e/free_reports_journey.py` (the two items are switched on and put back as they shipped).
 - Browser, the paid way as a stranger, two customers and the business team (the items are priced for the run and put back as they shipped; the gateway's confirmation is stood in for):

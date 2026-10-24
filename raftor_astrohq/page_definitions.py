@@ -5,10 +5,12 @@ import frappe
 from frappe import _
 
 from raftor_astrohq import profiles
+from raftor_servicehq.roles import SERVICE_PROVIDER_ROLE
 from raftor_websitehq.website_hq.page_groups import page_url
 
 API = "raftor_astrohq.api."
 ASTRO = "raftor_astrohq.astrologer_api."
+VIEW = "raftor_astrohq.report_view."
 TIGHT = {"padding": "Small", "gap": "Small"}
 
 
@@ -69,6 +71,14 @@ def _list(route, title, subtitle, source: dict, menu=None) -> dict:
 	return page
 
 
+def chart_page() -> dict:
+	"""The astrologer's page of a customer's chart (report_view.py): whose it is, the other people the customer shares and the wide board of panes, from one endpoint. Only people who hold the provider role; the endpoint checks
+	the booking and what the customer shares.
+	A wide page: it has the whole window (no left menu, no container) so that the board of panes can have four columns."""
+	return {"route": "provider/chart", "title": _("Chart"), "login_required": True, "roles": [SERVICE_PROVIDER_ROLE], "otherwise": "provider/join", "wide": True, "sections": [
+		{"key": "chart", "source": {"method": VIEW + "chart_view", "card": "Report View", "url_args": "booking,profile", "empty": _("There is no chart to show for this booking.")}, "look": TIGHT}]}
+
+
 def definitions() -> list[dict]:
 	profile_list = _my("birth-profiles")
 	you = {"relationship": profiles.SELF}
@@ -114,4 +124,5 @@ def definitions() -> list[dict]:
 				{"name": "issued_by", "label": _("Issued by"), "placeholder": _("School or teacher")},
 				{"name": "year", "label": _("Year"), "placeholder": "YYYY"}],
 			"success_redirect": _start("astrologer-credentials")}),
+		chart_page(),
 	]

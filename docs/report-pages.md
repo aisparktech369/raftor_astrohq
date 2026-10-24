@@ -1,7 +1,7 @@
 # Reports as web pages and branded PDFs (design, 2026-10-23)
 
-**Status: being built (owner's yes, 23 Oct 2026). Built so far: the arranger, the brand for documents, the kept answers, the reports made from a layout with the checked-sections rule (`reports.md`).** The owner asked (23 Oct 2026): "design this available functionality to integrate for
-optimum utilisation and features... we can keep them free... platform agnostic, web based feature alongwith branded pdf report". Build only after an explicit yes.
+**Status: built in the order below up to the astrologer's page (owner's yes, 23 Oct 2026; details and checks in `reports.md`): the arranger, the brand for documents, the kept answers, the reports made from a layout with the checked-sections rule, the panes and the customer's web page, the drishti in the hub (engine 1.2.0), the astrologer's wide page. Not yet: one tap for more (4) and the layouts as records in Desk (6).** The owner asked (23 Oct 2026): "design this available functionality to integrate for
+optimum utilisation and features... we can keep them free... platform agnostic, web based feature alongwith branded pdf report"; then, after the second ask below: "Build it".
 
 ## The idea in four lines
 

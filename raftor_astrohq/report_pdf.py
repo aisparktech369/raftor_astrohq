@@ -23,7 +23,7 @@ ENGINE_NAMES = {"Sun": "Su", "Moon": "Mo", "Mars": "Ma", "Mercury": "Me", "Jupit
 
 INK, ACCENT, LINE, SOFT = "#2b1a3d", "#6b3fa0", "#b9a6d3", "#f5f0fb"
 # The look of a page: what colours and type it is drawn in. These are what the reports have always worn; a site with a brand of its own gives its own (`site_look`).
-DEFAULT_LOOK = {"ink": INK, "heading": ACCENT, "accent": ACCENT, "line": LINE, "soft": SOFT, "muted": "#6f6285", "faint": "#8a7aa3", "key": "#fbf9fe", "now": "#fff4d6", "bar": "#e9e1f5",
+DEFAULT_LOOK = {"ink": INK, "heading": ACCENT, "accent": ACCENT, "line": LINE, "soft": SOFT, "muted": "#6f6285", "faint": "#8a7aa3", "key": "#fbf9fe", "now": "#fff4d6", "bar": "#e9e1f5", "paper": "#ffffff",
 				"body_font": "Arial, Helvetica, sans-serif", "heading_font": "", "logo": "", "name": ""}
 
 
@@ -88,14 +88,14 @@ def diamond_chart_svg(cells: list[str], lagna: int, title: str = "", size: int =
 	of house 1, which is the top diamond, and the houses run anticlockwise from it. Each house shows its sign's number and its planets (written `font` high: smaller for a small chart).
 	The title, when there is one, is written under the drawing, in room made for it. `look` gives the colours (the plain ones when none)."""
 	k = {**DEFAULT_LOOK, **(look or {})}
-	ACCENT, SOFT, INK = k["heading"], k["soft"], k["ink"]
+	ACCENT, SOFT, INK, PAPER = k["heading"], k["soft"], k["ink"], k["paper"]
 	shapes = _house_shapes(size)
 	room = 22 if title else 0
 	out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{size}" height="{size + room}" viewBox="0 0 {size} {size + room}">',
-		   f'<rect x="0" y="0" width="{size}" height="{size}" fill="#ffffff" stroke="{ACCENT}" stroke-width="2"/>']
+		   f'<rect x="0" y="0" width="{size}" height="{size}" fill="{PAPER}" stroke="{ACCENT}" stroke-width="2"/>']
 	for number, points in shapes.items():
 		coordinates = " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
-		out.append(f'<polygon points="{coordinates}" fill="{SOFT if number == 1 else "#ffffff"}" stroke="{ACCENT}" stroke-width="1.4"/>')
+		out.append(f'<polygon points="{coordinates}" fill="{SOFT if number == 1 else PAPER}" stroke="{ACCENT}" stroke-width="1.4"/>')
 		sign = (lagna + number - 1) % 12
 		cx, cy = sum(x for x, _y in points) / len(points), sum(y for _x, y in points) / len(points)
 		names = []

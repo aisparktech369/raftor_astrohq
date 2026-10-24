@@ -1,0 +1,204 @@
+{
+ "title": "Birth chart",
+ "board": "wide",
+ "modes": [
+  "CORE_ADVANCED",
+  "KP_SYSTEM"
+ ],
+ "panes": [
+  {
+   "pane": "chart",
+   "title": "Birth chart · D1",
+   "at": [
+    1,
+    1,
+    2,
+    1
+   ],
+   "reviewed": true,
+   "options": {
+    "width": 540,
+    "height": 250,
+    "minutes": true,
+    "facts_beside": true
+   }
+  },
+  {
+   "pane": "varga",
+   "title": "Navamsa · D9 · spouse",
+   "at": [
+    3,
+    1,
+    1,
+    1
+   ],
+   "reviewed": true,
+   "options": {
+    "chart_key": "D9",
+    "size": 250,
+    "label": "Navamsa chart"
+   },
+   "shut": true
+  },
+  {
+   "pane": "varga",
+   "title": "Dashamsa · D10 · career",
+   "at": [
+    4,
+    1,
+    1,
+    1
+   ],
+   "options": {
+    "chart_key": "D10",
+    "size": 250,
+    "label": "Dashamsa chart"
+   },
+   "shut": true
+  },
+  {
+   "pane": "planets",
+   "title": "Planets",
+   "at": [
+    1,
+    2,
+    2,
+    1
+   ],
+   "reviewed": true
+  },
+  {
+   "pane": "dasha",
+   "title": "Vimshottari",
+   "at": [
+    3,
+    2,
+    1,
+    1
+   ],
+   "reviewed": true
+  },
+  {
+   "pane": "varga",
+   "title": "Saptamsa · D7 · children",
+   "at": [
+    4,
+    2,
+    1,
+    1
+   ],
+   "options": {
+    "chart_key": "D7",
+    "size": 206,
+    "label": "Saptamsa chart"
+   },
+   "shut": true
+  },
+  {
+   "pane": "drishti",
+   "title": "Drishti · planet looks at planet",
+   "at": [
+    1,
+    3,
+    1,
+    1
+   ],
+   "shut": true
+  },
+  {
+   "pane": "shadbala",
+   "title": "Shad bala",
+   "at": [
+    2,
+    3,
+    1,
+    1
+   ],
+   "shut": true
+  },
+  {
+   "pane": "karakas",
+   "title": "Karakas · special lagnas",
+   "at": [
+    3,
+    3,
+    1,
+    1
+   ],
+   "shut": true
+  },
+  {
+   "pane": "varga",
+   "title": "Chaturvimshamsa · D24 · learning",
+   "at": [
+    4,
+    3,
+    1,
+    1
+   ],
+   "options": {
+    "chart_key": "D24",
+    "size": 190,
+    "label": "Chaturvimshamsa chart"
+   },
+   "shut": true
+  },
+  {
+   "pane": "today",
+   "title": "Today from lagna",
+   "at": [
+    1,
+    4,
+    1,
+    1
+   ],
+   "shut": true
+  },
+  {
+   "pane": "houses",
+   "title": "Houses",
+   "at": [
+    2,
+    4,
+    1,
+    1
+   ],
+   "options": {
+    "two": true
+   },
+   "shut": true
+  },
+  {
+   "pane": "varga",
+   "title": "Shashtiamsa · D60 · all areas",
+   "at": [
+    3,
+    4,
+    1,
+    1
+   ],
+   "options": {
+    "chart_key": "D60",
+    "size": 190,
+    "label": "Shashtiamsa chart"
+   },
+   "shut": true
+  },
+  {
+   "pane": "varga",
+   "title": "Chaturthamsa · D4 · destiny",
+   "at": [
+    4,
+    4,
+    1,
+    1
+   ],
+   "options": {
+    "chart_key": "D4",
+    "size": 190,
+    "label": "Chaturthamsa chart"
+   },
+   "shut": true
+  }
+ ]
+}

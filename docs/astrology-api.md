@@ -100,4 +100,5 @@ birth profile still holds the place as text only) and **the report offerings** (
   switched on, so it can never wipe a real setting): `JOURNEY=astrology_check python3 e2e/astrology_settings_check.py`
 - Against the real hub: done on 2026-10-23 with a throwaway key on the local hub. Against the real service on this server: done the same day.
 - The engine's own tests (the hub, `raftor_apimanager.tests.test_astrology_engine`, `test_astrology_ashtakoota`, `test_astrology_lambda` ...) run with `env/bin/python -m unittest` in the hub bench;
-  the service here runs version 1.1.1 (the last Vimshottari period now has its end date, and the Ashtakoota points the library got wrong are worked out by the engine).
+  the service here runs version 1.2.0 (1.1.1: the last Vimshottari period has its end date and the Ashtakoota points the library got wrong are worked out by the engine; 1.2.0: CORE_STANDARD and CORE_ADVANCED carry `drishti`,
+  how strongly each planet looks at every other planet and at each house, which the reports' drishti pane draws). After the engine is updated, put the day's date in **Kept Answers Are Good From** (Astrology API Settings) so that what was kept before is asked for again.

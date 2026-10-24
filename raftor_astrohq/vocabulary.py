@@ -30,7 +30,7 @@ def arranged_reports() -> dict:
 		"detailed": {"title": _("Detailed kundli report"), "blurb": _("Your kundli in full: the houses, the strength of each planet, the divisional charts, ashtakavarga, doshas and more."), "price": 0,
 					 "description": _("Everything the kundli report has, and more: the houses, the strength of each planet, the divisional charts, ashtakavarga, arudhas, doshas and the panchang of the day you were born.\n\n"
 									  "Made for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
-					 "details": person, "maker": maker, "layout": "advanced", "modes": ["CORE_ADVANCED"], "free": person_free()},
+					 "details": person, "maker": maker, "layout": "advanced", "modes": ["CORE_ADVANCED"], "view": "raftor_astrohq.report_view.customer_view", "free": person_free()},
 		"dasha": {"title": _("Dasha periods report"), "blurb": _("Every dasha system and the period you are in now."), "price": 0,
 				  "description": _("The dasha periods of your life, system by system, with the one running today marked.\n\nMade for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
 				  "details": person, "maker": maker, "layout": "dasha", "modes": ["DASHA_CALC"], "free": person_free()},
@@ -76,13 +76,15 @@ def vocabulary() -> dict:
 			{"name": "Vastu consultation", "persona": "Vastu expert", "minutes_by_provider": True},
 			*pack_services(),
 		],
+		# What an astrologer can open from their booking (servicehq provider_bookings asks the vertical): the customer's chart.
+		"booking_actions": "raftor_astrohq.report_view.booking_actions",
 		# The reports a customer asks for from the shop, made from their own birth details (servicehq digital.py, free_reports.py). Each ships as an item switched off, at price 0
 		# (both are free, always: they are given, not sold), for the business team to switch on; servicehq asks the details and delivers the PDF the maker returns.
 		"reports": {
 			"kundli": {"title": _("Kundli report"), "blurb": _("Your birth chart made from your date, time and place of birth."), "price": 0,
 					   "description": _("Your kundli: the lagna, where each planet stood, the houses, the navamsa chart, your dasha periods and the panchang of the day you were born.\n\n"
 										"Made for you from the details you give, by the same calculation astrologers use (Lahiri ayanamsa). It is free: you can read it as a PDF as soon as it is made."),
-					   "details": {"fields": kundli_fields(), "validate": "raftor_astrohq.details.kundli_rules"}, "maker": "raftor_astrohq.reports.kundli_report",
+					   "details": {"fields": kundli_fields(), "validate": "raftor_astrohq.details.kundli_rules"}, "maker": "raftor_astrohq.reports.kundli_report", "view": "raftor_astrohq.report_view.customer_view",
 					   # What only the free way does (servicehq free_reports.py): asks whose it is, keeps the details as a birth profile, says whose it is, and fills the form from the person's own profile.
 					   "free": person_free()},
 			"match": {"title": _("Match making report"), "blurb": _("How well two birth charts match, by the eight kootas out of 36."), "price": 0,

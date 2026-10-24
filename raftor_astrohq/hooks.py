@@ -285,3 +285,6 @@ standard_portal_menu_items = [
 # servicehq's service kinds, in astrohq's words (vocabulary.py). Only words; the mechanics are servicehq's.
 servicehq_vocabulary = {"astrohq": "raftor_astrohq.vocabulary.vocabulary"}
 rfhq_report_makers = ["raftor_astrohq.reports.birth_summary"]
+
+# The methods whose markup websitehq lets reach a page (website_hq/report_html.py cleans it first): the astrologer's page of a customer's chart.
+rfhq_trusted_html_sources = ["raftor_astrohq.report_view.chart_view"]

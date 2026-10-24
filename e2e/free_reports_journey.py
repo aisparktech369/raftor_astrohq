@@ -347,6 +347,7 @@ def visitor_gets_the_kundli(br):
 	status, head, pages, text, href = open_file(ctx, pg)
 	check("View report opens a PDF of two pages with the person's own chart", status == 200 and head == b"%PDF-" and pages == 2 and "Asha Rao" in text and "Virgo (Kanya)" in text and "Revati, pada 3" in text, (status, head, pages, text[:80]))
 	check("no script errors on the way", errors == [], errors)
+	view_on_a_phone(pg)
 	report = reports_of(ASHA)[0][0]
 	out = run(f'''
 user = frappe.db.get_value("User", {{"mobile_no": "{ASHA}"}}, "name")
@@ -367,6 +368,57 @@ print("FILE=%s" % frappe.db.get_value("File", {{"attached_to_doctype": "Free Rep
 	session = ctx.storage_state()
 	J.finish(state, "visitor", ctx, pg)
 	return session, report
+
+
+def view_on_a_phone(pg):
+	"""The report's page of panes as it is on a phone: the chart and the planets open, the rest folded to a title and one line, only what an astrologer has checked, nothing sideways."""
+	pg.goto(pg.url, wait_until="networkidle")
+	pg.wait_for_timeout(3500)
+	titles = pg.eval_on_selector_all(".rfhq-rv .rv-pane .rv-title", "els => els.map(e => e.textContent.trim())")
+	check("the page has the report as panes: the chart, the planets and what an astrologer has checked, and no draft", titles == ["Birth chart", "Planets", "At a glance", "Vimshottari", "Navamsa · D9"] and pg.locator(".rv-draft").count() == 0, titles)
+	state_of = pg.eval_on_selector_all(".rfhq-rv details.rv-pane", "els => els.map(e => [e.querySelector('.rv-title').textContent.trim(), e.open, e.hasAttribute('data-shut')])")
+	check("on a phone the chart and the planets are open and the other three are folded", state_of == [["Birth chart", True, False], ["Planets", True, False], ["At a glance", False, True], ["Vimshottari", False, True], ["Navamsa · D9", False, True]], state_of)
+	lines = pg.eval_on_selector_all(".rfhq-rv details.rv-pane[data-shut] .rv-sum", "els => els.map(e => [e.textContent.trim(), getComputedStyle(e).display])")
+	check("a folded pane says in one line what is in it", len(lines) == 3 and all(t and d != "none" for t, d in lines) and "Mo–Sa" in lines[1][0], lines)
+	snap(pg, "visitor", "The page of panes on a phone: two open, three folded with a line each", full=True)
+	pg.locator(".rfhq-rv details.rv-pane[data-shut]:has-text('Vimshottari') summary").click()
+	pg.wait_for_timeout(500)
+	opened = pg.locator(".rfhq-rv details.rv-pane:has-text('Vimshottari')").first
+	check("tapping a folded pane opens it: the running period is marked", opened.evaluate("e => e.open") and "Mo–Sa" in opened.inner_text() and opened.locator(".rv-now").count() == 1, opened.inner_text()[:120].replace("\n", " | "))
+	chart = pg.locator(".rfhq-rv .rv-chart").first
+	drawn = chart.evaluate("e => e.textContent")  # (a drawing is not an HTML element: it has no inner text)
+	check("the chart is drawn: twelve houses, the planets with their degrees, in the site's colours", chart.locator("polygon").count() == 12 and "Su 24" in drawn and "As 14" in drawn
+		  and chart.locator("polygon").first.evaluate("e => getComputedStyle(e).stroke") != "rgb(0, 0, 0)", drawn[:100])
+	check("the planets table scrolls inside its pane, never the page", sideways(pg) <= 0 and pg.locator(".rfhq-rv details.rv-pane:has-text('Planets') .rv-wrap").count() == 1, sideways(pg))
+	text = pg.inner_text(".rfhq-rv")
+	check("the page has the person's own chart in words", "Revati" in text and "Virgo" in text and "Taurus" in text or "Tau" in text, text[:200].replace("\n", " | "))
+
+
+def view_on_a_desktop(br, session):
+	"""The same page on a desktop: every pane open, two columns beside the portal's menu, nothing sideways, and the print view has all of it."""
+	ctx = J.context(br, state, "desktop", J.DESK, session)
+	pg = ctx.new_page()
+	errors = []
+	pg.on("pageerror", lambda e: errors.append(str(e)))
+	rows = reports_of(ASHA)
+	pg.goto(f"{B}/my/report?report={rows[0][0]}", wait_until="networkidle")
+	pg.wait_for_timeout(3500)
+	open_all = pg.eval_on_selector_all(".rfhq-rv details.rv-pane", "els => els.map(e => e.open)")
+	check("on a desktop every pane is open", open_all and all(open_all), open_all)
+	columns = pg.evaluate("getComputedStyle(document.querySelector('.rv-board')).gridTemplateColumns.split(' ').length")
+	check("the board has two columns beside the portal's menu (three need a report 1000 px wide)", columns == 2, columns)
+	boxes = pg.eval_on_selector_all(".rfhq-rv details.rv-pane", "els => els.map(e => { const r = e.getBoundingClientRect(); return [Math.round(r.left), Math.round(r.top), Math.round(r.width)]; })")
+	check("the planets take the whole row under the chart", boxes[1][1] > boxes[0][1] and boxes[1][2] > 1.8 * boxes[0][2], boxes[:2])
+	check("nothing scrolls sideways on a desktop", sideways(pg) <= 0, sideways(pg))
+	pg.locator(".rfhq-rv details.rv-pane:has-text('Vimshottari') summary").click()
+	pg.wait_for_timeout(300)
+	check("a pane cannot be folded on a desktop", pg.locator(".rfhq-rv details.rv-pane:has-text('Vimshottari')").first.evaluate("e => e.open"))
+	snap(pg, "desktop", "The same page on a desktop: two columns beside the menu, every pane open", full=True)
+	pg.emulate_media(media="print")
+	pg.wait_for_timeout(300)
+	check("on paper no pane is folded and the panes are not cut", pg.eval_on_selector_all(".rfhq-rv details.rv-pane", "els => els.every(e => e.open)") and pg.evaluate("getComputedStyle(document.querySelector('.rv-pane')).breakInside") == "avoid")
+	check("no script errors on the desktop", errors == [], errors)
+	J.finish(state, "desktop", ctx, pg)
 
 
 def signs_back_in(br, first_session):
@@ -660,6 +712,7 @@ def main():
 			other_session = J.session(br, OTHER)
 			staff_session = J.staff_login(br, STAFF)
 			first_session, report = visitor_gets_the_kundli(br)
+			view_on_a_desktop(br, first_session)
 			session = signs_back_in(br, first_session)
 			session = signed_in_asks_more(br, session)
 			strangers_cannot_open(br, other_session, report)
