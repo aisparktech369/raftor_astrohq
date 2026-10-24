@@ -94,7 +94,7 @@ class TestADay(Stood):
 		panchang.day(datetime.date(2026, 10, 24), self.delhi())
 		(mode, numbers), = self.asked
 		self.assertEqual(mode, "PANCHANGA_DAY")
-		self.assertEqual(set(numbers), {"year", "month", "day", "hour", "minute", "second", "latitude", "longitude", "timezone_offset", "chal"})
+		self.assertEqual(set(numbers), {"year", "month", "day", "hour", "minute", "second", "latitude", "longitude", "timezone_offset", "chal", "rise"})
 		self.assertEqual((numbers["hour"], numbers["timezone_offset"]), (12, 5.5))
 
 	def test_the_offset_is_that_of_the_day_asked_for(self):
@@ -630,6 +630,14 @@ class TestWhatTheSettingsDecide(Stood):
 		self.assertEqual((len(self.asked), self.asked[-1][1]["chal"]), (2, "neutral"))  # not the day kept for the other choice
 		panchang.day(datetime.date(2026, 10, 24), self.delhi())
 		self.assertEqual(len(self.asked), 2)
+
+	def test_the_rule_of_rising_the_settings_name_is_asked_of_the_engine_and_a_day_is_asked_again_when_it_changes(self):
+		self.assertEqual(panchang.settings().rise, "apparent")
+		panchang.day(datetime.date(2026, 10, 24), self.delhi())
+		self.assertEqual(self.asked[-1][1]["rise"], "apparent")
+		self.switch_on("Delhi", panchang_sunrise="centre")
+		panchang.day(datetime.date(2026, 10, 24), self.delhi())
+		self.assertEqual((len(self.asked), self.asked[-1][1]["rise"]), (2, "centre"))
 
 	def neutral_days(self):
 		for answer in (a for a in self.days.values() if isinstance(a, dict)):

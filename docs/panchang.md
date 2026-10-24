@@ -35,6 +35,7 @@ Any day from 1 Jan 1800 to 31 Dec 2399 (the years the engine was checked over); 
 | Topic Sent With the Muhurat Button | What the booking says it is about | Auspicious date |
 | New Days Worked Out In A Minute, At Most | The safety limit on days and towns the engine has not worked out yet; over it a visitor is asked to try again in a moment (what is kept is always shown) | 60 |
 | Requests A Visitor May Make In A Minute | Per visitor, for the page and the town search | 40 |
+| Sunrise and Moonrise Are When | apparent (the upper edge of the sun or moon on the horizon, the light bent by the air: what printed panchangs and most apps use) or centre (the library's own rule, about 4 minutes later for the sun and 10 for the moon). Rahu Kaal and the chaugharia are counted from it | apparent |
 | Chal in the Chaugharia Is | good or neutral: Chal is good in the library's own division and neutral in some books; neutral is shown in its own colour and is not one to wait for. Sent to the engine with every day; a day kept for the other choice is not used | good |
 | First Year / Last Year of the Panchang | The years the astrology service works a day out for; a date outside them is taken to the nearest end, and the calendar's ends follow | 1800 / 2399 |
 | Days a Day of the Default Town / of Any Other Town Is Kept | How long a worked-out day is kept | 8 / 1 |

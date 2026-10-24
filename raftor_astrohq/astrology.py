@@ -34,7 +34,7 @@ TIME = re.compile(r"^(\d{1,2}):(\d{2})(?::(\d{2}))?$")
 
 # What is sent to the hub: only the numbers a calculation needs, never a name, a place's name or anything else that a caller's dict may hold.
 SENT = ("year", "month", "day", "hour", "minute", "second", "latitude", "longitude", "timezone_offset", "gender",
-		"ayanamsa_mode", "ayanamsa_value", "dasha_levels", "horary_number", "requested_dasha_systems", "chal")
+		"ayanamsa_mode", "ayanamsa_value", "dasha_levels", "horary_number", "requested_dasha_systems", "chal", "rise")
 
 # The birth used only to prove the connection: a made-up person, not data.
 SAMPLE = {"year": 1980, "month": 6, "day": 8, "hour": 13, "minute": 49, "second": 0, "latitude": 28.6139, "longitude": 77.209, "timezone_offset": 5.5}

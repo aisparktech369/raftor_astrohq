@@ -44,6 +44,7 @@ def settings() -> frappe._dict:
 		new_per_minute=cint(doc.get("panchang_new_per_minute")) or 60,
 		per_visitor=cint(doc.get("panchang_requests_per_minute")) or 40,
 		chal=doc.get("panchang_chal") or "good",
+		rise=doc.get("panchang_sunrise") or "apparent",
 		first_year=cint(doc.get("panchang_first_year")) or 1800,  # the years the engine works a day out for
 		last_year=cint(doc.get("panchang_last_year")) or 2399,
 		keep_default=(cint(doc.get("panchang_keep_days")) or 8) * 24 * 3600,  # seconds a worked-out day is kept: a week ahead for the default town, a day for any other
@@ -113,7 +114,7 @@ def date_of(text, place: dict) -> datetime.date:
 
 # ---- one day, kept ----
 def _key(place: dict, on_date: datetime.date) -> str:
-	return f"astro_panchang:{place['latitude']:.3f}:{place['longitude']:.3f}:{on_date.isoformat()}:{settings().chal}"
+	return f"astro_panchang:{place['latitude']:.3f}:{place['longitude']:.3f}:{on_date.isoformat()}:{settings().chal}:{settings().rise}"
 
 
 def _fresh(kept) -> bool:
@@ -149,7 +150,7 @@ def day(on_date: datetime.date, place: dict) -> dict:
 	_allow_new()
 	offset = places.offset_hours(place["timezone"], datetime.datetime(on_date.year, on_date.month, on_date.day, 12))
 	answer = astrology.chart({"year": on_date.year, "month": on_date.month, "day": on_date.day, "hour": 12, "minute": 0, "second": 0,
-							  "latitude": place["latitude"], "longitude": place["longitude"], "timezone_offset": offset, "chal": settings().chal}, MODE)
+							  "latitude": place["latitude"], "longitude": place["longitude"], "timezone_offset": offset, "chal": settings().chal, "rise": settings().rise}, MODE)
 	cache.set_value(key, zlib.compress(json.dumps({"made": now_datetime().isoformat(), "day": answer}, separators=(",", ":")).encode()), expires_in_sec=_keep_for(place))
 	return answer
 
