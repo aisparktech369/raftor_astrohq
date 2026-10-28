@@ -12,6 +12,12 @@ class TestVocabulary(TestCase):
 		self.assertIn("astrohq", kinds.registered_verticals())
 		self.assertEqual(kinds.enabled_kinds("astrohq"), kinds.KINDS)
 
+	def test_an_astrologers_session_must_end_with_a_remedy_unless_said_otherwise(self):
+		self.assertEqual(kinds.recommendation_default("astrohq", "Consultation"), "Required")  # the guide writes the remedy or reading before it is marked done
+		self.assertEqual(kinds.recommendation_default("astrohq", "Event"), "None")
+		self.assertEqual(kinds.recommendation_default("", "Consultation"), "Optional")  # (a vertical that says nothing: as before)
+		self.assertEqual(kinds.words("astrohq", "Consultation")["recommendation"], "remedy")  # (the setting is not a word: it must not replace the word for a recommendation)
+
 	def test_every_kind_has_the_words_a_page_needs(self):
 		for kind in kinds.KINDS:
 			w = kinds.words("astrohq", kind)
