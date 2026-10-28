@@ -15,20 +15,11 @@ TIGHT = {"padding": "Small", "gap": "Small"}
 
 
 def _time_fields():
-	return [
-		{"name": "time_of_birth", "label": _("Time of birth"), "type": "time_text", "placeholder": "HH:MM",
-		 "hint": _("As on your birth record."), "disabled_when": "time_unknown"},
-		{"name": "time_unknown", "label": _("I don't know my birth time"), "type": "checkbox"},
-	]
+	return details.time_fields()
 
 
 def _you_fields():
-	return [
-		{"name": "full_name", "label": _("Full name"), "required": True, "placeholder": _("e.g. Asha Rao"), "hint": _("Shown on your chart.")},
-		{"name": "date_of_birth", "label": _("Date of birth"), "type": "date", "required": True},
-		*_time_fields(),
-		details.place_field("place_of_birth", _("Place of birth")),
-	]
+	return details.you_fields()
 
 
 def _person_fields():

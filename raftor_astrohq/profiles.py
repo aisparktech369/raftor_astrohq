@@ -134,6 +134,23 @@ def you_row(user_doc):
 	return next((r for r in (user_doc.get(TABLE) or []) if r.relationship == SELF), None)
 
 
+def save_you(user: str, values: dict) -> dict:
+	"""Keeps these details as the person's own profile ("You"), whoever is signed in. {"ok": True}, or {"ok": False, "errors": {field: message}} when a rule is broken."""
+	values = {**values, "relationship": SELF}
+	errors = row_errors(values)
+	if errors:
+		return {"ok": False, "errors": errors}
+	user_doc = frappe.get_doc("User", user)
+	data = clean(values)
+	row = you_row(user_doc)
+	if row:
+		row.update(data)
+	else:
+		user_doc.append(TABLE, data)
+	user_doc.save(ignore_permissions=True)
+	return {"ok": True}
+
+
 def has_birth_profile(user: str) -> bool:
 	"""Whether the person has at least one profile (their own or a family member's) with the details filled in correctly."""
 	user_doc = frappe.get_doc("User", user)

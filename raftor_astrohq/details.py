@@ -28,6 +28,25 @@ def place_field(name: str, label: str) -> dict:
 			"hint": _("Choose your town from the list, with its state. If it is not there, write the town and its state, or choose the nearest bigger town.")}
 
 
+def time_fields() -> list[dict]:
+	"""The time of birth as a form asks for it: the time, or that it is not known."""
+	return [
+		{"name": "time_of_birth", "label": _("Time of birth"), "type": "time_text", "placeholder": "HH:MM",
+		 "hint": _("As on your birth record."), "disabled_when": "time_unknown"},
+		{"name": "time_unknown", "label": _("I don't know my birth time"), "type": "checkbox"},
+	]
+
+
+def you_fields() -> list[dict]:
+	"""A person's own birth details as "Your birth details" asks for them (the onboarding page, and a booking form for someone who has none yet)."""
+	return [
+		{"name": "full_name", "label": _("Full name"), "required": True, "placeholder": _("e.g. Asha Rao"), "hint": _("Shown on your chart.")},
+		{"name": "date_of_birth", "label": _("Date of birth"), "type": "date", "required": True},
+		*time_fields(),
+		place_field("place_of_birth", _("Place of birth")),
+	]
+
+
 def birth_details() -> list[dict]:
 	"""What a report made from someone's birth asks: who, the day, the time and the place."""
 	return [
@@ -133,8 +152,29 @@ def question() -> dict:
 	return {"name": "question", "label": _("What would you like to ask?"), "type": "textarea", "placeholder": _("Optional")}
 
 
+BIRTH_KEYS = ("full_name", "date_of_birth", "time_of_birth", "time_unknown", "place_of_birth")
+
+
+def consultation_fields(user: str) -> list[dict]:
+	"""A reading needs birth details on the customer's account. Someone who has none is asked for them right there, once, on the form they are filling in
+	(the questions of "Your birth details"); they are kept as their own profile (consultation_rules), so the booking does not keep a second copy."""
+	if profiles.has_birth_profile(user):
+		return []
+	return [{**field, "store": False} for field in you_fields()]
+
+
 def consultation_rules(values: dict, user: str) -> dict:
-	"""A reading needs birth details on the customer's account: any profile will do, their own or a family member's (has_birth_profile)."""
-	if not profiles.has_birth_profile(user):
+	"""A reading needs birth details on the customer's account: any profile will do, their own or a family member's (has_birth_profile). Someone who gave
+	theirs in this form (consultation_fields) has them kept now as their own profile; what is wrong with them comes back by field."""
+	if profiles.has_birth_profile(user):
+		return {}
+	given = {key: values.get(key) for key in BIRTH_KEYS if values.get(key) not in (None, "")}
+	if not given:
 		return {"_form": _("Please add your birth details first, then book.")}
+	saved = profiles.save_you(user, given)
+	if not saved["ok"]:
+		return dict(saved["errors"])
+	from raftor_astrohq import api  # (api imports this module)
+
+	api._refresh_onboarding(user)  # the person's own details are in: the first-time steps notice, as when they save them on their own page
 	return {}
