@@ -51,7 +51,21 @@ def list_profiles(who=None):
 	if who != "you" and not any(r.relationship == profiles.SELF for r in rows):  # the account holder always has a place in the list, to fill in
 		items.insert(0, {"id": "you", "title": frappe.utils.get_fullname(frappe.session.user), "badge": profiles.SELF, "lines": [_("Add your own date, time and place of birth.")],
 						 "actions": [{"label": _("Add your details"), "href": page_url("my", "birth-profiles/you")}]})
-	return {"items": items}
+	match = _match_card(rows) if who != "you" else None
+	return {"items": items + ([match] if match else [])}
+
+
+def _match_card(rows) -> dict | None:
+	"""Once two people are saved, one more card on the list: check how well any two of them match (the free match making report, where each is chosen from the saved people)."""
+	from raftor_servicehq import free_reports, links
+
+	if len(rows) < 2:
+		return None
+	code = frappe.db.get_value("Item", {"custom_report_kind": "match"}, "name")
+	if not code or not free_reports.on_sale(code):
+		return None
+	return {"id": "match", "title": _("Check compatibility"), "badge": _("Free"), "tone": "success", "lines": [_("Match any two of the people you have saved, by the eight kootas out of 36.")],
+			"actions": [{"label": _("Match two people"), "href": links.free_report(code)}]}
 
 
 @frappe.whitelist(methods=["POST"])

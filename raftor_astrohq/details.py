@@ -134,7 +134,11 @@ def kundli_rules(values: dict, user: str) -> dict:
 
 
 def match_rules(values: dict, user: str) -> dict:
-	return {**person_rules(values, "boy_"), **person_rules(values, "girl_")}
+	errors = {**person_rules(values, "boy_"), **person_rules(values, "girl_")}
+	one, other = (person_keys(prefix) for prefix in ("boy_", "girl_"))
+	if not errors and all(str(values.get(one[k]) or "").strip().lower() == str(values.get(other[k]) or "").strip().lower() for k in ("name", "date", "time")):
+		errors[other["name"]] = _("Choose two different people: these are the same person.")
+	return errors
 
 
 def topics() -> list[str]:

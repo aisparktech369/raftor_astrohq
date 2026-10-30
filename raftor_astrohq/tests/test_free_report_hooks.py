@@ -3,6 +3,8 @@ for in a few words, the name of a new account, and the person's own profile fill
 
 Run with: bench --site astrohq.local run-tests --app raftor_astrohq --module raftor_astrohq.tests.test_free_report_hooks
 """
+from unittest.mock import patch
+
 import frappe
 
 from raftor_astrohq import details, profiles, reports, vocabulary
@@ -113,7 +115,7 @@ class TestWhatTheVocabularySays(AstroTestCase):
 		kundli, match = listed["kundli"]["free"], listed["match"]["free"]
 		self.assertEqual([f["name"] for f in kundli["fields"]], ["whose"])
 		self.assertTrue(kundli["keep_line"])
-		self.assertNotIn("keep", match)  # a match is between two people: nothing of it is kept as a profile on its own
+		self.assertEqual((match["keep"], match["picker"]), ("raftor_astrohq.reports.keep_match_profiles", "raftor_astrohq.reports.match_picker"))  # both people of a match are kept, and chosen from the saved ones
 		self.assertNotIn("fields", match)
 
 	def test_every_function_the_vocabulary_names_exists(self):
@@ -122,3 +124,52 @@ class TestWhatTheVocabularySays(AstroTestCase):
 				if key in ("fields", "keep_line"):
 					continue
 				self.assertTrue(callable(frappe.get_attr(path)), f"{name}: {key} -> {path}")
+
+
+class TestChoosingSavedPeople(AstroTestCase):
+	"""A signed-in person chooses among the people they saved (or writes someone new), for one person's report and for each side of a match."""
+
+	def user(self):
+		user = make_user(roles=[{"role": "Customer"}])
+		doc = frappe.get_doc("User", user.name)
+		doc.append(TABLE, {**GOOD})
+		doc.append(TABLE, {"relationship": "Spouse", "full_name": "Ravi Rao", "date_of_birth": "1988-03-02", "time_of_birth": "07:10", "time_unknown": 0, "place_of_birth": "Jaipur, India", "permission_given": 1})
+		doc.append(TABLE, {"relationship": "Parent", "full_name": "No Time", "date_of_birth": "1960-01-01", "time_of_birth": "", "time_unknown": 1, "place_of_birth": "Delhi, India", "permission_given": 1})
+		doc.save(ignore_permissions=True)
+		return doc
+
+	def test_a_kundli_offers_the_saved_people_who_have_a_time_their_own_first_and_fills_what_it_chooses(self):
+		user = self.user()
+		(field,) = reports.kundli_picker(user.name)
+		labels = [o["label"] for o in field["options"]]
+		self.assertEqual(labels, ["Asha Rao · You", "Ravi Rao · My husband or wife"])  # the person with no time of birth cannot be reported on
+		self.assertEqual(field["default"], field["options"][0]["value"])
+		self.assertEqual(field["options"][1]["fills"], {"report_name": "Ravi Rao", "birth_date": "1988-03-02", "birth_time": "07:10", "birth_place": "Jaipur, India", "whose": "Spouse"})
+		self.assertEqual(field["controls"], ["whose", "report_name", "birth_date", "birth_time", "birth_place"])
+
+	def test_a_match_offers_the_same_people_for_each_side_and_fills_with_that_sides_names(self):
+		user = self.user()
+		boy, girl = reports.match_picker(user.name)
+		self.assertEqual((boy["name"], girl["name"]), ("boy_profile", "girl_profile"))
+		self.assertEqual([o["label"] for o in boy["options"]], [o["label"] for o in girl["options"]])
+		self.assertEqual(set(girl["options"][0]["fills"]), {"girl_name", "girl_birth_date", "girl_birth_time", "girl_birth_place"})
+
+	def test_someone_with_nobody_saved_is_offered_no_choice(self):
+		user = make_user(roles=[{"role": "Customer"}])
+		self.assertEqual((reports.kundli_picker(user.name), reports.match_picker(user.name)), ([], []))
+
+	def test_a_match_keeps_its_two_people_once_and_never_twice(self):
+		user = self.user()
+		details = {"boy_name": "Ravi Rao", "boy_birth_date": "1988-03-02", "boy_birth_time": "07:10", "boy_birth_place": "Jaipur, India",
+				   "girl_name": "New Friend", "girl_birth_date": "1992-06-01", "girl_birth_time": "09:00", "girl_birth_place": "Pune, India"}
+		reports.keep_match_profiles(user.name, details)
+		reports.keep_match_profiles(user.name, details)
+		names = sorted(row["full_name"] for row in rows_of(user.name))
+		self.assertEqual(names, ["Asha Rao", "New Friend", "No Time", "Ravi Rao"])
+		self.assertEqual(next(r for r in rows_of(user.name) if r["full_name"] == "New Friend")["relationship"], "Other")
+
+	def test_a_match_of_a_person_with_themselves_is_refused(self):
+		person = {"name": "Asha Rao", "birth_date": "1990-08-14", "birth_time": "06:42", "birth_place": "Pune, Maharashtra"}
+		values = {f"{side}_{k}": v for side in ("boy", "girl") for k, v in person.items()}
+		with patch.object(details.places, "problem", return_value=None):
+			self.assertIn("girl_name", details.match_rules(values, "x@example.com"))

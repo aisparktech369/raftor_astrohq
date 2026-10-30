@@ -74,6 +74,65 @@ def match_summary(details: dict) -> str:
 	return _("{0} and {1}").format(*names) if all(names) else ""
 
 
+def _usable_profiles(user: str) -> list:
+	"""The person's saved birth profiles a report can be made from: complete, and with the time of birth known (the report needs it)."""
+	rows = frappe.get_doc("User", user).get(profiles.TABLE) or []
+	return [row for row in rows if not row.time_unknown and row.time_of_birth and not profiles.row_errors(profiles.row_values(row))]
+
+
+def _picker_option(row, keys: dict[str, str], extra: dict | None = None) -> dict:
+	"""One saved person as a choice: their name and how they are related to the person, and what choosing them fills in (a report's own names for the details)."""
+	words = {o["value"]: o["label"] for o in detail_rules.whose()["options"]}
+	relation = words.get(row.relationship, row.relationship)
+	return {"value": row.name, "label": f"{row.full_name} · {relation}" if row.relationship != profiles.SELF else f"{row.full_name} · {_('You')}",
+			"fills": {keys["name"]: row.full_name, keys["date"]: str(row.date_of_birth), keys["time"]: row.time_of_birth, keys["place"]: row.place_of_birth, **(extra or {})}}
+
+
+def kundli_picker(user: str) -> list[dict]:
+	"""For a report about one person: a choice among the people the customer has saved, filled in when chosen (their own first), or "someone new" to write the details. Nothing when none is saved."""
+	rows = _usable_profiles(user)
+	if not rows:
+		return []
+	keys = detail_rules.person_keys()
+	you = next((row for row in rows if row.relationship == profiles.SELF), None)
+	return [{"name": "profile", "label": _("Who is it for?"), "type": "select", "placeholder": _("Someone new"), "default": you.name if you else "",
+			 "options": [_picker_option(row, keys, {"whose": row.relationship}) for row in rows], "controls": ["whose", *keys.values()],
+			 "hint": _("Choose someone you have saved, or someone new. Only people whose time of birth is known are listed.")}]
+
+
+def match_picker(user: str) -> list[dict]:
+	"""For a match between two people: each is chosen from the people the customer has saved (any two of them), or written as someone new."""
+	rows = _usable_profiles(user)
+	if not rows:
+		return []
+	out = []
+	for prefix, label in (("boy_", _("The boy")), ("girl_", _("The girl"))):
+		keys = detail_rules.person_keys(prefix)
+		out.append({"name": prefix + "profile", "label": label, "type": "select", "placeholder": _("Someone new"), "default": "", "options": [_picker_option(row, keys) for row in rows],
+					"controls": list(keys.values())})
+	return out
+
+
+def keep_match_profiles(user: str, details: dict) -> None:
+	"""The two people of a free match are kept as birth profiles, so that they are not typed again and can be matched with anyone else saved (a family member's, with the person's
+	confirmation that they may: their asking is it). Someone already saved (the same name and day) is not kept twice."""
+	account = frappe.get_doc("User", user)
+	saved = {(str(row.full_name).strip().lower(), str(row.date_of_birth)) for row in account.get(profiles.TABLE) or []}
+	changed = False
+	for prefix in ("boy_", "girl_"):
+		k = detail_rules.person_keys(prefix)
+		name, born = str(details.get(k["name"]) or "").strip(), str(details.get(k["date"]) or "")
+		if not name or not born or (name.lower(), born) in saved:
+			continue
+		account.append(profiles.TABLE, {"relationship": "Other", "full_name": name, "date_of_birth": born, "time_of_birth": details.get(k["time"]) or "", "time_unknown": 0,
+										"place_of_birth": details.get(k["place"]) or "", "permission_given": 1})
+		saved.add((name.lower(), born))
+		changed = True
+	if changed:
+		account.flags.ignore_permissions = True
+		account.save()
+
+
 def kundli_prefill(user: str) -> dict:
 	"""A signed-in person's own profile as the answers of the kundli form (their time of birth must be known: the report needs it)."""
 	row = profiles.you_row(frappe.get_doc("User", user))

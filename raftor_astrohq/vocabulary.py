@@ -17,7 +17,7 @@ def pack_services() -> list[dict]:
 
 def person_free() -> dict:
 	"""What the free way does for a report about one person (servicehq free_reports.py): asks whose it is, keeps the details as a birth profile, says whose it is, names a new account and fills the form from the person's own profile."""
-	return {"fields": [whose()], "keep": "raftor_astrohq.reports.keep_birth_profile", "summary": "raftor_astrohq.reports.kundli_summary", "prefill": "raftor_astrohq.reports.kundli_prefill", "account_name": "raftor_astrohq.reports.kundli_account_name",
+	return {"fields": [whose()], "keep": "raftor_astrohq.reports.keep_birth_profile", "summary": "raftor_astrohq.reports.kundli_summary", "prefill": "raftor_astrohq.reports.kundli_prefill", "picker": "raftor_astrohq.reports.kundli_picker", "account_name": "raftor_astrohq.reports.kundli_account_name",
 			"keep_line": _("We keep these details in your birth profile so you do not have to write them again. If this is for someone else, you confirm that you may.")}
 
 
@@ -93,7 +93,7 @@ def vocabulary() -> dict:
 					  "description": _("The Ashtakoota (Guna Milan) score for a boy and a girl, koota by koota, out of 36, with the Moon sign and nakshatra of each and their manglik check.\n\n"
 									   "Made from the details you give for both. It is free: you can read it as a PDF as soon as it is made."),
 					  "details": {"fields": match_fields(), "validate": "raftor_astrohq.details.match_rules"}, "maker": "raftor_astrohq.reports.match_report",
-					  "free": {"summary": "raftor_astrohq.reports.match_summary"}},  # a match is between two people: nothing is kept as a birth profile on its own
+					  "free": {"summary": "raftor_astrohq.reports.match_summary", "picker": "raftor_astrohq.reports.match_picker", "keep": "raftor_astrohq.reports.keep_match_profiles"}},  # each of the two is chosen from the saved people or written new, and kept for next time
 			**arranged_reports(),
 		},
 		"kinds": {
