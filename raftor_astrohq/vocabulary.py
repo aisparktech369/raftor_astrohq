@@ -5,7 +5,7 @@ from pathlib import Path
 
 from frappe import _
 
-from raftor_astrohq.details import birth_details, kundli_fields, match_fields, question, sankalp, whose, wish
+from raftor_astrohq.details import birth_details, kundli_fields, match_fields, question, sankalp, visit_fields, whose, wish
 
 PACK = Path(__file__).parent / "pack"
 
@@ -101,6 +101,7 @@ def vocabulary() -> dict:
 			"Subscription": {"service": "daily pooja", "services": "daily poojas", "unit": "day", "units": "days", "book": "Subscribe", "details": {"fields": [*sankalp(), wish()]}},
 			"Event": {"event_card": "Event Row", "listing_group": "Blessings", "kind_icons": {"Home services": "home", "Kamna purti": "heart", "Samasya samadhan": "shield"}, "at_customer": "At your home", "kind_label": "Kind of blessing", "topic_label": "What for", "line_title": "Book blessings", "line_subtitle": "Havans and poojas for what you wish for. Choose one and book your place.", "service": "havan", "services": "havans", "unit": "seat", "units": "seats", "book": "Register", "dated_name": "{0} Samuhik Pooja Blessings", "details": {"fields": sankalp(), "per_person": True}},
 			"Report": {"details": {"fields": birth_details()}},  # not a service kind: what a report made from someone's birth asks (servicehq digital.py)
+			"At the customer's place": {"details": {"fields": [*visit_fields(), *sankalp(), wish()]}},  # a pooja done at the home (servicehq personalised.AT_CUSTOMER)
 			"Timed service": {"service": "pooja", "services": "poojas", "unit": "pooja", "units": "poojas", "book": "Book a pooja", "dated_name": "{0} Personalised Pooja Blessings", "details": {"fields": [*sankalp(), wish()]}},
 		},
 	}

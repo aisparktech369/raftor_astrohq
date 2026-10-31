@@ -15,6 +15,16 @@ def sankalp() -> list[dict]:
 	]
 
 
+VISIT_TIMES = ("7:00 AM", "9:00 AM", "11:00 AM", "2:00 PM", "4:00 PM", "6:00 PM")  # the times a pandit can come, until each pandit's own free times are kept
+
+
+def visit_fields() -> list[dict]:
+	"""Where, on which day and at what time, for a pooja done at the customer's place. The names are servicehq's contract ("visit_date" is the day)."""
+	return [{"name": "address", "label": _("Where should the pandit come?"), "type": "textarea", "required": True, "placeholder": _("Flat, street, city, PIN")},
+			{"name": "visit_date", "label": _("Day"), "type": "date", "required": True},
+			{"name": "visit_time", "label": _("Time"), "type": "select", "required": True, "options": [{"value": t, "label": t} for t in VISIT_TIMES]}]
+
+
 def wish() -> dict:
 	return {"name": "wish", "label": _("Your wish or purpose"), "type": "textarea", "placeholder": _("Optional")}
 
