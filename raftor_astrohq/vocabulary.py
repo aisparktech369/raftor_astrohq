@@ -56,13 +56,13 @@ def vocabulary() -> dict:
 		"event_labels": "raftor_astrohq.event_filters.wish_labels",
 		"personas": {
 			# the order the page shows them in: leaders open with the astrologer, then the specialities by how much they are asked for (KP, numerology, tarot), then the pandit, vastu and palmistry
-			"Astrologer": {"word": "astrologer", "plural": "astrologers"},
-			"KP astrologer": {"word": "KP astrologer", "plural": "KP astrologers"},
-			"Numerologist": {"word": "numerologist", "plural": "numerologists"},
-			"Tarot reader": {"word": "tarot reader", "plural": "tarot readers"},
-			"Pandit ji": {"word": "pandit ji", "plural": "pandit ji"},
-			"Vastu expert": {"word": "vastu expert", "plural": "vastu experts"},
-			"Palmist": {"word": "palmist", "plural": "palmists"},
+			"Astrologer": {"icon": "star", "word": "astrologer", "plural": "astrologers"},
+			"KP astrologer": {"icon": "hash", "word": "KP astrologer", "plural": "KP astrologers"},
+			"Numerologist": {"icon": "chart", "word": "numerologist", "plural": "numerologists"},
+			"Tarot reader": {"icon": "cards", "word": "tarot reader", "plural": "tarot readers"},
+			"Pandit ji": {"icon": "flame", "word": "pandit ji", "plural": "pandit ji"},
+			"Vastu expert": {"icon": "home", "word": "vastu expert", "plural": "vastu experts"},
+			"Palmist": {"icon": "hand", "word": "palmist", "plural": "palmists"},
 		},
 		# The standard services providers enrol in. Fixed work has set minutes; readings let the provider choose theirs.
 		"services": [
