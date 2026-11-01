@@ -55,6 +55,9 @@ def save_personas(values=None):
 	doc.set("personas", [{"persona": p, "approved": int(p in approved)} for p in wanted])
 	doc.save(ignore_permissions=True)
 	_refresh_onboarding()
+	waiting = [p for p in wanted if p not in approved]
+	if waiting and approved:  # a live astrologer added a kind: it shows once the business team approves it
+		return {"ok": True, "message": _("Saved. {0} will show once our team approves it.").format(", ".join(waiting))}
 	return {"ok": True}
 
 
