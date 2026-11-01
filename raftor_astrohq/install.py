@@ -7,6 +7,10 @@ from raftor_astrohq.profiles import ensure_fields
 
 def after_install():
 	ensure_fields()
+	from raftor_astrohq import products
+
+	products.ensure_fields()
+	products.sync_planets()
 	register_journey()
 	register_provider_steps()
 	sync_portal_menu()
