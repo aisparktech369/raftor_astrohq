@@ -72,7 +72,8 @@ def chart_page() -> dict:
 
 def panchang_page() -> dict:
 	"""The Panchang page (panchang.py), public: the panchang and the chaugharia of any day and town, and the next seven days. The address takes ?date=2026-10-24&place=<the town's id>."""
-	return {"route": "panchang", "title": _("Panchang"), "login_required": False, "sections": [
+	return {"route": "panchang", "title": _("Panchang"), "meta_title": _("Today's Panchang | AstroHQ"),
+		"meta_description": _("Today's tithi, nakshatra, yoga, karana and Rahu Kaal for your town, with sunrise and sunset."), "login_required": False, "sections": [
 		{"key": "day", "title": _("Panchang"), "subtitle": _("Today's tithi, nakshatra, Rahu Kaal and chaugharia, for any day and any town."),
 		 "source": {"method": "raftor_astrohq.panchang.page", "card": "Report View", "url_args": "date,place", "empty": _("The panchang is not available yet.")}, "look": TIGHT}]}
 
@@ -81,10 +82,10 @@ def definitions() -> list[dict]:
 	profile_list = _my("birth-profiles")
 	you = {"relationship": profiles.SELF}
 	return [
-		_form("onboarding/birth-details", _("Your birth details"), _("Step 1 of 2. We use this to calculate your chart. You can add family members afterwards."), {
+		_form("onboarding/birth-details", _("Your birth details"), _("We use this to calculate your chart. You can add family members afterwards."), {
 			"load": API + "get_profile", "save": API + "save_profile", "static_args": you, "fields": _you_fields(), "submit_label": _("Save and continue"),
 			"success_redirect": _start("birth-details/done")}, note=_("Your details are private and used only for your chart.")),
-		_list("onboarding/birth-details/done", _("You're all set"), _("Step 2 of 2. Your birth details are saved."), {
+		_list("onboarding/birth-details/done", _("You're all set"), _("Your birth details are saved."), {
 			"method": API + "list_profiles", "args": {"who": "you"}, "links": [
 				{"label": _("Add a family member"), "href": _my("birth-profiles/new"), "kind": "outline", "where": "bottom"},
 				{"label": _("Continue"), "href": "/", "kind": "primary", "where": "bottom"}]}),
