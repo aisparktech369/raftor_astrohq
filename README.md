@@ -19,3 +19,19 @@ servicehq owns the general **Provider** and its journey ("ServiceHQ Provider"). 
 - pages `/onboarding/astrologer-details`, `/onboarding/astrologer-credentials` (page definitions, `page_definitions.py`), endpoints in `astrologer_api.py`, rules in `astrologer.py`
 - verification is done by staff (Verify button on the Onboarding Application in Desk). Credentials file upload comes later with a page-kit upload block.
 # raftor_astrohq
+
+
+## Installation (on another bench)
+
+Frappe / ERPNext **version-15** only.
+
+Install these on the bench first, in this order: `raftor_onboardinghq`, `raftor_servicehq`.
+
+```bash
+bench get-app https://github.com/AI-Spark-tech/raftor_astrohq.git --branch main
+bench --site <site> install-app raftor_astrohq
+bench --site <site> migrate
+bench build --app raftor_astrohq
+```
+
+Nothing is pre-filled: keys, accounts and settings are entered by the site owner after install. No secrets are in this repo.
