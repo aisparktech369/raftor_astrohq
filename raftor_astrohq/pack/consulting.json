@@ -1,0 +1,326 @@
+[
+ {
+  "name": "Love consulting 10 min",
+  "topic": "Love",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about love and relationships."
+ },
+ {
+  "name": "Love consulting 20 min",
+  "topic": "Love",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about love and relationships."
+ },
+ {
+  "name": "Love consulting 30 min",
+  "topic": "Love",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about love and relationships."
+ },
+ {
+  "name": "Marriage consulting 10 min",
+  "topic": "Marriage",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about marriage and finding a match."
+ },
+ {
+  "name": "Marriage consulting 20 min",
+  "topic": "Marriage",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about marriage and finding a match."
+ },
+ {
+  "name": "Marriage consulting 30 min",
+  "topic": "Marriage",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about marriage and finding a match."
+ },
+ {
+  "name": "Career consulting 10 min",
+  "topic": "Career",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about work, a job change or a new start."
+ },
+ {
+  "name": "Career consulting 20 min",
+  "topic": "Career",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about work, a job change or a new start."
+ },
+ {
+  "name": "Career consulting 30 min",
+  "topic": "Career",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about work, a job change or a new start."
+ },
+ {
+  "name": "Wealth consulting 10 min",
+  "topic": "Wealth",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about money, savings and prosperity."
+ },
+ {
+  "name": "Wealth consulting 20 min",
+  "topic": "Wealth",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about money, savings and prosperity."
+ },
+ {
+  "name": "Wealth consulting 30 min",
+  "topic": "Wealth",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about money, savings and prosperity."
+ },
+ {
+  "name": "Business consulting 10 min",
+  "topic": "Business",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about a business, a partnership or a new venture."
+ },
+ {
+  "name": "Business consulting 20 min",
+  "topic": "Business",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about a business, a partnership or a new venture."
+ },
+ {
+  "name": "Business consulting 30 min",
+  "topic": "Business",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about a business, a partnership or a new venture."
+ },
+ {
+  "name": "Health consulting 10 min",
+  "topic": "Health",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about health and well-being."
+ },
+ {
+  "name": "Health consulting 20 min",
+  "topic": "Health",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about health and well-being."
+ },
+ {
+  "name": "Health consulting 30 min",
+  "topic": "Health",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about health and well-being."
+ },
+ {
+  "name": "Children consulting 10 min",
+  "topic": "Children",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about children, planning a family and their future."
+ },
+ {
+  "name": "Children consulting 20 min",
+  "topic": "Children",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about children, planning a family and their future."
+ },
+ {
+  "name": "Children consulting 30 min",
+  "topic": "Children",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about children, planning a family and their future."
+ },
+ {
+  "name": "Education consulting 10 min",
+  "topic": "Education",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about studies, exams and choosing a course."
+ },
+ {
+  "name": "Education consulting 20 min",
+  "topic": "Education",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about studies, exams and choosing a course."
+ },
+ {
+  "name": "Education consulting 30 min",
+  "topic": "Education",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about studies, exams and choosing a course."
+ },
+ {
+  "name": "Family consulting 10 min",
+  "topic": "Family",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about family, parents and home."
+ },
+ {
+  "name": "Family consulting 20 min",
+  "topic": "Family",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about family, parents and home."
+ },
+ {
+  "name": "Family consulting 30 min",
+  "topic": "Family",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about family, parents and home."
+ },
+ {
+  "name": "Property consulting 10 min",
+  "topic": "Property",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about buying, selling or building a home or land."
+ },
+ {
+  "name": "Property consulting 20 min",
+  "topic": "Property",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about buying, selling or building a home or land."
+ },
+ {
+  "name": "Property consulting 30 min",
+  "topic": "Property",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about buying, selling or building a home or land."
+ },
+ {
+  "name": "Foreign travel consulting 10 min",
+  "topic": "Foreign travel",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about travel, study or settling abroad."
+ },
+ {
+  "name": "Foreign travel consulting 20 min",
+  "topic": "Foreign travel",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about travel, study or settling abroad."
+ },
+ {
+  "name": "Foreign travel consulting 30 min",
+  "topic": "Foreign travel",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about travel, study or settling abroad."
+ },
+ {
+  "name": "Auspicious date consulting 10 min",
+  "topic": "Auspicious date",
+  "kind": "Consultation",
+  "minutes": 10,
+  "price": 251,
+  "default_discount": 50,
+  "description": "A 10-minute one-to-one session about choosing an auspicious date for an event."
+ },
+ {
+  "name": "Auspicious date consulting 20 min",
+  "topic": "Auspicious date",
+  "kind": "Consultation",
+  "minutes": 20,
+  "price": 501,
+  "default_discount": 50,
+  "description": "A 20-minute one-to-one session about choosing an auspicious date for an event."
+ },
+ {
+  "name": "Auspicious date consulting 30 min",
+  "topic": "Auspicious date",
+  "kind": "Consultation",
+  "minutes": 30,
+  "price": 1100,
+  "default_discount": 50,
+  "description": "A 30-minute one-to-one session about choosing an auspicious date for an event."
+ }
+]

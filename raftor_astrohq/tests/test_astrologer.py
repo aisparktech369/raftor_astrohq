@@ -258,7 +258,7 @@ class TestCardFilters(AstrologerTestCase):
 		api.save_details(GOOD)
 		topic = self.facets()["topic"]
 		self.assertEqual((topic["heading"], topic["carry"], topic["display"]), ("What is troubling you?", True, "chips"))
-		self.assertEqual([o["value"] for o in topic["options"]], ["Career", "Marriage", "Love", "Money", "Health", "Children", "Auspicious date"])  # the topics staff keep in Desk, as seeded
+		self.assertEqual([o["value"] for o in topic["options"]], __import__("raftor_astrohq.install", fromlist=["x"]).starting_topics())  # the topics staff keep in Desk, as seeded
 		self.assertEqual(astrologer.card_filters([self.provider.name], {"topic": "Career"})["names"], [self.provider.name])
 
 	def test_servicehq_gets_them_through_the_vocabulary(self):
@@ -301,7 +301,7 @@ class TestTopicsAndWishesAreData(AstrologerTestCase):
 			frappe.db.delete(doctype)
 		install.seed_topics_and_wishes()
 		counts = lambda: (frappe.db.count("Guidance Topic"), frappe.db.count("Blessing Wish"))  # noqa: E731
-		self.assertEqual(counts(), (len(install.TOPICS), len(install.WISHES)))  # there were none: the starting lists go in
-		frappe.db.delete("Guidance Topic", {"topic_name": install.TOPICS[0]})  # staff took one away
+		self.assertEqual(counts(), (len(install.starting_topics()), len(install.WISHES)))  # there were none: the starting lists go in
+		frappe.db.delete("Guidance Topic", {"topic_name": install.starting_topics()[0]})  # staff took one away
 		install.seed_topics_and_wishes()
-		self.assertEqual(counts(), (len(install.TOPICS) - 1, len(install.WISHES)))  # a list that exists is never put back
+		self.assertEqual(counts(), (len(install.starting_topics()) - 1, len(install.WISHES)))  # a list that exists is never put back

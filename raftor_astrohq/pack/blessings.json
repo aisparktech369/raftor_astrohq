@@ -1,0 +1,1116 @@
+[
+ {
+  "name": "Griha pravesh pooja",
+  "kind": "Timed service",
+  "persona": "Pandit ji",
+  "delivery_type": "Performed for you",
+  "minutes": 120,
+  "fulfilment": "Platform assigns",
+  "on_request": true,
+  "at_customer": true,
+  "perform_within_days": 14,
+  "shelf": [
+   "Blessings",
+   "Home services",
+   "Griha pravesh"
+  ],
+  "price": 2100,
+  "offer_price": 1100,
+  "description": "The housewarming pooja when you enter a new home. A pandit ji comes to your home, and the samagri is included. You choose the day and time."
+ },
+ {
+  "name": "Vastu shanti pooja",
+  "kind": "Timed service",
+  "persona": "Pandit ji",
+  "delivery_type": "Performed for you",
+  "minutes": 120,
+  "fulfilment": "Platform assigns",
+  "on_request": true,
+  "at_customer": true,
+  "perform_within_days": 14,
+  "shelf": [
+   "Blessings",
+   "Home services",
+   "Vastu shanti"
+  ],
+  "price": 2100,
+  "offer_price": 1100,
+  "description": "A pooja to settle the vastu of a home or a new space. A pandit ji comes to your home, and the samagri is included. You choose the day and time."
+ },
+ {
+  "name": "Satyanarayan katha",
+  "kind": "Timed service",
+  "persona": "Pandit ji",
+  "delivery_type": "Performed for you",
+  "minutes": 120,
+  "fulfilment": "Platform assigns",
+  "on_request": true,
+  "at_customer": true,
+  "perform_within_days": 14,
+  "shelf": [
+   "Blessings",
+   "Home services",
+   "Satyanarayan katha"
+  ],
+  "price": 2100,
+  "offer_price": 1100,
+  "description": "The katha of Lord Satyanarayan, read at home on an auspicious day. A pandit ji comes to your home, and the samagri is included. You choose the day and time."
+ },
+ {
+  "name": "Naamkaran sanskar",
+  "kind": "Timed service",
+  "persona": "Pandit ji",
+  "delivery_type": "Performed for you",
+  "minutes": 120,
+  "fulfilment": "Platform assigns",
+  "on_request": true,
+  "at_customer": true,
+  "perform_within_days": 14,
+  "shelf": [
+   "Blessings",
+   "Home services",
+   "Naamkaran"
+  ],
+  "price": 2100,
+  "offer_price": 1100,
+  "description": "The naming ceremony of a newborn. A pandit ji comes to your home, and the samagri is included. You choose the day and time."
+ },
+ {
+  "name": "Mundan sanskar",
+  "kind": "Timed service",
+  "persona": "Pandit ji",
+  "delivery_type": "Performed for you",
+  "minutes": 120,
+  "fulfilment": "Platform assigns",
+  "on_request": true,
+  "at_customer": true,
+  "perform_within_days": 14,
+  "shelf": [
+   "Blessings",
+   "Home services",
+   "Mundan"
+  ],
+  "price": 2100,
+  "offer_price": 1100,
+  "description": "The first hair-cutting ceremony of a child. A pandit ji comes to your home, and the samagri is included. You choose the day and time."
+ },
+ {
+  "name": "Annaprashan sanskar",
+  "kind": "Timed service",
+  "persona": "Pandit ji",
+  "delivery_type": "Performed for you",
+  "minutes": 120,
+  "fulfilment": "Platform assigns",
+  "on_request": true,
+  "at_customer": true,
+  "perform_within_days": 14,
+  "shelf": [
+   "Blessings",
+   "Home services",
+   "Annaprashan"
+  ],
+  "price": 2100,
+  "offer_price": 1100,
+  "description": "The ceremony of a baby's first solid food. A pandit ji comes to your home, and the samagri is included. You choose the day and time."
+ },
+ {
+  "name": "Vivah sanskar (wedding rites)",
+  "kind": "Timed service",
+  "persona": "Pandit ji",
+  "delivery_type": "Performed for you",
+  "minutes": 120,
+  "fulfilment": "Platform assigns",
+  "on_request": true,
+  "at_customer": true,
+  "perform_within_days": 14,
+  "shelf": [
+   "Blessings",
+   "Home services",
+   "Marriage ceremony"
+  ],
+  "price": 2100,
+  "offer_price": 1100,
+  "description": "The wedding rites, performed by a pandit ji. A pandit ji comes to your home, and the samagri is included. You choose the day and time."
+ },
+ {
+  "name": "Birthday ayushya havan",
+  "kind": "Timed service",
+  "persona": "Pandit ji",
+  "delivery_type": "Performed for you",
+  "minutes": 120,
+  "fulfilment": "Platform assigns",
+  "on_request": true,
+  "at_customer": true,
+  "perform_within_days": 14,
+  "shelf": [
+   "Blessings",
+   "Home services",
+   "Birthday"
+  ],
+  "price": 2100,
+  "offer_price": 1100,
+  "description": "A havan on your birthday, with prayers for a long and healthy life. A pandit ji comes to your home, and the samagri is included. You choose the day and time."
+ },
+ {
+  "name": "Vahan pooja",
+  "kind": "Timed service",
+  "persona": "Pandit ji",
+  "delivery_type": "Performed for you",
+  "minutes": 120,
+  "fulfilment": "Platform assigns",
+  "on_request": true,
+  "at_customer": true,
+  "perform_within_days": 14,
+  "shelf": [
+   "Blessings",
+   "Home services",
+   "Vahan pooja"
+  ],
+  "price": 2100,
+  "offer_price": 1100,
+  "description": "A pooja for a new vehicle before its first drive. A pandit ji comes to your home, and the samagri is included. You choose the day and time."
+ },
+ {
+  "name": "Dukan / office opening pooja",
+  "kind": "Timed service",
+  "persona": "Pandit ji",
+  "delivery_type": "Performed for you",
+  "minutes": 120,
+  "fulfilment": "Platform assigns",
+  "on_request": true,
+  "at_customer": true,
+  "perform_within_days": 14,
+  "shelf": [
+   "Blessings",
+   "Home services",
+   "Shop opening"
+  ],
+  "price": 2100,
+  "offer_price": 1100,
+  "description": "A pooja to open a new shop or office. A pandit ji comes to your home, and the samagri is included. You choose the day and time."
+ },
+ {
+  "name": "Radha-Krishna prem pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Kamna purti",
+   "Love"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Radha and Krishna, offered for love and a happy relationship. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Gauri-Shankar vivah kamna pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Kamna purti",
+   "Marriage"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Gauri and Shankar, offered for a wished-for marriage. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Santan Gopal pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Kamna purti",
+   "Child"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Bal Gopal, offered by those wishing for a child. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Kuber-Lakshmi pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Kamna purti",
+   "Wealth"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Lakshmi and Kuber, offered for prosperity. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Mahamrityunjaya jaap",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Kamna purti",
+   "Health"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "The Mahamrityunjaya mantra chanted for good health and recovery. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Saraswati vidya pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Kamna purti",
+   "Education"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Saraswati, offered for learning and studies. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Ganesh karya-siddhi pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Kamna purti",
+   "Career"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Ganesh, offered for success in work and new beginnings. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Rudrabhishek",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Kamna purti",
+   "Peace"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "The abhishek of Lord Shiva with the Rudri path, offered for peace of mind. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Hanuman Chalisa path",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Kamna purti",
+   "Protection"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "The Hanuman Chalisa recited, offered for strength and protection. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Baglamukhi shatru-vijay pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Samasya samadhan",
+   "Court case"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Maa Baglamukhi, offered by those facing a court case. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Vyapar vriddhi havan",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Samasya samadhan",
+   "Business loss"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A havan offered by those whose business has suffered a loss. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Rin-harta Ganesh pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Samasya samadhan",
+   "Debt"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Ganesh as the remover of debt, offered by those in debt. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Hanuman nazar-dosh path",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Samasya samadhan",
+   "Evil eye"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "The Hanuman path recited for those who feel troubled by the evil eye. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Karya-badha nivaran pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Samasya samadhan",
+   "Job and promotion obstacles"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja offered by those whose job or promotion keeps getting blocked. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Kalah nivaran pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Samasya samadhan",
+   "Family dispute"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja offered for peace in a family after a dispute. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Bhumi vivad nivaran pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Samasya samadhan",
+   "Property dispute"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja offered by those in a dispute over land or property. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Shatru shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Samasya samadhan",
+   "Enemy trouble"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja offered by those troubled by enemies or opponents. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Dhan-vapasi Ganesh pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Samasya samadhan",
+   "Money stuck or not returned"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Ganesh, offered by those whose money is stuck or not returned. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Navagraha shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Planets"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to all nine planets together. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Surya graha shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Planets"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to the Sun (Surya), offered when the Sun is weak or troubled in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Chandra graha shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Planets"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to the Moon (Chandra), offered when the Moon is weak or troubled in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Mangal graha shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Planets"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Mars (Mangal), offered when Mars is weak or troubled in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Budh graha shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Planets"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Mercury (Budh), offered when Mercury is weak or troubled in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Guru graha shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Planets"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Jupiter (Guru), offered when Jupiter is weak or troubled in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Shukra graha shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Planets"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Venus (Shukra), offered when Venus is weak or troubled in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Shani graha shanti havan",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Planets"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A havan to Saturn (Shani), offered when Saturn is weak or troubled in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Rahu graha shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Planets"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Rahu, offered when Rahu is troubling the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Ketu graha shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Planets"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Ketu, offered when Ketu is troubling the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Mangal dosh nivaran",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for Mangal dosh (Manglik) in the birth chart, usually done before marriage. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Kaal Sarp dosh nivaran",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for Kaal Sarp dosh, when all the planets lie between Rahu and Ketu in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Pitra dosh nivaran",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for the ancestors, offered for Pitra dosh in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Narayan nagbali pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A detailed rite for the ancestors, performed by a pandit ji. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Sade sati shanti pooja",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja to Shani, offered during Sade sati, the seven-and-a-half year period of Saturn. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Guru chandal dosh nivaran",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for Guru chandal dosh, when Jupiter is joined with Rahu in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Grahan dosh shanti",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for Grahan dosh, when the Sun or the Moon is joined with Rahu or Ketu in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Angarak dosh nivaran",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for Angarak dosh, when Mars is joined with Rahu in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Shrapit dosh nivaran",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for Shrapit dosh, when Saturn is joined with Rahu in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Gand mool shanti",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for a child born in a Gand mool nakshatra. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Nadi dosh nivaran",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for Nadi dosh, found when two charts are matched for marriage. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Vish yoga shanti",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for Vish yoga, when Saturn and the Moon are joined in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Kemadruma yoga shanti",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "A pooja for Kemadruma yoga, when the Moon has no planet with it or beside it in the chart. Done for you by a pandit ji on the date shown."
+ },
+ {
+  "name": "Kumbh vivah",
+  "dated": true,
+  "persona": "Pandit ji",
+  "minutes": 90,
+  "shelf": [
+   "Blessings",
+   "Graha shanti",
+   "Doshas and yogas"
+  ],
+  "prices": {
+   "Shared": {
+    "price": 501,
+    "offer": 101
+   },
+   "Personalised": {
+    "price": 2100,
+    "offer": 1100
+   }
+  },
+  "description": "The symbolic marriage to a pot (Kumbh), done before marriage for Mangal dosh. Done for you by a pandit ji on the date shown."
+ }
+]

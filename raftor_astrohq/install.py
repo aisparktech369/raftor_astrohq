@@ -17,14 +17,20 @@ def after_install():
 	seed_topics_and_wishes()
 
 
-TOPICS = ["Career", "Marriage", "Love", "Money", "Health", "Children", "Auspicious date"]
 WISHES = ["Prosperity", "Health", "Family", "Protection", "Peace", "Success"]
+
+
+def starting_topics() -> list[str]:
+	"""The topics are the ones the consulting services ship for (pack/consulting.json): one list for the guides page and for the services a guide enrols in."""
+	from raftor_astrohq import vocabulary
+
+	return list(dict.fromkeys(entry["topic"] for entry in vocabulary.pack_services() if entry.get("topic")))  # (a topic has a service for each length of session: it is listed once)
 
 
 def seed_topics_and_wishes():
 	"""The starting topics and wishes, as records staff change in Desk (Guidance Topic, Blessing Wish). Only when there are none, so a list staff have edited
 	is never put back."""
-	for doctype, field, names in (("Guidance Topic", "topic_name", TOPICS), ("Blessing Wish", "wish_name", WISHES)):
+	for doctype, field, names in (("Guidance Topic", "topic_name", starting_topics()), ("Blessing Wish", "wish_name", WISHES)):
 		if frappe.db.count(doctype):
 			continue
 		for n, name in enumerate(names, 1):

@@ -34,10 +34,10 @@ def arranged_reports() -> dict:
 		"dasha": {"kind": "Astrologer", "title": _("Dasha periods report"), "blurb": _("Every dasha system and the period you are in now."), "price": 0,
 				  "description": _("The dasha periods of your life, system by system, with the one running today marked.\n\nMade for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
 				  "details": person, "maker": maker, "layout": "dasha", "modes": ["DASHA_CALC"], "free": person_free()},
-		"kp": {"kind": "KP astrologer", "title": _("KP chart report"), "blurb": _("Your chart the Krishnamurti way: cusps, star and sub lords, significators."), "price": 0,
-			   "description": _("Your chart as a KP astrologer reads it: the ruling planets, each planet and house cusp with its sign, star, sub and sub-sub lord, the significators and the aspects.\n\n"
+		"kp": {"kind": "KP astrologer", "title": _("KP chart report"), "blurb": _("Your chart the Krishnamurti way: cusps, star and sub lords, significators, and your Vimshottari dasha periods."), "price": 0,
+			   "description": _("Your chart as a KP astrologer reads it: the ruling planets, each planet and house cusp with its sign, star, sub and sub-sub lord, the significators and the aspects. With it, your Vimshottari dasha periods, with the running one marked.\n\n"
 								"Made for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
-			   "details": person, "maker": maker, "layout": "kp", "modes": ["KP_SYSTEM"], "free": person_free()},
+			   "details": person, "maker": maker, "layout": "kp", "modes": ["KP_SYSTEM", "DASHA_CALC"], "free": person_free()},  # the Vimshottari dasha only: the layout asks for that one,
 		"panchang": {"kind": "Astrologer", "title": _("Panchang of your birth day"), "blurb": _("The tithi, nakshatra, yoga and karana you were born in, with when each begins and ends."), "price": 0,
 					 "description": _("The panchang of the day and moment you were born, with the times each part begins and ends.\n\nMade for you from the details you give. It is free: you can read it as a PDF as soon as it is made."),
 					 "details": person, "maker": maker, "layout": "panchang", "modes": ["PANCHANGA"], "free": person_free()},
@@ -102,6 +102,6 @@ def vocabulary() -> dict:
 			"Event": {"event_card": "Event Row", "meta_title": "Book blessings: pooja and havan | AstroHQ", "meta_description": "Book a pooja or havan at your home or online: Graha shanti, Kamna purti, Samasya samadhan and home services.", "listing_group": "Blessings", "kind_icons": {"Home services": "home", "Kamna purti": "heart", "Samasya samadhan": "shield", "Graha shanti": "sun"}, "at_customer": "At your home", "kind_label": "Kind of blessing", "topic_label": "What for", "line_title": "Book blessings", "line_subtitle": "Havans and poojas for what you wish for. Choose one and book your place.", "service": "havan", "services": "havans", "unit": "seat", "units": "seats", "book": "Register", "dated_name": "{0} Samuhik Pooja Blessings", "details": {"fields": sankalp(), "per_person": True}},
 			"Report": {"details": {"fields": birth_details()}},  # not a service kind: what a report made from someone's birth asks (servicehq digital.py)
 			"At the customer's place": {"details": {"fields": [*visit_fields(), *sankalp(), wish()]}},  # a pooja done at the home (servicehq personalised.AT_CUSTOMER)
-			"Timed service": {"service": "pooja", "services": "poojas", "unit": "pooja", "units": "poojas", "book": "Book a pooja", "dated_name": "{0} Personalised Pooja Blessings", "details": {"fields": [*sankalp(), wish()]}},
+			"Timed service": {"service": "pooja", "services": "poojas", "unit": "pooja", "units": "poojas", "book": "Book a pooja", "dated_name": "{0} Personal Pooja Blessings", "details": {"fields": [*sankalp(), wish()]}},
 		},
 	}
