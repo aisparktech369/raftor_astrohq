@@ -140,6 +140,14 @@ class TestTheEngineIsAskedOnce(Made):
 		self.assertIn("Dasha periods report", text)
 		self.assertIn("Vimshottari", text)
 
+	def test_the_kp_report_has_its_vimshottari_dasha_and_asks_for_no_other_dasha_system(self):
+		with mock.patch.object(reports, "shown", lambda: "all"):
+			text = pdf_text(self.make("kp")["content"])
+		self.assertEqual([opcode for opcode, _birth in self.asked], ["KP_SYSTEM", "DASHA_CALC"])
+		self.assertEqual(self.asked[1][1]["requested_dasha_systems"], ["vimshottari"])
+		for there in ("KP chart report", "Planets", "Vimshottari dasha"):
+			self.assertIn(there, text)
+
 	def test_only_numbers_are_sent_never_the_name_or_the_place(self):
 		self.make()
 		(_opcode, birth), = self.asked

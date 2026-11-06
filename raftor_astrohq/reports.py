@@ -320,7 +320,9 @@ def arranged_report(item_code: str, details: dict, buyer: str) -> dict:
 	person = _person(details)
 	place = _find(person)
 	numbers = {**_numbers(person, place), **(layout.get("ask") or {})}
-	data = answers.get(buyer, numbers, entry["modes"][0])
+	data = {}
+	for mode in entry["modes"]:  # a report can need more than one engine mode (a KP chart with its dasha): each answer is kept on its own, and read together here
+		data.update(answers.get(buyer, numbers, mode))
 	on = getdate(today())
 	html = arrange.html(data, {**layout, "title": entry.get("title") or layout.get("title")}, brand=_brand(), credit=CREDIT + " " + _("Made for you on {0}.").format(rp.long_date(on)), today=on,
 						subject=born_line(person, place), look=rp.site_look(), show=show)
