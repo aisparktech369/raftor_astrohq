@@ -60,3 +60,19 @@ class TestContent(TestCase):
 			self.assertEqual(frappe.db.get_single_value("Blog Settings", "blog_title"), "Library")
 		finally:
 			frappe.db.rollback()
+
+	def test_a_product_gets_one_tab_that_leads_to_its_live_article(self):
+		try:
+			code = "RUD001"
+			name = frappe.db.get_value("Website Item", {"item_code": code}, "name")
+			if not name:
+				self.skipTest("no RUD001 shop item on this site")
+			content.sync_blog()
+			content.link_products()
+			self.assertEqual(content.link_products(), 0)  # a second run changes nothing
+			tabs = [r for r in frappe.get_doc("Website Item", name).tabs if r.label == content.LEARN_TAB]
+			self.assertEqual(len(tabs), 1)
+			self.assertIn("/blog/", tabs[0].content)
+			self.assertEqual(frappe.db.get_value("Website Item", name, "show_tabbed_section"), 1)
+		finally:
+			frappe.db.rollback()

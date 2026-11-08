@@ -34,6 +34,7 @@ def sync_written_content():
 
 	content.name_the_blog()
 	content.sync_blog()
+	content.link_products()
 
 
 def seed_topics_and_wishes():

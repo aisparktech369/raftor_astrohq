@@ -25,6 +25,7 @@ BLOGGER = {"short_name": "astrohq-team", "full_name": "AstroHQ Team", "bio": "Wr
 CATEGORIES = {"rudraksha": "Rudraksha"}
 ACADEMY = "Academy"
 ACADEMY_INTRO = "Explained from the traditional texts, with sources."
+LEARN_TAB = "Learn about this bead"
 ACADEMY_LINK = "/blog"  # Frappe's own address for the blog; /academy redirects to it (websitehq hooks)
 META_LENGTH = 140  # the search description field holds this much; the full intro stays in blog_intro
 COVER = "/files/Detailed Brown Rudraksha Seed on Cream Background60cba8.png"  # used when an article has no product picture
@@ -80,6 +81,42 @@ def name_the_blog() -> None:
 			values["links"] = (values.get("links", "") + "\n" + line).strip()
 			card.card_values = json.dumps(values)
 			card.save(ignore_permissions=True)
+
+
+def link_products() -> int:
+	"""Each product a live article names gets a tab on its page, "Learn about this bead", that leads to the article; a product whose article is not live loses it.
+	One source: the articles' own product lists. Returns how many products were changed."""
+	wanted = {}
+	for item in load():
+		route = frappe.db.get_value("Blog Post", {"title": item["title"], "published": 1}, "route") if item["publish"] else None
+		for code in (item.get("products") or "").split(","):
+			if route and code.strip():
+				wanted.setdefault(code.strip(), (item["title"], route))
+	changed = 0
+	for code in {c.strip() for i in load() for c in (i.get("products") or "").split(",") if c.strip()}:
+		name = frappe.db.get_value("Website Item", {"item_code": code}, "name")
+		if not name:
+			continue
+		doc = frappe.get_doc("Website Item", name)
+		rows = [r for r in doc.tabs if r.label == LEARN_TAB]
+		if code in wanted:
+			title, route = wanted[code]
+			html = f'<p><a href="/{route.strip("/")}">{frappe.utils.escape_html(title)}</a></p>'
+			if rows and rows[0].content == html and doc.show_tabbed_section:
+				continue
+			if rows:
+				rows[0].content = html
+			else:
+				doc.append("tabs", {"label": LEARN_TAB, "content": html})
+			doc.show_tabbed_section = 1
+		elif rows:
+			for row in rows:
+				doc.remove(row)
+		else:
+			continue
+		doc.save(ignore_permissions=True)
+		changed += 1
+	return changed
 
 
 def sync_blog() -> int:

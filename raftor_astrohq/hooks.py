@@ -268,7 +268,10 @@ rfhq_page_definitions = ["raftor_astrohq.page_definitions.definitions"]
 
 # What a gemstone is sold as (Type: stone only, ring, pendant...), with the icon of each: data for websitehq to draw (attributes.py).
 rfhq_attribute_sets = ["raftor_astrohq.attributes.attribute_sets"]
+# The blog is named Academy (install step, content.py); its address stays /blog, which Frappe owns. /academy goes there, keeping any path after it.
+rfhq_blog_closing = ["Have a question about this?|Ask a guide|/consult"]
 website_redirects = [
+    {"source": r"/academy(.*)", "target": r"/blog\1"},
     {"source": "/birth-profiles", "target": "/my/birth-profiles"},
     {"source": "/birth-profiles/new", "target": "/my/birth-profiles/new"},
     {"source": "/birth-profiles/edit", "target": "/my/birth-profiles"},
