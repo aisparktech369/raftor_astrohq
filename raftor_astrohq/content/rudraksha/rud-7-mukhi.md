@@ -8,8 +8,7 @@ products: ''
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad associates the seven-faced bead with the Sapta Matrikas. Other modern commercial lists sometimes foreground Mahalakshmi, but that is not the association stated in this Upanishadic passage.
+Other modern commercial lists sometimes foreground Mahalakshmi, but that is not the association stated in this Upanishadic passage.
 
 ## At a glance
 

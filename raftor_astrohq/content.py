@@ -23,6 +23,7 @@ REQUIRED = ("id", "category", "title", "intro", "publish")
 BLOGGER = {"short_name": "astrohq-team", "full_name": "AstroHQ Team", "bio": "Written and checked by the AstroHQ Team, from the traditional texts."}
 CATEGORIES = {"rudraksha": "Rudraksha"}
 META_LENGTH = 140  # the search description field holds this much; the full intro stays in blog_intro
+COVER = "/files/Detailed Brown Rudraksha Seed on Cream Background60cba8.png"  # used when an article has no product picture
 
 
 def load(folder: Path = CONTENT) -> list[dict]:
@@ -72,6 +73,7 @@ def sync_blog() -> int:
 			"content_type": "Markdown",
 			"content_md": item["body"],
 			"blog_intro": item["intro"],
+				"blog_image": _cover(item),
 			"meta_description": item["intro"][:META_LENGTH],
 			"meta_title": f"{item['title']} | AstroHQ"[:60],
 			"published": 1 if item["publish"] else 0,
@@ -111,6 +113,15 @@ def _blogger():
 	if not name:
 		name = frappe.get_doc({"doctype": "Blogger", **BLOGGER}).insert(ignore_permissions=True).name
 	return name
+
+
+def _cover(item: dict) -> str:
+	"""The picture of the article's first product, else the shared one. The Academy list shows it."""
+	for code in (item.get("products") or "").split(","):
+		image = frappe.db.get_value("Website Item", {"item_code": code.strip()}, "website_image") if code.strip() else None
+		if image:
+			return image
+	return COVER
 
 
 def _category(key: str) -> str:

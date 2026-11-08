@@ -8,9 +8,6 @@ products: RUD011
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad associates the eleven-faced bead with the Eleven Rudras. The Rudras represent forms or manifestations of Rudra in Hindu tradition.
-
 ## At a glance
 
 | Topic | Detail |

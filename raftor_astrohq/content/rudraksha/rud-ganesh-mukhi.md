@@ -8,8 +8,7 @@ products: RUD020
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-Ganesh Mukhi Rudraksha is described in the market as a bead with a natural protrusion or form resembling Lord Ganesha's trunk. Its devotional association is familiar, but its classification should be kept distinct from the numbered mukhi system.
+Its devotional association is familiar, but its classification should be kept distinct from the numbered mukhi system.
 
 ## Meaning in the tradition
 

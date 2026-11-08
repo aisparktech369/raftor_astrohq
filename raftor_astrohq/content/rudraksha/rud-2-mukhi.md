@@ -8,8 +8,7 @@ products: RUD002
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad identifies the two-faced bead with Ardhanarishvara, the form expressing Shiva and Shakti together. It is often contemplated through unity, complementarity and balance.
+It is often contemplated through unity, complementarity and balance.
 
 ## At a glance
 

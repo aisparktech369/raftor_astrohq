@@ -8,8 +8,7 @@ products: RUD013
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad says the thirteen-faced bead pleases Kamadeva and refers to desired objects. Kamadeva is associated with desire and attraction in Hindu tradition. This passage should be handled carefully and not turned into a promise to attract or control another person.
+Kamadeva is associated with desire and attraction in Hindu tradition. This passage should be handled carefully and not turned into a promise to attract or control another person.
 
 ## At a glance
 

@@ -8,8 +8,7 @@ products: RUD009
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad associates the nine-faced bead with the nine Shaktis. Later devotional explanations may connect this ninefold symbolism with forms of Durga or Navadurga; these interpretations should be attributed rather than treated as identical textual wording.
+Later devotional explanations may connect this ninefold symbolism with forms of Durga or Navadurga; these interpretations should be attributed rather than treated as identical textual wording.
 
 ## At a glance
 

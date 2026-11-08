@@ -8,8 +8,7 @@ products: RUD003
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad says the three-faced bead represents the three sacred fires and that Agni is pleased by its wearer. Later explanations sometimes develop this into themes of purification, renewal and transformation.
+Later explanations sometimes develop this into themes of purification, renewal and transformation.
 
 ## At a glance
 

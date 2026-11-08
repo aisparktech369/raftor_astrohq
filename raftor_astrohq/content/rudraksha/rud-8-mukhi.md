@@ -8,8 +8,7 @@ products: RUD008
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad associates the eight-faced bead with the Ashta Matrikas, the eight Vasus and Ganga. Many current retail lists call eight mukhi Ganesha Rudraksha, but that is not the deity attribution in this Upanishadic passage.
+Many current retail lists call eight mukhi Ganesha Rudraksha, but that is not the deity attribution in this Upanishadic passage.
 
 ## At a glance
 

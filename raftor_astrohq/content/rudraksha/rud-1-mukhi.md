@@ -8,9 +8,6 @@ products: RUD001
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-
-The Upanishad says the one-faced Rudraksha represents the Supreme Reality. Its central theme is spiritual unity and the highest truth.
-
 ## At a glance
 
 | Topic | Detail |

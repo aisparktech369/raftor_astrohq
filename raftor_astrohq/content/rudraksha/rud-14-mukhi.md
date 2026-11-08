@@ -8,8 +8,7 @@ products: RUD014
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad describes the fourteen-faced bead as originating from the eyes of Rudra. Later traditions add interpretations around discernment and insight. Scriptural statements about health should be understood as religious claims, not medical evidence.
+Scriptural statements about health should be understood as religious claims, not medical evidence.
 
 ## At a glance
 

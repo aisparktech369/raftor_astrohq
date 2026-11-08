@@ -8,8 +8,7 @@ products: RUD012
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad describes the twelve-faced bead as representing Mahavishnu and the twelve Adityas. The Adityas are solar deities in Hindu cosmology; this association should not be simplified into an unsupported planetary prescription.
+The Adityas are solar deities in Hindu cosmology; this association should not be simplified into an unsupported planetary prescription.
 
 ## At a glance
 

@@ -8,8 +8,7 @@ products: RUD006
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad names Kartikeya (Subrahmanya) as the presiding deity and also records Vinayaka as an additional attribution. Kartikeya is commonly associated in wider tradition with courage, disciplined effort and focused action.
+Kartikeya is commonly associated in wider tradition with courage, disciplined effort and focused action.
 
 ## At a glance
 

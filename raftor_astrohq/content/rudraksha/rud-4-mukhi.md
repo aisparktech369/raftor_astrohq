@@ -8,9 +8,6 @@ products: RUD004
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The four-faced bead is associated with Brahma in the Upanishad. Brahma's wider symbolism is connected with creation, knowledge and sacred learning.
-
 ## At a glance
 
 | Topic | Detail |

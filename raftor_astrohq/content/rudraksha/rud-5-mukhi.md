@@ -8,8 +8,7 @@ products: RUD005
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad associates the five-faced bead with the five Brahmans, understood in Shaiva tradition as five aspects of Shiva. Five-faced beads are also widely used in prayer malas.
+Five-faced beads are also widely used in prayer malas.
 
 ## At a glance
 

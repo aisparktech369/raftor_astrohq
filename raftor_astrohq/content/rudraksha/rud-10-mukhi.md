@@ -8,9 +8,6 @@ products: RUD010
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-
-The Upanishad names Yama as the presiding deity of the ten-faced bead. Yama is associated in Hindu thought with death, moral order and accountability.
-
 ## At a glance
 
 | Topic | Detail |
