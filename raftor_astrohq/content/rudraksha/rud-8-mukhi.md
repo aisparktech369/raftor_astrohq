@@ -19,11 +19,18 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad associates the eight-faced bead with the Ashta Matrikas, the eight Vasus and Ganga. Many current retail lists call eight mukhi Ganesha Rudraksha, but that is not the deity attribution in this Upanishadic passage. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad associates the eight-faced bead with the Ashta Matrikas, the eight Vasus and Ganga. |
+| Later explanations | Many current retail lists call eight mukhi Ganesha Rudraksha, but that is not the deity attribution in this Upanishadic passage. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The cited Upanishad does not give a separate eight-mukhi beej mantra. If using a Ganesha mantra, make clear that it belongs to Ganesha worship and is not prescribed as an eight-mukhi mantra by this text.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The cited Upanishad does not give a separate eight-mukhi beej mantra. |
+| Choosing a mantra | If using a Ganesha mantra, make clear that it belongs to Ganesha worship and is not prescribed as an eight-mukhi mantra by this text. |
 
 [[product RUD008]]
 

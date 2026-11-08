@@ -19,11 +19,18 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad says the three-faced bead represents the three sacred fires and that Agni is pleased by its wearer. Later explanations sometimes develop this into themes of purification, renewal and transformation. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad says the three-faced bead represents the three sacred fires and that Agni is pleased by its wearer. |
+| Later explanations | Later explanations sometimes develop this into themes of purification, renewal and transformation. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The cited Upanishad does not give a separate three-mukhi beej mantra. Om Namah Shivaya (ॐ नमः शिवाय) may be used as a general Shaiva devotional mantra, not as a formula specific to this bead.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The cited Upanishad does not give a separate three-mukhi beej mantra. |
+| General devotional mantra | Om Namah Shivaya (ॐ नमः शिवाय) may be used as a general Shaiva devotional mantra, not as a formula specific to this bead. |
 
 [[product RUD003]]
 

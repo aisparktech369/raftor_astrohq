@@ -8,15 +8,29 @@ products: RUD020
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-Its devotional association is familiar, but its classification should be kept distinct from the numbered mukhi system.
+## At a glance
+
+| Topic | Detail |
+|---|---|
+| Name | Ganesh Mukhi, as the bead is described in the market |
+| Classification | Kept distinct from the numbered mukhi system |
+| Devotional association | Lord Ganesha |
+| Not promised | Wealth, health, or a guaranteed result |
 
 ## Meaning in the tradition
 
-Lord Ganesha is widely revered at the beginning of undertakings and associated with wisdom and the removal of obstacles. A bead described as Ganesh Mukhi draws on that devotional symbolism.
+| Point | Detail |
+|---|---|
+| In devotion | Lord Ganesha is widely revered at the beginning of undertakings and associated with wisdom and the removal of obstacles. |
+| Ganesh Mukhi | A bead described as Ganesh Mukhi draws on that devotional symbolism. |
 
 ## Mantra
 
-*Om Gam Ganapataye Namah* (ॐ गं गणपतये नमः) is a widely used Ganesha devotional mantra, commonly understood as an invocation or salutation to Lord Ganapati. It is a Ganesha mantra, not a mantra prescribed for a Ganesh Mukhi bead by the *Rudrakshajabala Upanishad*. Traditions may differ in pronunciation, ritual use and initiation requirements.
+| Point | Detail |
+|---|---|
+| Mantra in use | *Om Gam Ganapataye Namah* (ॐ गं गणपतये नमः) is a widely used Ganesha devotional mantra, commonly understood as an invocation or salutation to Lord Ganapati. |
+| In the text | It is a Ganesha mantra, not a mantra prescribed for a Ganesh Mukhi bead by the *Rudrakshajabala Upanishad*. |
+| Choosing a mantra | Traditions may differ in pronunciation, ritual use and initiation requirements. |
 
 [[product RUD020]]
 

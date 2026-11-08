@@ -23,6 +23,16 @@ class TestContent(TestCase):
 			for section in content.SHARED_SECTIONS:
 				self.assertNotIn(section, item["body"], item["file"])
 
+	def test_every_article_is_tabular(self):
+		"""Agreed with the owner: facts are tables across the series (at a glance, meaning, mantra), questions are the site's accordion."""
+		for item in content.load():
+			if item["id"] == "rud-beginners-guide":
+				self.assertGreaterEqual(item["body"].count("|---|"), 4, item["file"])
+				continue
+			self.assertIn("| Topic | Detail |", item["body"], item["file"])
+			self.assertEqual(item["body"].count("| Point | Detail |"), 2, item["file"])  # meaning, mantra
+			self.assertIn("<details><summary>", item["body"], item["file"])
+
 	def test_duplicate_id_is_refused(self):
 		with tempfile.TemporaryDirectory() as folder:
 			for name in ("a.md", "b.md"):

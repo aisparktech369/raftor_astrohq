@@ -18,11 +18,17 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad says the one-faced Rudraksha represents the Supreme Reality. Its central theme is spiritual unity and the highest truth. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad says the one-faced Rudraksha represents the Supreme Reality. Its central theme is spiritual unity and the highest truth. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The text does not assign a separate beej mantra to this mukhi. For Shaiva devotion, Om Namah Shivaya (ॐ नमः शिवाय) is widely used; it means “I bow to Shiva.” It is a general devotional mantra, not a one-mukhi-specific mantra.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The text does not assign a separate beej mantra to this mukhi. |
+| General devotional mantra | For Shaiva devotion, Om Namah Shivaya (ॐ नमः शिवाय) is widely used; it means “I bow to Shiva.” It is a general devotional mantra, not a one-mukhi-specific mantra. |
 
 [[product RUD001]]
 

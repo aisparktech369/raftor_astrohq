@@ -19,11 +19,19 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad describes the fourteen-faced bead as originating from the eyes of Rudra. Later traditions add interpretations around discernment and insight. Scriptural statements about health should be understood as religious claims, not medical evidence. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad describes the fourteen-faced bead as originating from the eyes of Rudra. |
+| Later explanations | Later traditions add interpretations around discernment and insight. |
+| Caution | Scriptural statements about health should be understood as religious claims, not medical evidence. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The cited Upanishad does not prescribe a separate fourteen-mukhi beej mantra. Om Namah Shivaya is a general Shaiva mantra, not a uniquely prescribed fourteen-mukhi formula.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The cited Upanishad does not prescribe a separate fourteen-mukhi beej mantra. |
+| General devotional mantra | Om Namah Shivaya is a general Shaiva mantra, not a uniquely prescribed fourteen-mukhi formula. |
 
 [[product RUD014]]
 

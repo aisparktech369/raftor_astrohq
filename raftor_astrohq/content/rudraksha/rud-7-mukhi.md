@@ -19,11 +19,18 @@ publish: false
 
 ## Meaning in the tradition
 
-The Upanishad associates the seven-faced bead with the Sapta Matrikas. Other modern commercial lists sometimes foreground Mahalakshmi, but that is not the association stated in this Upanishadic passage. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad associates the seven-faced bead with the Sapta Matrikas. |
+| Later explanations | Other modern commercial lists sometimes foreground Mahalakshmi, but that is not the association stated in this Upanishadic passage. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The cited Upanishad does not provide a seven-mukhi-specific beej mantra. Mantras to a particular Matrika or form of the Divine Mother should be taken from that deity's own tradition, not invented for a product.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The cited Upanishad does not provide a seven-mukhi-specific beej mantra. |
+| Choosing a mantra | Mantras to a particular Matrika or form of the Divine Mother should be taken from that deity's own tradition, not invented for a product. |
 
 7 Mukhi is not currently listed in the AstroHQ shop.
 

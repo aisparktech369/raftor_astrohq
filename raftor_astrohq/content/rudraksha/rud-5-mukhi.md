@@ -19,11 +19,18 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad associates the five-faced bead with the five Brahmans, understood in Shaiva tradition as five aspects of Shiva. Five-faced beads are also widely used in prayer malas. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad associates the five-faced bead with the five Brahmans, understood in Shaiva tradition as five aspects of Shiva. |
+| Wider tradition | Five-faced beads are also widely used in prayer malas. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The Upanishad mentions Panchabrahman mantras in connection with wearing beads at sensory locations; it does not state a unique five-mukhi beej mantra. Om Namah Shivaya (ॐ नमः शिवाय) is a widely used general Shaiva mantra.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The Upanishad mentions Panchabrahman mantras in connection with wearing beads at sensory locations; it does not state a unique five-mukhi beej mantra. |
+| General devotional mantra | Om Namah Shivaya (ॐ नमः शिवाय) is a widely used general Shaiva mantra. |
 
 [[product RUD005]]
 

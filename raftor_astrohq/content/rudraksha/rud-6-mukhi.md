@@ -19,11 +19,18 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad names Kartikeya (Subrahmanya) as the presiding deity and also records Vinayaka as an additional attribution. Kartikeya is commonly associated in wider tradition with courage, disciplined effort and focused action. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad names Kartikeya (Subrahmanya) as the presiding deity and also records Vinayaka as an additional attribution. |
+| Wider tradition | Kartikeya is commonly associated in wider tradition with courage, disciplined effort and focused action. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The Upanishad does not give a separate six-mukhi beej mantra. A devotee may use a mantra associated with the deity they worship, following a reliable tradition or teacher; do not treat a seller's mantra table as scriptural proof.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The Upanishad does not give a separate six-mukhi beej mantra. |
+| Choosing a mantra | A devotee may use a mantra associated with the deity they worship, following a reliable tradition or teacher; do not treat a seller's mantra table as scriptural proof. |
 
 [[product RUD006]]
 

@@ -18,11 +18,19 @@ publish: true
 
 ## Meaning in the tradition
 
-The four-faced bead is associated with Brahma in the Upanishad. Brahma's wider symbolism is connected with creation, knowledge and sacred learning. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The four-faced bead is associated with Brahma in the Upanishad. |
+| Wider tradition | Brahma's wider symbolism is connected with creation, knowledge and sacred learning. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The cited Upanishad does not prescribe a four-mukhi-specific beej mantra. Om Namah Shivaya is a general Shaiva mantra, not a Brahma-specific or four-mukhi formula. Follow a trusted tradition for deity-specific worship.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The cited Upanishad does not prescribe a four-mukhi-specific beej mantra. |
+| General devotional mantra | Om Namah Shivaya is a general Shaiva mantra, not a Brahma-specific or four-mukhi formula. |
+| Choosing a mantra | Follow a trusted tradition for deity-specific worship. |
 
 [[product RUD004]]
 

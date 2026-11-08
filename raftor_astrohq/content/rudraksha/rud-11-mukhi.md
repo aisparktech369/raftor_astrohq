@@ -18,11 +18,18 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad associates the eleven-faced bead with the Eleven Rudras. The Rudras represent forms or manifestations of Rudra in Hindu tradition. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad associates the eleven-faced bead with the Eleven Rudras. |
+| Wider tradition | The Rudras represent forms or manifestations of Rudra in Hindu tradition. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The cited Upanishad does not prescribe a separate eleven-mukhi beej mantra. Om Namah Shivaya is a general Shaiva mantra; do not present it as uniquely prescribed for eleven mukhi.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The cited Upanishad does not prescribe a separate eleven-mukhi beej mantra. |
+| General devotional mantra | Om Namah Shivaya is a general Shaiva mantra; do not present it as uniquely prescribed for eleven mukhi. |
 
 [[product RUD011]]
 

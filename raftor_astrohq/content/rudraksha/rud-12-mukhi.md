@@ -19,11 +19,18 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad describes the twelve-faced bead as representing Mahavishnu and the twelve Adityas. The Adityas are solar deities in Hindu cosmology; this association should not be simplified into an unsupported planetary prescription. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad describes the twelve-faced bead as representing Mahavishnu and the twelve Adityas. |
+| Wider tradition | The Adityas are solar deities in Hindu cosmology; this association should not be simplified into an unsupported planetary prescription. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The cited Upanishad does not give a separate twelve-mukhi beej mantra. Use a Vishnu or Aditya mantra only with its own source and context; do not label a general mantra as a twelve-mukhi prescription.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The cited Upanishad does not give a separate twelve-mukhi beej mantra. |
+| Choosing a mantra | Use a Vishnu or Aditya mantra only with its own source and context; do not label a general mantra as a twelve-mukhi prescription. |
 
 [[product RUD012]]
 

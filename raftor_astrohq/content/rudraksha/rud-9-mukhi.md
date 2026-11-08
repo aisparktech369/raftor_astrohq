@@ -19,11 +19,18 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad associates the nine-faced bead with the nine Shaktis. Later devotional explanations may connect this ninefold symbolism with forms of Durga or Navadurga; these interpretations should be attributed rather than treated as identical textual wording. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad associates the nine-faced bead with the nine Shaktis. |
+| Later explanations | Later devotional explanations may connect this ninefold symbolism with forms of Durga or Navadurga; these interpretations should be attributed rather than treated as identical textual wording. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The cited Upanishad does not prescribe a nine-mukhi-specific beej mantra. Mantras for Durga, Navadurga or a particular Shakti should be sourced to the relevant tradition and not automatically assigned to every nine-faced bead.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The cited Upanishad does not prescribe a nine-mukhi-specific beej mantra. |
+| Choosing a mantra | Mantras for Durga, Navadurga or a particular Shakti should be sourced to the relevant tradition and not automatically assigned to every nine-faced bead. |
 
 [[product RUD009]]
 

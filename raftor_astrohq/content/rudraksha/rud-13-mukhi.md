@@ -19,11 +19,19 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad says the thirteen-faced bead pleases Kamadeva and refers to desired objects. Kamadeva is associated with desire and attraction in Hindu tradition. This passage should be handled carefully and not turned into a promise to attract or control another person. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad says the thirteen-faced bead pleases Kamadeva and refers to desired objects. |
+| Wider tradition | Kamadeva is associated with desire and attraction in Hindu tradition. |
+| Caution | This passage should be handled carefully and not turned into a promise to attract or control another person. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The cited Upanishad does not prescribe a separate thirteen-mukhi beej mantra. Mantras to Kamadeva belong to specific traditions and should not be invented or casually assigned to a product.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The cited Upanishad does not prescribe a separate thirteen-mukhi beej mantra. |
+| Choosing a mantra | Mantras to Kamadeva belong to specific traditions and should not be invented or casually assigned to a product. |
 
 [[product RUD013]]
 

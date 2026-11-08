@@ -19,11 +19,18 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad identifies the two-faced bead with Ardhanarishvara, the form expressing Shiva and Shakti together. It is often contemplated through unity, complementarity and balance. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad identifies the two-faced bead with Ardhanarishvara, the form expressing Shiva and Shakti together. |
+| Wider tradition | It is often contemplated through unity, complementarity and balance. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-No separate two-mukhi beej mantra is prescribed in the cited Upanishad. Om Namah Shivaya (ॐ नमः शिवाय) is a general Shaiva mantra, not a two-mukhi-specific formula.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | No separate two-mukhi beej mantra is prescribed in the cited Upanishad. |
+| General devotional mantra | Om Namah Shivaya (ॐ नमः शिवाय) is a general Shaiva mantra, not a two-mukhi-specific formula. |
 
 [[product RUD002]]
 

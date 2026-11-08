@@ -18,11 +18,18 @@ publish: true
 
 ## Meaning in the tradition
 
-The Upanishad names Yama as the presiding deity of the ten-faced bead. Yama is associated in Hindu thought with death, moral order and accountability. The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result.
+| Point | Detail |
+|---|---|
+| What the text says | The Upanishad names Yama as the presiding deity of the ten-faced bead. |
+| Wider tradition | Yama is associated in Hindu thought with death, moral order and accountability. |
+| Status of the claim | The Upanishadic association is a statement of religious tradition. It is not a scientific property of the bead or a guarantee that a wearer will experience a particular result. |
 
 ## Mantra
 
-The cited Upanishad does not give a separate ten-mukhi beej mantra. For Yama-specific worship, use a source and practice from a trusted tradition rather than an unsupported commercial mantra list.
+| Point | Detail |
+|---|---|
+| Separate beej mantra | The cited Upanishad does not give a separate ten-mukhi beej mantra. |
+| Choosing a mantra | For Yama-specific worship, use a source and practice from a trusted tradition rather than an unsupported commercial mantra list. |
 
 [[product RUD010]]
 
