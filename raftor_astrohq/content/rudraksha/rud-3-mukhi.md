@@ -8,7 +8,6 @@ products: RUD003
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-Later explanations sometimes develop this into themes of purification, renewal and transformation.
 
 ## At a glance
 

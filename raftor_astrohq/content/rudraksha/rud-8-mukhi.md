@@ -8,7 +8,6 @@ products: RUD008
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-Many current retail lists call eight mukhi Ganesha Rudraksha, but that is not the deity attribution in this Upanishadic passage.
 
 ## At a glance
 

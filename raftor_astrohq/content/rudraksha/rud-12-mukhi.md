@@ -8,7 +8,6 @@ products: RUD012
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-The Adityas are solar deities in Hindu cosmology; this association should not be simplified into an unsupported planetary prescription.
 
 ## At a glance
 

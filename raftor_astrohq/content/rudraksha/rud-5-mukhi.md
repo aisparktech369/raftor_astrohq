@@ -8,7 +8,6 @@ products: RUD005
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-Five-faced beads are also widely used in prayer malas.
 
 ## At a glance
 

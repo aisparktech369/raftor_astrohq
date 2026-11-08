@@ -8,7 +8,6 @@ products: RUD014
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-Scriptural statements about health should be understood as religious claims, not medical evidence.
 
 ## At a glance
 

@@ -8,7 +8,6 @@ products: ''
 texts: Rudrakshajabala Upanishad
 publish: false
 ---
-Other modern commercial lists sometimes foreground Mahalakshmi, but that is not the association stated in this Upanishadic passage.
 
 ## At a glance
 

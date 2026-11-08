@@ -8,7 +8,6 @@ products: RUD013
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-Kamadeva is associated with desire and attraction in Hindu tradition. This passage should be handled carefully and not turned into a promise to attract or control another person.
 
 ## At a glance
 

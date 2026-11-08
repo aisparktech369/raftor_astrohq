@@ -8,7 +8,6 @@ products: RUD006
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-Kartikeya is commonly associated in wider tradition with courage, disciplined effort and focused action.
 
 ## At a glance
 

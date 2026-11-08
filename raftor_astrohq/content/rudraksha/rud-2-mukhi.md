@@ -8,7 +8,6 @@ products: RUD002
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-It is often contemplated through unity, complementarity and balance.
 
 ## At a glance
 

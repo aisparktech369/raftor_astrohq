@@ -8,7 +8,6 @@ products: RUD009
 texts: Rudrakshajabala Upanishad
 publish: true
 ---
-Later devotional explanations may connect this ninefold symbolism with forms of Durga or Navadurga; these interpretations should be attributed rather than treated as identical textual wording.
 
 ## At a glance
 
