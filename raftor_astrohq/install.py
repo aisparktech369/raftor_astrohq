@@ -15,6 +15,7 @@ def after_install():
 	register_provider_steps()
 	sync_portal_menu()
 	seed_topics_and_wishes()
+	sync_written_content()
 
 
 WISHES = ["Prosperity", "Health", "Family", "Protection", "Peace", "Success"]
@@ -25,6 +26,13 @@ def starting_topics() -> list[str]:
 	from raftor_astrohq import vocabulary
 
 	return list(dict.fromkeys(entry["topic"] for entry in vocabulary.pack_services() if entry.get("topic")))  # (a topic has a service for each length of session: it is listed once)
+
+
+def sync_written_content():
+	"""The Rudraksha articles and the like: the blog is made from content/, so a fresh install has them and a migrate brings them up to date."""
+	from raftor_astrohq import content
+
+	content.sync_blog()
 
 
 def seed_topics_and_wishes():
