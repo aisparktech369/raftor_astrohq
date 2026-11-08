@@ -6,7 +6,7 @@ title: '2 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad identifies the two-faced bead with Ardhanarishvara, the form expressing Shiva and Shakti together.
 products: RUD002
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 It is often contemplated through unity, complementarity and balance.
 

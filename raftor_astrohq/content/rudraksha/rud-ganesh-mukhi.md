@@ -6,7 +6,7 @@ title: 'Ganesh Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: Ganesh Mukhi Rudraksha is described in the market as a bead with a natural protrusion or form resembling Lord Ganesha's trunk.
 products: RUD020
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 Its devotional association is familiar, but its classification should be kept distinct from the numbered mukhi system.
 
@@ -34,4 +34,4 @@ For how to wear, how to check a genuine bead, and care, read [Rudraksha: A Begin
 
 ---
 
-*Source note: General Hindu devotional tradition concerning Ganesha; comparison with the numbered classifications in the *Rudrakshajabala Upanishad*. AstroHQ Team.*
+*Source note: General Hindu devotional tradition concerning Ganesha; comparison with the numbered classifications in the Rudrakshajabala Upanishad. AstroHQ Team.*

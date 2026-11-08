@@ -6,7 +6,7 @@ title: '14 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad describes the fourteen-faced bead as originating from the eyes of Rudra. Later traditions add interpretations around discernment and insight.
 products: RUD014
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 Scriptural statements about health should be understood as religious claims, not medical evidence.
 

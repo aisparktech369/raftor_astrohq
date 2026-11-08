@@ -6,7 +6,7 @@ title: '5 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad associates the five-faced bead with the five Brahmans, understood in Shaiva tradition as five aspects of Shiva.
 products: RUD005
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 Five-faced beads are also widely used in prayer malas.
 

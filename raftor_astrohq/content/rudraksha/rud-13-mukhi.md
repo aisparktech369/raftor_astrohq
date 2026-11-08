@@ -6,7 +6,7 @@ title: '13 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad says the thirteen-faced bead pleases Kamadeva and refers to desired objects.
 products: RUD013
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 Kamadeva is associated with desire and attraction in Hindu tradition. This passage should be handled carefully and not turned into a promise to attract or control another person.
 

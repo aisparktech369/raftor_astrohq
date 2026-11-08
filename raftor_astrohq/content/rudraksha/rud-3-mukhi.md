@@ -6,7 +6,7 @@ title: '3 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad says the three-faced bead represents the three sacred fires and that Agni is pleased by its wearer.
 products: RUD003
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 Later explanations sometimes develop this into themes of purification, renewal and transformation.
 

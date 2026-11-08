@@ -6,7 +6,7 @@ title: '8 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad associates the eight-faced bead with the Ashta Matrikas, the eight Vasus and Ganga.
 products: RUD008
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 Many current retail lists call eight mukhi Ganesha Rudraksha, but that is not the deity attribution in this Upanishadic passage.
 

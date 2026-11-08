@@ -6,7 +6,7 @@ title: '9 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad associates the nine-faced bead with the nine Shaktis.
 products: RUD009
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 Later devotional explanations may connect this ninefold symbolism with forms of Durga or Navadurga; these interpretations should be attributed rather than treated as identical textual wording.
 

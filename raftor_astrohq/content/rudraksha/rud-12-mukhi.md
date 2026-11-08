@@ -6,7 +6,7 @@ title: '12 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad describes the twelve-faced bead as representing Mahavishnu and the twelve Adityas.
 products: RUD012
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 The Adityas are solar deities in Hindu cosmology; this association should not be simplified into an unsupported planetary prescription.
 

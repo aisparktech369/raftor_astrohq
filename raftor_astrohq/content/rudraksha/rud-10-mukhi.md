@@ -6,7 +6,7 @@ title: '10 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad names Yama as the presiding deity of the ten-faced bead. Yama is associated in Hindu thought with death, moral order and accountability.
 products: RUD010
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 ## At a glance
 

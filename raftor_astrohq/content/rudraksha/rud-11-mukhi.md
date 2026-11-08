@@ -6,7 +6,7 @@ title: '11 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad associates the eleven-faced bead with the Eleven Rudras. The Rudras represent forms or manifestations of Rudra in Hindu tradition.
 products: RUD011
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 ## At a glance
 

@@ -6,7 +6,7 @@ title: '4 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The four-faced bead is associated with Brahma in the Upanishad. Brahma's wider symbolism is connected with creation, knowledge and sacred learning.
 products: RUD004
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 ## At a glance
 

@@ -6,7 +6,7 @@ title: '6 Mukhi Rudraksha: Meaning and Traditional Significance'
 intro: The Upanishad names Kartikeya (Subrahmanya) as the presiding deity and also records Vinayaka as an additional attribution.
 products: RUD006
 texts: Rudrakshajabala Upanishad
-publish: false
+publish: true
 ---
 Kartikeya is commonly associated in wider tradition with courage, disciplined effort and focused action.
 
