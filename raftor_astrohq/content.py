@@ -73,7 +73,7 @@ def sync_blog() -> int:
 			"content_type": "Markdown",
 			"content_md": item["body"],
 			"blog_intro": item["intro"],
-				"blog_image": _cover(item),
+				"meta_image": _cover(item),
 			"meta_description": item["intro"][:META_LENGTH],
 			"meta_title": f"{item['title']} | AstroHQ"[:60],
 			"published": 1 if item["publish"] else 0,
