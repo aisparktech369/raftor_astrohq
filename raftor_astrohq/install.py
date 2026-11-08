@@ -16,6 +16,13 @@ def after_install():
 	sync_portal_menu()
 	seed_topics_and_wishes()
 	sync_written_content()
+	switch_off_unconnected_indexing()
+
+
+def switch_off_unconnected_indexing():
+	"""Google indexing switched on without a connected Google account only fills the Error Log (the sitemap does the job). A connected one is left alone."""
+	if frappe.db.get_single_value("Website Settings", "enable_google_indexing") and not frappe.db.get_single_value("Website Settings", "indexing_refresh_token"):
+		frappe.db.set_single_value("Website Settings", "enable_google_indexing", 0)
 
 
 WISHES = ["Prosperity", "Health", "Family", "Protection", "Peace", "Success"]
