@@ -3,6 +3,8 @@ import tempfile
 from pathlib import Path
 from unittest import TestCase
 
+import frappe
+
 from raftor_astrohq import content
 
 HEAD = "---\nid: {id}\ncategory: rudraksha\ntitle: {title}\nintro: x.\npublish: true\n---\n\n"
@@ -41,3 +43,20 @@ class TestContent(TestCase):
 			self.assertTrue(chunk["text"].startswith(chunk["title"]), chunk["article"])
 			self.assertNotIn("[[product", chunk["text"])
 		self.assertTrue(any(c["products"] == "RUD001" for c in chunks))
+
+	def test_the_blog_is_named_once_and_staff_names_stay(self):
+		try:
+			site = frappe.get_single("Website Settings")
+			for row in [r for r in site.top_bar_items if r.url == content.ACADEMY_LINK]:
+				site.remove(row)
+			site.save(ignore_permissions=True)
+			frappe.db.set_single_value("Blog Settings", "blog_title", "")
+			content.name_the_blog()
+			content.name_the_blog()  # a second run adds nothing
+			self.assertEqual(frappe.db.get_single_value("Blog Settings", "blog_title"), content.ACADEMY)
+			self.assertEqual(len([r for r in frappe.get_single("Website Settings").top_bar_items if r.url == content.ACADEMY_LINK]), 1)
+			frappe.db.set_single_value("Blog Settings", "blog_title", "Library")
+			content.name_the_blog()
+			self.assertEqual(frappe.db.get_single_value("Blog Settings", "blog_title"), "Library")
+		finally:
+			frappe.db.rollback()

@@ -8,6 +8,7 @@
 A file has a header between two lines of ---: id, series, category, title, intro, products, texts, publish. The body follows.
 """
 
+import json
 import re
 from pathlib import Path
 
@@ -22,6 +23,9 @@ SHARED_SECTIONS = ("Identifying a genuine", "How to spot a genuine", "How to wea
 REQUIRED = ("id", "category", "title", "intro", "publish")
 BLOGGER = {"short_name": "astrohq-team", "full_name": "AstroHQ Team", "bio": "Written and checked by the AstroHQ Team, from the traditional texts."}
 CATEGORIES = {"rudraksha": "Rudraksha"}
+ACADEMY = "Academy"
+ACADEMY_INTRO = "Explained from the traditional texts, with sources."
+ACADEMY_LINK = "/blog"  # Frappe's own address for the blog; /academy redirects to it (websitehq hooks)
 META_LENGTH = 140  # the search description field holds this much; the full intro stays in blog_intro
 COVER = "/files/Detailed Brown Rudraksha Seed on Cream Background60cba8.png"  # used when an article has no product picture
 
@@ -54,6 +58,28 @@ def check(items: list[dict]) -> None:
 			continue
 		if any(section in item["body"] for section in SHARED_SECTIONS):
 			raise ValueError(f"{item['file']}: a shared section is repeated here. Link to the guide instead")
+
+
+def name_the_blog() -> None:
+	"""The blog is called Academy for visitors: its heading, a top menu item and a line in the footer's Explore column.
+	Fills in only what is missing, so a name or menu staff have changed is never put back."""
+	settings = frappe.get_single("Blog Settings")
+	if not settings.blog_title:
+		settings.blog_title = ACADEMY
+		settings.blog_introduction = settings.blog_introduction or ACADEMY_INTRO
+		settings.save(ignore_permissions=True)
+	site = frappe.get_single("Website Settings")
+	if not any(row.url == ACADEMY_LINK for row in site.top_bar_items):
+		site.append("top_bar_items", {"label": ACADEMY, "url": ACADEMY_LINK})
+		site.save(ignore_permissions=True)
+	if frappe.db.exists("RFHQ Card", "Footer: explore"):
+		card = frappe.get_doc("RFHQ Card", "Footer: explore")
+		values = json.loads(card.card_values or "{}")
+		line = f"{ACADEMY} | {ACADEMY_LINK}"
+		if line not in values.get("links", ""):
+			values["links"] = (values.get("links", "") + "\n" + line).strip()
+			card.card_values = json.dumps(values)
+			card.save(ignore_permissions=True)
 
 
 def sync_blog() -> int:

@@ -32,6 +32,7 @@ def sync_written_content():
 	"""The Rudraksha articles and the like: the blog is made from content/, so a fresh install has them and a migrate brings them up to date."""
 	from raftor_astrohq import content
 
+	content.name_the_blog()
 	content.sync_blog()
 
 
