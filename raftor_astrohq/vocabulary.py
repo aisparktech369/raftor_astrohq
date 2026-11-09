@@ -63,6 +63,7 @@ def vocabulary() -> dict:
 			"Pandit ji": {"icon": "flame", "word": "pandit ji", "plural": "pandit ji"},
 			"Vastu expert": {"icon": "home", "word": "vastu expert", "plural": "vastu experts"},
 			"Palmist": {"icon": "hand", "word": "palmist", "plural": "palmists"},
+			"Dream interpreter": {"icon": "moon", "word": "dream interpreter", "plural": "dream interpreters"},
 		},
 		# The standard services providers enrol in. Fixed work has set minutes; readings let the provider choose theirs.
 		"services": [

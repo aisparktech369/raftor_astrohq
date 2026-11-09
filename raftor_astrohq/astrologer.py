@@ -86,6 +86,8 @@ def card_lines(provider: str) -> list[str]:
 	row = frappe.db.get_value(DOCTYPE, provider, ["years_of_practice", "languages"], as_dict=True)
 	if not row:
 		return []
+	if frappe.db.get_value("Provider", provider, "ai_guide_page"):
+		return []  # an AI guide has no years of practice, and its one line says what it is
 	return [_("{0} years").format(row.years_of_practice) if row.years_of_practice is not None else "", (row.languages or "").strip()]
 
 

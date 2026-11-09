@@ -67,4 +67,7 @@ def info(**args) -> dict:
 
 def guide() -> dict:
 	"""The site's guide, the round button on every page (websitehq's windows, hook rfhq_window_guide): where it opens, who it is, and the pages where it would only be in the way (the guide's own page, the sign-in)."""
-	return {"url": "/ask/pandit-ji", "title": _("Pandit ji"), "label": _("Ask Pandit ji"), "icon": "/files/astrohq-icon.svg", "hide_on": ["/login", "/signup", "/ask/pandit-ji"]}
+	from raftor_astrohq import ai_guides
+
+	pages = ["/" + row["page"].strip("/") for row in ai_guides.rows()]  # the AI guides' chats open in the same drawer from their cards (data: ai_guides.json)
+	return {"url": "/ask/pandit-ji", "title": _("Pandit ji"), "label": _("Ask Pandit ji"), "icon": "/files/astrohq-icon.svg", "hide_on": ["/login", "/signup", "/ask/pandit-ji", *pages], "pages": pages}

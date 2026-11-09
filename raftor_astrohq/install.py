@@ -15,6 +15,9 @@ def after_install():
 	register_provider_steps()
 	sync_portal_menu()
 	seed_topics_and_wishes()
+	from raftor_astrohq import ai_guides
+
+	ai_guides.ensure()
 	sync_written_content()
 	switch_off_unconnected_indexing()
 
