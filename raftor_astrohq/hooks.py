@@ -270,6 +270,7 @@ rfhq_page_definitions = ["raftor_astrohq.page_definitions.definitions"]
 rfhq_attribute_sets = ["raftor_astrohq.attributes.attribute_sets"]
 # The blog is named Academy (install step, content.py); its address stays /blog, which Frappe owns. /academy goes there, keeping any path after it.
 rfhq_blog_store = ["Divine store"]
+rfhq_blog_booking = ["Book blessings|/services/events"]
 rfhq_blog_closing = ["Have a question about this?|Ask a guide|/consult"]
 website_redirects = [
     {"source": r"/academy(.*)", "target": r"/blog\1"},
