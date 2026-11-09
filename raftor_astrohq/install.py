@@ -47,6 +47,12 @@ def sync_written_content():
 		from raftor_astrohq import agents
 
 		agents.ensure_access()
+		try:
+			from raftor_astrohq import knowledge
+
+			knowledge.index_academy()
+		except Exception:  # the knowledge store must not stop an install: it is filled again on the next migrate
+			frappe.log_error(frappe.get_traceback(), "Academy knowledge index")
 
 
 def seed_topics_and_wishes():

@@ -211,6 +211,7 @@ def rag_chunks(published_only: bool = True) -> list[dict]:
 				continue
 			chunks.append({
 				"article": item["id"], "title": item["title"], "section": heading,
+				"category": item["category"], "route": route_of(item),
 				"series": item.get("series") or "", "group": item.get("group") or "",
 				"products": item.get("products") or "", "services": item.get("services") or "", "texts": item.get("texts") or "",
 				"text": f"{item['title']}\n{heading}\n{text}",
