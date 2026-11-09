@@ -132,3 +132,30 @@ class TestContent(TestCase):
 			self.assertEqual(frappe.db.get_value("Website Item", name, "show_tabbed_section"), 1)
 		finally:
 			frappe.db.rollback()
+
+
+class TestShopPictures(TestCase):
+	def test_adding_the_tab_leaves_a_picture_that_has_no_file_record(self):
+		try:
+			name = frappe.db.get_value("Website Item", {"item_code": "RUD001"}, "name")
+			if not name:
+				self.skipTest("no RUD001 shop item on this site")
+			frappe.db.delete("Website Item Tabbed Section", {"parent": name, "label": content.LEARN_TAB})
+			frappe.db.set_value("Website Item", name, "website_image", "/files/no-record-for-this.png")
+			content.sync_blog()
+			content.link_products()
+			self.assertEqual(frappe.db.get_value("Website Item", name, "website_image"), "/files/no-record-for-this.png")
+		finally:
+			frappe.db.rollback()
+
+	def test_an_entry_with_no_picture_takes_its_items_picture(self):
+		try:
+			row = frappe.db.sql("select wi.name, i.image from `tabWebsite Item` wi join `tabItem` i on i.name = wi.item_code where wi.published = 1 and i.image like '/files/%%' limit 1", as_dict=True)
+			if not row:
+				self.skipTest("no shop item with a picture on this site")
+			frappe.db.set_value("Website Item", row[0].name, {"website_image": "", "thumbnail": ""})
+			content.fill_pictures()
+			self.assertTrue(frappe.db.get_value("Website Item", row[0].name, "website_image").endswith(row[0].image.rsplit("/", 1)[1]))
+			self.assertEqual(content.fill_pictures(), 0)  # a second run changes nothing
+		finally:
+			frappe.db.rollback()

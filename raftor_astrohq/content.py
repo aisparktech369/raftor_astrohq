@@ -110,24 +110,50 @@ def link_products() -> int:
 			continue
 		doc = frappe.get_doc("Website Item", name)
 		rows = [r for r in doc.tabs if r.label == LEARN_TAB]
+		# written straight to the tab rows: saving the whole shop entry runs the shop's picture check, which blanks a picture that has no File record
 		if code in wanted:
 			title, route = wanted[code]
 			html = f'<p><a href="/{route.strip("/")}">{frappe.utils.escape_html(title)}</a></p>'
 			if rows and rows[0].content == html and doc.show_tabbed_section:
 				continue
 			if rows:
-				rows[0].content = html
+				frappe.db.set_value("Website Item Tabbed Section", rows[0].name, "content", html, update_modified=False)
 			else:
-				doc.append("tabs", {"label": LEARN_TAB, "content": html})
-			doc.show_tabbed_section = 1
+				frame = frappe.get_doc({"doctype": "Website Item Tabbed Section", "parent": name, "parenttype": "Website Item", "parentfield": "tabs", "idx": len(doc.tabs) + 1, "label": LEARN_TAB, "content": html})
+				frame.db_insert()
+			frappe.db.set_value("Website Item", name, "show_tabbed_section", 1, update_modified=False)
 		elif rows:
 			for row in rows:
-				doc.remove(row)
+				frappe.db.delete("Website Item Tabbed Section", {"name": row.name})
 		else:
 			continue
-		doc.save(ignore_permissions=True)
+		frappe.clear_document_cache("Website Item", name)
 		changed += 1
 	return changed
+
+
+def fill_pictures() -> int:
+	"""A shop entry with no picture takes its item's picture (and its small copy when there is one). The picture needs a File record, which the shop's own check looks for,
+	so one is made for a file that is on disk without it. A picture staff have set is never replaced. Returns how many entries were filled."""
+	import os
+
+	filled = 0
+	for row in frappe.get_all("Website Item", filters={"published": 1}, fields=["name", "item_code", "website_image"]):
+		if row.website_image:
+			continue
+		image = frappe.db.get_value("Item", row.item_code, "image")
+		if not image or not image.startswith("/files/") or not os.path.exists(frappe.get_site_path("public", image[1:])):
+			continue
+		small = image.rsplit(".", 1)[0] + "_small." + image.rsplit(".", 1)[1]
+		final = {}  # the address each file ends up with: a storage hook may move a new File to the bucket
+		for url in (image, small):
+			if not os.path.exists(frappe.get_site_path("public", url[1:])):
+				continue
+			final[url] = url if frappe.db.exists("File", {"file_url": url}) else frappe.get_doc({"doctype": "File", "file_url": url, "file_name": url.rsplit("/", 1)[1], "is_private": 0}).insert(ignore_permissions=True).file_url
+		frappe.db.set_value("Website Item", row.name, {"website_image": final[image], "thumbnail": final.get(small, final[image])}, update_modified=False)
+		frappe.clear_document_cache("Website Item", row.name)
+		filled += 1
+	return filled
 
 
 def sync_blog() -> int:

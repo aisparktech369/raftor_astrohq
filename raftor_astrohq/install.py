@@ -41,6 +41,7 @@ def sync_written_content():
 
 	content.name_the_blog()
 	content.sync_blog()
+	content.fill_pictures()
 	content.link_products()
 
 
