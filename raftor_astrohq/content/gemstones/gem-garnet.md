@@ -7,6 +7,8 @@ intro: 'Garnet is a family of minerals, not one stone. Red garnet is the best kn
 products: GEM014
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Other stones
+order: 310
 ---
 ## At a glance
 

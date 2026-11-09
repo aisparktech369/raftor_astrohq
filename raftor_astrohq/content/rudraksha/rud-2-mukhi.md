@@ -7,6 +7,8 @@ intro: The Upanishad identifies the two-faced bead with Ardhanarishvara, the for
 products: RUD002
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 120
 ---
 
 ## At a glance

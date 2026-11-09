@@ -7,6 +7,8 @@ intro: The Upanishad names Kartikeya (Subrahmanya) as the presiding deity and al
 products: RUD006
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 160
 ---
 
 ## At a glance

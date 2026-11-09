@@ -7,6 +7,8 @@ intro: The Upanishad says the three-faced bead represents the three sacred fires
 products: RUD003
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 130
 ---
 
 ## At a glance

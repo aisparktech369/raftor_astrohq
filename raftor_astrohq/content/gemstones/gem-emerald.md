@@ -7,6 +7,8 @@ intro: Emerald is green beryl. Nearly all of it is oil or resin filled, so the o
 products: GEM012
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: The nine gems (Navaratna)
+order: 140
 ---
 ## At a glance
 

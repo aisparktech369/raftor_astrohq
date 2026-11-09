@@ -7,6 +7,8 @@ intro: Ganesh Mukhi Rudraksha is described in the market as a bead with a natura
 products: RUD020
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Other beads
+order: 310
 ---
 ## At a glance
 

@@ -7,6 +7,8 @@ intro: Where gemstones come from, what natural, treated and lab-made mean, the n
 products: ""
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Start here
+order: 10
 ---
 
 ## What it is

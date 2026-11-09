@@ -7,6 +7,8 @@ intro: 'Pukhraj is yellow sapphire, a corundum. The classical gem tradition link
 products: GEM024,GEM009
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: The nine gems (Navaratna)
+order: 150
 ---
 ## At a glance
 

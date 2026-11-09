@@ -7,6 +7,8 @@ intro: 'Turquoise is porous and soft, and most of what is sold has been stabilis
 products: GEM028
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Other stones
+order: 330
 ---
 ## At a glance
 

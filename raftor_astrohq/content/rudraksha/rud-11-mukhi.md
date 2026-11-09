@@ -7,6 +7,8 @@ intro: The Upanishad associates the eleven-faced bead with the Eleven Rudras. Th
 products: RUD011
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 210
 ---
 ## At a glance
 

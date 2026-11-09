@@ -7,6 +7,8 @@ intro: The Upanishad associates the five-faced bead with the five Brahmans, unde
 products: RUD005
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 150
 ---
 
 ## At a glance

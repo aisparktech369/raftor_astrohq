@@ -7,6 +7,8 @@ intro: 'Nearly all pearls today are cultured. A cultured pearl is a real pearl m
 products: GEM022
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: The nine gems (Navaratna)
+order: 120
 ---
 ## At a glance
 

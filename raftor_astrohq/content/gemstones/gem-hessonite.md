@@ -7,6 +7,8 @@ intro: 'Gomed is hessonite, a garnet in honey to cinnamon colours. The oily, swi
 products: GEM015
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: The nine gems (Navaratna)
+order: 170
 ---
 ## At a glance
 

@@ -7,6 +7,8 @@ intro: The four-faced bead is associated with Brahma in the Upanishad. Brahma's 
 products: RUD004
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 140
 ---
 ## At a glance
 

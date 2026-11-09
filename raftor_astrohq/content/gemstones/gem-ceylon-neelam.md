@@ -7,6 +7,8 @@ intro: Neelam is blue sapphire, a corundum. Ceylon means Sri Lanka, and an origi
 products: GEM008,GEM021
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: The nine gems (Navaratna)
+order: 160
 ---
 ## At a glance
 

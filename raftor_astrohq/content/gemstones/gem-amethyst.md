@@ -7,6 +7,8 @@ intro: 'Amethyst is purple quartz. Most of it is mined in large amounts, so lab-
 products: GEM003
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Substitutes and alternatives
+order: 230
 ---
 ## At a glance
 

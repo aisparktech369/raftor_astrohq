@@ -7,6 +7,8 @@ intro: "True cat's eye is chrysoberyl with a sharp white line. Quartz, tiger eye
 products: GEM007
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: The nine gems (Navaratna)
+order: 180
 ---
 ## At a glance
 

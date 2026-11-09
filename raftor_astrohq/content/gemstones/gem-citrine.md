@@ -7,6 +7,8 @@ intro: 'Citrine is yellow quartz. Much of what is sold is heated amethyst, and i
 products: GEM011
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Substitutes and alternatives
+order: 240
 ---
 ## At a glance
 

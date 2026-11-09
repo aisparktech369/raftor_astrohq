@@ -7,6 +7,8 @@ intro: 'Moonstone is a feldspar with a soft glow that moves across the stone. "R
 products: GEM019
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Substitutes and alternatives
+order: 220
 ---
 ## At a glance
 

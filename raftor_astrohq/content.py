@@ -5,7 +5,7 @@
 	                all come from the file. Desk edits to these posts are overwritten on the next migrate.
 	rag_chunks()    the same bodies cut into sections, each one named by its article, with the product and source as fields for filtering
 
-A file has a header between two lines of ---: id, series, category, title, intro, products, texts, publish. The body follows.
+A file has a header between two lines of ---: id, series, category, title, intro, products, texts, publish, and optionally group and order (the heading it is listed under in its series, and its place there). The body follows.
 """
 
 import json
@@ -23,6 +23,10 @@ SHARED_SECTIONS = ("Identifying a genuine", "How to spot a genuine", "How to wea
 REQUIRED = ("id", "category", "title", "intro", "publish")
 BLOGGER = {"short_name": "astrohq-team", "full_name": "AstroHQ Team", "bio": "Written and checked by the AstroHQ Team, from the traditional texts."}
 CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones"}
+CATEGORY_NOTES = {
+	"rudraksha": "The beads by number of faces: meaning, mantra, the traditions around each, and how to choose one.",
+	"gemstones": "Origin, treatments, the planets and stories behind each stone, and how to choose one.",
+}
 ACADEMY = "Academy"
 ACADEMY_INTRO = "Explained from the traditional texts, with sources."
 LEARN_TAB = "Learn about this bead"
@@ -121,6 +125,9 @@ def link_products() -> int:
 
 def sync_blog() -> int:
 	"""Creates or updates the blog posts from the files. Returns how many articles it wrote."""
+	from raftor_websitehq.setup.blog_post_fields import create_blog_post_custom_fields
+
+	create_blog_post_custom_fields()  # the heading and place of an article in its series (websitehq owns the fields)
 	items = load()
 	blogger = _blogger()
 	written = 0
@@ -132,6 +139,8 @@ def sync_blog() -> int:
 			doc.title = item["title"]
 		values = {
 			"blog_category": category,
+			"rfhq_group": item.get("group") or "",
+			"rfhq_order": item.get("order") or 0,
 			"blogger": blogger,
 			"content_type": "Markdown",
 			"content_md": item["body"],
@@ -193,5 +202,7 @@ def _category(key: str) -> str:
 	title = CATEGORIES[key]
 	name = frappe.db.get_value("Blog Category", {"title": title}, "name")
 	if not name:
-		name = frappe.get_doc({"doctype": "Blog Category", "title": title, "published": 1}).insert(ignore_permissions=True).name
+		name = frappe.get_doc({"doctype": "Blog Category", "title": title, "published": 1, "description": CATEGORY_NOTES.get(key, "")}).insert(ignore_permissions=True).name
+	elif not frappe.db.get_value("Blog Category", name, "description") and CATEGORY_NOTES.get(key):
+		frappe.db.set_value("Blog Category", name, "description", CATEGORY_NOTES[key])  # only fills a blank one; staff words stay
 	return name

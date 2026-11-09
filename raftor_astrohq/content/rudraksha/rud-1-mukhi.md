@@ -7,6 +7,8 @@ intro: The Upanishad says the one-faced Rudraksha represents the Supreme Reality
 products: RUD001
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 110
 ---
 ## At a glance
 

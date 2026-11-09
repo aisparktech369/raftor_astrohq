@@ -7,6 +7,8 @@ intro: 'Zircon and zirconia sound alike but are not alike. Natural zircon is a m
 products: GEM020,GEM032
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Substitutes and alternatives
+order: 270
 ---
 ## At a glance
 

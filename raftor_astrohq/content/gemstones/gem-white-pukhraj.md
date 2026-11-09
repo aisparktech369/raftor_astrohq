@@ -7,6 +7,8 @@ intro: 'White Pukhraj is colourless sapphire. It is often sold in place of diamo
 products: GEM029
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Substitutes and alternatives
+order: 210
 ---
 ## At a glance
 

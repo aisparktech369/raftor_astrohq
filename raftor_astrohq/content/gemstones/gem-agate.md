@@ -7,6 +7,8 @@ intro: 'Agate is banded chalcedony, a quartz. Much of it is dyed, and Sulemani i
 products: GEM002,GEM026
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Other stones
+order: 320
 ---
 ## At a glance
 

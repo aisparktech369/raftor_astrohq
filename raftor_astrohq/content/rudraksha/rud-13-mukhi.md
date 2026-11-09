@@ -7,6 +7,8 @@ intro: The Upanishad says the thirteen-faced bead pleases Kamadeva and refers to
 products: RUD013
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 230
 ---
 
 ## At a glance

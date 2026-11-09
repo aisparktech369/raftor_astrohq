@@ -7,6 +7,8 @@ intro: The Upanishad associates the seven-faced bead with the Sapta Matrikas.
 products: ''
 texts: Rudrakshajabala Upanishad
 publish: false
+group: Beads by number of faces
+order: 170
 ---
 
 ## At a glance

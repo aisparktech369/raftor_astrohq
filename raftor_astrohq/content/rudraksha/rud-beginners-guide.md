@@ -7,6 +7,8 @@ intro: What Rudraksha is, how to wear it, how to check a bead, and how to care f
 products: ""
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Start here
+order: 10
 ---
 
 ## What it is

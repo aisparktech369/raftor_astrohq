@@ -7,6 +7,8 @@ intro: 'White topaz is natural and stable. Blue topaz is almost always colourles
 products: GEM005,GEM030
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Substitutes and alternatives
+order: 250
 ---
 ## At a glance
 

@@ -7,6 +7,8 @@ intro: The Upanishad describes the twelve-faced bead as representing Mahavishnu 
 products: RUD012
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 220
 ---
 
 ## At a glance

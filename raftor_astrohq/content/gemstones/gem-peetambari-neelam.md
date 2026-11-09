@@ -7,6 +7,8 @@ intro: "Peetambari Neelam is a trade name, not a gemmological term. Read the rep
 products: GEM023
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Other stones
+order: 340
 ---
 ## At a glance
 

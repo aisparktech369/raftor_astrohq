@@ -7,6 +7,8 @@ intro: "Opal is soft and holds water, so it can crack. Fire opal is the orange-r
 products: GEM013,GEM004
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Substitutes and alternatives
+order: 260
 ---
 ## At a glance
 

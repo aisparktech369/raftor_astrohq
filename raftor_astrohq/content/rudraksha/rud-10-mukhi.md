@@ -7,6 +7,8 @@ intro: The Upanishad names Yama as the presiding deity of the ten-faced bead. Ya
 products: RUD010
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 200
 ---
 ## At a glance
 

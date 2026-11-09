@@ -7,6 +7,8 @@ intro: 'Moonga is red coral, an organic gem from the sea. Dyed and reconstituted
 products: GEM018
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: The nine gems (Navaratna)
+order: 130
 ---
 ## At a glance
 

@@ -7,6 +7,8 @@ intro: Ruby is red corundum. The classical gem tradition links it with the Sun, 
 products: GEM025
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: The nine gems (Navaratna)
+order: 110
 ---
 ## At a glance
 

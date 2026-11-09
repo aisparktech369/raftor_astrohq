@@ -7,6 +7,8 @@ intro: The Upanishad associates the nine-faced bead with the nine Shaktis.
 products: RUD009
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 190
 ---
 
 ## At a glance

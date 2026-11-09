@@ -7,6 +7,8 @@ intro: The Upanishad describes the fourteen-faced bead as originating from the e
 products: RUD014
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 240
 ---
 
 ## At a glance

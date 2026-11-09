@@ -7,6 +7,8 @@ intro: The Upanishad associates the eight-faced bead with the Ashta Matrikas, th
 products: RUD008
 texts: Rudrakshajabala Upanishad
 publish: true
+group: Beads by number of faces
+order: 180
 ---
 
 ## At a glance

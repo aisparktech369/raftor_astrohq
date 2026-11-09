@@ -7,6 +7,8 @@ intro: "Tiger eye is golden-brown quartz with a silky band of light. It is often
 products: GEM027
 texts: Garuda Purana, Brihat Samhita
 publish: true
+group: Substitutes and alternatives
+order: 280
 ---
 ## At a glance
 
