@@ -7,7 +7,7 @@ intro: Satyanarayan katha is a pooja to Vishnu as the Lord of Truth, with a stor
 products: ""
 texts: Skanda Purana
 publish: true
-group: Home services
+group: Sanskar and occasions
 order: 110
 ---
 ## At a glance
@@ -19,7 +19,7 @@ order: 110
 | When | Purnima (full moon) days, and at a new home, a wedding, a birth or a success |
 | Who | The family, with a priest or an elder reading the katha |
 | Time taken | About two to three hours |
-| On the site | Home services, Satyanarayan katha |
+| Shelf | Sanskar and occasions |
 | Not promised | Wealth, health, or a guaranteed result |
 
 ## Story and meaning

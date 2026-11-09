@@ -48,7 +48,7 @@ order: 10
 
 | Shelf | For | Examples |
 |---|---|---|
-| Home services | The occasions of a household | Griha pravesh, Satyanarayan katha, naming, first rice, a new shop or vehicle |
+| Sanskar and occasions | The sanskars and occasions of a household | Griha pravesh, Satyanarayan katha, naming, first rice, a new shop or vehicle |
 | Kamna purti | A wish, by what is wished for | Love, marriage, child, wealth, health, education, career, peace, protection |
 | Samasya samadhan | A problem, by what troubles | Court case, business loss, debt, evil eye, a family or property dispute |
 | Graha shanti | The planets and doshas | Navagraha, each planet, Kaal Sarp, Pitra dosh, Sade Sati |

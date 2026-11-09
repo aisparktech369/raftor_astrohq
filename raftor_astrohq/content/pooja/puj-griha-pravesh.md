@@ -7,7 +7,7 @@ intro: Griha Pravesh is the house-warming pooja done when a family first enters 
 products: ""
 texts: Grihya Sutras, Vastu tradition
 publish: true
-group: Home services
+group: Sanskar and occasions
 order: 120
 ---
 ## At a glance
@@ -18,7 +18,7 @@ order: 120
 | When | A day taken from the panchang for the family |
 | Who | The household, with a priest |
 | Time taken | Half a day, with the havan |
-| On the site | Home services, Griha pravesh (with Vastu shanti) |
+| Shelf | Sanskar and occasions |
 | Not promised | Wealth, health, or a guaranteed result |
 
 ## Story and meaning

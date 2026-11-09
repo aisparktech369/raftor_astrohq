@@ -18,7 +18,7 @@ order: 220
 | What | The mantra chanted a set number of times, often with a havan |
 | When | Mondays, Pradosh, Shravan, or by a priest's advice |
 | Who | A priest, or the devotee |
-| On the site | Kamna purti, for health |
+| Shelf | Kamna purti, for health |
 | Not promised | Wealth, health, or a guaranteed result |
 
 ## Story and meaning

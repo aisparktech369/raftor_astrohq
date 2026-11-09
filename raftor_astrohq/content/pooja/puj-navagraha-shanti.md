@@ -18,7 +18,7 @@ order: 410
 | What | A pooja or havan for the nine planets together, or for one |
 | When | When astrologers advise it, such as a difficult planetary period, or at Griha Pravesh |
 | Who | A priest |
-| On the site | Graha shanti, for the planets |
+| Shelf | Graha shanti, for the planets |
 | Not promised | Wealth, health, or a guaranteed result |
 
 ## Story and meaning

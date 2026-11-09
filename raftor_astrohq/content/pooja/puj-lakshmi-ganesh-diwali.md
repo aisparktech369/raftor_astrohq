@@ -7,7 +7,7 @@ intro: The Diwali evening pooja honours Lakshmi, the goddess of prosperity, with
 products: ""
 texts: Puranas
 publish: true
-group: Home services
+group: Sanskar and occasions
 order: 130
 ---
 ## At a glance
@@ -18,7 +18,7 @@ order: 130
 | When | The new-moon night (Amavasya) of Kartik, in the evening |
 | Who | The household, led by the elders, or a priest |
 | Time taken | About one to two hours |
-| On the site | Home services, with the festival poojas |
+| Shelf | Sanskar and occasions, with the festival poojas |
 | Not promised | Wealth, health, or a guaranteed result |
 
 ## Story and meaning

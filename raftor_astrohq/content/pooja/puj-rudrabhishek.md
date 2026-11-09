@@ -18,7 +18,7 @@ order: 210
 | What | Ritual bathing of the lingam while the Rudram is recited |
 | When | Mondays, Pradosh (the thirteenth tithi), Mahashivaratri, and the month of Shravan |
 | Who | A priest, or the devotee if trained |
-| On the site | Kamna purti, for peace |
+| Shelf | Kamna purti, for peace |
 | Not promised | Wealth, health, or a guaranteed result |
 
 ## Story and meaning

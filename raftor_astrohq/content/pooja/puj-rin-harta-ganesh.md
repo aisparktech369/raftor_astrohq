@@ -18,7 +18,7 @@ order: 310
 | What | A pooja with Ganesh mantras and the Rinaharta stotra |
 | When | Wednesdays and Chaturthi, in common practice |
 | Who | The person concerned, or a priest on their behalf |
-| On the site | Samasya samadhan, for debt |
+| Shelf | Samasya samadhan, for debt |
 | Not promised | Wealth, health, or a guaranteed result |
 
 ## Story and meaning
