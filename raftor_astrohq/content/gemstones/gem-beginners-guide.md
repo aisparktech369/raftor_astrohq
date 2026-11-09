@@ -120,9 +120,15 @@ Not sure which planet is yours? Get a [free report from your birth details](/ser
 | Natural or made | Only natural stones are sold as natural. Lab-made stones are named as lab-made |
 | Treatment | Heated, oiled, filled or diffused is told before you buy, in plain words |
 | Colour and clarity | Graded by eye and instrument. A stone with cracks, cavities or cloudiness is not sold as a gem |
-| Origin | Stated only where a lab can give it, and given as the lab's opinion |
+| Origin | Told only where a lab can confirm it, and given as the lab's opinion |
 | Paper | An AstroHQ certificate on every stone, and an independent lab report on the highest grade |
 | Weight | Measured in carats and ratti, and checked against the paper |
+
+| Grade | In plain words |
+|---|---|
+| Budget | A genuine natural stone at the lowest price: good colour, small marks you can see up close, an AstroHQ certificate |
+| Standard | A richer colour and a cleaner stone, with the origin stated and an AstroHQ certificate |
+| Premium | The finest colour and cleanness we offer, with an independent lab report that gives the origin |
 
 Every stone is graded the same way, and the grade is on its page. The AstroHQ guarantee stands behind the stone being what we describe.
 

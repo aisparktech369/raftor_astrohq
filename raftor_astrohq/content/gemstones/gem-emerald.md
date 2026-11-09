@@ -114,11 +114,11 @@ The stories and rules above are traditions, told as they are told. They are not 
 
 | Grade | Colour | Clarity | Treatment | Origin | Paper |
 |---|---|---|---|---|---|
-| Essential | Pleasing green | The natural inclusions of emerald, none that weaken the stone | Oiled, level stated | Origin not graded | AstroHQ certificate |
-| Select | Deep, even green | Fewer visible inclusions | Oiled, level stated | Origin stated | AstroHQ certificate |
-| Rare | Vivid green | Clean for an emerald | Minor or no oil, stated | Origin as an independent lab's opinion | Independent lab report |
+| Budget | Good green | The natural marks emerald has, none that weaken it | Oiled (we tell you how much) | Not stated | AstroHQ certificate |
+| Standard | Deep green | Fewer visible marks | Oiled (we tell you how much) | Stated by us | AstroHQ certificate |
+| Premium | Vivid green | Very clean for an emerald | Little or no oil (we tell you) | Confirmed by an independent lab | Independent lab report |
 
-Every grade is a natural emerald, correctly named, free of the serious faults the gem texts name (cracks, cavities, cloudiness), with any treatment told before you buy, and backed by the AstroHQ guarantee. The grades differ in what the eye sees and in the paper that comes with the stone.
+Every grade is a natural emerald, correctly named, free of the serious faults the gem texts name (cracks, cavities, cloudiness), with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
 
 [[product GEM012]]
 

@@ -116,11 +116,11 @@ The stories and rules above are traditions, told as they are told. They are not 
 
 | Grade | Colour | Clarity | Treatment | Origin | Paper |
 |---|---|---|---|---|---|
-| Essential | Good red, even enough to the eye | Small inclusions visible on close look | Heated, stated | Origin not graded | AstroHQ certificate |
-| Select | Rich, even red | Clean to the eye | Heated, stated | Origin stated | AstroHQ certificate |
-| Rare | Vivid, even red | Very clean for a ruby | Untreated where possible, otherwise heated and stated | Origin as an independent lab's opinion | Independent lab report |
+| Budget | Good red | Small marks you can see up close | Heated (we tell you) | Not stated | AstroHQ certificate |
+| Standard | Rich red | Clean to the eye | Heated (we tell you) | Stated by us | AstroHQ certificate |
+| Premium | Vivid red | Very clean | Untreated where possible, or heated (we tell you) | Confirmed by an independent lab | Independent lab report |
 
-Every grade is a natural ruby, correctly named, free of the serious faults the gem texts name (cracks, cavities, cloudiness), with any treatment told before you buy, and backed by the AstroHQ guarantee. The grades differ in what the eye sees and in the paper that comes with the stone.
+Every grade is a natural ruby, correctly named, free of the serious faults the gem texts name (cracks, cavities, cloudiness), with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
 
 [[product GEM025]]
 
