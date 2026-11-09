@@ -21,7 +21,9 @@ class TestAgentChat(TestCase):
 		frappe.set_user("Guest")
 		answer = agent_chat.info()
 		self.assertNotIn("blueprint", answer)  # no agent is reached before there is an account
-		self.assertTrue(answer["gate"]["greeting"].startswith("Namaste. I am Pandit ji"))
+		self.assertTrue(answer["gate"]["greeting"].startswith("Hi, I'm Pandit ji"))
+		self.assertNotIn("promise", answer["gate"]["greeting"])  # casual first; the disclaimer is the small line at the bottom
+		self.assertIn("promise", answer["notice"])
 		self.assertIn("{name}", answer["gate"]["ask_contact"])
 		self.assertEqual(answer["gate"]["contacts"], ["phone", "email"])
 
@@ -43,8 +45,10 @@ class TestAgentChat(TestCase):
 		self.assertEqual(answer["blueprint"], agents.BLUEPRINT)
 		for key in ("title", "subtitle", "welcome", "placeholder", "send_word", "notice"):
 			self.assertTrue(answer[key], key)
-		self.assertIn("AI", answer["notice"] + answer["welcome"])
-		self.assertIn("cannot", answer["welcome"])  # it says at once that it promises nothing
+		self.assertIn("AI", answer["notice"])
+		self.assertIn("promise", answer["notice"])  # the disclaimer is the small line under the chat, not the first thing it says
+		self.assertNotIn("promise", answer["welcome"])
+		self.assertLess(len(answer["welcome"]), 80)
 
 	def test_a_switched_off_agent_draws_no_chat(self):
 		from raftor_astrohq import agent_chat, agents

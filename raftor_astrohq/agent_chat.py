@@ -31,14 +31,14 @@ def info(**args) -> dict:
 	if frappe.session.user == "Guest":
 		gate = _gate()
 		if gate:
-			return {**_frame(), "gate": gate, "placeholder": _("Type your answer"), "notice": _("An AI guide. It explains from the Academy and cannot predict or promise results.")}
+			return {**_frame(), "gate": gate, "placeholder": _("Type your answer"), "notice": _("AI guide. I explain from our Academy and can't predict or promise results.")}
 		return {"sign_in": {"message": _("Sign up or sign in to ask Pandit ji, our AI guide to Rudraksha, gemstones and poojas. It takes a minute, and booking and buying need an account too."),
 							"label": _("Sign up or sign in"), "href": "/login?redirect-to=/ask/pandit-ji"}}
 	name = (frappe.db.get_value("User", frappe.session.user, "first_name") or "").strip()
 	return {
 		**_frame(), "blueprint": agents.BLUEPRINT,
-		"welcome": (_("Namaste, {0}. ").format(name) if name else _("Namaste. ")) + _("I am Pandit ji, an AI guide. Ask me about a bead, a stone or a pooja, and I will explain it from our Academy and show you what we offer. I cannot promise any result."),
-		"placeholder": _("Ask Pandit ji"), "notice": _("An AI guide. It explains from the Academy and cannot predict or promise results."),
+		"welcome": (_("Hi {0}, I'm Pandit ji. ").format(name) if name else _("Hi, I'm Pandit ji. ")) + _("What would you like to know?"),
+		"placeholder": _("Ask Pandit ji"), "notice": _("AI guide. I explain from our Academy and can't predict or promise results."),
 	}
 
 
