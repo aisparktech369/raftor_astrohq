@@ -49,7 +49,7 @@ class TestAgentChat(TestCase):
 		self.assertIn("promise", answer["notice"])  # the disclaimer is the small line under the chat, not the first thing it says
 		self.assertNotIn("promise", answer["welcome"])
 		self.assertLess(len(answer["welcome"]), 80)
-		self.assertTrue(answer["talk"] and answer["language"] == "en-IN")  # talk mode is on for a signed-in person
+		self.assertFalse(answer["talk"])  # no talk mode: the guide is text only
 
 	def test_a_switched_off_agent_draws_no_chat(self):
 		from raftor_astrohq import agent_chat, agents
