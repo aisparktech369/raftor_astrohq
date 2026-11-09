@@ -33,6 +33,8 @@ class TestContent(TestCase):
 				self.assertIn("| Topic | Detail |", item["body"], item["file"])
 				self.assertIn("## Where it comes from\n\n| Origin | What to know |", item["body"], item["file"])
 				self.assertIn("## Natural, treated, or made", item["body"], item["file"])
+				for section in ("## Mythology and lore", "## Astrology at a glance", "## How astrologers decide"):
+					self.assertIn(section, item["body"], item["file"])
 				self.assertIn("<details><summary>", item["body"], item["file"])
 				continue
 			self.assertIn("| Topic | Detail |", item["body"], item["file"])

@@ -32,6 +32,33 @@ publish: true
 | Separate beej mantra | No separate two-mukhi beej mantra is prescribed in the cited Upanishad. |
 | General devotional mantra | Om Namah Shivaya (ॐ नमः शिवाय) is a general Shaiva mantra, not a two-mukhi-specific formula. |
 
+## Mythology and lore
+
+| Story | What is told |
+|---|---|
+| Origin of the bead | The Rudrakshajabala Upanishad tells that Rudra (Shiva) kept his eyes closed for a thousand divine years, and the tears that fell when he opened them became the Rudraksha. The name means the eyes of Rudra |
+| Ardhanarishvara | The Shiva Purana tells that when Brahma's creation did not multiply, Shiva appeared half male and half female, as Ardhanarishvara, to show that creation comes from the two together |
+
+## Astrology at a glance
+
+| Topic | Detail |
+|---|---|
+| Planet in later practice | Moon (Chandra). The Upanishad names deities, not planets. This link comes from later practice |
+| Day | Monday, the day of Shiva, in common practice |
+| Mantra | Om Namah Shivaya is the common mantra. See the Mantra table above |
+| Who considers it | Mostly devotees of Shiva. Astrologers who link it with a planet judge that planet from the birth chart |
+| Note | Practices differ by lineage. Follow your family or astrologer's practice |
+
+## When to start and what to expect
+
+| Topic | Detail |
+|---|---|
+| When to start | Monday, Mahashivaratri, the month of Shravan or Pradosh are common choices |
+| Before wearing | Wash it, offer flowers and chant Om Namah Shivaya 108 times. This is practice and differs by lineage |
+| What to expect | Rudraksha is worn as a devotional aid. No result can be promised, and there is no scientific evidence of a physical effect |
+| How long | No fixed period in the cited text. Practitioners speak of steady use over weeks and months |
+| If unsure | Ask your guide or astrologer. Do not change medical care or major decisions on the strength of a bead |
+
 [[product RUD002]]
 
 Product information for RUD002 is in the AstroHQ shop.

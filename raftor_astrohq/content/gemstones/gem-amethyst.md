@@ -44,6 +44,61 @@ publish: true
 | Texts | The Garuda Purana and Varahamihira's Brihat Samhita describe qualities and faults of gems |
 | Status of the claim | The planetary link is a matter of religious tradition. It is not a scientific property of the stone or a promise of any result |
 
+## Mythology and lore
+
+| Story | What is told |
+|---|---|
+| Shani, son of Surya and Chhaya | Shani is the son of the Sun and his shadow-wife Chhaya, and brother of Yama. One tale (Brahma Vaivarta Purana) has his glance fall on the infant Ganesha. He is the slow planet and the giver of results of past actions |
+| Western lore | The name comes from the Greek amethystos, "not drunk". A Greek tale says the stone protected its wearer from intoxication |
+
+## Astrology at a glance
+
+| Topic | Detail |
+|---|---|
+| Planet (graha) | Saturn (Shani). This stone is used in practice as a lower-cost alternative to the main gem of this planet (blue sapphire) |
+| Day | Saturday |
+| Metal | Silver or panchdhatu |
+| Finger | Middle finger |
+| Mantra | Om Pram Prim Praum Sah Shanaishcharaya Namah |
+| Signs ruled | Capricorn (Makara), Aquarius (Kumbha) |
+| Nakshatras ruled | Pushya, Anuradha, Uttara Bhadrapada |
+| Deity | Shani, and Hanuman on Saturdays |
+| Dasha (major period) | 19 years |
+| Main gem or substitute | Alternative to blue sapphire (Saturn) |
+| Its substitutes | Is itself a usual substitute for Neelam |
+| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+
+## How astrologers decide
+
+| Point | Detail |
+|---|---|
+| When astrologers consider it | Mostly as a lower-cost alternative when the main gem is out of budget. Practitioners differ on how strong a substitute is held to be |
+| The rule behind it | The same rule as the main gem applies. The planet must be friendly to your chart, which an astrologer decides |
+
+## When and how to start
+
+| Step | Detail |
+|---|---|
+| Best day to start | Saturday, in the hour (hora) of the planet, in the bright half of the lunar month (Shukla paksha) |
+| Before wearing | Wash in raw milk or Ganga water, offer flowers, and chant the planet's mantra 108 times. This is practice and differs by lineage |
+| Hand and finger | The right hand is common. Finger: middle finger. Metal: silver or panchdhatu |
+| Contact | Practice asks that the stone touches the skin |
+| Trial | Many astrologers advise a short trial for strong gems, and removing it if you feel uneasy |
+
+## Effectiveness: what to expect
+
+| Point | Detail |
+|---|---|
+| What the tradition says | Results are described through the planet's themes: discipline, delay, hard work and long effort |
+| How long | No fixed period in the cited texts. Practitioners commonly speak of watching for several weeks to a few months |
+| The evidence | There is no scientific evidence that a gemstone changes events. Reported effects are personal and cannot be promised |
+| Quality | The gem texts hold that a natural, clean stone of good colour, free of cracks and spots, is the one worth wearing. A lab-made, dyed or glass-filled stone is not the stone it is sold as |
+| Weight | Set by your astrologer from the chart. As a buyer, compare the price per carat |
+| A substitute | Held to act milder than the main gem. Practitioners differ on how much |
+| If unsure | Stop wearing it if you feel uneasy and ask your astrologer. Do not change medical care or major decisions on the strength of a gem |
+
+The stories and rules above are traditions, told as they are told. They are not claims of results.
+
 ## What to ask for
 
 | Ask | Why |

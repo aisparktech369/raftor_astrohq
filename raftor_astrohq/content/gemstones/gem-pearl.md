@@ -45,6 +45,60 @@ publish: true
 | Texts | The Garuda Purana and Varahamihira's Brihat Samhita describe qualities and faults of gems |
 | Status of the claim | The planetary link is a matter of religious tradition. It is not a scientific property of the stone or a promise of any result |
 
+## Mythology and lore
+
+| Story | What is told |
+|---|---|
+| Chandra and the churning of the ocean | In the Puranas the Moon rose from the Samudra Manthan, the churning of the ocean by gods and demons. Shiva wears its crescent on his head (Chandrashekhara) |
+| The Swati raindrop | Indian poetic lore says a raindrop falling in the Swati nakshatra into an oyster becomes a pearl |
+
+## Astrology at a glance
+
+| Topic | Detail |
+|---|---|
+| Planet (graha) | Moon (Chandra) |
+| Day | Monday |
+| Metal | Silver |
+| Finger | Little finger |
+| Mantra | Om Shram Shrim Shraum Sah Chandramase Namah |
+| Signs ruled | Cancer (Karka) |
+| Nakshatras ruled | Rohini, Hasta, Shravana |
+| Deity | Chandra, and Shiva who wears the crescent |
+| Dasha (major period) | 10 years |
+| Main gem or substitute | Main gem of the Moon |
+| Its substitutes | Moonstone is commonly listed |
+| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+
+## How astrologers decide
+
+| Point | Detail |
+|---|---|
+| When astrologers consider it | When the planet is judged friendly to your birth chart (by the ascendant) and weak or badly placed, or when its major period is running. It is decided from the chart, not from the sun sign alone |
+| The rule behind it | A gem is held to strengthen its planet, whatever the planet signifies for you. A planet that is difficult for your chart is usually not strengthened |
+
+## When and how to start
+
+| Step | Detail |
+|---|---|
+| Best day to start | Monday, in the hour (hora) of the planet, in the bright half of the lunar month (Shukla paksha) |
+| Before wearing | Wash in raw milk or Ganga water, offer flowers, and chant the planet's mantra 108 times. This is practice and differs by lineage |
+| Hand and finger | The right hand is common. Finger: little finger. Metal: silver |
+| Contact | Practice asks that the stone touches the skin |
+| Trial | A short trial is optional. Remove it if you feel uneasy |
+
+## Effectiveness: what to expect
+
+| Point | Detail |
+|---|---|
+| What the tradition says | Results are described through the planet's themes: the mind, emotional balance and the mother |
+| How long | No fixed period in the cited texts. Practitioners commonly speak of watching for several weeks to a few months |
+| The evidence | There is no scientific evidence that a gemstone changes events. Reported effects are personal and cannot be promised |
+| Quality | The gem texts hold that a natural, clean stone of good colour, free of cracks and spots, is the one worth wearing. A lab-made, dyed or glass-filled stone is not the stone it is sold as |
+| Weight | Set by your astrologer from the chart. As a buyer, compare the price per carat |
+| If unsure | Stop wearing it if you feel uneasy and ask your astrologer. Do not change medical care or major decisions on the strength of a gem |
+
+The stories and rules above are traditions, told as they are told. They are not claims of results.
+
 ## What to ask for
 
 | Ask | Why |

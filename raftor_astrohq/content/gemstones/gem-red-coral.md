@@ -44,6 +44,60 @@ publish: true
 | Texts | The Garuda Purana and Varahamihira's Brihat Samhita describe qualities and faults of gems |
 | Status of the claim | The planetary link is a matter of religious tradition. It is not a scientific property of the stone or a promise of any result |
 
+## Mythology and lore
+
+| Story | What is told |
+|---|---|
+| Mangala, son of the Earth | The Puranas call Mars Bhauma, the son of Bhumi (the Earth). He is the planet of courage, drive and the warrior |
+
+## Astrology at a glance
+
+| Topic | Detail |
+|---|---|
+| Planet (graha) | Mars (Mangala) |
+| Day | Tuesday |
+| Metal | Copper or gold |
+| Finger | Ring finger |
+| Mantra | Om Kram Krim Kraum Sah Bhaumaya Namah |
+| Signs ruled | Aries (Mesha), Scorpio (Vrishchika) |
+| Nakshatras ruled | Mrigashira, Chitra, Dhanishta |
+| Deity | Kartikeya (Skanda), and Hanuman on Tuesdays |
+| Dasha (major period) | 7 years |
+| Main gem or substitute | Main gem of Mars |
+| Its substitutes | Red carnelian is commonly listed |
+| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+
+## How astrologers decide
+
+| Point | Detail |
+|---|---|
+| When astrologers consider it | When the planet is judged friendly to your birth chart (by the ascendant) and weak or badly placed, or when its major period is running. It is decided from the chart, not from the sun sign alone |
+| The rule behind it | A gem is held to strengthen its planet, whatever the planet signifies for you. A planet that is difficult for your chart is usually not strengthened |
+| Cautions in practice | Mars is held unfriendly to Mercury, so many astrologers advise care in combining coral with emerald |
+
+## When and how to start
+
+| Step | Detail |
+|---|---|
+| Best day to start | Tuesday, in the hour (hora) of the planet, in the bright half of the lunar month (Shukla paksha) |
+| Before wearing | Wash in raw milk or Ganga water, offer flowers, and chant the planet's mantra 108 times. This is practice and differs by lineage |
+| Hand and finger | The right hand is common. Finger: ring finger. Metal: copper or gold |
+| Contact | Practice asks that the stone touches the skin |
+| Trial | Many astrologers advise a short trial for strong gems, and removing it if you feel uneasy |
+
+## Effectiveness: what to expect
+
+| Point | Detail |
+|---|---|
+| What the tradition says | Results are described through the planet's themes: energy, courage and property |
+| How long | No fixed period in the cited texts. Practitioners commonly speak of watching for several weeks to a few months |
+| The evidence | There is no scientific evidence that a gemstone changes events. Reported effects are personal and cannot be promised |
+| Quality | The gem texts hold that a natural, clean stone of good colour, free of cracks and spots, is the one worth wearing. A lab-made, dyed or glass-filled stone is not the stone it is sold as |
+| Weight | Set by your astrologer from the chart. As a buyer, compare the price per carat |
+| If unsure | Stop wearing it if you feel uneasy and ask your astrologer. Do not change medical care or major decisions on the strength of a gem |
+
+The stories and rules above are traditions, told as they are told. They are not claims of results.
+
 ## What to ask for
 
 | Ask | Why |

@@ -33,6 +33,33 @@ publish: true
 | Separate beej mantra | The cited Upanishad does not prescribe a separate fourteen-mukhi beej mantra. |
 | General devotional mantra | Om Namah Shivaya is a general Shaiva mantra, not a uniquely prescribed fourteen-mukhi formula. |
 
+## Mythology and lore
+
+| Story | What is told |
+|---|---|
+| Origin of the bead | The Rudrakshajabala Upanishad tells that Rudra (Shiva) kept his eyes closed for a thousand divine years, and the tears that fell when he opened them became the Rudraksha. The name means the eyes of Rudra |
+| The eyes of Rudra | The Upanishad speaks of the fourteen-faced bead as born of Rudra's eyes. Shiva's third eye is the eye of insight in the tradition |
+
+## Astrology at a glance
+
+| Topic | Detail |
+|---|---|
+| Planet in later practice | Saturn (Shani), in some lists. The Upanishad names deities, not planets. This link comes from later practice |
+| Day | Monday, the day of Shiva, in common practice |
+| Mantra | Om Namah Shivaya is the common mantra. See the Mantra table above |
+| Who considers it | Mostly devotees of Shiva. Astrologers who link it with a planet judge that planet from the birth chart |
+| Note | Practices differ by lineage. Follow your family or astrologer's practice |
+
+## When to start and what to expect
+
+| Topic | Detail |
+|---|---|
+| When to start | Monday, Mahashivaratri, the month of Shravan or Pradosh are common choices |
+| Before wearing | Wash it, offer flowers and chant Om Namah Shivaya 108 times. This is practice and differs by lineage |
+| What to expect | Rudraksha is worn as a devotional aid. No result can be promised, and there is no scientific evidence of a physical effect |
+| How long | No fixed period in the cited text. Practitioners speak of steady use over weeks and months |
+| If unsure | Ask your guide or astrologer. Do not change medical care or major decisions on the strength of a bead |
+
 [[product RUD014]]
 
 Product information for RUD014 is in the AstroHQ shop.

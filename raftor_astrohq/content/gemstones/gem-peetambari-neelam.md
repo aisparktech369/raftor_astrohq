@@ -43,6 +43,52 @@ publish: true
 | Texts | The Garuda Purana and Varahamihira's Brihat Samhita describe qualities and faults of gems |
 | Status of the claim | The planetary link is a matter of religious tradition. It is not a scientific property of the stone or a promise of any result |
 
+## Mythology and lore
+
+| Story | What is told |
+|---|---|
+| Lore | No classical story is attached to this name. The stories belong to the planets it is linked with, Shani and Brihaspati |
+
+## Astrology at a glance
+
+| Topic | Detail |
+|---|---|
+| Planet (graha) | Not set by the tradition. Sellers often link the name with Saturn and Jupiter together, which is a market claim |
+| Texts | The classical texts name the blue sapphire for Saturn and the yellow sapphire for Jupiter. They do not name a single combined stone |
+| Main gem or substitute | Not a classical gem |
+| Its substitutes | No classical list names substitutes for it |
+| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+
+## How astrologers decide
+
+| Point | Detail |
+|---|---|
+| When astrologers consider it | When the planet is judged friendly to your birth chart (by the ascendant) and weak or badly placed, or when its major period is running. It is decided from the chart, not from the sun sign alone |
+| The rule behind it | A gem is held to strengthen its planet, whatever the planet signifies for you. A planet that is difficult for your chart is usually not strengthened |
+| Cautions in practice | Astrologers usually advise one gem for one planet and one reason. Ask your astrologer what is being asked of this stone |
+
+## When and how to start
+
+| Step | Detail |
+|---|---|
+| Best day to start | No classical rule. Ask your astrologer |
+| Before wearing | Clean it and follow your family or astrologer's practice |
+| Hand and finger | Practice varies |
+| Trial | Remove it if you feel uneasy |
+
+## Effectiveness: what to expect
+
+| Point | Detail |
+|---|---|
+| What the tradition says | No classical themes are attached to this stone. Ask your astrologer what, if anything, it is advised for |
+| How long | No fixed period in the cited texts. Practitioners commonly speak of watching for several weeks to a few months |
+| The evidence | There is no scientific evidence that a gemstone changes events. Reported effects are personal and cannot be promised |
+| Quality | The gem texts hold that a natural, clean stone of good colour, free of cracks and spots, is the one worth wearing. A lab-made, dyed or glass-filled stone is not the stone it is sold as |
+| Weight | Set by your astrologer from the chart. As a buyer, compare the price per carat |
+| If unsure | Stop wearing it if you feel uneasy and ask your astrologer. Do not change medical care or major decisions on the strength of a gem |
+
+The stories and rules above are traditions, told as they are told. They are not claims of results.
+
 ## What to ask for
 
 | Ask | Why |

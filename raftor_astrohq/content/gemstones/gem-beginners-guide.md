@@ -71,6 +71,45 @@ publish: true
 | Weight | In carats. A ratti is a traditional weight, commonly taken as about 0.91 carat. Confirm in carats |
 | Match | Report number, date and measurements match the stone you receive |
 
+## Where the stories come from
+
+| Story | What is told |
+|---|---|
+| Gems from a demon's body | The Garuda Purana tells that the gems arose from the body of a demon (Bala) who offered himself to the gods. Retellings differ on which part became which gem |
+| The churning of the ocean | The Puranas tell of the Samudra Manthan, from which came the Moon, Lakshmi, the nectar and the Kaustubha jewel of Vishnu, often described as a ruby |
+| Rahu and Ketu | The demon Svarbhanu drank the nectar and was severed by Vishnu. His head is Rahu and his body is Ketu |
+| Testing gems | The Garuda Purana, the Agni Purana and Varahamihira's Brihat Samhita have sections on the qualities and faults of gems |
+| The Navaratna | Nine gems for the nine planets, worn together in one setting or one by one |
+
+## The nine gems and the nine planets
+
+| Planet | Gem | Day | Metal | Finger |
+|---|---|---|---|---|
+| Sun (Surya) | Ruby (Manikya) | Sunday | Gold or copper | Ring |
+| Moon (Chandra) | Pearl (Moti) | Monday | Silver | Little |
+| Mars (Mangala) | Red coral (Moonga) | Tuesday | Copper or gold | Ring |
+| Mercury (Budha) | Emerald (Panna) | Wednesday | Gold or bronze | Little |
+| Jupiter (Guru) | Yellow sapphire (Pukhraj) | Thursday | Gold | Index |
+| Venus (Shukra) | Diamond (Heera) | Friday | Silver or platinum | Middle |
+| Saturn (Shani) | Blue sapphire (Neelam) | Saturday | Silver or panchdhatu | Middle |
+| Rahu | Hessonite (Gomed) | Saturday | Silver or panchdhatu | Middle |
+| Ketu | Cat's eye (Lehsunia) | Tuesday or Thursday | Silver or panchdhatu | Middle |
+
+Day, metal and finger differ by lineage. Follow your astrologer's advice.
+
+## How astrologers decide
+
+| Look at | Why |
+|---|---|
+| The ascendant (lagna) | It sets which planets are friendly to your chart. The sun sign alone is not enough |
+| The planet's place in your chart | Its sign, house and strength show whether it needs support |
+| The running period (dasha) | The planet whose major period is running is often the one considered |
+| A friendly planet | A gem is held to strengthen its planet, so a difficult planet is usually not strengthened |
+| A trial first | Many astrologers advise a short trial for the stronger gems, such as blue sapphire, hessonite and cat's eye |
+| Substitutes (upratna) | Cheaper stones such as amethyst, citrine and topaz are used in their place. Practitioners differ on how strong a substitute is held to be |
+
+Not sure which planet is yours? A free report from your birth details, or a guide, can say.
+
 ## Wearing and care
 
 | Topic | Note |

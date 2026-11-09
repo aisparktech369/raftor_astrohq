@@ -17,6 +17,24 @@ publish: true
 | What is a mukhi? | The natural faces or divisions on a bead |
 | Are meanings guaranteed? | No. They are traditional beliefs |
 
+## Where the stories come from
+
+| Story | What is told |
+|---|---|
+| The tears of Rudra | The Rudrakshajabala Upanishad tells that Rudra (Shiva) kept his eyes closed for a thousand divine years, and the tears that fell when he opened them became the Rudraksha |
+| Tripura | The Shiva Purana links the bead with Shiva's victory over the three demon cities of Tripura, and the tears he shed after |
+| Faces and gods | Each mukhi is linked in the Upanishad to a deity. Later practice adds planets. See each bead's article |
+| Which texts | The Upanishad, the Shiva Purana and the Devi Bhagavata Purana speak of Rudraksha |
+
+## When to start
+
+| Topic | Detail |
+|---|---|
+| Day | Monday, Mahashivaratri, the month of Shravan or Pradosh are common choices |
+| Before wearing | Wash it, offer flowers and chant Om Namah Shivaya 108 times. This is practice and differs by lineage |
+| Thread | Practice varies: red or black thread, silver or gold caps |
+| What to expect | Rudraksha is worn as a devotional aid. No result can be promised, and there is no scientific evidence of a physical effect |
+
 ## How to wear it
 
 | Way | Note |
