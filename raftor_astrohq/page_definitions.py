@@ -78,6 +78,14 @@ def ask_page() -> dict:
 		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info"}}], "look": TIGHT}]}
 
 
+def numerologist_page() -> dict:
+	"""Ask the numerology guide: a chat with the second AI guide (agent_chat.py, the card's fixed argument says which agent)."""
+	return {"route": "ask/numerologist", "title": _("Ask the numerology guide"), "meta_title": _("Ask the numerology guide | AstroHQ"),
+		"meta_description": _("Work out a birth number or a name number the way Cheiro did, and see what his book says. An AI guide that explains from our Academy."), "login_required": False, "sections": [
+		{"key": "head", "title": _("Ask the numerology guide"), "subtitle": _("Cheiro's numerology: your birth number and name number, worked out step by step."), "look": TIGHT},
+		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info", "static_args": '{"agent": "numerologist"}'}}], "look": TIGHT}]}
+
+
 def panchang_page() -> dict:
 	"""The Panchang page (panchang.py), public: the panchang and the chaugharia of any day and town, and the next seven days. The address takes ?date=2026-10-24&place=<the town's id>."""
 	return {"route": "panchang", "title": _("Panchang"), "meta_title": _("Today's Panchang | AstroHQ"),
@@ -134,4 +142,5 @@ def definitions() -> list[dict]:
 		chart_page(),
 		panchang_page(),
 		ask_page(),
+		numerologist_page(),
 	]

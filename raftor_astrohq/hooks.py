@@ -307,4 +307,5 @@ rfhq_product_pills = ["raftor_astrohq.products.product_pills"]  # (the pills of 
 assistant_tools = [
 	"raftor_astrohq.assistant_tools.services.FindServices",
 	"raftor_astrohq.assistant_tools.services.GetService",
+	"raftor_astrohq.assistant_tools.numerology.CalculateNumerology",
 ]

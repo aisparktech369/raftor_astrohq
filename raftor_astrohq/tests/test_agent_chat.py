@@ -90,3 +90,33 @@ class TestGuideButton(TestCase):
 		self.assertTrue(guide["icon"].startswith("/") and guide["title"] and guide["label"])
 		self.assertIn("/ask/pandit-ji", guide["hide_on"])
 		self.assertIn("/login", guide["hide_on"])
+
+
+class TestNumerologyGuide(TestCase):
+	def test_the_card_can_ask_for_the_numerology_guide_and_anything_else_is_pandit_ji(self):
+		from raftor_astrohq import agent_chat, agents
+
+		self.assertEqual(agent_chat._blueprint_of({"agent": "numerologist"}), "numerologist")
+		self.assertEqual(agent_chat._blueprint_of({"agent": "sales_bot"}), agents.BLUEPRINT)
+		self.assertEqual(agent_chat._blueprint_of({}), agents.BLUEPRINT)
+		self.assertEqual(agent_chat._frame("numerologist")["title"], "Numerology guide")
+
+	def test_the_numerology_tool_gives_the_engines_answer_and_never_its_own_sums(self):
+		from unittest.mock import patch
+
+		from raftor_astrohq import astrology
+		from raftor_astrohq.assistant_tools.numerology import CalculateNumerology
+
+		with patch.object(astrology, "numerology", return_value={"birth": {"number": 8}}) as engine:
+			answer = CalculateNumerology().execute({"day": 26, "name": "John Smith"})
+		self.assertEqual(answer, {"found": True, "birth": {"number": 8}})
+		engine.assert_called_once_with(26, None, "John Smith")
+		with patch.object(astrology, "numerology", side_effect=astrology.AstrologyUnavailable("off")):
+			self.assertFalse(CalculateNumerology().execute({"day": 26})["found"])
+
+	def test_its_page_asks_for_it_by_name(self):
+		from raftor_astrohq import page_definitions
+
+		page = page_definitions.numerologist_page()
+		self.assertEqual(page["route"], "ask/numerologist")
+		self.assertIn("numerologist", page["sections"][1]["cards"][0]["values"]["static_args"])
