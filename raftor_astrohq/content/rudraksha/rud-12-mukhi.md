@@ -59,7 +59,7 @@ order: 220
 | Before wearing | Wash it, offer flowers and chant Om Namah Shivaya 108 times. This is practice and differs by lineage |
 | What to expect | Rudraksha is worn as a devotional aid. No result can be promised, and there is no scientific evidence of a physical effect |
 | How long | No fixed period in the cited text. Practitioners speak of steady use over weeks and months |
-| If unsure | Ask your guide or astrologer. Do not change medical care or major decisions on the strength of a bead |
+| If unsure | [Ask a guide or astrologer](/consult). Do not change medical care or major decisions on the strength of a bead |
 
 [[product RUD012]]
 

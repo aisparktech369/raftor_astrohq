@@ -42,7 +42,7 @@ order: 330
 
 | Point | Detail |
 |---|---|
-| What the tradition says | Turquoise is not one of the nine Navaratna. Its use in practice varies. Ask your astrologer |
+| What the tradition says | Turquoise is not one of the nine Navaratna. Its use in practice varies. Ask [your astrologer](/consult) |
 | Texts | The Garuda Purana and Varahamihira's Brihat Samhita describe qualities and faults of gems |
 | Status of the claim | The planetary link is a matter of religious tradition. It is not a scientific property of the stone or a promise of any result |
 
@@ -59,7 +59,7 @@ order: 330
 | Planet (graha) | Not one of the nine Navaratna. Sources differ, and some practitioners link it with Jupiter or Venus |
 | Main gem or substitute | Not a classical gem or usual substitute |
 | Its substitutes | Sources differ |
-| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+| Note | Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) advice, not a shop label |
 
 ## How astrologers decide
 
@@ -67,7 +67,7 @@ order: 330
 |---|---|
 | When astrologers consider it | When the planet is judged friendly to your birth chart (by the ascendant) and weak or badly placed, or when its major period is running. It is decided from the chart, not from the sun sign alone |
 | The rule behind it | A gem is held to strengthen its planet, whatever the planet signifies for you. A planet that is difficult for your chart is usually not strengthened |
-| Cautions in practice | Because practices differ, ask your astrologer whether it is advised for you at all |
+| Cautions in practice | Because practices differ, ask [your astrologer](/consult) whether it is advised for you at all |
 
 ## When and how to start
 

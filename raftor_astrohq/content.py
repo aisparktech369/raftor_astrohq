@@ -17,7 +17,7 @@ import yaml
 
 CONTENT = Path(__file__).parent / "content"
 HEADER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
-PRODUCT_MARKER = re.compile(r"^\[\[product\s+[A-Za-z0-9_\-]+\]\]\s*$", re.M)
+PRODUCT_MARKER = re.compile(r"^\[\[product\s+[^\]\n]+\]\]\s*$", re.M)
 # Topics that belong to the shared guide only: a single-mukhi article must not repeat them.
 SHARED_SECTIONS = ("Identifying a genuine", "How to spot a genuine", "How to wear it", "Care and cleaning")
 REQUIRED = ("id", "category", "title", "intro", "publish")
@@ -177,7 +177,7 @@ def rag_chunks(published_only: bool = True) -> list[dict]:
 			chunks.append({
 				"article": item["id"], "title": item["title"], "section": heading,
 				"series": item.get("series") or "", "group": item.get("group") or "",
-				"products": item.get("products") or "", "texts": item.get("texts") or "",
+				"products": item.get("products") or "", "services": item.get("services") or "", "texts": item.get("texts") or "",
 				"text": f"{item['title']}\n{heading}\n{text}",
 			})
 	return chunks

@@ -9,6 +9,7 @@ texts: Puranas
 publish: true
 group: Sanskar and occasions
 order: 130
+services: Kuber-Lakshmi pooja Personal Pooja Blessings, Kuber-Lakshmi pooja Samuhik Pooja Blessings
 ---
 ## At a glance
 
@@ -71,6 +72,10 @@ order: 130
 | Om Gam Ganapataye Namah | A common mantra for Ganesha |
 | Om Shreem Mahalakshmyai Namah | A common mantra for Lakshmi |
 | Shri Suktam | The Vedic hymn to Lakshmi, recited in full by priests |
+
+[[product Kuber-Lakshmi pooja Personal Pooja Blessings]]
+
+[[product Kuber-Lakshmi pooja Samuhik Pooja Blessings]]
 
 ## Questions people ask
 

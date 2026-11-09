@@ -59,7 +59,7 @@ order: 340
 | Texts | The classical texts name the blue sapphire for Saturn and the yellow sapphire for Jupiter. They do not name a single combined stone |
 | Main gem or substitute | Not a classical gem |
 | Its substitutes | No classical list names substitutes for it |
-| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+| Note | Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) advice, not a shop label |
 
 ## How astrologers decide
 
@@ -67,13 +67,13 @@ order: 340
 |---|---|
 | When astrologers consider it | When the planet is judged friendly to your birth chart (by the ascendant) and weak or badly placed, or when its major period is running. It is decided from the chart, not from the sun sign alone |
 | The rule behind it | A gem is held to strengthen its planet, whatever the planet signifies for you. A planet that is difficult for your chart is usually not strengthened |
-| Cautions in practice | Astrologers usually advise one gem for one planet and one reason. Ask your astrologer what is being asked of this stone |
+| Cautions in practice | Astrologers usually advise one gem for one planet and one reason. Ask [your astrologer](/consult) what is being asked of this stone |
 
 ## When and how to start
 
 | Step | Detail |
 |---|---|
-| Best day to start | No classical rule. Ask your astrologer |
+| Best day to start | No classical rule. Ask [your astrologer](/consult) |
 | Before wearing | Clean it and follow your family or astrologer's practice |
 | Hand and finger | Practice varies |
 | Trial | Remove it if you feel uneasy |

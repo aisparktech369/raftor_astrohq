@@ -17,7 +17,7 @@ order: 320
 | Name | Agate (Hakik) and Sulemani hakik |
 | Mineral | Chalcedony, a fine-grained quartz (silicon dioxide) |
 | Hardness | 6.5 to 7 on the Mohs scale |
-| Traditional association | Uses in practice vary. Ask your astrologer |
+| Traditional association | Uses in practice vary. Ask [your astrologer](/consult) |
 | Not promised | Wealth, health, or a guaranteed result |
 
 ## Where it comes from
@@ -59,7 +59,7 @@ order: 320
 | Planet (graha) | Not one of the nine Navaratna or the usual substitutes. Practice varies by family and astrologer |
 | Main gem or substitute | Not a classical gem or usual substitute |
 | Its substitutes | Practice varies |
-| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+| Note | Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) advice, not a shop label |
 
 ## How astrologers decide
 
@@ -67,7 +67,7 @@ order: 320
 |---|---|
 | When astrologers consider it | When the planet is judged friendly to your birth chart (by the ascendant) and weak or badly placed, or when its major period is running. It is decided from the chart, not from the sun sign alone |
 | The rule behind it | A gem is held to strengthen its planet, whatever the planet signifies for you. A planet that is difficult for your chart is usually not strengthened |
-| Cautions in practice | Because practices differ, ask your astrologer whether it is advised for you at all |
+| Cautions in practice | Because practices differ, ask [your astrologer](/consult) whether it is advised for you at all |
 
 ## When and how to start
 

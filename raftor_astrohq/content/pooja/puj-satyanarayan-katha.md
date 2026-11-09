@@ -9,6 +9,7 @@ texts: Skanda Purana
 publish: true
 group: Sanskar and occasions
 order: 110
+services: Satyanarayan katha
 ---
 ## At a glance
 
@@ -61,6 +62,8 @@ order: 110
 | Katha | The five chapters are read, with a pause and aarti after each, in some families |
 | Aarti | The lamp is waved and the aarti is sung |
 | Prasad | The prasad is shared with everyone present |
+
+[[product Satyanarayan katha]]
 
 ## Questions people ask
 

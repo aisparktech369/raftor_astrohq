@@ -9,6 +9,7 @@ texts: Puranas, Jyotish practice
 publish: true
 group: Graha shanti
 order: 410
+services: Navagraha shanti pooja Personal Pooja Blessings, Navagraha shanti pooja Samuhik Pooja Blessings
 ---
 ## At a glance
 
@@ -47,7 +48,7 @@ order: 410
 
 | Point | Detail |
 |---|---|
-| Who advises it | An astrologer, from the birth chart and the running period (dasha) |
+| Who advises it | [An astrologer](/consult), from the birth chart and the running period (dasha) |
 | For one planet | A shanti for the day of that planet |
 | For all nine | Navagraha shanti is also done at Griha Pravesh |
 | Muhurat | Taken from the panchang for your town |
@@ -73,11 +74,15 @@ order: 410
 | Daan | A donation of the planet's grain or cloth, to someone in need |
 | Aarti and prasad | The lamp is waved and prasad is shared |
 
+[[product Navagraha shanti pooja Personal Pooja Blessings]]
+
+[[product Navagraha shanti pooja Samuhik Pooja Blessings]]
+
 ## Questions people ask
 
-<details><summary>Do I need Navagraha shanti?</summary><p>That is for your astrologer, from your birth chart. It is not needed for everyone.</p></details>
+<details><summary>Do I need Navagraha shanti?</summary><p>That is for <a href="/consult">your astrologer</a>, from your birth chart. It is not needed for everyone.</p></details>
 
-<details><summary>Is it the same as wearing a gemstone?</summary><p>No. A shanti is a pooja for the planet. A gemstone is worn in daily life. Some families do both, on an astrologer's advice. See the Gemstones series for the gem of each planet.</p></details>
+<details><summary>Is it the same as wearing a gemstone?</summary><p>No. A shanti is a pooja for the planet. A gemstone is worn in daily life. Some families do both, on <a href="/consult">an astrologer's</a> advice. See the Gemstones series for the gem of each planet.</p></details>
 
 <details><summary>Does it guarantee a result?</summary><p>No. It is an act of devotion and not a guaranteed outcome.</p></details>
 

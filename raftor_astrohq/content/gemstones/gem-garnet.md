@@ -41,7 +41,7 @@ order: 310
 
 | Point | Detail |
 |---|---|
-| What the tradition says | Garnet is not in the Navaratna. Some practice uses red garnet as a lower-cost alternative to ruby. Ask your astrologer |
+| What the tradition says | Garnet is not in the Navaratna. Some practice uses red garnet as a lower-cost alternative to ruby. Ask [your astrologer](/consult) |
 | Texts | The Garuda Purana and Varahamihira's Brihat Samhita describe qualities and faults of gems |
 | Status of the claim | The planetary link is a matter of religious tradition. It is not a scientific property of the stone or a promise of any result |
 
@@ -59,7 +59,7 @@ order: 310
 | Name | The word comes from the Latin granatum, the pomegranate, for its seed-like red grains |
 | Main gem or substitute | Used by some as an alternative to ruby or hessonite |
 | Its substitutes | Practice differs |
-| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+| Note | Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) advice, not a shop label |
 
 ## How astrologers decide
 
@@ -67,7 +67,7 @@ order: 310
 |---|---|
 | When astrologers consider it | When the planet is judged friendly to your birth chart (by the ascendant) and weak or badly placed, or when its major period is running. It is decided from the chart, not from the sun sign alone |
 | The rule behind it | A gem is held to strengthen its planet, whatever the planet signifies for you. A planet that is difficult for your chart is usually not strengthened |
-| Cautions in practice | Because practices differ, ask your astrologer which planet the stone is meant to serve |
+| Cautions in practice | Because practices differ, ask [your astrologer](/consult) which planet the stone is meant to serve |
 
 ## When and how to start
 

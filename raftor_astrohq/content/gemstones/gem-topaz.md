@@ -63,7 +63,7 @@ order: 250
 | Day, metal, finger, mantra | Those of the planet it stands in for. See the notes on Neelam and White Pukhraj |
 | Main gem or substitute | Blue topaz: alternative to blue sapphire. White topaz: alternative to diamond |
 | Its substitutes | Usual substitutes for Saturn's and Venus's gems |
-| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+| Note | Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) advice, not a shop label |
 
 ## How astrologers decide
 
@@ -76,7 +76,7 @@ order: 250
 
 | Step | Detail |
 |---|---|
-| Best day to start | No classical rule. Ask your astrologer |
+| Best day to start | No classical rule. Ask [your astrologer](/consult) |
 | Before wearing | Clean it and follow your family or astrologer's practice |
 | Hand and finger | Practice varies |
 | Trial | Remove it if you feel uneasy |
@@ -85,7 +85,7 @@ order: 250
 
 | Point | Detail |
 |---|---|
-| What the tradition says | No classical themes are attached to this stone. Ask your astrologer what, if anything, it is advised for |
+| What the tradition says | No classical themes are attached to this stone. Ask [your astrologer](/consult) what, if anything, it is advised for |
 | How long | No fixed period in the cited texts. Practitioners commonly speak of watching for several weeks to a few months |
 | The evidence | There is no scientific evidence that a gemstone changes events. Reported effects are personal and cannot be promised |
 | Quality | The gem texts hold that a natural, clean stone of good colour, free of cracks and spots, is the one worth wearing. A lab-made, dyed or glass-filled stone is not the stone it is sold as |

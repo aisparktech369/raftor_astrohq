@@ -67,14 +67,14 @@ order: 220
 | Dasha (major period) | 10 years |
 | Main gem or substitute | Alternative to pearl (Moon) |
 | Its substitutes | Is itself the usual substitute for pearl |
-| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+| Note | Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) advice, not a shop label |
 
 ## How astrologers decide
 
 | Point | Detail |
 |---|---|
 | When astrologers consider it | Mostly as a lower-cost alternative when the main gem is out of budget. Practitioners differ on how strong a substitute is held to be |
-| The rule behind it | The same rule as the main gem applies. The planet must be friendly to your chart, which an astrologer decides |
+| The rule behind it | The same rule as the main gem applies. The planet must be friendly to your chart, which [an astrologer](/consult) decides |
 
 ## When and how to start
 
@@ -94,7 +94,7 @@ order: 220
 | How long | No fixed period in the cited texts. Practitioners commonly speak of watching for several weeks to a few months |
 | The evidence | There is no scientific evidence that a gemstone changes events. Reported effects are personal and cannot be promised |
 | Quality | The gem texts hold that a natural, clean stone of good colour, free of cracks and spots, is the one worth wearing. A lab-made, dyed or glass-filled stone is not the stone it is sold as |
-| Weight | Set by your astrologer from the chart. As a buyer, compare the price per carat |
+| Weight | Set by [your astrologer](/consult) from the chart. As a buyer, compare the price per carat |
 | A substitute | Held to act milder than the main gem. Practitioners differ on how much |
 | If unsure | Stop wearing it if you feel uneasy and ask your astrologer. Do not change medical care or major decisions on the strength of a gem |
 

@@ -45,7 +45,7 @@ order: 160
 | Point | Detail |
 |---|---|
 | What the tradition says | Jyotish practice links blue sapphire with Saturn, and it is one of the nine gems of the Navaratna |
-| Practice | Many practitioners advise a trial period and an astrologer's guidance before wearing it continuously. This is practice, not a rule of a text cited here |
+| Practice | Many practitioners advise a trial period and [an astrologer's](/consult) guidance before wearing it continuously. This is practice, not a rule of a text cited here |
 | Status of the claim | The planetary link is a matter of religious tradition. It is not a scientific property of the stone or a promise of any result |
 
 ## Mythology and lore
@@ -69,7 +69,7 @@ order: 160
 | Dasha (major period) | 19 years |
 | Main gem or substitute | Main gem of Saturn |
 | Its substitutes | Amethyst, blue topaz and iolite are commonly listed |
-| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+| Note | Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) advice, not a shop label |
 
 ## How astrologers decide
 
@@ -97,7 +97,7 @@ order: 160
 | How long | No fixed period in the cited texts. Practitioners commonly speak of watching for several weeks to a few months |
 | The evidence | There is no scientific evidence that a gemstone changes events. Reported effects are personal and cannot be promised |
 | Quality | The gem texts hold that a natural, clean stone of good colour, free of cracks and spots, is the one worth wearing. A lab-made, dyed or glass-filled stone is not the stone it is sold as |
-| Weight | Set by your astrologer from the chart. As a buyer, compare the price per carat |
+| Weight | Set by [your astrologer](/consult) from the chart. As a buyer, compare the price per carat |
 | If unsure | Stop wearing it if you feel uneasy and ask your astrologer. Do not change medical care or major decisions on the strength of a gem |
 
 The stories and rules above are traditions, told as they are told. They are not claims of results.

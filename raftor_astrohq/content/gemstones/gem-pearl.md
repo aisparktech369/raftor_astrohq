@@ -69,7 +69,7 @@ order: 120
 | Dasha (major period) | 10 years |
 | Main gem or substitute | Main gem of the Moon |
 | Its substitutes | Moonstone is commonly listed |
-| Note | Day, metal and finger differ by lineage. Follow your astrologer's advice, not a shop label |
+| Note | Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) advice, not a shop label |
 
 ## How astrologers decide
 
@@ -96,8 +96,8 @@ order: 120
 | How long | No fixed period in the cited texts. Practitioners commonly speak of watching for several weeks to a few months |
 | The evidence | There is no scientific evidence that a gemstone changes events. Reported effects are personal and cannot be promised |
 | Quality | The gem texts hold that a natural, clean stone of good colour, free of cracks and spots, is the one worth wearing. A lab-made, dyed or glass-filled stone is not the stone it is sold as |
-| Weight | Set by your astrologer from the chart. As a buyer, compare the price per carat |
-| If unsure | Stop wearing it if you feel uneasy and ask your astrologer. Do not change medical care or major decisions on the strength of a gem |
+| Weight | Set by [your astrologer](/consult) from the chart. As a buyer, compare the price per carat |
+| If unsure | Stop wearing it if you feel uneasy and ask [your astrologer](/consult). Do not change medical care or major decisions on the strength of a gem |
 
 The stories and rules above are traditions, told as they are told. They are not claims of results.
 

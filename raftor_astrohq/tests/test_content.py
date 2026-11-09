@@ -23,6 +23,13 @@ class TestContent(TestCase):
 			for section in content.SHARED_SECTIONS:
 				self.assertNotIn(section, item["body"], item["file"])
 
+	def test_astrologer_mentions_lead_to_the_consult_page(self):
+		"""An article that tells the reader to ask an astrologer links that to /consult: a chance to book one."""
+		for item in content.load():
+			body = item["body"]
+			if "astrologer" in body.replace("astrologers", ""):
+				self.assertTrue("(/consult)" in body or 'href="/consult"' in body, item["file"])
+
 	def test_every_article_is_tabular(self):
 		"""Agreed with the owner: facts are tables across the series (at a glance, meaning, mantra), questions are the site's accordion."""
 		for item in content.load():
@@ -34,6 +41,9 @@ class TestContent(TestCase):
 					self.assertIn(section, item["body"], item["file"])
 				self.assertIn("<details><summary>", item["body"], item["file"])
 				self.assertIn("(/services/events)", item["body"], item["file"])  # the way to book it
+				if not item["id"].endswith("-guide") and item["id"] != "puj-havan":
+					self.assertIn("[[product ", item["body"], item["file"])  # the service's own card
+					self.assertTrue(item.get("services"), item["file"])
 				continue
 			if item["id"].startswith("gem-"):
 				self.assertIn("| Topic | Detail |", item["body"], item["file"])

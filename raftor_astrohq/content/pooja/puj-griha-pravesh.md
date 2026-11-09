@@ -9,6 +9,7 @@ texts: Grihya Sutras, Vastu tradition
 publish: true
 group: Sanskar and occasions
 order: 120
+services: Griha pravesh pooja, Vastu shanti pooja
 ---
 ## At a glance
 
@@ -60,6 +61,10 @@ order: 120
 | Havan | A fire offering for the home |
 | Entry | The family enters with the kalash, the right foot first |
 | Milk and prasad | Milk is boiled in the kitchen and prasad is shared |
+
+[[product Griha pravesh pooja]]
+
+[[product Vastu shanti pooja]]
 
 ## Questions people ask
 

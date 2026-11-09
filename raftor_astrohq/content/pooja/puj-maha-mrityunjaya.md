@@ -9,6 +9,7 @@ texts: Rigveda 7.59.12
 publish: true
 group: Kamna purti
 order: 220
+services: Mahamrityunjaya jaap Personal Pooja Blessings, Mahamrityunjaya jaap Samuhik Pooja Blessings
 ---
 ## At a glance
 
@@ -65,6 +66,10 @@ order: 220
 |---|---|
 | Om Tryambakam yajamahe sugandhim pushtivardhanam, urvarukamiva bandhanan mrityor mukshiya maamritat | The Maha Mrityunjaya mantra |
 | Om Namah Shivaya | The five-syllable mantra, as a shorter one |
+
+[[product Mahamrityunjaya jaap Personal Pooja Blessings]]
+
+[[product Mahamrityunjaya jaap Samuhik Pooja Blessings]]
 
 ## Questions people ask
 

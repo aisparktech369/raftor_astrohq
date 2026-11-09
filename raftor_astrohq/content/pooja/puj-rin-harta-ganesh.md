@@ -9,6 +9,7 @@ texts: Puranic practice
 publish: true
 group: Samasya samadhan
 order: 310
+services: Rin-harta Ganesh pooja Personal Pooja Blessings, Rin-harta Ganesh pooja Samuhik Pooja Blessings
 ---
 ## At a glance
 
@@ -57,6 +58,10 @@ order: 310
 | Mantra | Om Gam Ganapataye Namah, chanted on a mala |
 | Stotra | The Rinaharta Ganesh stotra is recited |
 | Aarti and prasad | The lamp is waved and prasad is shared |
+
+[[product Rin-harta Ganesh pooja Personal Pooja Blessings]]
+
+[[product Rin-harta Ganesh pooja Samuhik Pooja Blessings]]
 
 ## Questions people ask
 

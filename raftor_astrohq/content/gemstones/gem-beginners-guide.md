@@ -97,7 +97,7 @@ order: 10
 | Rahu | Hessonite (Gomed) | Saturday | Silver or panchdhatu | Middle |
 | Ketu | Cat's eye (Lehsunia) | Tuesday or Thursday | Silver or panchdhatu | Middle |
 
-Day, metal and finger differ by lineage. Follow your astrologer's advice.
+Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) advice.
 
 ## How astrologers decide
 
@@ -110,13 +110,13 @@ Day, metal and finger differ by lineage. Follow your astrologer's advice.
 | A trial first | Many astrologers advise a short trial for the stronger gems, such as blue sapphire, hessonite and cat's eye |
 | Substitutes (upratna) | Cheaper stones such as amethyst, citrine and topaz are used in their place. Practitioners differ on how strong a substitute is held to be |
 
-Not sure which planet is yours? A free report from your birth details, or a guide, can say.
+Not sure which planet is yours? Get a [free report from your birth details](/services/free-reports), or [talk to an astrologer](/consult).
 
 ## Wearing and care
 
 | Topic | Note |
 |---|---|
-| Wearing | Traditions differ on finger, metal and day. Ask your astrologer or family tradition |
+| Wearing | Traditions differ on finger, metal and day. Ask [your astrologer](/consult) or family tradition |
 | Ruby, sapphire | Hard and durable. Wash with mild soap and water |
 | Emerald | Often oil or resin filled. Avoid ultrasonic cleaners, steam, hot water and solvents |
 | Pearl, coral | Soft. Keep away from perfume, acid and rubbing. Wipe with a soft cloth |

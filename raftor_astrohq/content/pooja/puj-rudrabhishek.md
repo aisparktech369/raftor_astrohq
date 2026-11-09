@@ -9,6 +9,7 @@ texts: Yajurveda (Rudram), Shiva Purana
 publish: true
 group: Kamna purti
 order: 210
+services: Rudrabhishek Personal Pooja Blessings, Rudrabhishek Samuhik Pooja Blessings
 ---
 ## At a glance
 
@@ -68,6 +69,10 @@ order: 210
 | Om Namah Shivaya | The five-syllable mantra of Shiva |
 | Maha Mrityunjaya mantra | A mantra from the Rigveda in praise of Shiva |
 | Shri Rudram | The hymn recited by priests during the abhishek |
+
+[[product Rudrabhishek Personal Pooja Blessings]]
+
+[[product Rudrabhishek Samuhik Pooja Blessings]]
 
 ## Questions people ask
 
