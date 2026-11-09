@@ -134,7 +134,7 @@ def link_products() -> int:
 
 def fill_pictures() -> int:
 	"""A shop entry with no picture takes its item's picture (and its small copy when there is one). The picture needs a File record, which the shop's own check looks for,
-	so one is made for a file that is on disk without it. A picture staff have set is never replaced. Returns how many entries were filled."""
+	so one is made, with no storage hooks, for a file that is on disk without it. A picture staff have set is never replaced. Returns how many entries were filled."""
 	import os
 
 	filled = 0
@@ -145,11 +145,15 @@ def fill_pictures() -> int:
 		if not image or not image.startswith("/files/") or not os.path.exists(frappe.get_site_path("public", image[1:])):
 			continue
 		small = image.rsplit(".", 1)[0] + "_small." + image.rsplit(".", 1)[1]
-		final = {}  # the address each file ends up with: a storage hook may move a new File to the bucket
+		final = {}
 		for url in (image, small):
 			if not os.path.exists(frappe.get_site_path("public", url[1:])):
 				continue
-			final[url] = url if frappe.db.exists("File", {"file_url": url}) else frappe.get_doc({"doctype": "File", "file_url": url, "file_name": url.rsplit("/", 1)[1], "is_private": 0}).insert(ignore_permissions=True).file_url
+			if not frappe.db.exists("File", {"file_url": url}):  # the record only, as the file is already there: a File insert would run the storage hooks
+				record = frappe.get_doc({"doctype": "File", "file_url": url, "file_name": url.rsplit("/", 1)[1], "is_private": 0, "file_size": os.path.getsize(frappe.get_site_path("public", url[1:]))})
+				record.name = frappe.generate_hash(length=10)
+				record.db_insert()
+			final[url] = url
 		frappe.db.set_value("Website Item", row.name, {"website_image": final[image], "thumbnail": final.get(small, final[image])}, update_modified=False)
 		frappe.clear_document_cache("Website Item", row.name)
 		filled += 1
