@@ -8,7 +8,7 @@ import frappe
 
 ROLE = "Pandit Ji Agent"
 USER = "pandit-ji-agent@agents.astrohq.in"
-TOOLS = ["search_webshop_products", "get_webshop_product", "search_knowledge"]  # read-only; services and booking tools join this list when they exist
+TOOLS = ["search_webshop_products", "get_webshop_product", "find_services", "get_service", "search_knowledge"]  # all read-only: the agent never books or charges, it hands the customer to the booking page
 READS = {doctype: ["read"] for doctype in ("Website Item", "Item", "Item Price", "Item Group", "Brand", "Price List", "Pricing Rule", "Website Item Group")}
 
 
