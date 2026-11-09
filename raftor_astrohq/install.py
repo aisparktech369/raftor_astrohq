@@ -44,9 +44,6 @@ def sync_written_content():
 	content.fill_pictures()
 	content.link_products()
 	if "raftor_agentshq" in frappe.get_installed_apps():  # the agents answer from this written content
-		from raftor_agentshq.install import switch_on_rag
-
-		switch_on_rag()
 		from raftor_astrohq import agents
 
 		agents.ensure_access()
