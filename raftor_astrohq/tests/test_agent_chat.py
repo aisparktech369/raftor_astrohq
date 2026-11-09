@@ -15,11 +15,24 @@ class TestAgentChat(TestCase):
 
 		agents.ensure_blueprint()
 
-	def test_a_guest_is_asked_to_sign_in_and_comes_back_to_the_chat(self):
+	def test_a_guest_meets_the_agents_sign_up_conversation_in_its_own_words(self):
 		from raftor_astrohq import agent_chat
 
 		frappe.set_user("Guest")
 		answer = agent_chat.info()
+		self.assertNotIn("blueprint", answer)  # no agent is reached before there is an account
+		self.assertTrue(answer["gate"]["greeting"].startswith("Namaste. I am Pandit ji"))
+		self.assertIn("{name}", answer["gate"]["ask_contact"])
+		self.assertEqual(answer["gate"]["contacts"], ["phone", "email"])
+
+	def test_with_no_conversation_a_guest_is_asked_to_sign_in_and_comes_back_to_the_chat(self):
+		from unittest.mock import patch
+
+		from raftor_astrohq import agent_chat
+
+		frappe.set_user("Guest")
+		with patch.object(agent_chat, "_gate", return_value=None):
+			answer = agent_chat.info()
 		self.assertEqual(list(answer), ["sign_in"])
 		self.assertIn("redirect-to=/ask/pandit-ji", answer["sign_in"]["href"])
 
