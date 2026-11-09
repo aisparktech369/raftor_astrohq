@@ -29,7 +29,7 @@ Cheiro maps numbers to planets, signs, weekday groups, and positive/negative asp
 | Aquarius | January 21–February 21 | 8 | Saturn, negative |
 | Pisces | February 19–March 20 | 3 | Jupiter, negative |
 
-Cheiro describes a positive sign as more physical/forceful and a negative sign as more mental. He says a seven-day cusp at the beginning and end weakens the number and blends qualities of adjoining signs. Later chapters use slightly different cusp endpoints. The Chapter I ranges overlap at the Aquarius/Pisces boundary. The text prints “13 Signs” at source line 1280 but then enumerates twelve signs; the matching scan confirms this printed inconsistency. Do not add a thirteenth sign or silently reconcile the ranges.
+Cheiro describes a positive sign as more physical/forceful and a negative sign as more mental. He says a seven-day cusp at the beginning and end weakens the number and blends qualities of adjoining signs. Later chapters use slightly different cusp endpoints. The Chapter I ranges overlap at the Aquarius/Pisces boundary. The book's own text says “13 Signs” but lists twelve, and we count twelve.
 
 Chapter I illustrates positive 9/Aries as a physical warrior and negative 9/Scorpio as a mentally oriented warrior. It also gives elemental triangles: Fire (Aries, Leo, Sagittarius), Water (Cancer, Scorpio, Pisces), Air (Gemini, Libra, Aquarius), Earth (Taurus, Virgo, Capricorn). These are source classifications, not additional calculations.
 

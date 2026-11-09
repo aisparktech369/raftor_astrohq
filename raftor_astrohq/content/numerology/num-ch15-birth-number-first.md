@@ -20,7 +20,7 @@ Cheiro calls the birth-day number the most personal and important. In his accoun
 - Year: 1+8+6+6=21→3, broader destiny.
 - Cheiro then adds 21 to 1866 and uses 1887 as an important year.
 
-The book does not give a complete general rule for assigning every month number or deriving every year cycle. June=5 and 1887 are example-specific; do not turn them into a universal prediction.
+The book does not give a complete general rule for assigning every month number or deriving every year cycle. June=5 and 1887 are example-specific; they are not a general rule.
 
 Cheiro usually advises people born under 4 or 8 not to intensify those numbers and discusses alternatives such as 1, 3, 5, or 6 name influences. Later passages complicate this rule; use Chapters XXV and XXVI for the exceptions.
 

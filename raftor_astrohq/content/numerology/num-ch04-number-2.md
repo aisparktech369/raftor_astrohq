@@ -17,7 +17,6 @@ Cheiro describes number 2 as gentle, imaginative, artistic, romantic, and invent
 - **Date and affinity claims:** Use 2-series dates (2, 11, 20, 29). The chapter favors Sunday, Monday, and Friday in its context; it links 2 with 1 and secondarily with 7.
 - **Colours/jewels:** Greens, cream, and white; avoid dark colours, especially black, purple, and dark red. Pearls, moonstone, pale-green stones, and jade.
 - **Examples named:** Marie Antoinette, Gladstone, Edison, Ibsen, Thomas Hardy, President Harding, Pope Pius X.
-- **Source caution:** Date and affinity advice differs by passage; retrieve the applicable context.
 
 ## Related reading
 

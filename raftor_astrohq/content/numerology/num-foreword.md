@@ -14,9 +14,9 @@ order: 10
 
 Cheiro presents 1–9 as the base of number symbolism and says numbers above 9 repeat the first numbers through digit addition. He frames 1 as first cause, creator, God, or spirit; 0 as a symbol of eternity; 7 as mystery and spiritual force; and 9 as the end of the material series. He cites religious groupings of seven and connects the seven days with a planetary sequence. These are his occult and religious interpretations.
 
-The foreword’s arithmetic illustration says 1,000,000 divided by 7 produces 142857; the digits of 142857 total 27→9, and added zeros preserve a recurring pattern. The printed example omits the fractional/remainder detail of the division. Present it as Cheiro’s illustration, not as a complete mathematical derivation.
+The foreword’s arithmetic illustration says 1,000,000 divided by 7 produces 142857; the digits of 142857 total 27→9, and added zeros preserve a recurring pattern. The printed example leaves out the remainder of the division, so it is Cheiro's illustration and not a complete derivation.
 
-The book links 888→24→6 with Christ/Love and 666→18→9 with the Beast/man, war, or force. The caption to the “Seven-Pointed Seal of Solomon” gives a cycle from Sun to Moon, Mars, Mercury, Jupiter, Venus, Saturn, then back to Sun; it pairs Sun/Uranus as 1–4 and Moon/Neptune as 2–7. The foreword also describes time as interlocking wheels: 360 Zodiac degrees multiplied by an average four minutes per degree gives 1,440 minutes or 24 hours. Preserve all of these as the author’s model, not modern astronomy or mathematics.
+The book links 888→24→6 with Christ/Love and 666→18→9 with the Beast/man, war, or force. The caption to the “Seven-Pointed Seal of Solomon” gives a cycle from Sun to Moon, Mars, Mercury, Jupiter, Venus, Saturn, then back to Sun; it pairs Sun/Uranus as 1–4 and Moon/Neptune as 2–7. The foreword also describes time as interlocking wheels: 360 Zodiac degrees multiplied by an average four minutes per degree gives 1,440 minutes or 24 hours. All of these are the author's model, not modern astronomy or mathematics.
 
 ## Related reading
 

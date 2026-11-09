@@ -40,7 +40,7 @@ Cheiro assigns individual meanings to compounds 10–52. Keep a compound beside 
 | 32 | 5 | Magical or powerful; combinations of people/nations; favorable when a person holds to their judgment, vulnerable to others’ stubbornness. |
 | 33 | 6 | Same meaning as 24; no separate potency stated. |
 | 34 | 7 | Same meaning as 25. |
-| 35 | 8 | Same meaning as 26. OCR reads “2b”; the matching scan prints 35 and confirms the reference (p. 85). |
+| 35 | 8 | Same meaning as 26. |
 | 36 | 9 | Same meaning as 27. |
 | 37 | 1 | Fortunate friendship, love, partnership, and combinations with the opposite sex. |
 | 38 | 2 | Same meaning as 29. |
@@ -51,7 +51,7 @@ Cheiro assigns individual meanings to compounds 10–52. Keep a compound beside 
 | 43 | 7 | Unfortunate: revolution, upheaval, strife, failure, prevention. |
 | 44 | 8 | Same meaning as 26. |
 | 45 | 9 | Same meaning as 27. |
-| 46 | 1 | Same meaning as 37. OCR reads “4(1”; the matching scan prints 46 and confirms the reference (p. 85). |
+| 46 | 1 | Same meaning as 37. |
 | 47 | 2 | Same meaning as 29. |
 | 48 | 3 | Same meaning as 30. |
 | 49 | 4 | Same meaning as 31. |
@@ -70,7 +70,7 @@ Cheiro considers “John Smith,” born January 8, asking whether April 26 is fa
 5. Add birth number 8: 7+8=15→6.
 6. Consult compound 15, which Cheiro calls favorable for obtaining money, gifts, and favors; he therefore calls the date favorable for that request.
 
-The general prose says to add to the name “compound numbers” and birth number, while the worked example adds roots stepwise. Chapter XXII says the request involves another person (an employer) and is less certain than the recurring personal-date rule. Treat this exact arithmetic as an example-specific procedure, not a universally settled algorithm.
+The general prose says to add to the name “compound numbers” and birth number, while the worked example adds roots stepwise. Cheiro adds later that a request involving another person (an employer) is less certain than the recurring personal-date rule. This arithmetic belongs to his example and is not a settled general rule.
 
 ## Related reading
 

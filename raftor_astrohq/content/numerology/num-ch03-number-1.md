@@ -14,10 +14,9 @@ order: 30
 
 Cheiro describes number 1 as creative, inventive, individual, ambitious, authoritative, determined, and sometimes obstinate. The source says number 1 people dislike restraint and seek to direct their own lives. It associates them with the Sun.
 
-- **Date and affinity claims:** Use 1-series dates (1, 10, 19, 28); the source discusses Sunday and Monday and favorable periods. It says 1 gets on with 2, 4, and 7. Retrieve the chapter’s date/cusp wording for a specific date question.
+- **Date and affinity claims:** Use 1-series dates (1, 10, 19, 28); the source discusses Sunday and Monday and favorable periods. It says 1 gets on with 2, 4, and 7.
 - **Colours/jewels:** Gold, yellow, bronze, golden-brown; topaz, amber, yellow diamond.
 - **Examples named:** Alexander the Great, the Duke of Wellington, Annie Besant, Woodrow Wilson, Herbert Hoover, Orville Wright, Chopin, Bismarck, Goethe, Edgar Allan Poe.
-- **Source caution:** The biographical list illustrates Cheiro’s classification; it does not establish personality claims.
 
 ## Related reading
 

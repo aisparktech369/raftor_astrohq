@@ -15,7 +15,7 @@ Cheiro prefers the name number to harmonize with the birth number. He says a per
 
 He says to keep compounds and roots visible. The book’s examples support showing each name word’s compound/root and then any combined-name result, but the aggregation is not explained uniformly in every example.
 
-**Modern safeguard:** Attribute any “harmony,” “clash,” or luck claim to Cheiro. Do not tell a user to change a legal name or imply that doing so will improve real outcomes. House and place-name arithmetic uses the recovered Chapter XII table; the detailed city list is in Chapter XXIX.
+**A note:** Any “harmony,” “clash” or luck is Cheiro's claim. Changing a legal name is not advised because of a number, and doing so is not shown to improve anything. House and place-name arithmetic uses the recovered Chapter XII table; the detailed city list is in Chapter XXIX.
 
 ## Related reading
 

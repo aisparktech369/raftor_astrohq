@@ -12,9 +12,9 @@ order: 58
 ---
 *This is Cheiro's account, from Chapter XXI of Cheiro's Book of Numbers. It is a historical doctrine, not a fact or a prediction.*
 
-Cheiro contrasts the Chaldean/Hebrew-style alphabet used in the book with a Pythagorean table. For this knowledge base, use only the recovered table from Chapter XII; do not substitute the other alphabet or a modern numerology chart.
+Cheiro contrasts the Chaldean/Hebrew-style alphabet used in the book with a Pythagorean table. Our calculations use Cheiro's own table from his chapter on name numbers, never the Pythagorean one.
 
-The chapter discusses how names and titles used publicly, professionally, or privately affect his interpretation. Examples include Napoleon and Nellie Melba; the source says the stage/signature name “Nellie Melba” totals 10→1. These are source-specific case studies. Preserve the spelling the book analyzes, and distinguish a legal name from a name used in a particular context.
+The chapter discusses how names and titles used publicly, professionally, or privately affect his interpretation. Examples include Napoleon and Nellie Melba; the source says the stage/signature name “Nellie Melba” totals 10→1. These are Cheiro's own case studies. He counts the spelling the person was known by in that context, which may differ from a legal name.
 
 The chapter also responds to colour questions and supplements number-colour associations. Chapter XXIII gives the clearest hierarchy of primary birth-day colour and secondary period colour. (Name/title examples, lines 7328–7435; Nellie Melba, lines 7382–7386.)
 

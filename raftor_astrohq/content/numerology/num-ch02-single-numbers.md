@@ -12,9 +12,9 @@ order: 15
 ---
 *This is Cheiro's account, from Chapter II of Cheiro's Book of Numbers. It is a historical doctrine, not a fact or a prediction.*
 
-Cheiro uses “single,” “root,” “spirit,” and “soul” number for the reduced number 1–9. Numbers 10 and higher retain a compound identity; a compound’s root may be shown separately but must not replace its compound meaning. “Natural addition” means adding digits until one digit remains. Examples: 19→1, 22→4, 26→8, 30→3. Zero is treated as a symbol rather than a number.
+Cheiro uses “single,” “root,” “spirit,” and “soul” number for the reduced number 1–9. Numbers 10 and higher retain a compound identity; a compound's root can be shown beside it, but the compound keeps its own meaning. “Natural addition” means adding digits until one digit remains. Examples: 19→1, 22→4, 26→8, 30→3. Zero is treated as a symbol rather than a number.
 
-The birth number comes from the **day of the month only**. Do not add the full date, month, and year to calculate it. Cheiro says the day number is an easy, personal key associated with a planetary “vibration”; this is the book’s theory, not a measured effect.
+The birth number comes from the **day of the month only**. The month and the year are not added. Cheiro says the day number is an easy, personal key associated with a planetary “vibration”; this is the book’s theory, not a measured effect.
 
 | Birth/root number | Days in Cheiro’s series |
 |---:|---|
@@ -28,7 +28,7 @@ The birth number comes from the **day of the month only**. Do not add the full d
 | 8 | 8, 17, 26 |
 | 9 | 9, 18, 27 |
 
-The exact day series is clearer than some OCR-rendered digits. This table is repeated in later number chapters; the individual number sections below give each number’s principal profile and selected affinities.
+This table is repeated in the chapter of each number.
 
 ## Related reading
 

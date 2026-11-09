@@ -13,7 +13,7 @@ order: 78
 
 The chapter refines colour links and makes musical/national-style generalizations. Cheiro associates 1/3/9 with martial or “full-blooded” music; 2/7 with string and wind instruments; 6 with romantic, sweet, lilting music; 5 with unusual/original music; and 4/8 with organ and choral music described as plaintive, melancholy, religious, or fatalistic. He assigns England/Germany to 9, Ireland to 6, Scotland to 2 and 8, Wales to 4 and 5, and the United States to 5.
 
-These are Cheiro’s cultural generalizations, not reliable predictions of an individual’s taste. Retrieve Chapter XXIII for the primary/secondary colour rule.
+These are Cheiro’s cultural generalizations, not reliable predictions of an individual’s taste. His rule for primary and secondary colours is in his chapter on colours and numbers.
 
 ## Related reading
 

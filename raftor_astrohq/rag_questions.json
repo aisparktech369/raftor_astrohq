@@ -354,5 +354,23 @@
   "expect": [
    "num-safety"
   ]
+ },
+ {
+  "q": "Which gem and Rudraksha for number 4?",
+  "expect": [
+   "num-planet-4"
+  ]
+ },
+ {
+  "q": "What planet is the birth number 7 linked with?",
+  "expect": [
+   "num-planet-7"
+  ]
+ },
+ {
+  "q": "Pooja for number 8 Saturn born on the 17th",
+  "expect": [
+   "num-planet-8"
+  ]
  }
 ]

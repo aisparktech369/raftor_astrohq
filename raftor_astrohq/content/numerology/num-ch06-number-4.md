@@ -16,7 +16,7 @@ Cheiro associates 4 with Uranus and pairs it with 1. He describes number 4 peopl
 - **Date and affinity claims:** Use 4-series dates (4, 13, 22, 31). The chapter gives Saturday, Sunday, and Monday associations and links 4 variously with 1, 2, 7, and 8.
 - **Colours/jewels:** Electric colours, half-shades, electric blue, greys; sapphire.
 - **Examples named:** George Washington, Lord Byron, George Eliot, Sarah Bernhardt, Faraday, Francis Bacon, Conan Doyle, Immanuel Kant, Richard Wagner.
-- **Cross-chapter caution:** Cheiro’s advice to people born under 4 changes across Chapters XIV–XV and XXV–XXVI. See those chapters before answering advice or date-selection questions.
+- **Note:** Cheiro's advice to people born under 4 changes between his later chapters on the numbers 4 and 8 (see Cheiro on Persons Born Under 4 and 8).
 
 ## Related reading
 

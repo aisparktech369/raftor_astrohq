@@ -15,7 +15,7 @@ Cheiro says to use the name by which a person is best known. Depending on contex
 
 ## Recovered Mystic Alphabet
 
-The attached OCR loses the table around source lines 4940–4958. A scan of the matching edition restores it on printed p. 70. This is Cheiro’s own table:
+This is Cheiro’s own table:
 
 | Value | Letters |
 |---:|---|
@@ -29,17 +29,17 @@ The attached OCR loses the table around source lines 4940–4958. A scan of the 
 | 8 | F, P |
 | 9 | No letter assigned |
 
-The printed table says “I or J = 1.” Cheiro says 9 is reserved for the “9-lettered name of God”; a name may still total to 9. The table covers Latin letters only. Cheiro gives no transliteration rule for other scripts or diacritics; ask which Latin spelling the user wants counted.
+The printed table says “I or J = 1.” Cheiro says 9 is reserved for the “9-lettered name of God”; a name may still total to 9. The table covers Latin letters only. Cheiro gives no transliteration rule for other scripts or diacritics; for another script, choose the Latin spelling you want counted.
 
 ## Name calculation procedure
 
-1. Ask which spelling and context the user wants: familiar/private, professional, public, or title-bearing.
-2. Map each A–Z letter using the table above. Spaces and punctuation are treated as separators with no value; this is an explicit editorial calculation convention, not a separate occult rule.
-3. Add letters in each word, preserving each word compound and its single/root number.
-4. Where a worked example combines component roots, show that aggregation as its own step. Do not assume every example uses one identical aggregation rule.
-5. Show all additions; never use another numerology alphabet.
+1. Choose the spelling and context to count: familiar or private, professional, public, or title-bearing.
+2. Map each A–Z letter using the table above. Spaces and punctuation have no value.
+3. Add the letters in each word, and keep each word's compound beside its root number.
+4. Where the roots of the words are combined, that is a step of its own. Cheiro's examples do not all combine them in exactly the same way.
+5. Show every addition, and use only this alphabet.
 
-**Worked source example:** JOHN = J(1)+O(7)+H(5)+N(5)=18→9. SMITH = S(3)+M(4)+I(1)+T(4)+H(5)=17→8. Cheiro then combines the roots: 9+8=17→8. Preserve both word compounds (18 and 17) and the full-name compound/root (17→8).
+**Worked source example:** JOHN = J(1)+O(7)+H(5)+N(5)=18→9. SMITH = S(3)+M(4)+I(1)+T(4)+H(5)=17→8. Cheiro then combines the roots: 9+8=17→8. Both word compounds (18 and 17) and the full-name compound and root (17→8) are kept.
 
 ## Selected name interpretations
 
@@ -48,7 +48,7 @@ The printed table says “I or J = 1.” Cheiro says 9 is reserved for the “9-
 - **Austen Chamberlain:** word roots combine to 17; titles and common usage alter the reading.
 - **Ramsay MacDonald:** the source combines name parts and interprets 12, 32, 8, and 44 as “victim/sacrifice,” “paths of wisdom,” and a warning pattern.
 
-These are Cheiro’s readings of selected public figures, not independently verified outcomes. Some OCR letter alignments are damaged; retain reported totals and mark uncertain characters instead of silently correcting them.
+These are Cheiro’s readings of selected public figures, not independently verified outcomes.
 
 ## Related reading
 

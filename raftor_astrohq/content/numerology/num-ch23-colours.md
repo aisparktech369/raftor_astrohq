@@ -14,7 +14,7 @@ order: 70
 
 Cheiro clarifies that the birth-day number’s colours are primary; the Zodiac/month-period colours are secondary. Example: a person born on a 6 date during a 9 period should use 6 colours primarily and 9 colours secondarily. The text says blue may cross from the opposing Venus/6 sign in a negative 9 period. Later color details in Chapter XXVII include full blue rather than electric blue for 6 and special date exceptions for red/pink.
 
-Colour and jewel recommendations are historical symbolic advice. Do not describe them as protection, treatment, or guaranteed effects. (Ch. XXIII, pp. 125–127; Ch. XXVII, pp. 137–139.)
+Colour and jewel recommendations are historical symbolic advice. They are not protection, treatment or a guaranteed effect.
 
 ## Related reading
 

@@ -11,15 +11,15 @@ order: 76
 ---
 *This is Cheiro's account, from Chapter XXVI of Cheiro's Book of Numbers. It is a historical doctrine, not a fact or a prediction.*
 
-The 4/8 guidance varies across chapters. Preserve the branch relevant to the question and report the competing passage rather than resolving the inconsistency:
+Cheiro's guidance on 4 and 8 varies from one passage to another. Here are the branches, side by side:
 
-- Cheiro often says people born under 4 or 8 should avoid intensifying those numbers and may use name numbers such as 1, 3, 5, or 6. (Ch. XIV–XV, pp. 88–93.)
+- Cheiro often says people born under 4 or 8 should avoid intensifying those numbers and may use name numbers such as 1, 3, 5, or 6.
 - He says 4-series people may use the associated 1 series and sometimes 2/7 dates as interchangeable or acceptable.
 - If 4/8 combinations recur with adverse events, he says to avoid both series; in some cases he suggests the Zodiac-period number instead.
 - For December 21–January 20 (number 8 positive), he suggests the opposite period’s 2–7 series. For January 21–February 19 (number 8 negative), he states the opposite July period is 1–4. This conflicts with blanket advice to avoid 4 and 8 because 1–4 includes 4.
 - He also says a number 8 person may choose to use the full 8 force and 4/8 dates, accepting a more “fatalistic” life.
 
-State that this is Cheiro’s internally varied doctrine. Do not choose a branch as personalized advice.
+This is Cheiro's own varied doctrine. None of these branches is advice for any person.
 
 ## Related reading
 

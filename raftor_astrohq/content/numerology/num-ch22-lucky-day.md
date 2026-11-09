@@ -14,7 +14,7 @@ order: 60
 
 Cheiro’s simplest rule is to use the recurring dates in a person’s birth-number series. For example, a person born on the 1st treats the 1st, 10th, 19th, and 28th as dates of the same number. Individual number chapters layer weekday and period associations onto those dates.
 
-The chapter repeats the Chapter XIII John Smith/April 26 worked example and says a date for a request involving another person (such as an employer) is less certain than the recurring personal-date rule. Use the full arithmetic in Chapter XIII; do not present it as a settled universal algorithm, guarantee, or basis for consequential action.
+Cheiro says a date for a request involving another person (such as an employer) is less certain than the recurring personal-date rule. His worked example is given with the compound numbers. It is his example, not a settled rule, and no basis for any decision.
 
 ## Related reading
 

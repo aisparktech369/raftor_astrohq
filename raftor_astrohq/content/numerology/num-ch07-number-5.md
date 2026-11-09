@@ -17,7 +17,6 @@ Cheiro describes 5 as versatile, quick-thinking, impulsive, sociable, excitement
 - **Date and affinity claims:** Use 5-series dates (5, 14, 23). Wednesday and Friday are favored in the chapter; 5 is said to associate with almost all numbers, most strongly with itself.
 - **Colours/jewels:** Light greys, white, glistening materials, and light shades generally; diamond, platinum, silver.
 - **Examples named:** St. Louis, Louis XVI, Shakespeare, George VI, the Duke of Windsor, Lord Lister, Karl Marx, Handel, Talleyrand.
-- **Source caution:** Cheiro’s risk-taking profile is not a recommendation to speculate or take financial risks.
 
 ## Related reading
 

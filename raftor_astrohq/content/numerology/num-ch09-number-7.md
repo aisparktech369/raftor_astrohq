@@ -17,7 +17,6 @@ Cheiro describes 7 as independent, original, change- and travel-loving, philosop
 - **Date and affinity claims:** Use 7-series dates (7, 16, 25). The chapter favors Sunday and Monday and links 7 with 2; some passages use 1, 2, and 4 as interchangeable dates.
 - **Colours/jewels:** Pale greens, white, and yellow; avoid heavy dark colours. Moonstone, cat’s-eye, pearls, moss agate.
 - **Examples named:** Queen Elizabeth, Louis XIV, Charles Dickens, Oscar Wilde, Isaac Newton, Andrew Carnegie, William Wordsworth.
-- **Source caution:** Chapter IX’s profile is distinct from the foreword’s broader claims about seven as a sacred or mysterious number. Do not treat either as validated fact.
 
 ## Related reading
 

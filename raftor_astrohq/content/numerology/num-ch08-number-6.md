@@ -17,7 +17,6 @@ Cheiro describes 6 as magnetic, determined, loving, romantic or idealistic, arti
 - **Date and affinity claims:** Use 6-series dates (6, 15, 24). The chapter favors Tuesday, Thursday, and Friday and associates 6 strongly with 3 and 9.
 - **Colours/jewels:** Blues; rose/pink as secondary; avoid black and dark purple. Turquoise and emerald.
 - **Examples named:** Queen Victoria, Napoleon I, Frederick the Great, Oliver Cromwell, Joan of Arc, Cecil Rhodes, Susan B. Anthony, Alfred Tennyson.
-- **Source caution:** Relationship and character descriptions are source claims, not compatibility judgments about actual people.
 
 ## Related reading
 

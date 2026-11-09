@@ -17,7 +17,6 @@ Cheiro describes number 3 as ambitious, orderly, disciplined, and conscientious,
 - **Date and affinity claims:** Use 3-series dates (3, 12, 21, 30). The chapter favors Thursday, Friday, and Tuesday and calls 3 sympathetic with 6 and 9.
 - **Colours/jewels:** Mauve, violet, and purple; blue, crimson, and rose as secondary colours; amethyst.
 - **Examples named:** George V, Abraham Lincoln, Winston Churchill, Rudyard Kipling, Darwin, Mark Twain, Voltaire, Ramsay MacDonald.
-- **Source caution:** Report these traits as Cheiro’s profile, not an assessment of a user.
 
 ## Related reading
 

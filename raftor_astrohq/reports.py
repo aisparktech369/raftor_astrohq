@@ -433,6 +433,13 @@ def numerology_html(c: dict) -> str:
 	meaning = birth.get("compound_meaning")
 	if meaning:
 		body += f'<p class="note">{escape_html(_numerology_meaning(meaning))}</p>'
+	links = profile.get("planet_links")
+	if links:
+		tl = links["tradition_links"]
+		body += (f'<h2>{escape_html(_("The planet of your number"))}</h2><p>{escape_html(links["note"])}</p>'
+				 + rp._table([[escape_html(_("Planet")), escape_html(links["planet"])], [escape_html(_("Gem the tradition links with it")), escape_html(tl["gem"])], [escape_html(_("Rudraksha")), escape_html(tl["rudraksha"])],
+							  [escape_html(_("Day")), escape_html(tl["day"])], [escape_html(_("Pooja")), escape_html(tl["pooja"])]])
+				 + f'<p class="note">{escape_html(_("This is what the tradition says about the planet, not a promise of any result. A qualified astrologer judges your birth chart first. You can see the stones, beads and poojas offered, and talk to a live astrologer, on the site."))}</p>')
 	if zodiac:
 		periods = "; ".join(f'{p["sign"]} ({p["from"]} to {p["to"]})' for p in zodiac["periods"])
 		body += f'<h2>{escape_html(_("The zodiac period"))}</h2><p>{escape_html(periods)}</p>' + (f'<p class="note">{escape_html(zodiac["note"])}</p>' if zodiac.get("note") else "")
