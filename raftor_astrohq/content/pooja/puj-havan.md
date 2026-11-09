@@ -8,7 +8,7 @@ products: ""
 texts: Rigveda, Grihya Sutras
 publish: true
 group: The rites explained
-order: 510
+order: 900
 ---
 ## At a glance
 
