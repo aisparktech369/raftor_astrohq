@@ -33,7 +33,12 @@ ACADEMY_INTRO = "Explained from the traditional texts, with sources."
 LEARN_TAB = "Learn about this bead"
 ACADEMY_LINK = "/blog"  # Frappe's own address for the blog; /academy redirects to it (websitehq hooks)
 META_LENGTH = 140  # the search description field holds this much; the full intro stays in blog_intro
-SERIES_COVERS = {"pooja": "/assets/raftor_astrohq/images/academy-pooja.png"}  # a series that sells no goods has its own picture
+SERIES_COVERS = {"pooja": "/assets/raftor_astrohq/images/academy-pooja.png"}
+GROUP_COVERS = {  # a pooja article takes the picture of its shelf (drawn for the site, kept in this app)
+	"Kamna purti": "/assets/raftor_astrohq/images/academy-lotus.png", "Samasya samadhan": "/assets/raftor_astrohq/images/academy-kalash.png",
+	"Graha shanti, the planets": "/assets/raftor_astrohq/images/academy-planets.png", "Graha shanti, doshas and yogas": "/assets/raftor_astrohq/images/academy-planets.png",
+	"The rites explained": "/assets/raftor_astrohq/images/academy-fire.png",
+}  # a series that sells no goods has its own picture
 COVER = "/files/Detailed Brown Rudraksha Seed on Cream Background60cba8.png"  # used when an article has no product picture
 
 
@@ -199,7 +204,7 @@ def _cover(item: dict, items: list[dict]) -> str:
 			image = (frappe.db.get_value("Website Item", {"item_code": code}, "website_image") or frappe.db.get_value("Item", code, "image")) if code else None
 			if image:
 				return image
-	return SERIES_COVERS.get(item["category"], COVER)
+	return GROUP_COVERS.get(item.get("group"), SERIES_COVERS.get(item["category"], COVER)) if item["category"] in SERIES_COVERS else COVER
 
 
 def _category(key: str) -> str:
