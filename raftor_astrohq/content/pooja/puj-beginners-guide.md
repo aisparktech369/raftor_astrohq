@@ -86,7 +86,7 @@ order: 10
 
 <details><summary>Does a pooja need a priest?</summary><p>No. Many families do their own daily pooja. A priest is usually asked for larger rites, such as Griha Pravesh or a havan.</p></details>
 
-<details><summary>Can a pooja be done in my name?</summary><p>Yes. The priest states your name and family line in the sankalp. Ask how it will be shared with you.</p></details>
+<details><summary>Can a pooja be done in my name?</summary><p>Yes. The priest states your name and family line in the sankalp. Ask how it will be shared with you. For how virtual and group poojas work, and how far they count, read <a href="/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count">Virtual and Group Pooja</a>.</p></details>
 
 <details><summary>Does a pooja guarantee a result?</summary><p>No. It is an act of devotion and not a guaranteed outcome.</p></details>
 

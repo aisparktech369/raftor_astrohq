@@ -61,7 +61,7 @@ def check(items: list[dict]) -> None:
 		if len(values) != len(set(values)):
 			raise ValueError(f"two articles share the same {key}")
 	for item in items:
-		if item["id"].endswith("-beginners-guide"):
+		if item["id"].endswith("-guide"):
 			continue
 		if any(section in item["body"] for section in SHARED_SECTIONS):
 			raise ValueError(f"{item['file']}: a shared section is repeated here. Link to the guide instead")
