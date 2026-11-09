@@ -44,6 +44,15 @@ order: 10
 | Prasad | The food offered is shared |
 | Kshama prarthana | Pardon is asked for any mistake |
 
+## How poojas are arranged here
+
+| Shelf | For | Examples |
+|---|---|---|
+| Home services | The occasions of a household | Griha pravesh, Satyanarayan katha, naming, first rice, a new shop or vehicle |
+| Kamna purti | A wish, by what is wished for | Love, marriage, child, wealth, health, education, career, peace, protection |
+| Samasya samadhan | A problem, by what troubles | Court case, business loss, debt, evil eye, a family or property dispute |
+| Graha shanti | The planets and doshas | Navagraha, each planet, Kaal Sarp, Pitra dosh, Sade Sati |
+
 ## When to choose a pooja
 
 | Occasion | Common choice |

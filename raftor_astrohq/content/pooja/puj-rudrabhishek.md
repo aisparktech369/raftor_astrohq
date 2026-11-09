@@ -7,8 +7,8 @@ intro: Rudrabhishek is the ritual bathing of Shiva with water and other offering
 products: ""
 texts: Yajurveda (Rudram), Shiva Purana
 publish: true
-group: By deity
-order: 120
+group: Kamna purti
+order: 210
 ---
 ## At a glance
 
@@ -18,6 +18,7 @@ order: 120
 | What | Ritual bathing of the lingam while the Rudram is recited |
 | When | Mondays, Pradosh (the thirteenth tithi), Mahashivaratri, and the month of Shravan |
 | Who | A priest, or the devotee if trained |
+| On the site | Kamna purti, for peace |
 | Not promised | Wealth, health, or a guaranteed result |
 
 ## Story and meaning

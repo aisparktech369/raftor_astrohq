@@ -7,8 +7,8 @@ intro: A havan offers ghee and herbs into a sacred fire with mantras. Agni carri
 products: ""
 texts: Rigveda, Grihya Sutras
 publish: true
-group: Rites
-order: 210
+group: The rites explained
+order: 510
 ---
 ## At a glance
 

@@ -7,8 +7,8 @@ intro: Navagraha shanti is a pooja or havan for the nine planets, done to pacify
 products: ""
 texts: Puranas, Jyotish practice
 publish: true
-group: By purpose
-order: 310
+group: Graha shanti
+order: 410
 ---
 ## At a glance
 
@@ -18,6 +18,7 @@ order: 310
 | What | A pooja or havan for the nine planets together, or for one |
 | When | When astrologers advise it, such as a difficult planetary period, or at Griha Pravesh |
 | Who | A priest |
+| On the site | Graha shanti, for the planets |
 | Not promised | Wealth, health, or a guaranteed result |
 
 ## Story and meaning
