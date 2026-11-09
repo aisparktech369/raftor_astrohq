@@ -147,6 +147,7 @@ order: 25
 
 | Read next | Why |
 |---|---|
+| [Talk to a live astrologer](/consult) | A paid one-to-one session to read your chart |
 | [The nine planets: their gem, Rudraksha bead and pooja](/blog/gemstones/the-nine-planets-their-gem-rudraksha-bead-and-pooja) | One planet at a time |
 | [Navagraha Shanti](/blog/pooja/navagraha-shanti-meaning-items-and-steps) | The pooja for the nine planets |
 | [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide) | Rudraksha, the other sacred wear |

@@ -22,10 +22,11 @@ PRODUCT_MARKER = re.compile(r"^\[\[product\s+[^\]\n]+\]\]\s*$", re.M)
 SHARED_SECTIONS = ("Identifying a genuine", "How to spot a genuine", "How to wear it", "Care and cleaning")
 REQUIRED = ("id", "category", "title", "intro", "publish")
 BLOGGER = {"short_name": "astrohq-team", "full_name": "AstroHQ Team", "bio": "Written and checked by the AstroHQ Team, from the traditional texts."}
-CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones", "pooja": "Pooja"}
+CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones", "pooja": "Pooja", "numerology": "Numerology"}
 CATEGORY_NOTES = {
 	"rudraksha": "The beads by number of faces: meaning, mantra, the traditions around each, and how to choose one.",
 	"gemstones": "Origin, treatments, the planets and stories behind each stone, and how to choose one.",
+	"numerology": "Cheiro's numbers: the birth number, the name number, the compound numbers, and how to read them with care. His doctrine, calculated by rules, never a prediction.",
 	"pooja": "Rituals explained: what each pooja is, when it is done, the items and steps, and what to ask before you book one.",
 }
 ACADEMY = "Academy"

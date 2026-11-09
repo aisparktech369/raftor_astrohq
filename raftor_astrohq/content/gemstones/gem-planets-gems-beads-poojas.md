@@ -134,6 +134,7 @@ order: 20
 | [Which gem, Rudraksha and pooja for which need](/blog/gemstones/which-gem-rudraksha-and-pooja-for-which-need) | From a need such as a career or a marriage to the planets and what is linked to them |
 | [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide) | How to buy a genuine stone |
 | [Navagraha Shanti](/blog/pooja/navagraha-shanti-meaning-items-and-steps) | The pooja for the nine planets |
+| [Talk to a live astrologer](/consult) | A paid one-to-one session to read your chart |
 
 ---
 
