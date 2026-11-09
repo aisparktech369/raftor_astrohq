@@ -97,7 +97,7 @@ order: 110
 | What the tradition says | Results are described through the planet's themes: vitality, authority, standing and the father figure |
 | How long | No fixed period in the cited texts. Practitioners commonly speak of watching for several weeks to a few months |
 | The evidence | There is no scientific evidence that a gemstone changes events. Reported effects are personal and cannot be promised |
-| Quality | The gem texts hold that a natural, clean stone of good colour, free of cracks and spots, is the one worth wearing. A lab-made, dyed or glass-filled stone is not the stone it is sold as |
+| Quality | The gem texts warn against faults such as cracks, cavities and cloudiness, and prize good colour. A lab-made, dyed or glass-filled stone is not the stone it is sold as. How a natural stone looks (size, depth of colour, cleanness) is a matter of finish |
 | Weight | Set by [your astrologer](/consult) from the chart. As a buyer, compare the price per carat |
 | If unsure | Stop wearing it if you feel uneasy and ask [your astrologer](/consult). Do not change medical care or major decisions on the strength of a gem |
 
@@ -111,6 +111,16 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Treatment in words | "Heated" and "glass-filled" are very different in value and care |
 | Origin as the report's opinion | Not the seller's say-so |
 | Weight in carats | Compare price per carat, not per ratti |
+
+## Choosing a finish: Essential, Select, Rare
+
+| Finish | Colour and cleanness | Size | Origin and paper | A good choice for |
+|---|---|---|---|---|
+| Essential | Good red, with small inclusions that show on close look | Smaller | AstroHQ certificate | A first stone, or a short period |
+| Select | Richer, more even red; cleaner to the eye | Medium | Origin stated, AstroHQ certificate | A sub-period of a year or more |
+| Rare | Vivid, even red; very clean for a ruby | Larger | Independent lab report with the lab's opinion of origin | Wearing for many years, as a keepsake |
+
+All three finishes are natural, honestly described and backed by the AstroHQ guarantee, and each is free of the serious faults the texts name. They differ in look and finish, not in what the tradition asks of a stone.
 
 [[product GEM025]]
 

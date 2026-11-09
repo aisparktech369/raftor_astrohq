@@ -112,6 +112,16 @@ Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) ad
 
 Not sure which planet is yours? Get a [free report from your birth details](/services/free-reports), or [talk to an astrologer](/consult).
 
+## Which finish to choose
+
+| Finish | What differs | A good choice for |
+|---|---|---|
+| Essential | A good natural stone, smaller, with colour and cleanness that are pleasing and honest | A first stone, or a short period |
+| Select | Richer colour, cleaner to the eye, origin stated | A sub-period of a year or more |
+| Rare | The finest we offer: vivid colour, very clean, larger, with an independent lab report | Wearing for many years, as a keepsake |
+
+All three finishes are natural, honestly described and backed by the AstroHQ guarantee. They differ in look and finish, not in what the tradition asks of a stone. Many people choose by how long they plan to keep and wear it. Your astrologer or a guide can tell you which planet's period is running, which is a different matter from the finish.
+
 ## Wearing and care
 
 | Topic | Note |
