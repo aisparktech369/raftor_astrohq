@@ -299,6 +299,7 @@ scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"]}}
 
 # The Panchang is a page group of its own: /panchang is its page (page_definitions.py).
 rfhq_page_groups = {"panchang": "Panchang", "ask": "Ask Pandit ji"}
+rfhq_window_guide = ["raftor_astrohq.agent_chat.guide"]  # (websitehq draws a round button on every page that opens the guide in a drawer)
 rfhq_product_pills = ["raftor_astrohq.products.product_pills"]  # (the pills of a group of products: websitehq asks, and draws them under the store's tiles)
 
 

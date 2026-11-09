@@ -40,3 +40,8 @@ def info(**args) -> dict:
 		"welcome": (_("Namaste, {0}. ").format(name) if name else _("Namaste. ")) + _("I am Pandit ji, an AI guide. Ask me about a bead, a stone or a pooja, and I will explain it from our Academy and show you what we offer. I cannot promise any result."),
 		"placeholder": _("Ask Pandit ji"), "notice": _("An AI guide. It explains from the Academy and cannot predict or promise results."),
 	}
+
+
+def guide() -> dict:
+	"""The site's guide, the round button on every page (websitehq's windows, hook rfhq_window_guide): where it opens, who it is, and the pages where it would only be in the way (the guide's own page, the sign-in)."""
+	return {"url": "/ask/pandit-ji", "title": _("Pandit ji"), "label": _("Ask Pandit ji"), "icon": "/files/astrohq-icon.svg", "hide_on": ["/login", "/signup", "/ask/pandit-ji"]}

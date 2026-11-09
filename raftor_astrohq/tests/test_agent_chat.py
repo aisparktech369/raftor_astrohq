@@ -74,3 +74,14 @@ class TestConversionNeedsAnAccount(TestCase):
 		for call in (lambda: update_cart("RUD005", 1), lambda: booking_api.book("SVC-14009", "2099-01-01 09:00:00", {}), lambda: shop_orders.add_event_seats("EVT-X", 1)):
 			with self.assertRaises(frappe.PermissionError):
 				call()
+
+
+class TestGuideButton(TestCase):
+	def test_the_guide_opens_the_chat_page_and_stays_out_of_the_way_on_its_own_page_and_the_sign_in(self):
+		from raftor_astrohq import agent_chat
+
+		guide = agent_chat.guide()
+		self.assertEqual(guide["url"], "/ask/pandit-ji")
+		self.assertTrue(guide["icon"].startswith("/") and guide["title"] and guide["label"])
+		self.assertIn("/ask/pandit-ji", guide["hide_on"])
+		self.assertIn("/login", guide["hide_on"])
