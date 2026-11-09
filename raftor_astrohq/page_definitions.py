@@ -70,6 +70,14 @@ def chart_page() -> dict:
 		{"key": "chart", "source": {"method": VIEW + "chart_view", "card": "Report View", "url_args": "booking,profile", "empty": _("There is no chart to show for this booking.")}, "look": TIGHT}]}
 
 
+def ask_page() -> dict:
+	"""Ask Pandit ji: a chat with the AI guide (agent_chat.py), for a signed-in person."""
+	return {"route": "ask/pandit-ji", "title": _("Ask Pandit ji"), "meta_title": _("Ask Pandit ji, our AI guide | AstroHQ"),
+		"meta_description": _("Ask about Rudraksha, gemstones and poojas. An AI guide that explains from our Academy and shows what we offer."), "login_required": False, "sections": [
+		{"key": "head", "title": _("Ask Pandit ji"), "subtitle": _("An AI guide to Rudraksha, gemstones and poojas, explained from our Academy."), "look": TIGHT},
+		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info"}}], "look": TIGHT}]}
+
+
 def panchang_page() -> dict:
 	"""The Panchang page (panchang.py), public: the panchang and the chaugharia of any day and town, and the next seven days. The address takes ?date=2026-10-24&place=<the town's id>."""
 	return {"route": "panchang", "title": _("Panchang"), "meta_title": _("Today's Panchang | AstroHQ"),
@@ -125,4 +133,5 @@ def definitions() -> list[dict]:
 			"success_redirect": _start("astrologer-credentials")}),
 		chart_page(),
 		panchang_page(),
+		ask_page(),
 	]
