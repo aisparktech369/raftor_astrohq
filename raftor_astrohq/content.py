@@ -22,7 +22,7 @@ PRODUCT_MARKER = re.compile(r"^\[\[product\s+[A-Za-z0-9_\-]+\]\]\s*$", re.M)
 SHARED_SECTIONS = ("Identifying a genuine", "How to spot a genuine", "How to wear it", "Care and cleaning")
 REQUIRED = ("id", "category", "title", "intro", "publish")
 BLOGGER = {"short_name": "astrohq-team", "full_name": "AstroHQ Team", "bio": "Written and checked by the AstroHQ Team, from the traditional texts."}
-CATEGORIES = {"rudraksha": "Rudraksha"}
+CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones"}
 ACADEMY = "Academy"
 ACADEMY_INTRO = "Explained from the traditional texts, with sources."
 LEARN_TAB = "Learn about this bead"
@@ -55,7 +55,7 @@ def check(items: list[dict]) -> None:
 		if len(values) != len(set(values)):
 			raise ValueError(f"two articles share the same {key}")
 	for item in items:
-		if item["id"] == "rud-beginners-guide":
+		if item["id"].endswith("-beginners-guide"):
 			continue
 		if any(section in item["body"] for section in SHARED_SECTIONS):
 			raise ValueError(f"{item['file']}: a shared section is repeated here. Link to the guide instead")
@@ -136,7 +136,7 @@ def sync_blog() -> int:
 			"content_type": "Markdown",
 			"content_md": item["body"],
 			"blog_intro": item["intro"],
-				"meta_image": _cover(item),
+				"meta_image": _cover(item, items),
 			"meta_description": item["intro"][:META_LENGTH],
 			"meta_title": f"{item['title']} | AstroHQ"[:60],
 			"published": 1 if item["publish"] else 0,
@@ -178,12 +178,14 @@ def _blogger():
 	return name
 
 
-def _cover(item: dict) -> str:
-	"""The picture of the article's first product, else the shared one. The Academy list shows it."""
-	for code in (item.get("products") or "").split(","):
-		image = frappe.db.get_value("Website Item", {"item_code": code.strip()}, "website_image") if code.strip() else None
-		if image:
-			return image
+def _cover(item: dict, items: list[dict]) -> str:
+	"""The picture of the article's first product; a guide with no product borrows the first picture in its own category; else the shared one. The Academy list shows it."""
+	same = [item] + [other for other in items if other["category"] == item["category"] and other is not item]
+	for article in same:
+		for code in (article.get("products") or "").split(","):
+			image = frappe.db.get_value("Website Item", {"item_code": code.strip()}, "website_image") if code.strip() else None
+			if image:
+				return image
 	return COVER
 
 

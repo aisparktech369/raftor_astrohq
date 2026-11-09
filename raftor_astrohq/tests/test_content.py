@@ -13,12 +13,12 @@ HEAD = "---\nid: {id}\ncategory: rudraksha\ntitle: {title}\nintro: x.\npublish: 
 class TestContent(TestCase):
 	def test_every_article_is_one_file(self):
 		items = content.load()
-		self.assertEqual(len(items), 16)
-		self.assertEqual(len({i["id"] for i in items}), 16)
+		self.assertEqual(len(items), 20)
+		self.assertEqual(len({i["id"] for i in items}), 20)
 
 	def test_single_mukhi_articles_do_not_repeat_the_guide(self):
 		for item in content.load():
-			if item["id"] == "rud-beginners-guide":
+			if item["id"].endswith("-beginners-guide"):
 				continue
 			for section in content.SHARED_SECTIONS:
 				self.assertNotIn(section, item["body"], item["file"])
@@ -26,8 +26,14 @@ class TestContent(TestCase):
 	def test_every_article_is_tabular(self):
 		"""Agreed with the owner: facts are tables across the series (at a glance, meaning, mantra), questions are the site's accordion."""
 		for item in content.load():
-			if item["id"] == "rud-beginners-guide":
+			if item["id"].endswith("-beginners-guide"):
 				self.assertGreaterEqual(item["body"].count("|---|"), 4, item["file"])
+				continue
+			if item["id"].startswith("gem-"):
+				self.assertIn("| Topic | Detail |", item["body"], item["file"])
+				self.assertIn("## Where it comes from\n\n| Origin | What to know |", item["body"], item["file"])
+				self.assertIn("## Natural, treated, or made", item["body"], item["file"])
+				self.assertIn("<details><summary>", item["body"], item["file"])
 				continue
 			self.assertIn("| Topic | Detail |", item["body"], item["file"])
 			self.assertEqual(item["body"].count("| Point | Detail |"), 2, item["file"])  # meaning, mantra
