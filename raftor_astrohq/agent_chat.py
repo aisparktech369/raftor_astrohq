@@ -39,6 +39,7 @@ def info(**args) -> dict:
 		**_frame(), "blueprint": agents.BLUEPRINT,
 		"welcome": (_("Hi {0}, I'm Pandit ji. ").format(name) if name else _("Hi, I'm Pandit ji. ")) + _("What would you like to know?"),
 		"placeholder": _("Ask Pandit ji"), "notice": _("AI guide. I explain from our Academy and can't predict or promise results."),
+		"talk": True, "language": "en-IN", "voice_gender": "male", "voice_word": _("Talk"),  # talk mode: speak to the guide and hear it answer
 	}
 
 
