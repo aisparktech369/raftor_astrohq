@@ -8,6 +8,7 @@ import frappe
 
 ROLE = "Pandit Ji Agent"
 USER = "pandit-ji-agent@agents.astrohq.in"
+BLUEPRINT = "pandit_ji"
 TOOLS = ["search_webshop_products", "get_webshop_product", "find_services", "get_service", "search_knowledge"]  # all read-only: the agent never books or charges, it hands the customer to the booking page
 READS = {doctype: ["read"] for doctype in ("Website Item", "Item", "Item Price", "Item Group", "Brand", "Price List", "Pricing Rule", "Website Item Group")}
 
@@ -19,3 +20,13 @@ def ensure_access() -> None:
 	from raftor_agentshq import access
 
 	access.ensure_agent_access(ROLE, USER, TOOLS, READS)
+	ensure_blueprint()
+
+
+def ensure_blueprint() -> None:
+	"""The agent's record on the site: it is switched on here, and a signed-in customer (role Customer) may talk to it. Its definition is the factory's blueprint file `pandit_ji`; no blueprint
+	type is set, so the site never writes a copy of that file over the pinned one. Nothing is changed on a record that exists, so a switch or a role staff have set stays."""
+	if frappe.db.exists("Blueprint Reference", BLUEPRINT):
+		return
+	frappe.get_doc({"doctype": "Blueprint Reference", "blueprint_id": BLUEPRINT, "title": "Pandit ji (AI guide)", "is_active": 1, "is_public": 0, "agent_role": "Customer",
+					"lifecycle_mode": "persistent", "description": "Answers from the Academy and points to products and services. Read-only; never books or charges."}).insert(ignore_permissions=True)

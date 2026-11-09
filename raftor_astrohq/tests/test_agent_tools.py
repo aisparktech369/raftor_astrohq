@@ -50,3 +50,20 @@ class TestServiceTools(TestCase):
 		self.services.GetService().execute({"title": "Griha pravesh pooja"})
 		after = frappe.db.count("Booking") if frappe.db.exists("DocType", "Booking") else 0
 		self.assertEqual(before, after)
+
+
+class TestPanditJiRecord(TestCase):
+	def tearDown(self):
+		frappe.db.rollback()
+
+	def test_the_agent_is_registered_for_signed_in_customers_only_and_left_alone_once_it_is(self):
+		from raftor_astrohq import agents
+
+		if "raftor_agentshq" not in frappe.get_installed_apps():
+			self.skipTest("AgentsHQ is not installed")
+		agents.ensure_blueprint()
+		bp = frappe.db.get_value("Blueprint Reference", agents.BLUEPRINT, ["is_active", "is_public", "agent_role", "blueprint_type"], as_dict=True)
+		self.assertEqual((bp.is_active, bp.is_public, bp.agent_role, bp.blueprint_type or ""), (1, 0, "Customer", ""))
+		frappe.db.set_value("Blueprint Reference", agents.BLUEPRINT, "is_active", 0)  # staff switch it off
+		agents.ensure_blueprint()
+		self.assertEqual(frappe.db.get_value("Blueprint Reference", agents.BLUEPRINT, "is_active"), 0)
