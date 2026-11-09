@@ -20,7 +20,7 @@ services: Mahamrityunjaya jaap Personal Pooja Blessings, Mahamrityunjaya jaap Sa
 | When | Mondays, Pradosh, Shravan, or by a priest's advice |
 | Who | A priest, or the devotee |
 | Shelf | Kamna purti, for health |
-| Not promised | Wealth, health, or a guaranteed result |
+| What it seeks | Blessings (ashirwad) for this aim. The result rests with the divine, and no one can promise it |
 
 ## Story and meaning
 

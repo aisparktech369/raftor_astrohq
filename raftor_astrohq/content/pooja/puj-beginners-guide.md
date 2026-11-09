@@ -19,6 +19,16 @@ order: 10
 | Is a result guaranteed? | No. A pooja is an act of devotion, and no result can be promised |
 | Do customs differ? | Yes. Steps, mantras and items vary by region, family and lineage |
 
+## What a pooja is, and what we are
+
+| Point | Detail |
+|---|---|
+| What it is | An act of seeking blessings (ashirwad) for an aim: a wish fulfilled (kamna purti), a trouble eased, a new beginning made well |
+| Who gives the blessing | The divine. The blessing is received, and cannot be made or bought |
+| Who performs the rite | A priest, in your name. The priest and AstroHQ are only the means (nimit) of offering it |
+| What we do | Arrange the rite, the priest and the sankalp with care, and tell you honestly what a pooja is and is not |
+| What no one can do | Promise the result. Your own effort and your faith go with the rite |
+
 ## Pooja, havan, abhishek, jaap
 
 | Name | What it is |
@@ -88,7 +98,7 @@ order: 10
 
 <details><summary>Can a pooja be done in my name?</summary><p>Yes. The priest states your name and family line in the sankalp. Ask how it will be shared with you. For how virtual and group poojas work, and how far they count, read <a href="/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count">Virtual and Group Pooja</a>.</p></details>
 
-<details><summary>Does a pooja guarantee a result?</summary><p>No. It is an act of devotion and not a guaranteed outcome.</p></details>
+<details><summary>Does a pooja guarantee a result?</summary><p>No one can promise a result. A pooja is an act of seeking blessings. The priest and AstroHQ are only the means (nimit) of offering it, and what is received rests with the divine.</p></details>
 
 To have this performed in your name, see [Book blessings](/services/events). For help choosing, [ask a guide](/consult).
 

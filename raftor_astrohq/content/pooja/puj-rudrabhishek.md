@@ -20,7 +20,7 @@ services: Rudrabhishek Personal Pooja Blessings, Rudrabhishek Samuhik Pooja Bles
 | When | Mondays, Pradosh (the thirteenth tithi), Mahashivaratri, and the month of Shravan |
 | Who | A priest, or the devotee if trained |
 | Shelf | Kamna purti, for peace |
-| Not promised | Wealth, health, or a guaranteed result |
+| What it seeks | Blessings (ashirwad) for this aim. The result rests with the divine, and no one can promise it |
 
 ## Story and meaning
 
@@ -80,7 +80,7 @@ services: Rudrabhishek Personal Pooja Blessings, Rudrabhishek Samuhik Pooja Bles
 
 <details><summary>Can women perform it?</summary><p>Practices differ by family and lineage. Ask your priest or family elders.</p></details>
 
-<details><summary>Does Rudrabhishek guarantee a result?</summary><p>No. It is an act of devotion and not a guaranteed outcome.</p></details>
+<details><summary>Does Rudrabhishek guarantee a result?</summary><p>No one can promise a result. A pooja is an act of seeking blessings. The priest and AstroHQ are only the means (nimit) of offering it, and what is received rests with the divine.</p></details>
 
 To have this performed in your name, see [Book blessings](/services/events). For help choosing, [ask a guide](/consult).
 

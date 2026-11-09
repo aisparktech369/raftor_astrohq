@@ -21,7 +21,7 @@ services: Satyanarayan katha
 | Who | The family, with a priest or an elder reading the katha |
 | Time taken | About two to three hours |
 | Shelf | Sanskar and occasions |
-| Not promised | Wealth, health, or a guaranteed result |
+| What it seeks | Blessings (ashirwad) for this aim. The result rests with the divine, and no one can promise it |
 
 ## Story and meaning
 
@@ -71,7 +71,7 @@ services: Satyanarayan katha
 
 <details><summary>Can it be done at home?</summary><p>Yes. It is among the most common home poojas, with a priest or an elder reading the katha.</p></details>
 
-<details><summary>Does it guarantee a result?</summary><p>No. It is an act of devotion and not a guaranteed outcome.</p></details>
+<details><summary>Does it guarantee a result?</summary><p>No one can promise a result. A pooja is an act of seeking blessings. The priest and AstroHQ are only the means (nimit) of offering it, and what is received rests with the divine.</p></details>
 
 To have this performed in your name, see [Book blessings](/services/events). For help choosing, [ask a guide](/consult).
 

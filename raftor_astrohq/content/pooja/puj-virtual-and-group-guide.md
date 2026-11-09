@@ -36,7 +36,7 @@ order: 20
 | Does a virtual pooja count? | Many traditions hold that it does when the sankalp names you and the priest is trained. Some teachers prefer presence. No one can measure it |
 | Is it the same as being there? | Not quite. Presence is your own act. Joining live, fasting, and chanting along are ways to take part |
 | Does a group pooja give the same result as a personal one? | Sellers say yes. No text cited here says so. It is a valid act of worship and a share in a common prayer. A personal sankalp is for a personal matter |
-| Is a result guaranteed? | No. Neither kind can promise one |
+| Is a result guaranteed? | No. A pooja seeks blessings, and the priest is only the means (nimit). What is received rests with the divine, and neither kind can promise a result |
 | Is there evidence? | There is no scientific evidence of results from any pooja. It is an act of faith and devotion |
 
 ## Which to choose

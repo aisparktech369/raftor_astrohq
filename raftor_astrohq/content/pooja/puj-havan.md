@@ -19,7 +19,7 @@ order: 900
 | Also called | Homa, yajna |
 | Who | A priest, with the family seated around |
 | Time taken | One to three hours, or longer for large havans |
-| Not promised | Wealth, health, or a guaranteed result |
+| What it seeks | Blessings (ashirwad) for this aim. The result rests with the divine, and no one can promise it |
 
 ## Story and meaning
 
@@ -77,7 +77,7 @@ order: 900
 
 <details><summary>Can a havan be done in my name?</summary><p>Yes. The priest states your name and family line in the sankalp. Ask how it will be shared with you.</p></details>
 
-<details><summary>Does a havan guarantee a result?</summary><p>No. It is an act of devotion and not a guaranteed outcome.</p></details>
+<details><summary>Does a havan guarantee a result?</summary><p>No one can promise a result. A pooja is an act of seeking blessings. The priest and AstroHQ are only the means (nimit) of offering it, and what is received rests with the divine.</p></details>
 
 To have this performed in your name, see [Book blessings](/services/events). For help choosing, [ask a guide](/consult).
 

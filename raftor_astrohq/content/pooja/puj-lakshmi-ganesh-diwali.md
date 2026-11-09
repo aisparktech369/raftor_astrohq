@@ -20,7 +20,7 @@ services: Kuber-Lakshmi pooja Personal Pooja Blessings, Kuber-Lakshmi pooja Samu
 | Who | The household, led by the elders, or a priest |
 | Time taken | About one to two hours |
 | Shelf | Sanskar and occasions, with the festival poojas |
-| Not promised | Wealth, health, or a guaranteed result |
+| What it seeks | Blessings (ashirwad) for this aim. The result rests with the divine, and no one can promise it |
 
 ## Story and meaning
 
@@ -85,7 +85,7 @@ services: Kuber-Lakshmi pooja Personal Pooja Blessings, Kuber-Lakshmi pooja Samu
 
 <details><summary>Can it be done at home without a priest?</summary><p>Yes. Many families do it themselves. A priest is asked when the family wants the full procedure.</p></details>
 
-<details><summary>Does the pooja guarantee wealth?</summary><p>No. It is an act of devotion and not a guaranteed outcome.</p></details>
+<details><summary>Does the pooja guarantee wealth?</summary><p>No one can promise a result. A pooja is an act of seeking blessings. The priest and AstroHQ are only the means (nimit) of offering it, and what is received rests with the divine.</p></details>
 
 To have this performed in your name, see [Book blessings](/services/events). For help choosing, [ask a guide](/consult).
 

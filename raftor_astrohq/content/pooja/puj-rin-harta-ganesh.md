@@ -20,7 +20,7 @@ services: Rin-harta Ganesh pooja Personal Pooja Blessings, Rin-harta Ganesh pooj
 | When | Wednesdays and Chaturthi, in common practice |
 | Who | The person concerned, or a priest on their behalf |
 | Shelf | Samasya samadhan, for debt |
-| Not promised | Wealth, health, or a guaranteed result |
+| What it seeks | Blessings (ashirwad) for this aim. The result rests with the divine, and no one can promise it |
 
 ## Story and meaning
 

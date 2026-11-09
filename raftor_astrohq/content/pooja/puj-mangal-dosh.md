@@ -20,7 +20,7 @@ order: 610
 | Who advises it | [An astrologer](/consult), from the birth chart |
 | Time taken | One to three hours, more for large rites |
 | Shelf | Graha shanti, doshas and yogas |
-| Not promised | Wealth, health, or a guaranteed result |
+| What it seeks | Blessings (ashirwad) for this aim. The result rests with the divine, and no one can promise it |
 
 ## Story and meaning
 
@@ -76,7 +76,7 @@ order: 610
 
 <details><summary>Is Kumbh vivah needed?</summary><p>Some astrologers advise a symbolic marriage. See the Kumbh vivah article.</p></details>
 
-<details><summary>Does it guarantee a result?</summary><p>No. It is an act of devotion and not a guaranteed outcome.</p></details>
+<details><summary>Does it guarantee a result?</summary><p>No one can promise a result. A pooja is an act of seeking blessings. The priest and AstroHQ are only the means (nimit) of offering it, and what is received rests with the divine.</p></details>
 
 To have this performed in your name, see [Book blessings](/services/events). For help choosing, [ask a guide](/consult).
 

@@ -20,7 +20,7 @@ services: Navagraha shanti pooja Personal Pooja Blessings, Navagraha shanti pooj
 | When | When astrologers advise it, such as a difficult planetary period, or at Griha Pravesh |
 | Who | A priest |
 | Shelf | Graha shanti, the planets |
-| Not promised | Wealth, health, or a guaranteed result |
+| What it seeks | Blessings (ashirwad) for this aim. The result rests with the divine, and no one can promise it |
 
 ## Story and meaning
 
@@ -84,7 +84,7 @@ services: Navagraha shanti pooja Personal Pooja Blessings, Navagraha shanti pooj
 
 <details><summary>Is it the same as wearing a gemstone?</summary><p>No. A shanti is a pooja for the planet. A gemstone is worn in daily life. Some families do both, on <a href="/consult">an astrologer's</a> advice. See the Gemstones series for the gem of each planet.</p></details>
 
-<details><summary>Does it guarantee a result?</summary><p>No. It is an act of devotion and not a guaranteed outcome.</p></details>
+<details><summary>Does it guarantee a result?</summary><p>No one can promise a result. A pooja is an act of seeking blessings. The priest and AstroHQ are only the means (nimit) of offering it, and what is received rests with the divine.</p></details>
 
 To have this performed in your name, see [Book blessings](/services/events). For help choosing, [ask a guide](/consult).
 
