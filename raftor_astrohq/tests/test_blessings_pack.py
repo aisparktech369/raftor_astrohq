@@ -27,14 +27,12 @@ class TestBlessingsPack(TestCase):
 		for e in self.entries:
 			if e["shelf"][1] == "Home services":
 				self.assertEqual((e["kind"], e["on_request"], e["at_customer"], e.get("dated")), ("Timed service", True, True, None), e["name"])
-				self.assertEqual((e["price"], e["offer_price"]), (2100, 1100), e["name"])
 			else:
 				self.assertTrue(e["dated"], e["name"])
-				self.assertEqual(e["prices"], {"Shared": {"price": 501, "offer": 101}, "Personalised": {"price": 2100, "offer": 1100}}, e["name"])
 
-	def test_every_offer_is_below_its_price_and_the_words_promise_no_result(self):
+	def test_the_pack_carries_no_price_and_the_words_promise_no_result(self):
 		for e in self.entries:
-			for p in ([e] if "price" in e else e["prices"].values()):
-				self.assertLess(p.get("offer_price", p.get("offer")), p["price"], e["name"])
+			for key in ("price", "offer_price", "prices"):
+				self.assertNotIn(key, e, f"{e['name']}: a price is set in Desk, never in the pack")
 			for word in ("guarantee", "ensure", "100%", "certain"):
 				self.assertNotIn(word, e["description"].lower(), e["name"])
