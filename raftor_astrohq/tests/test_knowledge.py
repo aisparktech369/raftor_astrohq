@@ -31,3 +31,14 @@ class TestKnowledge(TestCase):
 		ids = {item["id"] for item in content.load()}
 		for item in json.loads((Path(knowledge.__file__).parent / "rag_questions.json").read_text()):
 			self.assertTrue(set(item["expect"]) <= ids, item["q"])
+
+
+	def test_a_piece_carries_the_products_and_services_of_the_article_and_of_those_it_points_to(self):
+		rows = {r["doc_name"]: json.loads(r["meta"]) for r in knowledge.pieces()}
+		self.assertEqual(rows["gem-emerald"]["products"], ["GEM012"])
+		self.assertTrue(set(rows["gem-emerald"]["related_products"]) <= {"RUD003", "RUD004", "RUD005"} | {c for m in rows.values() for c in m["products"]})
+		self.assertNotIn("GEM012", rows["gem-emerald"]["related_products"])  # its own is not repeated
+		self.assertIn("Rudrabhishek Personal Pooja Blessings", rows["puj-rudrabhishek"]["services"])
+		for meta in rows.values():
+			self.assertLessEqual(len(meta["related_products"]), knowledge.RELATED_MAX)
+			self.assertLessEqual(len(meta["related_services"]), knowledge.RELATED_MAX)
