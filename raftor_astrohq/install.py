@@ -47,6 +47,9 @@ def sync_written_content():
 		from raftor_agentshq.install import switch_on_rag
 
 		switch_on_rag()
+		from raftor_astrohq import agents
+
+		agents.ensure_access()
 
 
 def seed_topics_and_wishes():
