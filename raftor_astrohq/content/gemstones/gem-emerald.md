@@ -110,15 +110,15 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Origin as the report's opinion | Not the seller's say-so |
 | Care instructions | Heat, steam, solvents and ultrasonic cleaners can damage a filled stone |
 
-## Choosing a finish: Essential, Select, Rare
+## How AstroHQ grades Emerald
 
-| Finish | Colour and cleanness | Size | Origin and paper | A good choice for |
-|---|---|---|---|---|
-| Essential | Pleasing green, with the natural inclusions emerald has | Smaller | AstroHQ certificate, oil stated | A first stone, or a short period |
-| Select | Deeper green, fewer visible inclusions | Medium | Origin stated, AstroHQ certificate | A sub-period of a year or more |
-| Rare | Vivid green, clean for an emerald, minor oil | Larger | Independent lab report with origin and oil level | Wearing for many years, as a keepsake |
+| Grade | Colour | Clarity | Treatment | Origin | Paper |
+|---|---|---|---|---|---|
+| Essential | Pleasing green | The natural inclusions of emerald, none that weaken the stone | Oiled, level stated | Origin not graded | AstroHQ certificate |
+| Select | Deep, even green | Fewer visible inclusions | Oiled, level stated | Origin stated | AstroHQ certificate |
+| Rare | Vivid green | Clean for an emerald | Minor or no oil, stated | Origin as an independent lab's opinion | Independent lab report |
 
-All three finishes are natural, honestly described and backed by the AstroHQ guarantee, and each is free of the serious faults the texts name. They differ in look and finish, not in what the tradition asks of a stone.
+Every grade is a natural emerald, correctly named, free of the serious faults the gem texts name (cracks, cavities, cloudiness), with any treatment told before you buy, and backed by the AstroHQ guarantee. The grades differ in what the eye sees and in the paper that comes with the stone.
 
 [[product GEM012]]
 

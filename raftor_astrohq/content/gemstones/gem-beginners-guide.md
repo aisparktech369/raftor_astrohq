@@ -112,15 +112,19 @@ Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) ad
 
 Not sure which planet is yours? Get a [free report from your birth details](/services/free-reports), or [talk to an astrologer](/consult).
 
-## Which finish to choose
+## How AstroHQ grades a stone
 
-| Finish | What differs | A good choice for |
-|---|---|---|
-| Essential | A good natural stone, smaller, with colour and cleanness that are pleasing and honest | A first stone, or a short period |
-| Select | Richer colour, cleaner to the eye, origin stated | A sub-period of a year or more |
-| Rare | The finest we offer: vivid colour, very clean, larger, with an independent lab report | Wearing for many years, as a keepsake |
+| What we check | Why it matters |
+|---|---|
+| Species and variety | The stone is what its name says, and the report says so in the same words |
+| Natural or made | Only natural stones are sold as natural. Lab-made stones are named as lab-made |
+| Treatment | Heated, oiled, filled or diffused is told before you buy, in plain words |
+| Colour and clarity | Graded by eye and instrument. A stone with cracks, cavities or cloudiness is not sold as a gem |
+| Origin | Stated only where a lab can give it, and given as the lab's opinion |
+| Paper | An AstroHQ certificate on every stone, and an independent lab report on the highest grade |
+| Weight | Measured in carats and ratti, and checked against the paper |
 
-All three finishes are natural, honestly described and backed by the AstroHQ guarantee. They differ in look and finish, not in what the tradition asks of a stone. Many people choose by how long they plan to keep and wear it. Your astrologer or a guide can tell you which planet's period is running, which is a different matter from the finish.
+Every stone is graded the same way, and the grade is on its page. The AstroHQ guarantee stands behind the stone being what we describe.
 
 ## Wearing and care
 

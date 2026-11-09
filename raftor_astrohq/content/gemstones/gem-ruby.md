@@ -112,15 +112,15 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Origin as the report's opinion | Not the seller's say-so |
 | Weight in carats | Compare price per carat, not per ratti |
 
-## Choosing a finish: Essential, Select, Rare
+## How AstroHQ grades Ruby
 
-| Finish | Colour and cleanness | Size | Origin and paper | A good choice for |
-|---|---|---|---|---|
-| Essential | Good red, with small inclusions that show on close look | Smaller | AstroHQ certificate | A first stone, or a short period |
-| Select | Richer, more even red; cleaner to the eye | Medium | Origin stated, AstroHQ certificate | A sub-period of a year or more |
-| Rare | Vivid, even red; very clean for a ruby | Larger | Independent lab report with the lab's opinion of origin | Wearing for many years, as a keepsake |
+| Grade | Colour | Clarity | Treatment | Origin | Paper |
+|---|---|---|---|---|---|
+| Essential | Good red, even enough to the eye | Small inclusions visible on close look | Heated, stated | Origin not graded | AstroHQ certificate |
+| Select | Rich, even red | Clean to the eye | Heated, stated | Origin stated | AstroHQ certificate |
+| Rare | Vivid, even red | Very clean for a ruby | Untreated where possible, otherwise heated and stated | Origin as an independent lab's opinion | Independent lab report |
 
-All three finishes are natural, honestly described and backed by the AstroHQ guarantee, and each is free of the serious faults the texts name. They differ in look and finish, not in what the tradition asks of a stone.
+Every grade is a natural ruby, correctly named, free of the serious faults the gem texts name (cracks, cavities, cloudiness), with any treatment told before you buy, and backed by the AstroHQ guarantee. The grades differ in what the eye sees and in the paper that comes with the stone.
 
 [[product GEM025]]
 

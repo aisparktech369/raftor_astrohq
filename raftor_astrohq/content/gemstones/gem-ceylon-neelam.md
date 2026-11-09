@@ -111,15 +111,15 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Treatment in words | Heated, diffused and filled differ greatly in value |
 | Weight in carats | Compare price per carat, not per ratti |
 
-## Choosing a finish: Essential, Select, Rare
+## How AstroHQ grades Neelam
 
-| Finish | Colour and cleanness | Size | Origin and paper | A good choice for |
-|---|---|---|---|---|
-| Essential | Good blue, lighter or a little uneven in colour | Smaller | AstroHQ certificate, heating stated | A first stone, or a short period |
-| Select | Richer, more even blue; cleaner to the eye | Medium | Origin stated, AstroHQ certificate | A sub-period of a year or more |
-| Rare | Deep, even blue; very clean | Larger | Independent lab report with origin and heating | Wearing for many years, as a keepsake |
+| Grade | Colour | Clarity | Treatment | Origin | Paper |
+|---|---|---|---|---|---|
+| Essential | Good blue, a little lighter or uneven | Small inclusions visible on close look | Heated, stated | Origin not graded | AstroHQ certificate |
+| Select | Rich, even blue | Clean to the eye | Heated, stated | Origin stated | AstroHQ certificate |
+| Rare | Deep, even blue | Very clean | Untreated where possible, otherwise heated and stated | Origin as an independent lab's opinion | Independent lab report |
 
-All three finishes are natural, honestly described and backed by the AstroHQ guarantee, and each is free of the serious faults the texts name. They differ in look and finish, not in what the tradition asks of a stone.
+Every grade is a natural neelam, correctly named, free of the serious faults the gem texts name (cracks, cavities, cloudiness), with any treatment told before you buy, and backed by the AstroHQ guarantee. The grades differ in what the eye sees and in the paper that comes with the stone.
 
 [[product GEM008]]
 
