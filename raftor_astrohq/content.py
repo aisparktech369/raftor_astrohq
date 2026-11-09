@@ -188,11 +188,12 @@ def _blogger():
 
 
 def _cover(item: dict, items: list[dict]) -> str:
-	"""The picture of the article's first product; a guide with no product borrows the first picture in its own category; else the shared one. The Academy list shows it."""
+	"""The picture of the article's first product (the shop entry's, else the item's own); a guide with no product borrows the first picture in its own category; else the shared one. The Academy list shows it."""
 	same = [item] + [other for other in items if other["category"] == item["category"] and other is not item]
 	for article in same:
 		for code in (article.get("products") or "").split(","):
-			image = frappe.db.get_value("Website Item", {"item_code": code.strip()}, "website_image") if code.strip() else None
+			code = code.strip()
+			image = (frappe.db.get_value("Website Item", {"item_code": code}, "website_image") or frappe.db.get_value("Item", code, "image")) if code else None
 			if image:
 				return image
 	return COVER
