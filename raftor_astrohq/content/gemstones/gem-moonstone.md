@@ -108,6 +108,16 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Species in words | Moonstone, or rainbow moonstone (labradorite) |
 | Care | Soft with cleavage. Avoid knocks and ultrasonic cleaners |
 
+## How AstroHQ grades Moonstone
+
+| Grade | Sheen | Clarity | Treatment | Origin | Paper |
+|---|---|---|---|---|---|
+| Budget | A soft white sheen | Small marks you can see up close | Untreated | Not stated | AstroHQ certificate |
+| Standard | A clear blue sheen | Clean to the eye | Untreated | Stated by us | AstroHQ certificate |
+| Premium | A strong, clear blue sheen | Very clean | Untreated | Confirmed by an independent lab | Independent lab report |
+
+Every grade is a natural moonstone where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
+
 [[product GEM019]]
 
 For where gemstones come from, the names that cause confusion and what a report should say, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).

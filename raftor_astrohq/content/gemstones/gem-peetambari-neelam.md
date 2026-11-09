@@ -100,6 +100,16 @@ The stories and rules above are traditions, told as they are told. They are not 
 | What the seller means by the name | Ask in writing, as the term has no fixed meaning |
 | Weight in carats | Compare price per carat, not per ratti |
 
+## How AstroHQ grades Peetambari Neelam
+
+| Grade | Colour | Clarity | Treatment | Origin | Paper |
+|---|---|---|---|---|---|
+| Budget | Two colours, a little uneven | Small marks you can see up close | Heated (we tell you) | Not stated | AstroHQ certificate |
+| Standard | Two clear colours | Clean to the eye | Heated (we tell you) | Stated by us | AstroHQ certificate |
+| Premium | Two clear colours, well divided | Very clean | Untreated where possible, or heated (we tell you) | Confirmed by an independent lab | Independent lab report |
+
+Every grade is a natural sapphire sold under this trade name where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone. The name is a trade name. The report's own wording for the stone is given with the grade.
+
 [[product GEM023]]
 
 For where gemstones come from, the names that cause confusion and what a report should say, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).
