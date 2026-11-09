@@ -148,6 +148,12 @@ class TestAsking(AstroTestCase):
 		self.assertEqual(out["compatibility"]["total_score"], 21)
 		self.assertEqual(web.call_args.kwargs["json"]["payload"]["birth_data_2"]["year"], 1983)
 
+	def test_numerology_sends_only_the_day_the_month_and_the_name_asked_for_and_no_birth_details(self):
+		with asking(good({"status": "success", "opcode": "NUMEROLOGY", "data": {"birth": {"number": 8}}})) as web:
+			out = astrology.numerology(day=26, name="John Smith")
+		self.assertEqual(out["birth"]["number"], 8)
+		self.assertEqual(web.call_args.kwargs["json"]["payload"], {"opcode": "NUMEROLOGY", "numerology": {"day": 26, "name": "John Smith"}})
+
 	def test_the_operation_defaults_to_the_short_chart(self):
 		with asking(good()) as web:
 			astrology.chart(BORN)

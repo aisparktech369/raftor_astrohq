@@ -54,6 +54,7 @@ name in the hub's API Registry (`astrology`, Approved and Active; set to REST if
 | `DASHA_CALC`, `ANNUAL_CALC`, `TRANSIT_CALC` | dasha systems, the yearly chart, transits |
 | `PANCHANGA` | tithi, nakshatra, yoga, karana, weekday and its lord, sunrise, sunset, lagna |
 | `KP_SYSTEM` | KP planets, cusps, lords, significators |
+| `NUMEROLOGY` (`astrology.numerology(day, month, name)`) | Cheiro's numerology by code, no birth time or place: birth number from the day with its profile and compound, the zodiac period (overlaps and cusps flagged), the name number word by word with every step. What the numbers mean is Cheiro's account, labelled as such. Service 1.5.0 |
 
 A chart is made from **numbers only**: year, month, day, hour, minute, second, latitude, longitude and the time zone offset (hours east of
 Greenwich on that date and place; +5.5 for India, +1 for London in summer 1972). Nothing else is sent: not the name, not the place's name.

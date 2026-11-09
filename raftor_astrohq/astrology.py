@@ -131,6 +131,13 @@ def chart(birth: dict, opcode: str = "SUPER_BASIC", partner: dict | None = None)
 	return _ask(payload)
 
 
+def numerology(day: int | None = None, month: int | None = None, name: str | None = None) -> dict:
+	"""Cheiro's numerology, calculated by the engine (opcode NUMEROLOGY): the birth number from the day, the zodiac period when the month is given, the name number
+	from a Latin spelling. It needs no birth time or place. The sums are the engine's: a language model never counts letters. Raises like `chart`."""
+	asked = {key: value for key, value in (("day", day), ("month", month), ("name", name)) if value not in (None, "")}
+	return _ask({"opcode": "NUMEROLOGY", "numerology": asked})
+
+
 def _sendable(birth: dict) -> dict:
 	if not isinstance(birth, dict):
 		raise AstrologyRefused(_("The birth details must be a set of numbers: year, month, day, hour, minute, second, latitude, longitude and time zone."))
