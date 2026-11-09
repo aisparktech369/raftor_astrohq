@@ -8,7 +8,7 @@ products: ""
 services: Chandra graha shanti pooja Personal Pooja Blessings, Chandra graha shanti pooja Samuhik Pooja Blessings
 texts: Puranas, Jyotish practice
 publish: true
-group: Graha shanti: the planets
+group: Graha shanti, the planets
 order: 430
 ---
 ## At a glance

@@ -8,7 +8,7 @@ products: ""
 services: Shani graha shanti havan Personal Pooja Blessings, Shani graha shanti havan Samuhik Pooja Blessings
 texts: Puranas, Jyotish practice
 publish: true
-group: Graha shanti: the planets
+group: Graha shanti, the planets
 order: 480
 ---
 ## At a glance

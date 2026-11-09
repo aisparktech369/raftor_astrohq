@@ -8,7 +8,7 @@ products: ""
 services: Mangal graha shanti pooja Personal Pooja Blessings, Mangal graha shanti pooja Samuhik Pooja Blessings
 texts: Puranas, Jyotish practice
 publish: true
-group: Graha shanti: the planets
+group: Graha shanti, the planets
 order: 440
 ---
 ## At a glance

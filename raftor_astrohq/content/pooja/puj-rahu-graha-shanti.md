@@ -8,7 +8,7 @@ products: ""
 services: Rahu graha shanti pooja Personal Pooja Blessings, Rahu graha shanti pooja Samuhik Pooja Blessings
 texts: Puranas, Jyotish practice
 publish: true
-group: Graha shanti: the planets
+group: Graha shanti, the planets
 order: 490
 ---
 ## At a glance
