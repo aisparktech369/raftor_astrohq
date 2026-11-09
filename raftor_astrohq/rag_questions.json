@@ -38,5 +38,13 @@
  {"q": "Pooja for Mahamrityunjaya for good health and long life", "expect": ["puj-maha-mrityunjaya", "puj-birthday-ayushya-havan"]},
  {"q": "What is Navagraha shanti?", "expect": ["puj-navagraha-shanti"]},
  {"q": "What happens at a mundan sanskar?", "expect": ["puj-mundan"]},
- {"q": "Pooja to remove obstacles in work, karya badha", "expect": ["puj-karya-badha-nivaran", "puj-ganesh-karya-siddhi"]}
+ {"q": "Pooja to remove obstacles in work, karya badha", "expect": ["puj-karya-badha-nivaran", "puj-ganesh-karya-siddhi"]},
+ {"q": "I m running sade sati, what can help?", "expect": ["puj-sade-sati", "gem-which-for-which-need"]},
+ {"q": "Which gemstone is good for career and job?", "expect": ["gem-which-for-which-need"]},
+ {"q": "Which rudraksha for Saturn?", "expect": ["gem-planets-gems-beads-poojas", "gem-which-for-which-need"]},
+ {"q": "Which rudraksha and stone for the Sun?", "expect": ["gem-planets-gems-beads-poojas"]},
+ {"q": "Gemstone or pooja for business and a new shop", "expect": ["gem-which-for-which-need", "puj-dukan-office-opening"]},
+ {"q": "What helps with marriage and finding a partner?", "expect": ["gem-which-for-which-need", "puj-gauri-shankar-vivah"]},
+ {"q": "Gemstone for peace of mind", "expect": ["gem-which-for-which-need"]},
+ {"q": "Which gem, rudraksha and pooja for Kaal Sarp dosha?", "expect": ["gem-which-for-which-need", "puj-kaal-sarp"]}
 ]
