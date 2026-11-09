@@ -372,5 +372,119 @@
   "expect": [
    "num-planet-8"
   ]
+ },
+ {
+  "q": "What does a snake mean in a dream?",
+  "expect": [
+   "dr-animals",
+   "dr-core",
+   "dr-swapna"
+  ]
+ },
+ {
+  "q": "Why do I keep dreaming that I am being chased?",
+  "expect": [
+   "dr-scenarios",
+   "dr-archetypes"
+  ]
+ },
+ {
+  "q": "What does falling in a dream mean?",
+  "expect": [
+   "dr-scenarios",
+   "dr-actions"
+  ]
+ },
+ {
+  "q": "I dreamed a relative died. Does that mean it will happen?",
+  "expect": [
+   "dr-safety"
+  ]
+ },
+ {
+  "q": "What does the Agni Purana say about dreaming of drowning in a river?",
+  "expect": [
+   "dr-agni"
+  ]
+ },
+ {
+  "q": "What is the Indian meaning of dreams?",
+  "expect": [
+   "dr-lenses",
+   "dr-agni",
+   "dr-ayurveda",
+   "dr-swapna"
+  ]
+ },
+ {
+  "q": "Which dream time is most likely to come true in the Indian tradition?",
+  "expect": [
+   "dr-timing",
+   "dr-agni"
+  ]
+ },
+ {
+  "q": "What remedy does the tradition give for a bad dream?",
+  "expect": [
+   "dr-agni",
+   "dr-ayurveda"
+  ]
+ },
+ {
+  "q": "What is the DREAM method of reading a dream?",
+  "expect": [
+   "dr-method"
+  ]
+ },
+ {
+  "q": "What are the seven kinds of dreams in Ayurveda?",
+  "expect": [
+   "dr-ayurveda"
+  ]
+ },
+ {
+  "q": "Do dreams on a full moon night mean something?",
+  "expect": [
+   "dr-timing"
+  ]
+ },
+ {
+  "q": "I have frightening nightmares often, should I worry?",
+  "expect": [
+   "dr-safety"
+  ]
+ },
+ {
+  "q": "What does dreaming of a temple mean?",
+  "expect": [
+   "dr-spiritual",
+   "dr-places"
+  ]
+ },
+ {
+  "q": "Will my dreams be saved or remembered?",
+  "expect": [
+   "dr-safety"
+  ]
+ },
+ {
+  "q": "What does dreaming of a wedding mean?",
+  "expect": [
+   "dr-scenarios",
+   "dr-actions",
+   "dr-swapna"
+  ]
+ },
+ {
+  "q": "What do the Shadow and the Wise Guide mean in dreams?",
+  "expect": [
+   "dr-archetypes"
+  ]
+ },
+ {
+  "q": "What does dreaming of crying or fear mean?",
+  "expect": [
+   "dr-emotions"
+  ]
  }
 ]

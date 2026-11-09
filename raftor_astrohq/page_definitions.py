@@ -86,6 +86,14 @@ def numerologist_page() -> dict:
 		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info", "static_args": '{"agent": "numerologist"}'}}], "look": TIGHT}]}
 
 
+def dream_guide_page() -> dict:
+	"""Talk to the dream guide: a chat with the third AI guide (agent_chat.py, the card's fixed argument says which agent)."""
+	return {"route": "ask/dream-guide", "title": _("Talk about a dream"), "meta_title": _("Talk about a dream with our dream guide | AstroHQ"),
+		"meta_description": _("Tell a dream and explore what it might mean to you, with the traditions labelled. An AI guide that explains from our Academy and predicts nothing."), "login_required": False, "sections": [
+		{"key": "head", "title": _("Talk about a dream"), "subtitle": _("Tell a dream and explore what it might mean to you, one question at a time."), "look": TIGHT},
+		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info", "static_args": '{"agent": "dream_guide"}'}}], "look": TIGHT}]}
+
+
 def panchang_page() -> dict:
 	"""The Panchang page (panchang.py), public: the panchang and the chaugharia of any day and town, and the next seven days. The address takes ?date=2026-10-24&place=<the town's id>."""
 	return {"route": "panchang", "title": _("Panchang"), "meta_title": _("Today's Panchang | AstroHQ"),
@@ -143,4 +151,5 @@ def definitions() -> list[dict]:
 		panchang_page(),
 		ask_page(),
 		numerologist_page(),
+		dream_guide_page(),
 	]

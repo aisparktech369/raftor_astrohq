@@ -120,3 +120,16 @@ class TestNumerologyGuide(TestCase):
 		page = page_definitions.numerologist_page()
 		self.assertEqual(page["route"], "ask/numerologist")
 		self.assertIn("numerologist", page["sections"][1]["cards"][0]["values"]["static_args"])
+
+
+class TestDreamGuide(TestCase):
+	def test_the_card_can_ask_for_the_dream_guide_and_its_page_and_words_are_its_own(self):
+		from raftor_astrohq import agent_chat, agents, page_definitions
+
+		self.assertEqual(agent_chat._blueprint_of({"agent": "dream_guide"}), "dream_guide")
+		self.assertEqual(agent_chat._frame("dream_guide")["title"], "Dream guide")
+		self.assertEqual(agent_chat._words("dream_guide")["route"], "dream-guide")
+		self.assertEqual(agents.AGENTS["dream_guide"]["tools"], ["search_knowledge"])
+		page = page_definitions.dream_guide_page()
+		self.assertEqual(page["route"], "ask/dream-guide")
+		self.assertIn("dream_guide", page["sections"][1]["cards"][0]["values"]["static_args"])

@@ -15,8 +15,10 @@ READS = {doctype: ["read"] for doctype in ("Website Item", "Item", "Item Price",
 
 # The numerology guide (Cheiro's numerology, from the Academy's Numerology series; the numbers come from the engine through calculate_numerology). Same kind of agent, its own user and its own tools.
 NUMEROLOGIST = {"role": "Numerology Guide Agent", "user": "numerology-guide-agent@agents.astrohq.in", "blueprint": "numerologist", "title": "Numerology guide (AI)",
-				"tools": ["search_knowledge", "calculate_numerology", "find_services", "get_service"], "reads": {}}
-AGENTS = {BLUEPRINT: {"role": ROLE, "user": USER, "blueprint": BLUEPRINT, "title": "Pandit ji (AI guide)", "tools": TOOLS, "reads": READS}, NUMEROLOGIST["blueprint"]: NUMEROLOGIST}
+				"tools": ["search_knowledge", "calculate_numerology", "find_services", "get_service", "search_webshop_products", "get_webshop_product"], "reads": READS}
+# The dream guide (dreams read as personal stories, from the Academy's Dreams series; each source labelled). No tool but the Academy search.
+DREAM_GUIDE = {"role": "Dream Guide Agent", "user": "dream-guide-agent@agents.astrohq.in", "blueprint": "dream_guide", "title": "Dream guide (AI)", "tools": ["search_knowledge"], "reads": {}}
+AGENTS = {BLUEPRINT: {"role": ROLE, "user": USER, "blueprint": BLUEPRINT, "title": "Pandit ji (AI guide)", "tools": TOOLS, "reads": READS}, NUMEROLOGIST["blueprint"]: NUMEROLOGIST, DREAM_GUIDE["blueprint"]: DREAM_GUIDE}
 
 
 def ensure_access() -> None:
@@ -34,7 +36,8 @@ def ensure_blueprint() -> None:
 	"""The agent's record on the site: it is switched on here, and a signed-in customer (role Customer) may talk to it. Its definition is the factory's blueprint file `pandit_ji`; no blueprint
 	type is set, so the site never writes a copy of that file over the pinned one. Nothing is changed on a record that exists, so a switch or a role staff have set stays."""
 	for blueprint, title, description in ((BLUEPRINT, "Pandit ji (AI guide)", "Answers from the Academy and points to products and services. Read-only; never books or charges."),
-										  (NUMEROLOGIST["blueprint"], NUMEROLOGIST["title"], "Explains Cheiro's numerology from the Academy, with the numbers worked out by the engine. Read-only; never books or charges.")):
+										  (NUMEROLOGIST["blueprint"], NUMEROLOGIST["title"], "Explains Cheiro's numerology from the Academy, with the numbers worked out by the engine. Read-only; never books or charges."),
+										  (DREAM_GUIDE["blueprint"], DREAM_GUIDE["title"], "Explores a dream as a personal story from the Academy's Dreams series, each source labelled. Read-only; never predicts, books or charges.")):
 		if frappe.db.exists("Blueprint Reference", blueprint):
 			continue
 		frappe.get_doc({"doctype": "Blueprint Reference", "blueprint_id": blueprint, "title": title, "is_active": 1, "is_public": 0, "agent_role": "Customer",

@@ -14,8 +14,8 @@ HEAD = "---\nid: {id}\ncategory: rudraksha\ntitle: {title}\nintro: x.\npublish: 
 class TestContent(TestCase):
 	def test_every_article_is_one_file(self):
 		items = content.load()
-		self.assertEqual(len(items), 128)
-		self.assertEqual(len({i["id"] for i in items}), 128)
+		self.assertEqual(len(items), 145)
+		self.assertEqual(len({i["id"] for i in items}), 145)
 
 	def test_single_mukhi_articles_do_not_repeat_the_guide(self):
 		for item in content.load():
@@ -55,7 +55,7 @@ class TestContent(TestCase):
 		for item in content.load():
 			if item["id"] in ("gem-which-for-which-need", "gem-planets-gems-beads-poojas"):
 				continue  # the need-to-remedy guides are tables of their own kind
-			if item["category"] == "numerology":
+			if item["category"] in ("numerology", "dreams"):
 				continue  # Cheiro's chapters keep the book's own shape: prose and a few tables
 			if item["id"].endswith("-guide"):
 				self.assertGreaterEqual(item["body"].count("|---|"), 4, item["file"])

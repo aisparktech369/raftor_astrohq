@@ -19,10 +19,24 @@ def _gate(blueprint: str | None = None):
 	return gate.model_dump() if gate else None
 
 
-def _frame(blueprint: str | None = None) -> dict:
+def _words(blueprint: str | None = None) -> dict:
+	"""Every word the card shows for one of the site's agents, and where its page is."""
 	if blueprint == agents.NUMEROLOGIST["blueprint"]:
-		return {"title": _("Numerology guide"), "subtitle": _("AI guide · Cheiro's numerology"), "avatar": "/files/astrohq-icon.svg", "send_word": _("Send"), "new_chat_word": _("New chat")}
-	return {"title": _("Pandit ji"), "subtitle": _("AI guide · Rudraksha, gemstones and poojas"), "avatar": "/files/astrohq-icon.svg", "send_word": _("Send"), "new_chat_word": _("New chat")}
+		return {"title": _("Numerology guide"), "subtitle": _("AI guide · Cheiro's numerology"), "who": _("the numerology guide"), "placeholder": _("Ask the numerology guide"), "route": "numerologist",
+				"resting": _("The numerology guide is resting. Please come back a little later."), "notice": _("AI guide. I explain Cheiro's numerology from our Academy. It is not a prediction or advice."),
+				"sign_in": _("Sign up or sign in to ask the numerology guide. It takes a minute."), "ask": _("Give me a birth day or a name and I'll work out the numbers.")}
+	if blueprint == agents.DREAM_GUIDE["blueprint"]:
+		return {"title": _("Dream guide"), "subtitle": _("AI guide · Exploring your dreams"), "who": _("the dream guide"), "placeholder": _("Tell me a dream"), "route": "dream-guide",
+				"resting": _("The dream guide is resting. Please come back a little later."), "notice": _("AI guide. I explore what a dream might mean to you. I can't predict anything or say what a dream shows about your health or others."),
+				"sign_in": _("Sign up or sign in to talk about a dream with the dream guide. It takes a minute."), "ask": _("Would you like to tell me a dream?")}
+	return {"title": _("Pandit ji"), "subtitle": _("AI guide · Rudraksha, gemstones and poojas"), "who": _("Pandit ji"), "placeholder": _("Ask Pandit ji"), "route": "pandit-ji",
+			"resting": _("Pandit ji is resting. Please come back a little later."), "notice": _("AI guide. I explain from our Academy and can't predict or promise results."),
+			"sign_in": _("Sign up or sign in to ask Pandit ji, our AI guide to Rudraksha, gemstones and poojas. It takes a minute, and booking and buying need an account too."), "ask": _("What would you like to know?")}
+
+
+def _frame(blueprint: str | None = None) -> dict:
+	w = _words(blueprint)
+	return {"title": w["title"], "subtitle": w["subtitle"], "avatar": "/files/astrohq-icon.svg", "send_word": _("Send"), "new_chat_word": _("New chat")}
 
 
 def _blueprint_of(args: dict) -> str:
@@ -34,22 +48,19 @@ def _blueprint_of(args: dict) -> str:
 def info(**args) -> dict:
 	"""A guest gets the sign-up conversation (or, with none, a button to sign in). A signed-in person gets the agent's name and words. If the agent is switched off the card says so and draws no chat."""
 	blueprint = _blueprint_of(args)
-	numerology = blueprint == agents.NUMEROLOGIST["blueprint"]
+	w = _words(blueprint)
 	if not frappe.db.get_value("Blueprint Reference", blueprint, "is_active"):
-		return {"notice": _("The numerology guide is resting. Please come back a little later.") if numerology else _("Pandit ji is resting. Please come back a little later.")}
-	notice = _("AI guide. I explain Cheiro's numerology from our Academy. It is not a prediction or advice.") if numerology else _("AI guide. I explain from our Academy and can't predict or promise results.")
+		return {"notice": w["resting"]}
 	if frappe.session.user == "Guest":
 		gate = _gate(blueprint)
 		if gate:
-			return {**_frame(blueprint), "gate": gate, "placeholder": _("Type your answer"), "notice": notice}
-		return {"sign_in": {"message": _("Sign up or sign in to ask the numerology guide. It takes a minute.") if numerology else _("Sign up or sign in to ask Pandit ji, our AI guide to Rudraksha, gemstones and poojas. It takes a minute, and booking and buying need an account too."),
-							"label": _("Sign up or sign in"), "href": "/login?redirect-to=/ask/" + ("numerologist" if numerology else "pandit-ji")}}
+			return {**_frame(blueprint), "gate": gate, "placeholder": _("Type your answer"), "notice": w["notice"]}
+		return {"sign_in": {"message": w["sign_in"], "label": _("Sign up or sign in"), "href": "/login?redirect-to=/ask/" + w["route"]}}
 	name = (frappe.db.get_value("User", frappe.session.user, "first_name") or "").strip()
-	who = _("the numerology guide") if numerology else _("Pandit ji")
 	return {
 		**_frame(blueprint), "blueprint": blueprint,
-		"welcome": (_("Hi {0}, I'm {1}. ").format(name, who) if name else _("Hi, I'm {0}. ").format(who)) + (_("Give me a birth day or a name and I'll work out the numbers.") if numerology else _("What would you like to know?")),
-		"placeholder": _("Ask the numerology guide") if numerology else _("Ask Pandit ji"), "notice": notice,
+		"welcome": (_("Hi {0}, I'm {1}. ").format(name, w["who"]) if name else _("Hi, I'm {0}. ").format(w["who"])) + w["ask"],
+		"placeholder": w["placeholder"], "notice": w["notice"],
 		"talk": False,  # no talk mode: the guide is text only (owner, 2026-11-09)
 	}
 
