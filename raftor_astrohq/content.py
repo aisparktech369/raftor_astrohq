@@ -22,16 +22,18 @@ PRODUCT_MARKER = re.compile(r"^\[\[product\s+[A-Za-z0-9_\-]+\]\]\s*$", re.M)
 SHARED_SECTIONS = ("Identifying a genuine", "How to spot a genuine", "How to wear it", "Care and cleaning")
 REQUIRED = ("id", "category", "title", "intro", "publish")
 BLOGGER = {"short_name": "astrohq-team", "full_name": "AstroHQ Team", "bio": "Written and checked by the AstroHQ Team, from the traditional texts."}
-CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones"}
+CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones", "pooja": "Pooja"}
 CATEGORY_NOTES = {
 	"rudraksha": "The beads by number of faces: meaning, mantra, the traditions around each, and how to choose one.",
 	"gemstones": "Origin, treatments, the planets and stories behind each stone, and how to choose one.",
+	"pooja": "Rituals explained: what each pooja is, when it is done, the items and steps, and what to ask before you book one.",
 }
 ACADEMY = "Academy"
 ACADEMY_INTRO = "Explained from the traditional texts, with sources."
 LEARN_TAB = "Learn about this bead"
 ACADEMY_LINK = "/blog"  # Frappe's own address for the blog; /academy redirects to it (websitehq hooks)
 META_LENGTH = 140  # the search description field holds this much; the full intro stays in blog_intro
+SERIES_COVERS = {"pooja": "/assets/raftor_astrohq/images/academy-pooja.png"}  # a series that sells no goods has its own picture
 COVER = "/files/Detailed Brown Rudraksha Seed on Cream Background60cba8.png"  # used when an article has no product picture
 
 
@@ -197,7 +199,7 @@ def _cover(item: dict, items: list[dict]) -> str:
 			image = (frappe.db.get_value("Website Item", {"item_code": code}, "website_image") or frappe.db.get_value("Item", code, "image")) if code else None
 			if image:
 				return image
-	return COVER
+	return SERIES_COVERS.get(item["category"], COVER)
 
 
 def _category(key: str) -> str:

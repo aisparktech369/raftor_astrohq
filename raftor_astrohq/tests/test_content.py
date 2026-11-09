@@ -13,8 +13,8 @@ HEAD = "---\nid: {id}\ncategory: rudraksha\ntitle: {title}\nintro: x.\npublish: 
 class TestContent(TestCase):
 	def test_every_article_is_one_file(self):
 		items = content.load()
-		self.assertEqual(len(items), 37)
-		self.assertEqual(len({i["id"] for i in items}), 37)
+		self.assertEqual(len(items), 42)
+		self.assertEqual(len({i["id"] for i in items}), 42)
 
 	def test_single_mukhi_articles_do_not_repeat_the_guide(self):
 		for item in content.load():
@@ -28,6 +28,12 @@ class TestContent(TestCase):
 		for item in content.load():
 			if item["id"].endswith("-beginners-guide"):
 				self.assertGreaterEqual(item["body"].count("|---|"), 4, item["file"])
+				continue
+			if item["id"].startswith("puj-"):
+				for section in ("## At a glance", "## Story and meaning", "## When to perform", "## Items (samagri)", "## Steps"):
+					self.assertIn(section, item["body"], item["file"])
+				self.assertIn("<details><summary>", item["body"], item["file"])
+				self.assertIn("(/services/events)", item["body"], item["file"])  # the way to book it
 				continue
 			if item["id"].startswith("gem-"):
 				self.assertIn("| Topic | Detail |", item["body"], item["file"])
