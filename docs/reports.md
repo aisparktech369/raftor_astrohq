@@ -265,3 +265,11 @@ The score is a guide, and the page says a full match is read with the charts and
   `python3 apps/raftor_astrohq/e2e/free_reports_journey.py` (the two items are switched on and put back as they shipped).
 - Browser, the paid way as a stranger, two customers and the business team (the items are priced for the run and put back as they shipped; the gateway's confirmation is stood in for):
   `JOURNEY=reports_journey python3 apps/raftor_astrohq/e2e/reports_journey.py`.
+
+
+## The numerology report
+
+Free like the others, and shipped **switched off** as the item `ASTROHQ-REPORT-NUMEROLOGY` (made by `sync_standard_reports`; untick Disabled in Desk to put it on sale). It asks for the **name** (English letters) and the **date of birth**: no time, no place and no
+birth profile, because the numbers come from the day and the letters. It is **Cheiro's numerology** (his Book of Numbers, the Academy's Numerology series), every sum made by the astrology service (`astrology.numerology`, opcode `NUMEROLOGY`, `docs/astrology-api.md`), never by a model.
+The PDF gives the birth number with its steps, Cheiro's planet, colours and jewels, the zodiac period (an overlap or a cusp is said, not settled), the name number word by word with the letters shown, and the compounds' meanings
+(a warning compound is given as a symbol only: "not a prediction"). Ank Jyotish planets are in the engine's answer but not printed: the owner decides what is sold. The same numbers are what the numerology guide (`/ask/numerologist`) explains.

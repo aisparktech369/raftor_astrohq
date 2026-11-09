@@ -5,7 +5,7 @@ from pathlib import Path
 
 from frappe import _
 
-from raftor_astrohq.details import birth_details, kundli_fields, match_fields, question, sankalp, visit_fields, whose, wish
+from raftor_astrohq.details import birth_details, kundli_fields, match_fields, numerology_fields, question, sankalp, visit_fields, whose, wish
 
 PACK = Path(__file__).parent / "pack"
 
@@ -81,7 +81,7 @@ def vocabulary() -> dict:
 		"booking_actions": "raftor_astrohq.report_view.booking_actions",
 		# The reports a customer asks for from the shop, made from their own birth details (servicehq digital.py, free_reports.py). Each ships as an item switched off, at price 0
 		# (both are free, always: they are given, not sold; the kundli and the match making report ship switched on, the rest wait for the business team to switch them on); servicehq asks the details and delivers the PDF the maker returns.
-		"reports_soon": [{"title": _("Numerology report"), "icon": "hash"}, {"title": _("Career report"), "icon": "briefcase"}, {"title": _("Love report"), "icon": "heart"}, {"title": _("Daily horoscope"), "icon": "sun"}, {"title": _("Tarot reading"), "icon": "cards"}],  # (what people ask for next: shown with "Coming soon", no way in yet)
+		"reports_soon": [{"title": _("Career report"), "icon": "briefcase"}, {"title": _("Love report"), "icon": "heart"}, {"title": _("Daily horoscope"), "icon": "sun"}, {"title": _("Tarot reading"), "icon": "cards"}],  # (what people ask for next: shown with "Coming soon", no way in yet)
 		"reports": {
 			"kundli": {"kind": "Astrologer", "icon": "chart", "title": _("Kundli report"), "blurb": _("Your birth chart made from your date, time and place of birth."), "price": 0, "on": True,
 					   "description": _("Your kundli: the lagna, where each planet stood, the houses, the navamsa chart, your dasha periods and the panchang of the day you were born.\n\n"
@@ -94,6 +94,11 @@ def vocabulary() -> dict:
 									   "Made from the details you give for both. It is free: you can read it as a PDF as soon as it is made."),
 					  "details": {"fields": match_fields(), "validate": "raftor_astrohq.details.match_rules"}, "maker": "raftor_astrohq.reports.match_report",
 					  "free": {"summary": "raftor_astrohq.reports.match_summary", "picker": "raftor_astrohq.reports.match_picker", "keep": "raftor_astrohq.reports.keep_match_profiles"}},  # each of the two is chosen from the saved people or written new, and kept for next time
+			"numerology": {"kind": "Astrologer", "icon": "hash", "title": _("Numerology report"), "blurb": _("Your birth number and name number, worked out step by step by Cheiro's rules."), "price": 0,
+						   "description": _("Your birth number from the day you were born, the zodiac period, and the number of your name, each worked out step by step with the letters shown, with what Cheiro's Book of Numbers says about them.\n\n"
+											"Made from your name and date of birth. It is Cheiro's numerology, a historical doctrine, not a prediction. It is free: you can read it as a PDF as soon as it is made."),
+						   "details": {"fields": numerology_fields(), "validate": "raftor_astrohq.details.numerology_rules"}, "maker": "raftor_astrohq.reports.numerology_report",
+						   "free": {"summary": "raftor_astrohq.reports.numerology_summary"}},
 			**arranged_reports(),
 		},
 		"kinds": {

@@ -396,3 +396,70 @@ def match_report(item_code: str, details: dict, buyer: str) -> dict:
 	boy_chart, girl_chart = astrology.chart(boy_numbers, "SUPER_BASIC"), astrology.chart(girl_numbers, "SUPER_BASIC")
 	html = match_html(match_context(boy, girl, boy_place, girl_place, match, boy_chart, girl_chart, getdate(today())))
 	return {"file_name": _file_name("match-making-report", boy["name"], girl["name"]), "content": _pdf(html)}
+
+
+# ---- the numerology report (Cheiro's numerology, calculated by the engine) ----
+NUMEROLOGY_CREDIT = "Cheiro's numerology, from Cheiro's Book of Numbers. A historical doctrine, not a fact or a prediction."
+
+
+def numerology_summary(details: dict) -> str:
+	return _("For {0}").format(details.get("report_name") or "")
+
+
+def numerology_context(name: str, born: datetime.date, answer: dict, on: datetime.date) -> dict:
+	return {"name": name, "born": born, "answer": answer, "on": on}
+
+
+def _steps(steps: list[str]) -> str:
+	return escape_html("; ".join(steps))
+
+
+def numerology_html(c: dict) -> str:
+	answer, born = c["answer"], c["born"]
+	birth, name, zodiac = answer["birth"], answer["name"], answer.get("zodiac")
+	profile = birth["profile"]
+	look = rp.site_look()
+	joined = lambda words: ", ".join(words)
+	number_rows = [[escape_html(_("Day of birth")), escape_html(str(birth["day"]))], [escape_html(_("Birth number")), f'<td class="num total">{birth["number"]}</td>'],
+				   [escape_html(_("How it is found")), escape_html(_steps(birth["steps"]))], [escape_html(_("Planet (Cheiro)")), escape_html(profile["cheiro_planet"])],
+				   [escape_html(_("Days of the month of this number")), escape_html(joined(str(d) for d in profile["days"]))],
+				   [escape_html(_("Colours")), escape_html(joined(profile["colours"]))], [escape_html(_("Jewels")), escape_html(joined(profile["jewels"]))]]
+	if birth.get("compound"):
+		number_rows.insert(2, [escape_html(_("Compound")), escape_html(str(birth["compound"]))])
+	body = (f'{rp.masthead(look, _brand())}<h1>{escape_html(_("Numerology report"))}</h1>'
+			f'<p class="sub">{escape_html(c["name"])} · {escape_html(born.strftime("%A"))}, {escape_html(rp.long_date(born))}</p>'
+			f'<h2>{escape_html(_("Your birth number"))}</h2>{rp._table(number_rows)}'
+			f'<p class="note">{escape_html(_("Cheiro describes this number as: {0}.").format(profile["character"]))} ({escape_html(_("Cheiro, Chapter {0}").format(profile["source"]["chapter"]))})</p>')
+	meaning = birth.get("compound_meaning")
+	if meaning:
+		body += f'<p class="note">{escape_html(_numerology_meaning(meaning))}</p>'
+	if zodiac:
+		periods = "; ".join(f'{p["sign"]} ({p["from"]} to {p["to"]})' for p in zodiac["periods"])
+		body += f'<h2>{escape_html(_("The zodiac period"))}</h2><p>{escape_html(periods)}</p>' + (f'<p class="note">{escape_html(zodiac["note"])}</p>' if zodiac.get("note") else "")
+	word_rows = [[escape_html(w["word"]), escape_html(" + ".join(f'{p["letter"]}{p["value"]}' for p in w["letters"])), f'<td class="num">{w["total"]}</td>', f'<td class="num">{w["root"]}</td>'] for w in name["words"]]
+	combined = name["combined"]
+	word_rows.append([f'<b>{escape_html(_("The name"))}</b>', escape_html(" + ".join(str(r) for r in combined["roots"])), f'<td class="num total">{combined["total"]}</td>', f'<td class="num total">{combined["root"]}</td>'])
+	body += (f'<h2>{escape_html(_("Your name number"))}</h2><p>{escape_html(_("Counted with Cheiro\'s Mystic Alphabet, for the name {0}.").format(name["spelling_counted"]))}</p>'
+			 f'{rp._table(word_rows, [_("Word"), _("Letters"), _("Total"), _("Root")])}')
+	if combined.get("compound_meaning"):
+		body += f'<p class="note">{escape_html(_numerology_meaning(combined["compound_meaning"]))}</p>'
+	body += (f'<h2>{escape_html(_("How to read this"))}</h2><p class="note">{escape_html(answer["safeguard"])} '
+			 f'{escape_html(_("The same name can give another number in other numerology methods. Ask the numerology guide or a live numerologist (on the site, under Seek guidance) about what it means for you."))}</p>')
+	return rp.page(_("Numerology report"), body, _brand(), NUMEROLOGY_CREDIT + " " + _("Made for you on {0}.").format(rp.long_date(c["on"])), look)
+
+
+def _numerology_meaning(meaning: dict) -> str:
+	"""What Cheiro says of a compound. A warning compound is given as a symbol only, never as a prediction (the engine marks it sensitive)."""
+	label = _("Compound {0} (Cheiro, Chapter XIII)").format(meaning["compound"])
+	if meaning.get("sensitive"):
+		return f"{label}: " + _("Cheiro treats this as a cautionary symbol. It is a historical reading, not a prediction about you.")
+	return f"{label}: {meaning['meaning']}"
+
+
+def numerology_report(item_code: str, details: dict, buyer: str) -> dict:
+	"""The numerology report: a PDF of the birth number, the zodiac period and the name number by Cheiro's rules, every sum by the engine, from the name and the date of birth the customer gave."""
+	name = str(details.get("report_name") or "").strip()
+	born = getdate(details.get("birth_date"))
+	answer = astrology.numerology(day=born.day, month=born.month, name=name)
+	html = numerology_html(numerology_context(name, born, answer, getdate(today())))
+	return {"file_name": _file_name("numerology-report", name), "content": _pdf(html)}

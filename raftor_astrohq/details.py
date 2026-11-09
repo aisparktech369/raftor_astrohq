@@ -96,6 +96,26 @@ def kundli_fields() -> list[dict]:
 	return person_fields()
 
 
+def numerology_fields() -> list[dict]:
+	"""What the numerology report asks for: the name and the day of birth (no time and no place: the numbers come from the day and the letters)."""
+	k = person_keys()
+	return [{"name": k["name"], "label": _("Name"), "required": True, "placeholder": _("The name you are best known by, in English letters"),
+			 "hint": _("The same name can give another number if it is spelled another way: write it the way you want it counted.")},
+			{"name": k["date"], "label": _("Date of birth"), "type": "date", "required": True}]
+
+
+def numerology_rules(values: dict, user: str) -> dict:
+	k, errors = person_keys(), {}
+	if not in_english_letters(values.get(k["name"])):
+		errors[k["name"]] = _("Please write the name in English letters, for example Asha Rao.")
+	day = getdate(values.get(k["date"]))
+	if day > getdate(today()):
+		errors[k["date"]] = _("The date of birth cannot be in the future.")
+	elif day.year < EARLIEST_YEAR:
+		errors[k["date"]] = _("Reports are made for births from the year {0}.").format(EARLIEST_YEAR)
+	return errors
+
+
 def whose() -> dict:
 	"""Whose kundli it is, asked only where it is given away (servicehq free_reports.py): the person's own, or someone in the family. The answer is the birth profile's relationship, which
 	decides how the details are kept (the person's own profile is "You"; a family member's is kept with the person's confirmation that they may)."""

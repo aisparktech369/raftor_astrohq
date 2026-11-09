@@ -7,6 +7,7 @@ they are not set up. Nothing here makes or keeps a record.
 Run with: bench --site astrohq.local run-tests --app raftor_astrohq --module raftor_astrohq.tests.test_kundli_reports
 """
 import datetime
+import unittest
 import io
 import json
 import os
@@ -411,7 +412,7 @@ class TestWhatTheFormAsksAndChecks(Stood):
 class TestWhatAstroHQShips(AstroTestCase):
 	def test_the_vocabulary_lists_the_reports_with_everything_servicehq_needs(self):
 		shipped = vocabulary.vocabulary()["reports"]
-		self.assertEqual(sorted(shipped), ["dasha", "detailed", "kp", "kundli", "match", "panchang"])  # the first two by their own makers, the rest by layouts (test_arranged_reports)
+		self.assertEqual(sorted(shipped), ["dasha", "detailed", "kp", "kundli", "match", "numerology", "panchang"])  # the first two by their own makers, the rest by layouts (test_arranged_reports)
 		for name, entry in shipped.items():
 			with self.subTest(name):
 				self.assertTrue(entry["title"] and entry["blurb"] and entry["description"])
@@ -485,3 +486,22 @@ class TestWithTheRealServiceAndPlaces(AstroTestCase):
 	def test_a_place_that_does_not_exist_is_said_in_words_before_anything_is_made(self):
 		with self.assertRaises(places.PlaceNotFound):
 			reports.kundli_report("ITEM", {**KUNDLI_DETAILS, "birth_place": "Nowhereville, Atlantis"}, "x@example.com")
+
+
+class TestNumerologyReport(unittest.TestCase):
+	def test_the_report_is_made_from_the_engines_numbers_and_gives_a_warning_compound_as_a_symbol_only(self):
+		import datetime
+
+		from raftor_astrohq import reports
+
+		sixteen = {"compound": 16, "root": 7, "meaning": "Shattered Citadel", "sensitive": True}
+		answer = {"safeguard": "Historical, not predictions.", "birth": {"day": 26, "compound": 26, "number": 8, "steps": ["2+6=8"], "compound_meaning": sixteen,
+				  "profile": {"cheiro_planet": "Saturn", "ank_jyotish_planet": "Saturn", "days": [8, 17, 26], "colours": ["dark grey"], "jewels": ["amethyst"], "character": "intense", "source": {"chapter": "X"}}},
+				  "zodiac": {"periods": [{"sign": "Capricorn", "from": "12-21", "to": "01-20"}], "note": ""},
+				  "name": {"spelling_counted": "John Smith", "words": [{"word": "John", "letters": [{"letter": "J", "value": 1}, {"letter": "O", "value": 7}], "total": 8, "root": 8}],
+						   "combined": {"roots": [8], "total": 8, "compound": None, "root": 8, "compound_meaning": None}}}
+		html = reports.numerology_html(reports.numerology_context("John Smith", datetime.date(1990, 1, 26), answer, datetime.date(2026, 11, 9)))
+		self.assertIn("Birth number", html)
+		self.assertIn("a cautionary symbol", html)
+		self.assertNotIn("Shattered Citadel", html)
+		self.assertIn("J1 + O7", html)
