@@ -123,6 +123,16 @@ For where gemstones come from, the names that cause confusion and what a report 
 
 <details><summary>Does it guarantee the traditional benefit people talk about?</summary><p>No. Traditional associations are matters of belief, not guaranteed outcomes.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Jupiter Graha Shanti Pooja](/blog/pooja/jupiter-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Jupiter |
+| [5 Mukhi Rudraksha](/blog/rudraksha/5-mukhi-rudraksha-meaning-and-traditional-significance) | The Rudraksha linked with Jupiter in later practice |
+| [Citrine](/blog/gemstones/citrine-origin-treatments-and-traditional-significance) | A stone used for Jupiter |
+| [Guru Chandal Dosh Nivaran](/blog/pooja/guru-chandal-dosh-nivaran-meaning-items-and-steps) | A pooja or dosha connected with Jupiter |
+| [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide) | Where stones come from, treatments and papers |
+
 ---
 
 *Source note: general gemmological practice, with the Garuda Purana and Brihat Samhita for the classical description of gems. Planetary association from Jyotish practice. This article separates tradition from market claims. AstroHQ Team.*

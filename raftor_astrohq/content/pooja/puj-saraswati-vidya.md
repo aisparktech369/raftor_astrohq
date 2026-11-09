@@ -81,6 +81,14 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For how virtual and group poojas work, read [Virtual and Group Pooja](/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Ganesh Karya-Siddhi Pooja](/blog/pooja/ganesh-karya-siddhi-pooja-meaning-items-and-steps) | Success in a task |
+| [Emerald (Panna)](/blog/gemstones/emerald-panna-origin-treatments-and-traditional-significance) | The gem of Mercury, the planet of learning |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: the Rigveda and general practice. Procedures differ by region and lineage. This article does not promise results. AstroHQ Team.*

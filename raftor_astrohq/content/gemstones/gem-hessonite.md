@@ -120,6 +120,17 @@ For where gemstones come from, the names that cause confusion and what a report 
 
 <details><summary>Does it guarantee the traditional benefit people talk about?</summary><p>No. Traditional associations are matters of belief, not guaranteed outcomes.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Rahu Graha Shanti Pooja](/blog/pooja/rahu-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Rahu |
+| [8 Mukhi Rudraksha](/blog/rudraksha/8-mukhi-rudraksha-meaning-and-traditional-significance) | The Rudraksha linked with Rahu in later practice |
+| [Kaal Sarp Dosh Nivaran](/blog/pooja/kaal-sarp-dosh-nivaran-meaning-items-and-steps) | A pooja or dosha connected with Rahu |
+| [Guru Chandal Dosh Nivaran](/blog/pooja/guru-chandal-dosh-nivaran-meaning-items-and-steps) | A pooja or dosha connected with Rahu |
+| [Angarak Dosh Nivaran](/blog/pooja/angarak-dosh-nivaran-meaning-items-and-steps) | A pooja or dosha connected with Rahu |
+| [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide) | Where stones come from, treatments and papers |
+
 ---
 
 *Source note: general gemmological practice, with the Garuda Purana and Brihat Samhita for the classical description of gems. Planetary association from Jyotish practice. This article separates tradition from market claims. AstroHQ Team.*

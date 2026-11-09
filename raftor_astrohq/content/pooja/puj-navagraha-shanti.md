@@ -90,6 +90,17 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For the gem of each planet, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Sun Graha Shanti Pooja](/blog/pooja/sun-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for the Sun |
+| [Moon Graha Shanti Pooja](/blog/pooja/moon-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for the Moon |
+| [Mars Graha Shanti Pooja](/blog/pooja/mars-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Mars |
+| [Mercury Graha Shanti Pooja](/blog/pooja/mercury-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Mercury |
+| [Jupiter Graha Shanti Pooja](/blog/pooja/jupiter-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Jupiter |
+| [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide) | The gem of each planet |
+
 ---
 
 *Source note: the Puranic account of the planets and general Jyotish practice. Grains, colours and days differ slightly by lineage. AstroHQ Team.*

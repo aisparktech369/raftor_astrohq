@@ -75,6 +75,17 @@ For how to wear, how to check a genuine bead, and care, read [Rudraksha: A Begin
 
 <details><summary>Is there a unique beej mantra for 8 Mukhi in the Rudraksha Jabala Upanishad?</summary><p>No separate mukhi-specific beej mantra is given in the cited passage.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Hessonite (Gomed)](/blog/gemstones/hessonite-gomed-origin-treatments-and-traditional-significance) | The gem of Rahu |
+| [Rahu Graha Shanti Pooja](/blog/pooja/rahu-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Rahu |
+| [Kaal Sarp Dosh Nivaran](/blog/pooja/kaal-sarp-dosh-nivaran-meaning-items-and-steps) | A pooja or dosha connected with Rahu |
+| [Guru Chandal Dosh Nivaran](/blog/pooja/guru-chandal-dosh-nivaran-meaning-items-and-steps) | A pooja or dosha connected with Rahu |
+| [Angarak Dosh Nivaran](/blog/pooja/angarak-dosh-nivaran-meaning-items-and-steps) | A pooja or dosha connected with Rahu |
+| [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide) | How to wear, check and care for a bead |
+
 ---
 
 *Source note: *Rudrakshajabala Upanishad*, English translation by R. A. Sastri. This article distinguishes the cited text from later interpretations and commercial claims. AstroHQ Team.*

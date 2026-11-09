@@ -83,6 +83,17 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For how virtual and group poojas work, read [Virtual and Group Pooja](/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [White Pukhraj (White Sapphire)](/blog/gemstones/white-pukhraj-white-sapphire-origin-treatments-and-traditional-significance) | The gem of Venus |
+| [6 Mukhi Rudraksha](/blog/rudraksha/6-mukhi-rudraksha-meaning-and-traditional-significance) | The Rudraksha linked with Venus in later practice |
+| [13 Mukhi Rudraksha](/blog/rudraksha/13-mukhi-rudraksha-meaning-and-traditional-significance) | A Rudraksha connected with Venus |
+| [Fire Opal and Australian Opal](/blog/gemstones/fire-opal-and-australian-opal-origin-treatments-and-traditional-significance) | A stone used for Venus |
+| [Natural Zircon and Zirconia](/blog/gemstones/natural-zircon-and-zirconia-origin-treatments-and-traditional-significance) | A stone used for Venus |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: the Puranas and Jyotish practice. Procedures differ by region and lineage. This article does not promise results. AstroHQ Team.*

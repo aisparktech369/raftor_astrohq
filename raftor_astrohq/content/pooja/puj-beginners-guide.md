@@ -101,6 +101,14 @@ order: 10
 
 To have this performed in your name, see [Book blessings](/services/events). For help choosing, [ask a guide](/consult).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Havan (Homa)](/blog/pooja/havan-homa-meaning-items-and-steps) | The fire offering |
+| [Navagraha Shanti](/blog/pooja/navagraha-shanti-meaning-items-and-steps) | The nine planets |
+| [Virtual and Group Pooja](/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count) | Virtual and group poojas, and how far they count |
+
 ---
 
 *Source note: general Hindu practice, as described in the Puranas and the household rites of the Grihya Sutras. Procedures differ by region and lineage. AstroHQ Team.*

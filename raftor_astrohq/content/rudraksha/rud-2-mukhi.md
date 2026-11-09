@@ -75,6 +75,17 @@ For how to wear, how to check a genuine bead, and care, read [Rudraksha: A Begin
 
 <details><summary>Is there a unique beej mantra for 2 Mukhi in the Rudraksha Jabala Upanishad?</summary><p>No separate mukhi-specific beej mantra is given in the cited passage.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Pearl (Moti)](/blog/gemstones/pearl-moti-origin-treatments-and-traditional-significance) | The gem of the Moon |
+| [Moon Graha Shanti Pooja](/blog/pooja/moon-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for the Moon |
+| [Moonstone](/blog/gemstones/moonstone-origin-treatments-and-traditional-significance) | A stone used for the Moon |
+| [Kemadruma Yoga Shanti](/blog/pooja/kemadruma-yoga-shanti-meaning-items-and-steps) | A pooja or dosha connected with the Moon |
+| [Grahan Dosh Shanti](/blog/pooja/grahan-dosh-shanti-meaning-items-and-steps) | A pooja or dosha connected with the Moon |
+| [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide) | How to wear, check and care for a bead |
+
 ---
 
 *Source note: *Rudrakshajabala Upanishad*, English translation by R. A. Sastri. This article distinguishes the cited text from later interpretations and commercial claims. AstroHQ Team.*

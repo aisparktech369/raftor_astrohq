@@ -83,6 +83,14 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For the Rudraksha used to count it, read [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Rudrabhishek](/blog/pooja/rudrabhishek-meaning-items-and-steps) | The bathing of Shiva |
+| [Nadi Dosh Nivaran](/blog/pooja/nadi-dosh-nivaran-meaning-items-and-steps) | Where this jaap is often advised |
+| [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide) | The mala used to count it |
+
 ---
 
 *Source note: the Rigveda and general Puranic practice. Counts and procedure differ by lineage. This is a prayer and not medical advice. AstroHQ Team.*

@@ -86,6 +86,14 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For the Rudraksha worn in Shiva devotion, see [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Maha Mrityunjaya Jaap](/blog/pooja/maha-mrityunjaya-jaap-meaning-items-and-steps) | The mantra to Shiva for health |
+| [Vish Yoga Shanti](/blog/pooja/vish-yoga-shanti-meaning-items-and-steps) | A Shiva abhishek is often advised here |
+| [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide) | The Rudraksha worn in Shiva devotion |
+
 ---
 
 *Source note: the Rudram of the Yajurveda and the Shiva Purana, with general household practice. Procedures differ by lineage. AstroHQ Team.*

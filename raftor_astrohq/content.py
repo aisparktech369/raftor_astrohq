@@ -188,6 +188,16 @@ def rag_chunks(published_only: bool = True) -> list[dict]:
 	return chunks
 
 
+def slug(text: str) -> str:
+	"""A title as Frappe makes its address: lower case, the apostrophe dropped, anything else that is not a letter or digit a hyphen."""
+	return re.sub(r"[^a-z0-9]+", "-", text.lower().replace("'", "")).strip("-")
+
+
+def route_of(item: dict) -> str:
+	"""Where an article lives: /blog/<category>/<title>."""
+	return f"/blog/{slug(CATEGORIES[item['category']])}/{slug(item['title'])}"
+
+
 def _blogger():
 	name = frappe.db.get_value("Blogger", {"short_name": BLOGGER["short_name"]}, "name")
 	if not name:

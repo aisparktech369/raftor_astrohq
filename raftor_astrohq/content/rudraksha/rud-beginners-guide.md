@@ -67,6 +67,14 @@ order: 10
 | Store in a clean dry place | Heat, pressure, household glue |
 | Check thread and fittings | Assuming oil is needed |
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Rudrabhishek](/blog/pooja/rudrabhishek-meaning-items-and-steps) | The pooja of Shiva with the Rudram |
+| [Maha Mrityunjaya Jaap](/blog/pooja/maha-mrityunjaya-jaap-meaning-items-and-steps) | The jaap counted on a Rudraksha mala |
+| [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide) | Gemstones and the planets |
+
 ---
 
 *Source: Rudrakshajabala Upanishad, R. A. Sastri translation. General handling guidance. AstroHQ Team.*

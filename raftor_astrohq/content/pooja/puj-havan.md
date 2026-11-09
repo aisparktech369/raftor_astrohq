@@ -83,6 +83,15 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Griha Pravesh](/blog/pooja/griha-pravesh-meaning-items-and-steps) | A havan at a house-warming |
+| [Navagraha Shanti](/blog/pooja/navagraha-shanti-meaning-items-and-steps) | A havan for the nine planets |
+| [Birthday Ayushya Havan](/blog/pooja/birthday-ayushya-havan-meaning-items-and-steps) | A havan on a birthday |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: the Rigveda for Agni, and the household rites of the Grihya Sutras. Procedures differ by region and lineage. AstroHQ Team.*

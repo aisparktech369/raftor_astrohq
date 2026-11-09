@@ -133,6 +133,14 @@ Not sure which planet is yours? Get a [free report from your birth details](/ser
 | Emerald | Often oil or resin filled. Avoid ultrasonic cleaners, steam, hot water and solvents |
 | Pearl, coral | Soft. Keep away from perfume, acid and rubbing. Wipe with a soft cloth |
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Navagraha Shanti](/blog/pooja/navagraha-shanti-meaning-items-and-steps) | The poojas for the nine planets |
+| [Ruby (Manikya)](/blog/gemstones/ruby-manikya-origin-treatments-and-traditional-significance) | A first stone to read about |
+| [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide) | Rudraksha, the other sacred wear |
+
 ---
 
 *Source: general gemmological practice. The traditional gem texts, such as the Garuda Purana and Varahamihira's Brihat Samhita, describe the qualities and faults of gems. Planetary associations come from Jyotish practice. AstroHQ Team.*

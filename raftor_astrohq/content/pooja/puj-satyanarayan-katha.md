@@ -77,6 +77,12 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: the Reva Khanda of the Skanda Purana and general household practice. Procedures differ by region and lineage. AstroHQ Team.*

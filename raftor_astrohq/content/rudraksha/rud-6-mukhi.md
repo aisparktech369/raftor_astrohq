@@ -76,6 +76,17 @@ For how to wear, how to check a genuine bead, and care, read [Rudraksha: A Begin
 
 <details><summary>Is there a unique beej mantra for 6 Mukhi in the Rudraksha Jabala Upanishad?</summary><p>No separate mukhi-specific beej mantra is given in the cited passage.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [White Pukhraj (White Sapphire)](/blog/gemstones/white-pukhraj-white-sapphire-origin-treatments-and-traditional-significance) | The gem of Venus |
+| [Venus Graha Shanti Pooja](/blog/pooja/venus-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Venus |
+| [13 Mukhi Rudraksha](/blog/rudraksha/13-mukhi-rudraksha-meaning-and-traditional-significance) | A Rudraksha connected with Venus |
+| [Fire Opal and Australian Opal](/blog/gemstones/fire-opal-and-australian-opal-origin-treatments-and-traditional-significance) | A stone used for Venus |
+| [Natural Zircon and Zirconia](/blog/gemstones/natural-zircon-and-zirconia-origin-treatments-and-traditional-significance) | A stone used for Venus |
+| [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide) | How to wear, check and care for a bead |
+
 ---
 
 *Source note: *Rudrakshajabala Upanishad*, English translation by R. A. Sastri. This article distinguishes the cited text from later interpretations and commercial claims. AstroHQ Team.*

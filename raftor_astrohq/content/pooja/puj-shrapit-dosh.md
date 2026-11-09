@@ -81,6 +81,17 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For how virtual and group poojas work, read [Virtual and Group Pooja](/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Neelam (Blue Sapphire)](/blog/gemstones/neelam-blue-sapphire-origin-treatments-and-traditional-significance) | The gem of Saturn |
+| [Saturn Graha Shanti Pooja](/blog/pooja/saturn-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Saturn |
+| [14 Mukhi Rudraksha](/blog/rudraksha/14-mukhi-rudraksha-meaning-and-traditional-significance) | The Rudraksha linked with Saturn in later practice |
+| [Amethyst](/blog/gemstones/amethyst-origin-treatments-and-traditional-significance) | A stone used for Saturn |
+| [Sade Sati Shanti Pooja](/blog/pooja/sade-sati-shanti-pooja-meaning-items-and-steps) | A pooja or dosha connected with Saturn |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: Jyotish practice. Procedures differ by region and lineage. This article does not promise results. AstroHQ Team.*

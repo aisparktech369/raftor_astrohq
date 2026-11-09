@@ -75,6 +75,12 @@ For how to wear, how to check a genuine bead, and care, read [Rudraksha: A Begin
 
 <details><summary>Is it listed separately in the Rudraksha Jabala Upanishad?</summary><p>No. The text's numbered list does not separately describe this modern market category.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide) | How to wear, check and care for a bead |
+
 ---
 
 *Source note: General Hindu devotional tradition concerning Ganesha; comparison with the numbered classifications in the Rudrakshajabala Upanishad. AstroHQ Team.*

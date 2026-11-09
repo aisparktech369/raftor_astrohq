@@ -122,6 +122,17 @@ For where gemstones come from, the names that cause confusion and what a report 
 
 <details><summary>Does it guarantee the traditional benefit people talk about?</summary><p>No. Traditional associations are matters of belief, not guaranteed outcomes.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Moon Graha Shanti Pooja](/blog/pooja/moon-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for the Moon |
+| [2 Mukhi Rudraksha](/blog/rudraksha/2-mukhi-rudraksha-meaning-and-traditional-significance) | The Rudraksha linked with the Moon in later practice |
+| [Moonstone](/blog/gemstones/moonstone-origin-treatments-and-traditional-significance) | A stone used for the Moon |
+| [Kemadruma Yoga Shanti](/blog/pooja/kemadruma-yoga-shanti-meaning-items-and-steps) | A pooja or dosha connected with the Moon |
+| [Grahan Dosh Shanti](/blog/pooja/grahan-dosh-shanti-meaning-items-and-steps) | A pooja or dosha connected with the Moon |
+| [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide) | Where stones come from, treatments and papers |
+
 ---
 
 *Source note: general gemmological practice, with the Garuda Purana and Brihat Samhita for the classical description of gems. Planetary association from Jyotish practice. This article separates tradition from market claims. AstroHQ Team.*

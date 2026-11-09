@@ -121,6 +121,17 @@ For where gemstones come from, the names that cause confusion and what a report 
 
 <details><summary>Does it guarantee the traditional benefit people talk about?</summary><p>No. Traditional associations are matters of belief, not guaranteed outcomes.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Ketu Graha Shanti Pooja](/blog/pooja/ketu-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Ketu |
+| [9 Mukhi Rudraksha](/blog/rudraksha/9-mukhi-rudraksha-meaning-and-traditional-significance) | The Rudraksha linked with Ketu in later practice |
+| [Tiger Eye](/blog/gemstones/tiger-eye-origin-treatments-and-traditional-significance) | A stone used for Ketu |
+| [Gand Mool Shanti](/blog/pooja/gand-mool-shanti-meaning-items-and-steps) | A pooja or dosha connected with Ketu |
+| [Kaal Sarp Dosh Nivaran](/blog/pooja/kaal-sarp-dosh-nivaran-meaning-items-and-steps) | A pooja or dosha connected with Ketu |
+| [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide) | Where stones come from, treatments and papers |
+
 ---
 
 *Source note: general gemmological practice, with the Garuda Purana and Brihat Samhita for the classical description of gems. Planetary association from Jyotish practice. This article separates tradition from market claims. AstroHQ Team.*

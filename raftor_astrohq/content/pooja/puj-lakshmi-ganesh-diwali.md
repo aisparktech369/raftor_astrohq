@@ -91,6 +91,16 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Kuber-Lakshmi Pooja](/blog/pooja/kuber-lakshmi-pooja-meaning-items-and-steps) | Lakshmi and Kubera through the year |
+| [Shop and Office Opening Pooja](/blog/pooja/shop-and-office-opening-pooja-meaning-items-and-steps) | A new shop or office |
+| [Vyapar Vriddhi Havan](/blog/pooja/vyapar-vriddhi-havan-meaning-items-and-steps) | For a business in loss |
+| [Ganesh Mukhi Rudraksha](/blog/rudraksha/ganesh-mukhi-rudraksha-meaning-and-traditional-significance) | The Ganesh Mukhi bead |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: general Hindu practice, from the Puranic accounts of Lakshmi and the household rites of Diwali. Procedures differ by region and lineage. AstroHQ Team.*

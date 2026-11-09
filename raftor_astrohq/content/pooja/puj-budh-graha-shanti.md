@@ -83,6 +83,14 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For how virtual and group poojas work, read [Virtual and Group Pooja](/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Emerald (Panna)](/blog/gemstones/emerald-panna-origin-treatments-and-traditional-significance) | The gem of Mercury |
+| [4 Mukhi Rudraksha](/blog/rudraksha/4-mukhi-rudraksha-meaning-and-traditional-significance) | The Rudraksha linked with Mercury in later practice |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: the Puranas and Jyotish practice. Procedures differ by region and lineage. This article does not promise results. AstroHQ Team.*

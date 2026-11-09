@@ -76,6 +76,15 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For how virtual and group poojas work, read [Virtual and Group Pooja](/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Mangal Dosh Nivaran](/blog/pooja/mangal-dosh-nivaran-meaning-items-and-steps) | A dosha read before a wedding |
+| [Nadi Dosh Nivaran](/blog/pooja/nadi-dosh-nivaran-meaning-items-and-steps) | A dosha read when matching charts |
+| [Gauri-Shankar Vivah Kamna Pooja](/blog/pooja/gauri-shankar-vivah-kamna-pooja-meaning-items-and-steps) | A prayer for a good marriage |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: the Vivah Sukta of the Rigveda and the household rites of the Grihya Sutras. Procedures differ by region and lineage. This article does not promise results. AstroHQ Team.*

@@ -75,6 +75,17 @@ For how to wear, how to check a genuine bead, and care, read [Rudraksha: A Begin
 
 <details><summary>Is there a unique beej mantra for 9 Mukhi in the Rudraksha Jabala Upanishad?</summary><p>No separate mukhi-specific beej mantra is given in the cited passage.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Cat's Eye (Lehsunia)](/blog/gemstones/cats-eye-lehsunia-origin-treatments-and-traditional-significance) | The gem of Ketu |
+| [Ketu Graha Shanti Pooja](/blog/pooja/ketu-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Ketu |
+| [Tiger Eye](/blog/gemstones/tiger-eye-origin-treatments-and-traditional-significance) | A stone used for Ketu |
+| [Gand Mool Shanti](/blog/pooja/gand-mool-shanti-meaning-items-and-steps) | A pooja or dosha connected with Ketu |
+| [Kaal Sarp Dosh Nivaran](/blog/pooja/kaal-sarp-dosh-nivaran-meaning-items-and-steps) | A pooja or dosha connected with Ketu |
+| [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide) | How to wear, check and care for a bead |
+
 ---
 
 *Source note: *Rudrakshajabala Upanishad*, English translation by R. A. Sastri. This article distinguishes the cited text from later interpretations and commercial claims. AstroHQ Team.*

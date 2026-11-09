@@ -81,6 +81,14 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For how virtual and group poojas work, read [Virtual and Group Pooja](/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Radha-Krishna Prem Pooja](/blog/pooja/radha-krishna-prem-pooja-meaning-items-and-steps) | The divine couple |
+| [Maha Mrityunjaya Jaap](/blog/pooja/maha-mrityunjaya-jaap-meaning-items-and-steps) | A prayer for health |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: the Bhagavata Purana and general Vaishnava practice. Procedures differ by region and lineage. This article does not promise results. AstroHQ Team.*

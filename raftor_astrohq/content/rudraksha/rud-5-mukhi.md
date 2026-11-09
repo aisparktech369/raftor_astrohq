@@ -75,6 +75,16 @@ For how to wear, how to check a genuine bead, and care, read [Rudraksha: A Begin
 
 <details><summary>Is there a unique beej mantra for 5 Mukhi in the Rudraksha Jabala Upanishad?</summary><p>No separate mukhi-specific beej mantra is given in the cited passage.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Pukhraj (Yellow Sapphire)](/blog/gemstones/pukhraj-yellow-sapphire-origin-treatments-and-traditional-significance) | The gem of Jupiter |
+| [Jupiter Graha Shanti Pooja](/blog/pooja/jupiter-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Jupiter |
+| [Citrine](/blog/gemstones/citrine-origin-treatments-and-traditional-significance) | A stone used for Jupiter |
+| [Guru Chandal Dosh Nivaran](/blog/pooja/guru-chandal-dosh-nivaran-meaning-items-and-steps) | A pooja or dosha connected with Jupiter |
+| [Rudraksha: A Beginner's Guide](/blog/rudraksha/rudraksha-a-beginners-guide) | How to wear, check and care for a bead |
+
 ---
 
 *Source note: *Rudrakshajabala Upanishad*, English translation by R. A. Sastri. This article distinguishes the cited text from later interpretations and commercial claims. AstroHQ Team.*

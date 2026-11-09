@@ -81,6 +81,15 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For how virtual and group poojas work, read [Virtual and Group Pooja](/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Rin-harta Ganesh Pooja](/blog/pooja/rin-harta-ganesh-pooja-meaning-items-and-steps) | Ganesha for debt |
+| [Dhan-Vapasi Ganesh Pooja](/blog/pooja/dhan-vapasi-ganesh-pooja-meaning-items-and-steps) | Ganesha for money that is stuck |
+| [Ganesh Mukhi Rudraksha](/blog/rudraksha/ganesh-mukhi-rudraksha-meaning-and-traditional-significance) | The Ganesh Mukhi bead |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: the Puranas and the Ganapati Atharvashirsha. Procedures differ by region and lineage. This article does not promise results. AstroHQ Team.*

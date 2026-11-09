@@ -83,6 +83,14 @@ To have a pooja performed in your name, see [Book blessings](/services/events). 
 
 For what a pooja is and its steps, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Rudrabhishek](/blog/pooja/rudrabhishek-meaning-items-and-steps) | A pooja you can have done in your name |
+| [Navagraha Shanti](/blog/pooja/navagraha-shanti-meaning-items-and-steps) | A pooja with a personal and a group form |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and its steps |
+
 ---
 
 *Source note: general Vedic ritual practice (the sponsor and priests of the yajna) and the Shiva Manasa Puja attributed to Adi Shankara. Teachers and lineages differ. This article does not promise results. AstroHQ Team.*

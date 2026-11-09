@@ -124,6 +124,14 @@ For where gemstones come from, the names that cause confusion and what a report 
 
 <details><summary>Does it guarantee the traditional benefit people talk about?</summary><p>No. Traditional associations are matters of belief, not guaranteed outcomes.</p></details>
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Mercury Graha Shanti Pooja](/blog/pooja/mercury-graha-shanti-pooja-meaning-items-and-steps) | The shanti pooja for Mercury |
+| [4 Mukhi Rudraksha](/blog/rudraksha/4-mukhi-rudraksha-meaning-and-traditional-significance) | The Rudraksha linked with Mercury in later practice |
+| [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide) | Where stones come from, treatments and papers |
+
 ---
 
 *Source note: general gemmological practice, with the Garuda Purana and Brihat Samhita for the classical description of gems. Planetary association from Jyotish practice. This article separates tradition from market claims. AstroHQ Team.*

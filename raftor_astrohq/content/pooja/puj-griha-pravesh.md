@@ -78,6 +78,15 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For the planets, read [Navagraha Shanti](/blog/pooja/navagraha-shanti-meaning-items-and-steps).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Vastu Shanti Pooja](/blog/pooja/vastu-shanti-pooja-meaning-items-and-steps) | The pooja for the home itself |
+| [Navagraha Shanti](/blog/pooja/navagraha-shanti-meaning-items-and-steps) | The planets, honoured at a house-warming |
+| [Havan (Homa)](/blog/pooja/havan-homa-meaning-items-and-steps) | The fire offering |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: the household rites of the Grihya Sutras and Vastu tradition. Customs differ by region and lineage. AstroHQ Team.*

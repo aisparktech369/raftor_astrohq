@@ -1,4 +1,5 @@
 """The written content: one file per article, read by the blog and by RAG. A duplicated shared section or a repeated id must fail."""
+import re
 import tempfile
 from pathlib import Path
 from unittest import TestCase
@@ -36,6 +37,18 @@ class TestContent(TestCase):
 			text = item["body"].lower()
 			for phrase in ("astrohq guarantee", "astrohq certificate", "we guarantee", "money back", "refund", "money-back", "backed by astrohq", "astrohq grades"):
 				self.assertNotIn(phrase, text, f"{item['file']}: {phrase}")
+
+	def test_every_link_between_articles_leads_to_a_live_article(self):
+		"""The articles are read together: each links onward (Related reading), and every such link must reach an article that is published."""
+		items = content.load()
+		live = {content.route_of(i) for i in items if i["publish"]}
+		for item in items:
+			for link in re.findall(r"\]\((/blog/[^)#\s]+)\)|href=\"(/blog/[^\"#]+)\"", item["body"]):
+				target = (link[0] or link[1]).rstrip("/")
+				if target.count("/") >= 3:  # an article, not a series page
+					self.assertIn(target, live, f"{item['file']}: {target}")
+			if item["publish"]:
+				self.assertIn("## Related reading", item["body"], item["file"])
 
 	def test_every_article_is_tabular(self):
 		"""Agreed with the owner: facts are tables across the series (at a glance, meaning, mantra), questions are the site's accordion."""

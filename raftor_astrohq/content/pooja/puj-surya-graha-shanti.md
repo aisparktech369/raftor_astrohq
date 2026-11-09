@@ -83,6 +83,16 @@ To have this performed in your name, see [Book blessings](/services/events). For
 
 For the steps most poojas follow, read [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide). For how virtual and group poojas work, read [Virtual and Group Pooja](/blog/pooja/virtual-and-group-pooja-how-they-work-and-how-far-they-count).
 
+## Related reading
+
+| Read next | Why |
+|---|---|
+| [Ruby (Manikya)](/blog/gemstones/ruby-manikya-origin-treatments-and-traditional-significance) | The gem of the Sun |
+| [1 Mukhi Rudraksha](/blog/rudraksha/1-mukhi-rudraksha-meaning-and-traditional-significance) | The Rudraksha linked with the Sun in later practice |
+| [12 Mukhi Rudraksha](/blog/rudraksha/12-mukhi-rudraksha-meaning-and-traditional-significance) | A Rudraksha connected with the Sun |
+| [Grahan Dosh Shanti](/blog/pooja/grahan-dosh-shanti-meaning-items-and-steps) | A pooja or dosha connected with the Sun |
+| [Pooja: A Beginner's Guide](/blog/pooja/pooja-a-beginners-guide) | What a pooja is and the steps most follow |
+
 ---
 
 *Source note: the Puranas and Jyotish practice. Procedures differ by region and lineage. This article does not promise results. AstroHQ Team.*
