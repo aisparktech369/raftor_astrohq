@@ -2,9 +2,9 @@
 id: gem-ceylon-neelam
 series: Gemstones
 category: gemstones
-title: 'Ceylon Neelam (Blue Sapphire): Origin, Treatments and Traditional Significance'
-intro: Neelam is blue sapphire, a corundum. Ceylon means Sri Lanka, and a Ceylon name should be backed by a report, not a tag.
-products: GEM008
+title: 'Neelam (Blue Sapphire): Origin, Treatments and Traditional Significance'
+intro: Neelam is blue sapphire, a corundum. Ceylon means Sri Lanka, and an origin name should be backed by a report, not a tag.
+products: GEM008,GEM021
 texts: Garuda Purana, Brihat Samhita
 publish: true
 ---
@@ -56,6 +56,8 @@ publish: true
 | Weight in carats | Compare price per carat, not per ratti |
 
 [[product GEM008]]
+
+[[product GEM021]]
 
 For where gemstones come from, the names that cause confusion and what a report should say, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).
 
