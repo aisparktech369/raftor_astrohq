@@ -61,6 +61,8 @@ class TestContent(TestCase):
 			self.assertTrue(chunk["text"].startswith(chunk["title"]), chunk["article"])
 			self.assertNotIn("[[product", chunk["text"])
 		self.assertTrue(any(c["products"] == "RUD001" for c in chunks))
+		self.assertTrue(all(c["series"] and c["article"] and c["section"] for c in chunks))
+		self.assertTrue(any(c["series"] == "Gemstones" and c["group"] == "The nine gems (Navaratna)" for c in chunks))
 
 	def test_the_blog_is_named_once_and_staff_names_stay(self):
 		try:

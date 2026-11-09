@@ -3,7 +3,7 @@
 	load()          every article file, checked (unique ids and titles, no shared section pasted into a single-mukhi article)
 	sync_blog()     creates or updates the Blog Post for each file. The file is the truth: the body, the description and whether it is published
 	                all come from the file. Desk edits to these posts are overwritten on the next migrate.
-	rag_chunks()    the same bodies cut into sections, each one named by its article, with the product and source as fields for filtering
+	rag_chunks()    the same bodies cut into sections, each one named by its article, with the series, group, product and source as fields for filtering
 
 A file has a header between two lines of ---: id, series, category, title, intro, products, texts, publish, and optionally group and order (the heading it is listed under in its series, and its place there). The body follows.
 """
