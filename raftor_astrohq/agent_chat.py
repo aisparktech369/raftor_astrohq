@@ -9,7 +9,7 @@ from raftor_astrohq import agents
 def info(**args) -> dict:
 	"""A guest is asked to sign in and comes back here. A signed-in person gets the agent's name and words. If the agent is switched off the card says so and draws no chat."""
 	if frappe.session.user == "Guest":
-		return {"sign_in": {"message": _("Sign in to ask Pandit ji, our AI guide to Rudraksha, gemstones and poojas."), "label": _("Sign in"), "href": "/login?redirect-to=/ask/pandit-ji"}}
+		return {"sign_in": {"message": _("Sign up or sign in to ask Pandit ji, our AI guide to Rudraksha, gemstones and poojas. It takes a minute, and booking and buying need an account too."), "label": _("Sign up or sign in"), "href": "/login?redirect-to=/ask/pandit-ji"}}
 	if not frappe.db.get_value("Blueprint Reference", agents.BLUEPRINT, "is_active"):
 		return {"notice": _("Pandit ji is resting. Please come back a little later.")}
 	return {

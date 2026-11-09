@@ -47,3 +47,17 @@ class TestAgentChat(TestCase):
 		page = next(p for p in page_definitions.definitions() if p["route"] == "ask/pandit-ji")
 		cards = [c for section in page["sections"] for c in section.get("cards", [])]
 		self.assertEqual([(c["type"], c["values"]["info"]) for c in cards], [("App Chat Card", "raftor_astrohq.agent_chat.info")])
+
+
+class TestConversionNeedsAnAccount(TestCase):
+	def tearDown(self):
+		frappe.set_user("Administrator")
+
+	def test_a_guest_can_add_nothing_to_a_cart_book_nothing_and_buy_no_seat(self):
+		from raftor_servicehq import booking_api, shop_orders
+		from webshop.webshop.shopping_cart.cart import update_cart
+
+		frappe.set_user("Guest")
+		for call in (lambda: update_cart("RUD005", 1), lambda: booking_api.book("SVC-14009", "2099-01-01 09:00:00", {}), lambda: shop_orders.add_event_seats("EVT-X", 1)):
+			with self.assertRaises(frappe.PermissionError):
+				call()
