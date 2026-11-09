@@ -112,25 +112,17 @@ Day, metal and finger differ by lineage. Follow [your astrologer's](/consult) ad
 
 Not sure which planet is yours? Get a [free report from your birth details](/services/free-reports), or [talk to an astrologer](/consult).
 
-## How AstroHQ grades a stone
+## What decides a stone's look and price
 
-| What we check | Why it matters |
+| Factor | What it means |
 |---|---|
-| Species and variety | The stone is what its name says, and the report says so in the same words |
-| Natural or made | Only natural stones are sold as natural. Lab-made stones are named as lab-made |
-| Treatment | Heated, oiled, filled or diffused is told before you buy, in plain words |
-| Colour and clarity | Graded by eye and instrument. A stone with cracks, cavities or cloudiness is not sold as a gem |
-| Origin | Told only where a lab can confirm it, and given as the lab's opinion |
-| Paper | An AstroHQ certificate on every stone, and an independent lab report on the highest grade |
-| Weight | Measured in carats and ratti, and checked against the paper |
-
-| Grade | In plain words |
-|---|---|
-| Budget | A genuine natural stone at the lowest price: good colour, small marks you can see up close, an AstroHQ certificate |
-| Standard | A richer colour and a cleaner stone, with the origin stated and an AstroHQ certificate |
-| Premium | The finest colour and cleanness we offer, with an independent lab report that gives the origin |
-
-Every stone is graded the same way, and the grade is on its page. The AstroHQ guarantee stands behind the stone being what we describe.
+| Colour | The depth, evenness and purity of the colour. For most stones it matters most |
+| Clarity | The marks inside. Most natural stones have some. Cracks, cavities and cloudiness are faults the texts warn against |
+| Cut | How well the stone is shaped and polished to show its colour and light |
+| Weight | In carats, and in ratti in the traditional measure |
+| Origin | Where it was mined. A lab states it as an opinion, and it affects price more than quality |
+| Treatment | Heated, oiled, filled, dyed or diffused. It should always be told, and it changes the price |
+| Paper | A report from an independent laboratory, which names the stone and states these things |
 
 ## Wearing and care
 

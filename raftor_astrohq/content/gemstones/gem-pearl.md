@@ -110,16 +110,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Type and size | Akoya, South Sea, Tahitian or freshwater, in millimetres |
 | Care | Keep away from perfume, acid and rubbing. Wipe with a soft cloth |
 
-## How AstroHQ grades Pearl
-
-| Grade | Lustre | Surface | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good lustre, white or cream | Small marks on the surface | Cultured (we tell you); any bleaching is told | Not stated | AstroHQ certificate |
-| Standard | Bright lustre | Few marks | Cultured (we tell you); any bleaching is told | Stated by us | AstroHQ certificate |
-| Premium | Mirror-like lustre | A very clean surface | Natural or cultured, as an independent lab confirms; no dye | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural pearl where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
-
 [[product GEM022]]
 
 For where gemstones come from, the names that cause confusion and what a report should say, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).

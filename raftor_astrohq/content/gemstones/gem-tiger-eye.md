@@ -106,16 +106,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | An independent laboratory report | States quartz (tiger eye) and any heating or dye |
 | Species in words | Tiger eye, not chrysoberyl cat's eye |
 
-## How AstroHQ grades Tiger Eye
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good golden-brown | Small marks you can see up close | Natural; any heating for red-brown is told | Not stated | AstroHQ certificate |
-| Standard | Rich golden, with a clear band | Clean to the eye | Natural; any heating is told | Stated by us | AstroHQ certificate |
-| Premium | Rich, with a sharp silky band | Very clean | Natural | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural tiger eye where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
-
 [[product GEM027]]
 
 For where gemstones come from, the names that cause confusion and what a report should say, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).

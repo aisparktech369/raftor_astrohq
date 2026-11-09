@@ -109,16 +109,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Origin as the report's opinion | A "Ceylon" tag is only a claim |
 | Weight in carats | Compare price per carat, not per ratti |
 
-## How AstroHQ grades Pukhraj
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good yellow | Small marks you can see up close | Heated (we tell you) | Not stated | AstroHQ certificate |
-| Standard | Rich golden yellow | Clean to the eye | Heated (we tell you) | Stated by us | AstroHQ certificate |
-| Premium | Vivid golden yellow | Very clean | Untreated where possible, or heated (we tell you) | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural yellow sapphire where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
-
 [[product GEM024]]
 
 [[product GEM009]]

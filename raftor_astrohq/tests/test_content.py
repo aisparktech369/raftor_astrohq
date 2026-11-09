@@ -30,6 +30,13 @@ class TestContent(TestCase):
 			if "astrologer" in body.replace("astrologers", ""):
 				self.assertTrue("(/consult)" in body or 'href="/consult"' in body, item["file"])
 
+	def test_a_blog_carries_no_policy_or_commercial_promise(self):
+		"""The blog only teaches and sells softly (a card, a link). Guarantees, grades, refunds and certificates belong to the shop's pages and the policies, never to an article."""
+		for item in content.load():
+			text = item["body"].lower()
+			for phrase in ("astrohq guarantee", "astrohq certificate", "we guarantee", "money back", "refund", "money-back", "backed by astrohq", "astrohq grades"):
+				self.assertNotIn(phrase, text, f"{item['file']}: {phrase}")
+
 	def test_every_article_is_tabular(self):
 		"""Agreed with the owner: facts are tables across the series (at a glance, meaning, mantra), questions are the site's accordion."""
 		for item in content.load():
@@ -49,7 +56,6 @@ class TestContent(TestCase):
 				self.assertIn("| Topic | Detail |", item["body"], item["file"])
 				self.assertIn("## Where it comes from\n\n| Origin | What to know |", item["body"], item["file"])
 				self.assertIn("## Natural, treated, or made", item["body"], item["file"])
-				self.assertIn("## How AstroHQ grades", item["body"], item["file"])  # the grading standard, Budget / Standard / Premium
 				for section in ("## Mythology and lore", "## Astrology at a glance", "## How astrologers decide"):
 					self.assertIn(section, item["body"], item["file"])
 				self.assertIn("<details><summary>", item["body"], item["file"])

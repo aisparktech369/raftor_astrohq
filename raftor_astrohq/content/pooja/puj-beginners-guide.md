@@ -26,7 +26,6 @@ order: 10
 | What it is | An act of seeking blessings (ashirwad) for an aim: a wish fulfilled (kamna purti), a trouble eased, a new beginning made well |
 | Who gives the blessing | The divine. The blessing is received, and cannot be made or bought |
 | Who performs the rite | A priest, in your name. The priest and AstroHQ are only the means (nimit) of offering it |
-| What we do | Arrange the rite, the priest and the sankalp with care, and tell you honestly what a pooja is and is not |
 | What no one can do | Promise the result. Your own effort and your faith go with the rite |
 
 ## Pooja, havan, abhishek, jaap

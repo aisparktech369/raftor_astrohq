@@ -106,16 +106,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Treatment in words | Heated or not |
 | Weight | Zirconia is heavier than zircon for the same size |
 
-## How AstroHQ grades Zircon
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good colour | Small marks you can see up close | Heated (we tell you) | Not stated | AstroHQ certificate |
-| Standard | Rich colour | Clean to the eye | Heated (we tell you) | Stated by us | AstroHQ certificate |
-| Premium | Vivid colour | Very clean | Untreated where possible, or heated (we tell you) | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural natural zircon where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone. Cubic zirconia is lab-made. It is sold and described as cubic zirconia, never as zircon, and it is not graded as a gem.
-
 [[product GEM020]]
 
 [[product GEM032]]

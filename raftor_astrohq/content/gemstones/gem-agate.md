@@ -99,16 +99,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Dye in words | "Dyed black agate" is honest and common |
 | Bands | Natural bands follow the stone's shape |
 
-## How AstroHQ grades Agate
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Natural or dyed colour (we tell you) | Small marks you can see up close | Dyed colour is common and is told | Not stated | AstroHQ certificate |
-| Standard | Natural banding, any dye told | Clean to the eye | Dye is told | Stated by us | AstroHQ certificate |
-| Premium | Natural banding, undyed where the stone allows | Very clean | Undyed where the stone allows; any dye is told | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural agate where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone. Sulemani hakik is black with white bands and is usually dyed; the dye is told.
-
 [[product GEM002]]
 
 [[product GEM026]]

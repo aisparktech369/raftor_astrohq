@@ -108,16 +108,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Treatment in words | None, or dyed or coated |
 | Weight in carats | Compare price per carat, not per ratti |
 
-## How AstroHQ grades Hessonite
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good honey-brown | The natural swirl, with small marks | Untreated | Not stated | AstroHQ certificate |
-| Standard | Rich honey-cinnamon | An even swirl, otherwise clean | Untreated | Stated by us | AstroHQ certificate |
-| Premium | Deep, even cinnamon-honey | A fine, even swirl, very clean | Untreated | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural hessonite where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
-
 [[product GEM015]]
 
 For where gemstones come from, the names that cause confusion and what a report should say, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).

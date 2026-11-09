@@ -109,16 +109,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Solid, doublet or triplet | In words |
 | Care | Avoid heat, dry air, sudden changes and ultrasonic cleaners. Opal can crack |
 
-## How AstroHQ grades Fire Opal
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good orange | Small marks you can see up close | Solid opal; any treatment is told | Not stated | AstroHQ certificate |
-| Standard | Rich orange-red | Clean to the eye | Solid opal; any treatment is told | Stated by us | AstroHQ certificate |
-| Premium | Vivid orange-red | Very clean | Solid opal, untreated where possible | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural solid opal where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone. A doublet or triplet is never sold as solid opal; it is named as one.
-
 [[product GEM013]]
 
 [[product GEM004]]

@@ -109,16 +109,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Sourcing | Where it came from and that the trade is lawful |
 | Care | Soft and sensitive to acid, perfume and sweat |
 
-## How AstroHQ grades Red Coral
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good red | Natural lines you can see | Natural coral; any dye or wax is told | Not stated | AstroHQ certificate |
-| Standard | Deep, even red | Few lines | Natural coral; any wax is told | Stated by us | AstroHQ certificate |
-| Premium | Deep, even red, undyed | Smooth, very few marks | Natural colour, no dye | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural natural red coral where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
-
 [[product GEM018]]
 
 For where gemstones come from, the names that cause confusion and what a report should say, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).

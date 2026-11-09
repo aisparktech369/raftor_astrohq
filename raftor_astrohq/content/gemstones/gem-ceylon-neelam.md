@@ -111,16 +111,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Treatment in words | Heated, diffused and filled differ greatly in value |
 | Weight in carats | Compare price per carat, not per ratti |
 
-## How AstroHQ grades Neelam
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good blue, a little lighter | Small marks you can see up close | Heated (we tell you) | Not stated | AstroHQ certificate |
-| Standard | Rich blue | Clean to the eye | Heated (we tell you) | Stated by us | AstroHQ certificate |
-| Premium | Deep blue | Very clean | Untreated where possible, or heated (we tell you) | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural neelam, correctly named, free of the serious faults the gem texts name (cracks, cavities, cloudiness), with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
-
 [[product GEM008]]
 
 [[product GEM021]]

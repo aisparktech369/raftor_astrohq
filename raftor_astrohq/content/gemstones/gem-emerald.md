@@ -110,16 +110,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Origin as the report's opinion | Not the seller's say-so |
 | Care instructions | Heat, steam, solvents and ultrasonic cleaners can damage a filled stone |
 
-## How AstroHQ grades Emerald
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good green | The natural marks emerald has, none that weaken it | Oiled (we tell you how much) | Not stated | AstroHQ certificate |
-| Standard | Deep green | Fewer visible marks | Oiled (we tell you how much) | Stated by us | AstroHQ certificate |
-| Premium | Vivid green | Very clean for an emerald | Little or no oil (we tell you) | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural emerald, correctly named, free of the serious faults the gem texts name (cracks, cavities, cloudiness), with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
-
 [[product GEM012]]
 
 For where gemstones come from, the names that cause confusion and what a report should say, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).

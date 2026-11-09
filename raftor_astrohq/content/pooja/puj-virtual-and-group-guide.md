@@ -60,7 +60,7 @@ order: 20
 | The date and time on the video | A recording should be of your pooja, on your date |
 | What the sankalp covers | The names, the aim and the number of mantras |
 | No promised outcomes | Be wary of any pooja that guarantees a result |
-| A clear refund and rescheduling rule | In case it cannot be done as booked |
+| Clear terms | You should know what happens if it cannot be done as booked |
 
 ## If you do not know your gotra
 

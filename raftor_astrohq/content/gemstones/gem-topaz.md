@@ -103,16 +103,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Blue topaz treatment | Ask whether it is treated and that it comes from a reputable producer |
 | Care | Perfect cleavage. Avoid knocks and sudden heat |
 
-## How AstroHQ grades Topaz
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good, clear or pale blue | Small marks you can see up close | White is natural. Blue colour is made by treatment (we tell you) | Not stated | AstroHQ certificate |
-| Standard | Rich, clear or blue | Clean to the eye | White is natural. Blue colour is made by treatment (we tell you) | Stated by us | AstroHQ certificate |
-| Premium | Very clear, or a deep blue | Very clean | White is natural. Blue colour is made by treatment (we tell you) | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural topaz, white or blue where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
-
 [[product GEM005]]
 
 [[product GEM030]]

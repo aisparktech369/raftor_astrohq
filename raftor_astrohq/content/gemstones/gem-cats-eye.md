@@ -109,16 +109,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | An independent laboratory report | States natural or synthetic and weight |
 | Weight in carats | Compare price per carat, not per ratti |
 
-## How AstroHQ grades Cat's Eye
-
-| Grade | Colour | The eye (the line) | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good honey | A clear line, a little thin or off-centre | Untreated | Not stated | AstroHQ certificate |
-| Standard | Rich honey-green | A clear, centred line | Untreated | Stated by us | AstroHQ certificate |
-| Premium | Deep honey-green | A sharp, centred line that stays sharp as you turn it | Untreated | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural chrysoberyl cat's eye where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
-
 [[product GEM007]]
 
 For where gemstones come from, the names that cause confusion and what a report should say, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).

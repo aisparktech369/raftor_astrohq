@@ -99,16 +99,6 @@ The stories and rules above are traditions, told as they are told. They are not 
 | Species, not just "garnet" | The group has many types and prices |
 | Weight in carats | Compare price per carat |
 
-## How AstroHQ grades Garnet
-
-| Grade | Colour | Clarity | Treatment | Origin | Paper |
-|---|---|---|---|---|---|
-| Budget | Good red | Small marks you can see up close | Untreated | Not stated | AstroHQ certificate |
-| Standard | Rich red | Clean to the eye | Untreated | Stated by us | AstroHQ certificate |
-| Premium | Deep, even red | Very clean | Untreated | Confirmed by an independent lab | Independent lab report |
-
-Every grade is a natural garnet where it is sold as one, correctly named, free of the serious faults the gem texts name, with any treatment told before you buy, and backed by the AstroHQ guarantee. Budget, Standard and Premium differ in what the eye sees and in the paper that comes with the stone. They do not differ in what the tradition asks of a stone.
-
 [[product GEM014]]
 
 For where gemstones come from, the names that cause confusion and what a report should say, read [Gemstones: A Beginner's Guide](/blog/gemstones/gemstones-a-beginners-guide).
