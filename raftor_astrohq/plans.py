@@ -26,7 +26,7 @@ FIELDS = ["name", "plan_name", "sort_order", "monthly_price", "tagline", "replie
 UPGRADE = "The {next} plan gives you {next_limit} replies a month."
 DEFAULT_PLANS = [
 	{"plan_name": "Free", "sort_order": 1, "monthly_price": 0, "tagline": "Try the guides and keep your own profile",
-	 "replies_per_month": 60, "replies_per_day": 15, "family_profiles": 2, "notes_read": 10, "reports_per_month": 5},
+	 "replies_per_month": 100, "replies_per_day": 15, "family_profiles": 3, "notes_read": 15, "reports_per_month": 20},
 	{"plan_name": "Seeker", "sort_order": 2, "monthly_price": 149, "tagline": "For when you want guidance now and then",
 	 "replies_per_month": 300, "replies_per_day": 40, "family_profiles": 6, "notes_read": 40, "reports_per_month": 20},
 	{"plan_name": "Needy", "sort_order": 3, "monthly_price": 399, "tagline": "For when you need guidance every day",

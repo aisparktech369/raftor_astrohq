@@ -101,22 +101,25 @@ class TestWhatAGuideMayDo(AstroTestCase):
 class TestTheOtherLimits(AstroTestCase):
 	def test_the_people_in_the_profiles_are_limited_and_a_guide_adds_no_one_past_it(self):
 		user = _user()  # You
-		self.assertEqual(plans.family_room(user), 1)  # the lowest plan keeps two
-		self.assertIsNotNone(person._add_member(user, "Rhenna (daughter)", {"name": "Rhenna"}))
+		limit = plans.plan_of(user).family_profiles
+		self.assertEqual(plans.family_room(user), limit - 1)
+		for i in range(limit - 1):
+			self.assertIsNotNone(person._add_member(user, f"Person{i} (sibling)", {"name": f"Person{i}"}))
 		self.assertEqual(plans.family_room(user), 0)
 		self.assertIsNone(person._add_member(user, "Tara (daughter)", {"name": "Tara"}))
-		self.assertIn("keeps 2 people", plans.family_words(user))
+		self.assertIn(f"keeps {limit} people", plans.family_words(user))
 		plans.assign(user, "Seeker")
 		self.assertGreater(plans.family_room(user), 0)
 
 	def test_the_website_refuses_one_person_too_many_with_the_plans_words(self):
 		from raftor_astrohq import api
 
-		user = _user(profiles_count=2)  # the lowest plan is full
+		limit = frappe.db.get_value("AI Plan", "Free", "family_profiles")
+		user = _user(profiles_count=limit)  # the plan is full
 		frappe.set_user(user)
 		out = api.save_profile(values={"relationship": "Spouse", "full_name": "Ravi Rao", "date_of_birth": "1988-03-02", "time_unknown": 1, "place_of_birth": "Jaipur, India", "permission_given": 1})
 		self.assertFalse(out["ok"])
-		self.assertIn("keeps 2 people", out["errors"]["full_name"])
+		self.assertIn(f"keeps {limit} people", out["errors"]["full_name"])
 
 	def test_a_guide_reads_as_many_notes_as_the_plan_says(self):
 		user = _user()
