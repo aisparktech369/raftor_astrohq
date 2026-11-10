@@ -9,13 +9,16 @@ import frappe
 ROLE = "Pandit Ji Agent"
 USER = "pandit-ji-agent@agents.astrohq.in"
 BLUEPRINT = "pandit_ji"
-TOOLS = ["search_webshop_products", "get_webshop_product", "find_services", "get_service", "search_knowledge", "get_family_member", "make_report"]  # read-only, or free: the agent never books or charges, it hands the customer to the booking page
+TOOLS = ["search_webshop_products", "get_webshop_product", "find_services", "get_service", "search_knowledge", "get_family_member", "get_report"]  # read-only, or free: the agent never books or charges, it hands the customer to the booking page
 READS = {doctype: ["read"] for doctype in ("Website Item", "Item", "Item Price", "Item Group", "Brand", "Price List", "Pricing Rule", "Website Item Group")}
 
 
 # The numerology guide (classical numerology, from the Academy's Numerology series; the numbers come from the engine through calculate_numerology). Same kind of agent, its own user and its own tools.
+# The reports each guide may open and speak from (its own area): the numerologist reads numerology, Pandit ji (who routes to stones, Rudraksha and poojas, which come from a chart and a number) reads both, the dream guide none.
+REPORT_AREAS = {"pandit_ji": ["kundli", "numerology"], "numerologist": ["numerology"], "dream_guide": []}
+
 NUMEROLOGIST = {"role": "Numerology Guide Agent", "user": "numerology-guide-agent@agents.astrohq.in", "blueprint": "numerologist", "title": "Numerology guide (AI)",
-				"tools": ["search_knowledge", "calculate_numerology", "find_services", "get_service", "search_webshop_products", "get_webshop_product", "get_family_member", "make_report"], "reads": READS}
+				"tools": ["search_knowledge", "calculate_numerology", "find_services", "get_service", "search_webshop_products", "get_webshop_product", "get_family_member", "get_report"], "reads": READS}
 # The dream guide (dreams read as personal stories, from the Academy's Dreams series; each source labelled). Its tools: the Academy search and the person's own family profiles.
 DREAM_GUIDE = {"role": "Dream Guide Agent", "user": "dream-guide-agent@agents.astrohq.in", "blueprint": "dream_guide", "title": "Dream guide (AI)", "tools": ["search_knowledge", "get_family_member"], "reads": {}}
 AGENTS = {BLUEPRINT: {"role": ROLE, "user": USER, "blueprint": BLUEPRINT, "title": "Pandit ji (AI guide)", "tools": TOOLS, "reads": READS}, NUMEROLOGIST["blueprint"]: NUMEROLOGIST, DREAM_GUIDE["blueprint"]: DREAM_GUIDE}
@@ -42,3 +45,11 @@ def ensure_blueprint() -> None:
 			continue
 		frappe.get_doc({"doctype": "Blueprint Reference", "blueprint_id": blueprint, "title": title, "is_active": 1, "is_public": 0, "agent_role": "Customer",
 						"lifecycle_mode": "persistent", "description": description}).insert(ignore_permissions=True)
+
+
+def report_areas(agent_user: str) -> list[str]:
+	"""The reports the guide signed in as this site user may read: its own area, nothing else (a person's kundli is not the numerologist's to read, and the other way round)."""
+	for agent in AGENTS.values():
+		if agent["user"] == agent_user:
+			return list(REPORT_AREAS.get(agent["blueprint"], []))
+	return []

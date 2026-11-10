@@ -95,24 +95,42 @@ class TestPersonNotes(AstroTestCase):
 		self.assertEqual(_rows(mine)[0].summary, "")
 
 
+NUMEROLOGIST, PANDIT, DREAMER = "numerology-guide-agent@agents.astrohq.in", "pandit-ji-agent@agents.astrohq.in", "dream-guide-agent@agents.astrohq.in"
+
+
 class TestReportsFromTheChat(AstroTestCase):
-	def test_asking_for_a_report_names_what_is_missing_and_never_guesses(self):
+	def test_a_guide_reads_only_the_reports_of_its_own_area(self):
+		user = _user()
+		self.assertIn("outside your area", person.read_report(user, "me", "kundli", NUMEROLOGIST)["message"])
+		self.assertIn("outside your area", person.read_report(user, "me", "numerology", DREAMER)["message"])
+		self.assertIn("outside your area", person.read_report(user, "me", "numerology", "someone-else@example.com")["message"])
+		self.assertTrue(person.read_report(user, "me", "numerology", PANDIT)["found"])
+		self.assertEqual(frappe.db.count("Free Report", {"user": user}), 1)  # only the one that was in an area was made
+
+	def test_a_profile_lookup_shows_only_what_the_guides_area_allows(self):
+		user = _user()
+		self.assertNotIn("numerology", person.member(user, "me", DREAMER))
+		self.assertNotIn("chart", person.member(user, "me", NUMEROLOGIST))
+		self.assertIn("numerology", person.member(user, "me", NUMEROLOGIST))
+
+	def test_asking_names_what_is_missing_and_never_guesses(self):
 		user = _user()
 		person.write(user, {"notes": [], "people": [{"name": "Rhenna", "relationship": "daughter", "date_of_birth": "2015-03-03"}]}, "g", "s")
-		self.assertFalse(person.make_report(user, "my daughter", "kundli")["found"])
-		self.assertIn("time of birth and place of birth", person.make_report(user, "my daughter", "kundli")["message"])
-		self.assertIn("Say which report", person.make_report(user, "me", "tarot")["message"])
-		self.assertIn("No profile matches", person.make_report(user, "my uncle", "numerology")["message"])
+		self.assertIn("time of birth and place of birth", person.read_report(user, "my daughter", "kundli", PANDIT)["message"])
+		self.assertIn("Say which report", person.read_report(user, "me", "tarot", PANDIT)["message"])
+		self.assertIn("No profile matches", person.read_report(user, "my uncle", "numerology", PANDIT)["message"])
 		person.write(user, {"notes": [], "people": [{"name": "Nameless", "relationship": "other"}]}, "g", "s")
-		self.assertIn("date of birth is not saved", person.make_report(user, "Nameless", "numerology")["message"])
+		self.assertIn("date of birth is not saved", person.read_report(user, "Nameless", "numerology", PANDIT)["message"])
 
-	def test_a_numerology_report_is_made_once_and_comes_back_as_a_card_the_person_asked_for(self):
+	def test_a_missing_report_is_made_once_kept_as_available_and_given_as_a_summary_not_a_link(self):
 		user = _user()
-		first = person.make_report(user, "me", "numerology")
-		self.assertTrue(first["made"])
-		card = first["services"][0]
-		self.assertTrue(card["always"] and card["bookable"] and card["book_link"].endswith(frappe.db.get_value("Service Proof", {"ref_doctype": "Free Report"}, "name", order_by="creation desc")))
-		self.assertEqual(person.make_report(user, "me", "numerology")["services"][0]["book_link"], card["book_link"])
+		first = person.read_report(user, "me", "numerology", NUMEROLOGIST)
+		self.assertTrue(first["found"] and first["newly_made"])
+		self.assertIn("number", first["summary"]["birth"])
+		self.assertNotIn("services", first)
+		self.assertIn("give no link", first["message"])
+		second = person.read_report(user, "me", "numerology", NUMEROLOGIST)
+		self.assertFalse(second["newly_made"])
 		self.assertEqual(frappe.db.count("Free Report", {"user": user}), 1)
 
 	def test_the_chart_headline_comes_from_the_kept_engine_answer(self):

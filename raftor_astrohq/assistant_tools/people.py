@@ -6,6 +6,8 @@ guardrails.session_user_tools), so a guide can only open the record of the perso
 """
 from typing import Any, Dict
 
+import frappe
+
 from frappe_assistant_core.core.base_tool import BaseTool
 
 
@@ -35,20 +37,20 @@ class GetFamilyMember(BaseTool):
 		user = (arguments.get("user") or "").strip()
 		if not user or user == "Guest":
 			return {"found": False, "message": "Nobody is signed in, so there is no profile to open."}
-		return person.member(user, str(arguments.get("who") or ""))
+		return person.member(user, str(arguments.get("who") or ""), frappe.session.user)
 
 
-class MakeReport(BaseTool):
+class GetReport(BaseTool):
 	def __init__(self):
 		super().__init__()
-		self.name = "make_report"
+		self.name = "get_report"
 		self.description = (
-			"Make the signed-in person's free report, a kundli or a numerology report, for themself or for someone in their saved profiles ('me', 'Tara', 'my daughter'), using the details the profile already holds, and "
-			"give them the card to open it. Use it when they ask for a chart or a report for someone, or when it would help what you are explaining; do not ask again for details the profile has. "
-			"If a detail is missing it says which, so ask for that one thing and try again. It never charges."
+			"Read one person's kundli or numerology report, in your own area only, to talk from it: for the signed-in person themself or someone in their saved profiles ('me', 'Tara', 'my daughter'). It gives you the "
+			"summary to say in the chat in your own words; there is no link, and you do not read it all out. If the report does not exist yet it is made now and kept under the person's reports, free. "
+			"If a detail is missing it says which: ask for that one thing. A report outside your area is refused: say so kindly and point to who reads it."
 		)
 		self.requires_permission = None
-		self.annotations = {"module": "astrohq.people", "tags": ["write"], "tier": "T2"}
+		self.annotations = {"module": "astrohq.people", "tags": ["read"], "tier": "T2"}
 		self.inputSchema = {
 			"type": "object",
 			"properties": {
@@ -64,5 +66,5 @@ class MakeReport(BaseTool):
 
 		user = (arguments.get("user") or "").strip()
 		if not user or user == "Guest":
-			return {"found": False, "message": "Nobody is signed in, so no report can be made."}
-		return person.make_report(user, str(arguments.get("who") or ""), str(arguments.get("kind") or ""))
+			return {"found": False, "message": "Nobody is signed in, so there is no report to read."}
+		return person.read_report(user, str(arguments.get("who") or ""), str(arguments.get("kind") or ""), frappe.session.user)
