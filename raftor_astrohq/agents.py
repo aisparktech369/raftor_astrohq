@@ -9,15 +9,15 @@ import frappe
 ROLE = "Pandit Ji Agent"
 USER = "pandit-ji-agent@agents.astrohq.in"
 BLUEPRINT = "pandit_ji"
-TOOLS = ["search_webshop_products", "get_webshop_product", "find_services", "get_service", "search_knowledge"]  # all read-only: the agent never books or charges, it hands the customer to the booking page
+TOOLS = ["search_webshop_products", "get_webshop_product", "find_services", "get_service", "search_knowledge", "get_family_member"]  # all read-only: the agent never books or charges, it hands the customer to the booking page
 READS = {doctype: ["read"] for doctype in ("Website Item", "Item", "Item Price", "Item Group", "Brand", "Price List", "Pricing Rule", "Website Item Group")}
 
 
 # The numerology guide (classical numerology, from the Academy's Numerology series; the numbers come from the engine through calculate_numerology). Same kind of agent, its own user and its own tools.
 NUMEROLOGIST = {"role": "Numerology Guide Agent", "user": "numerology-guide-agent@agents.astrohq.in", "blueprint": "numerologist", "title": "Numerology guide (AI)",
-				"tools": ["search_knowledge", "calculate_numerology", "find_services", "get_service", "search_webshop_products", "get_webshop_product"], "reads": READS}
-# The dream guide (dreams read as personal stories, from the Academy's Dreams series; each source labelled). No tool but the Academy search.
-DREAM_GUIDE = {"role": "Dream Guide Agent", "user": "dream-guide-agent@agents.astrohq.in", "blueprint": "dream_guide", "title": "Dream guide (AI)", "tools": ["search_knowledge"], "reads": {}}
+				"tools": ["search_knowledge", "calculate_numerology", "find_services", "get_service", "search_webshop_products", "get_webshop_product", "get_family_member"], "reads": READS}
+# The dream guide (dreams read as personal stories, from the Academy's Dreams series; each source labelled). Its tools: the Academy search and the person's own family profiles.
+DREAM_GUIDE = {"role": "Dream Guide Agent", "user": "dream-guide-agent@agents.astrohq.in", "blueprint": "dream_guide", "title": "Dream guide (AI)", "tools": ["search_knowledge", "get_family_member"], "reads": {}}
 AGENTS = {BLUEPRINT: {"role": ROLE, "user": USER, "blueprint": BLUEPRINT, "title": "Pandit ji (AI guide)", "tools": TOOLS, "reads": READS}, NUMEROLOGIST["blueprint"]: NUMEROLOGIST, DREAM_GUIDE["blueprint"]: DREAM_GUIDE}
 
 

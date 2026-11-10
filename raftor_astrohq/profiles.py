@@ -121,6 +121,8 @@ def validate_user(doc, method=None) -> None:
 		frappe.throw(_("There can be only one profile marked \"{0}\".").format(SELF))
 	for index, row in enumerate(rows, start=1):
 		errors = row_errors(row_values(row))
+		if row.get("from_chat"):  # a person a guide added from the chat: only their name and relationship are needed until the account holder completes the rest on the website
+			errors = {k: v for k, v in errors.items() if k in ("relationship", "full_name")}
 		if errors:
 			frappe.throw(_("Birth profile {0}: {1}").format(index, next(iter(errors.values()))))
 		cleaned = clean(row_values(row))

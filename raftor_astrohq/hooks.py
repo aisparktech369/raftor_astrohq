@@ -308,10 +308,11 @@ assistant_tools = [
 	"raftor_astrohq.assistant_tools.services.FindServices",
 	"raftor_astrohq.assistant_tools.services.GetService",
 	"raftor_astrohq.assistant_tools.numerology.CalculateNumerology",
+	"raftor_astrohq.assistant_tools.people.GetFamilyMember",
 ]
 
 # AgentsHQ calls this when it puts the astrohq domain's files in the store: it labels each file's pieces
 agent_rag_enrichers = ["astrohq:raftor_astrohq.knowledge.enrich"]
 
-# What the site knows of a person (profiles, reports, purchases, bookings), read by AgentsHQ for the guides' notes: a dotted path to a function (user) -> text.
-agent_person_context = ["raftor_astrohq.person.context"]
+# What the AI guides remember about a person and the people in their profiles, and what the site knows of them: a dotted path to a module with read(user), write(user, payload, guide, session) and forget(user, name).
+agent_person = ["raftor_astrohq.person"]

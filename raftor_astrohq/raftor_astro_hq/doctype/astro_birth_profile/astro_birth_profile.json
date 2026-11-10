@@ -11,7 +11,9 @@
   "time_of_birth",
   "time_unknown",
   "place_of_birth",
-  "permission_given"
+  "permission_given",
+  "from_chat",
+  "summary"
  ],
  "fields": [
   {
@@ -35,7 +37,8 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Date of Birth",
-   "reqd": 1
+   "reqd": 0,
+   "description": "Required on the website and in every save (profiles.row_errors); left open here only so a guide can add a family member from the chat before these are known."
   },
   {
    "description": "24-hour time at the place of birth, for example 06:42. Left empty when the time is not known.",
@@ -54,13 +57,28 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Place of Birth",
-   "reqd": 1
+   "reqd": 0,
+   "description": "Required on the website and in every save (profiles.row_errors); left open here only so a guide can add a family member from the chat before these are known."
   },
   {
    "description": "The account holder confirms they may keep this person's details. Required for everyone except \"You\".",
    "fieldname": "permission_given",
    "fieldtype": "Check",
    "label": "Permission Given"
+  },
+  {
+   "fieldname": "from_chat",
+   "fieldtype": "Check",
+   "label": "Added From Chat",
+   "read_only": 1,
+   "description": "A guide added this person while the account holder was talking about them. Birth details may still be missing; the person completes them on the website."
+  },
+  {
+   "fieldname": "summary",
+   "fieldtype": "Small Text",
+   "label": "What We Know",
+   "read_only": 1,
+   "description": "The guides' short summary of this person, kept from the chats. Read-only."
   }
  ],
  "index_web_pages_for_search": 0,
