@@ -41,46 +41,46 @@
    "price_note": "No payment needed",
    "items": [
     {
-     "item_key": "ai_minutes",
      "label": "AI astrologers",
      "period": "Month",
      "quota": 30,
      "unit": "minutes",
      "stress": 1,
-     "note": "30 minutes a month with the AI astrologers"
+     "note": "30 minutes a month with the AI astrologers",
+     "meter": "ai_minutes"
     },
     {
-     "item_key": "live_session",
      "label": "First live session",
      "period": "Included",
-     "note": "First live session with a real astrologer, 10 minutes"
+     "note": "First live session with a real astrologer, 10 minutes",
+     "meter": "live_session"
     },
     {
-     "item_key": "family_profiles",
      "label": "People in your profiles",
      "period": "Total",
      "quota": 1,
      "unit": "person",
      "note": "Your own profile",
-     "limit_message": "Your {plan} plan keeps {quota} {unit} in your profiles. {upgrade}"
+     "limit_message": "Your {plan} plan keeps {quota} {unit} in your profiles. {upgrade}",
+     "meter": "family_profiles"
     },
     {
-     "item_key": "free_reports",
      "label": "Free reports",
      "period": "Unlimited",
-     "note": "All free reports, always free"
+     "note": "All free reports, always free",
+     "meter": "free_reports"
     },
     {
-     "item_key": "panchang",
      "label": "Panchang",
      "period": "Unlimited",
-     "note": "Panchang for any day and town, always free"
+     "note": "Panchang for any day and town, always free",
+     "meter": "panchang"
     },
     {
-     "item_key": "academy",
      "label": "Academy",
      "period": "Unlimited",
-     "note": "Academy articles, always free"
+     "note": "Academy articles, always free",
+     "meter": "academy"
     }
    ],
    "cards": [
@@ -98,64 +98,64 @@
    "price_note": "Renews each month. Stop any time.",
    "items": [
     {
-     "item_key": "ai_minutes",
      "label": "AI astrologers",
      "period": "Month",
      "quota": 100,
      "unit": "minutes",
      "stress": 1,
-     "note": "100 minutes a month with the AI astrologers"
+     "note": "100 minutes a month with the AI astrologers",
+     "meter": "ai_minutes"
     },
     {
-     "item_key": "live_session",
      "label": "First live session",
      "period": "Included",
-     "note": "First live session with a real astrologer, 10 minutes"
+     "note": "First live session with a real astrologer, 10 minutes",
+     "meter": "live_session"
     },
     {
-     "item_key": "free_live_session",
      "label": "Free live session",
      "period": "Included",
-     "note": "1 free live session a month"
+     "note": "1 free live session a month",
+     "meter": "free_live_session"
     },
     {
-     "item_key": "family_profiles",
      "label": "People in your profiles",
      "period": "Total",
      "quota": 6,
      "unit": "people",
      "note": "Family profiles kept, up to 6 people",
-     "limit_message": "Your {plan} plan keeps {quota} {unit} in your profiles. {upgrade}"
+     "limit_message": "Your {plan} plan keeps {quota} {unit} in your profiles. {upgrade}",
+     "meter": "family_profiles"
     },
     {
-     "item_key": "family_matching",
      "label": "Compatibility matchings",
      "period": "Included",
-     "note": "Compatibility matchings for your family"
+     "note": "Compatibility matchings for your family",
+     "meter": "family_matching"
     },
     {
-     "item_key": "free_rudraksh",
      "label": "Free Rudraksh",
      "period": "Included",
-     "note": "A free Rudraksh with every Divine purchase"
+     "note": "A free Rudraksh with every Divine purchase",
+     "meter": "free_rudraksh"
     },
     {
-     "item_key": "free_reports",
      "label": "Free reports",
      "period": "Unlimited",
-     "note": "All free reports, always free"
+     "note": "All free reports, always free",
+     "meter": "free_reports"
     },
     {
-     "item_key": "panchang",
      "label": "Panchang",
      "period": "Unlimited",
-     "note": "Panchang for any day and town, always free"
+     "note": "Panchang for any day and town, always free",
+     "meter": "panchang"
     },
     {
-     "item_key": "academy",
      "label": "Academy",
      "period": "Unlimited",
-     "note": "Academy articles, always free"
+     "note": "Academy articles, always free",
+     "meter": "academy"
     }
    ],
    "cards": [
@@ -173,76 +173,76 @@
    "price_note": "Renews each month. Stop any time.",
    "items": [
     {
-     "item_key": "ai_minutes",
      "label": "AI astrologers",
      "period": "Month",
      "quota": 300,
      "unit": "minutes",
      "stress": 1,
-     "note": "300 minutes a month with the AI astrologers"
+     "note": "300 minutes a month with the AI astrologers",
+     "meter": "ai_minutes"
     },
     {
-     "item_key": "live_session",
      "label": "First live session",
      "period": "Included",
-     "note": "First live session with a real astrologer, 10 minutes"
+     "note": "First live session with a real astrologer, 10 minutes",
+     "meter": "live_session"
     },
     {
-     "item_key": "free_live_session",
      "label": "Free live session",
      "period": "Included",
-     "note": "2 free live sessions a month"
+     "note": "2 free live sessions a month",
+     "meter": "free_live_session"
     },
     {
-     "item_key": "family_profiles",
      "label": "People in your profiles",
      "period": "Total",
      "quota": 15,
      "unit": "people",
      "note": "Family profiles kept, up to 15 people",
-     "limit_message": "Your {plan} plan keeps {quota} {unit} in your profiles. {upgrade}"
+     "limit_message": "Your {plan} plan keeps {quota} {unit} in your profiles. {upgrade}",
+     "meter": "family_profiles"
     },
     {
-     "item_key": "family_matching",
      "label": "Compatibility matchings",
      "period": "Included",
-     "note": "Compatibility matchings for your family"
+     "note": "Compatibility matchings for your family",
+     "meter": "family_matching"
     },
     {
-     "item_key": "free_rudraksh",
      "label": "Free Rudraksh",
      "period": "Included",
-     "note": "A free Rudraksh with every Divine purchase"
+     "note": "A free Rudraksh with every Divine purchase",
+     "meter": "free_rudraksh"
     },
     {
-     "item_key": "divine_discount",
      "label": "Discount on Divine purchases",
      "period": "Included",
-     "note": "10% off Divine purchases"
+     "note": "10% off Divine purchases",
+     "meter": "divine_discount"
     },
     {
-     "item_key": "priority",
      "label": "Priority",
      "period": "Included",
-     "note": "Priority when booking an astrologer"
+     "note": "Priority when booking an astrologer",
+     "meter": "priority"
     },
     {
-     "item_key": "free_reports",
      "label": "Free reports",
      "period": "Unlimited",
-     "note": "All free reports, always free"
+     "note": "All free reports, always free",
+     "meter": "free_reports"
     },
     {
-     "item_key": "panchang",
      "label": "Panchang",
      "period": "Unlimited",
-     "note": "Panchang for any day and town, always free"
+     "note": "Panchang for any day and town, always free",
+     "meter": "panchang"
     },
     {
-     "item_key": "academy",
      "label": "Academy",
      "period": "Unlimited",
-     "note": "Academy articles, always free"
+     "note": "Academy articles, always free",
+     "meter": "academy"
     }
    ],
    "cards": [

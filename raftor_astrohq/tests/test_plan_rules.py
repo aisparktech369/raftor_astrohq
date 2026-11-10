@@ -13,7 +13,7 @@ DATA = json.loads((Path(install.__file__).parent / "plans.json").read_text(encod
 
 
 def items(plan: str) -> dict:
-	return {i["item_key"]: i for i in next(p for p in DATA["plans"] if p["plan_name"] == plan)["items"]}
+	return {i["meter"]: i for i in next(p for p in DATA["plans"] if p["plan_name"] == plan)["items"]}
 
 
 def _user(people=1):
@@ -44,7 +44,7 @@ class TestTheDataFile(TestCase):
 			self.assertNotIn("free", plan["plan_name"].lower())
 			for item in plan["items"]:
 				self.assertIn(item["period"], kinds)
-				self.assertFalse(set(item) - {f.fieldname for f in meta.fields}, item["item_key"])
+				self.assertFalse(set(item) - {f.fieldname for f in meta.fields}, item["meter"])
 
 	def test_the_cards_at_a_limit_lead_to_the_plans_and_to_live_astrologers(self):
 		from raftor_websitehq.website_hq.page_groups import page_url
@@ -75,11 +75,11 @@ class TestWhatAstroHQCounts(AstroTestCase):
 	def test_an_answer_counts_the_minutes_the_person_was_talking_and_staff_and_visitors_are_not_limited(self):
 		user = _user()
 		person.turn_done(user, "pandit_ji")
-		self.assertEqual(plans.used(user, plan_rules.AI_MINUTES), plans.FIRST)
+		self.assertEqual(plans.used_of(user, plan_rules.AI_MINUTES), plans.FIRST)
 		for who in ("Administrator", "Guest"):
 			self.assertTrue(plan_rules.allowance(who, "pandit_ji")["ok"])
 			plan_rules.turn_done(who, "pandit_ji")
-		self.assertFalse(frappe.db.exists("Plan Usage", {"user": ["in", ["Administrator", "Guest"]], "item_key": plan_rules.AI_MINUTES}))
+		self.assertFalse(frappe.db.exists("Plan Usage", {"holder": ["in", ["Administrator", "Guest"]], "meter": plan_rules.AI_MINUTES}))
 
 	def test_the_people_a_profile_may_hold_follow_the_plan(self):
 		user = _user()
