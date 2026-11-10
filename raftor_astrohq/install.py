@@ -18,6 +18,9 @@ def after_install():
 	from raftor_astrohq import ai_guides
 
 	ai_guides.ensure()
+	from raftor_astrohq import plans
+
+	plans.ensure_plans()
 	sync_written_content()
 	switch_off_unconnected_indexing()
 

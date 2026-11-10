@@ -7,7 +7,7 @@ from frappe import _
 from frappe.rate_limiter import rate_limit
 from frappe.utils import formatdate
 
-from raftor_astrohq import panchang, places, profiles
+from raftor_astrohq import panchang, places, plans, profiles
 from raftor_astrohq.journey import APP_KEY
 from raftor_websitehq.website_hq.page_groups import page_url
 
@@ -112,6 +112,9 @@ def save_profile(id=None, values=None, relationship=None):
 			frappe.throw(_("That profile was not found."), frappe.DoesNotExistError)
 		if row and row.relationship == profiles.SELF:
 			return {"ok": False, "errors": only_one}  # "You" cannot be turned into a family member
+
+	if not row and not is_self and plans.family_room(frappe.session.user) < 1:  # the person's plan holds no more people
+		return {"ok": False, "errors": {"full_name": plans.family_words(frappe.session.user)}}
 
 	errors = profiles.row_errors(values)
 	if errors:

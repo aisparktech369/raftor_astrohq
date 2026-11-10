@@ -1,0 +1,100 @@
+{
+ "actions": [],
+ "creation": "2026-11-10 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-10 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "owner": "Administrator",
+ "states": [],
+ "track_changes": 0,
+ "autoname": "field:user",
+ "name": "AI Plan Member",
+ "description": "The plan a person has taken. Someone with no row, or whose period has ended, has the Free plan.",
+ "field_order": [
+  "user",
+  "plan",
+  "status",
+  "col1",
+  "period_start",
+  "period_end",
+  "source",
+  "agreement",
+  "note"
+ ],
+ "fields": [
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "Person",
+   "options": "User",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "plan",
+   "fieldtype": "Link",
+   "label": "Plan",
+   "options": "AI Plan",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Active\nEnded",
+   "default": "Active",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "col1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "period_start",
+   "fieldtype": "Date",
+   "label": "Month starts"
+  },
+  {
+   "fieldname": "period_end",
+   "fieldtype": "Date",
+   "label": "Month ends",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Select",
+   "label": "How it began",
+   "options": "Desk\nPayment\nTrial",
+   "default": "Desk"
+  },
+  {
+   "fieldname": "agreement",
+   "fieldtype": "Data",
+   "label": "Auto-pay agreement",
+   "read_only": 1,
+   "description": "PaymentHQ's agreement, when the person pays each month."
+  },
+  {
+   "fieldname": "note",
+   "fieldtype": "Small Text",
+   "label": "Note"
+  }
+ ],
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "write": 1,
+   "role": "System Manager"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
