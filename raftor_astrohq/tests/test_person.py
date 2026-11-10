@@ -148,3 +148,42 @@ class TestReportsFromTheChat(AstroTestCase):
 		self.assertEqual((out["ascendant"], out["sun_sign"], out["moon_sign"], out["moon_nakshatra"]), ("Cancer", "Aries", "Pisces", "Revathi, pada 3"))
 		self.assertTrue(out["running_mahadasha"].startswith("Moon until") and out["running_antardasha"].startswith("Venus until"))
 		self.assertIsNone(person.chart_summary(user, frappe._dict(date_of_birth="1980-05-12", time_of_birth="", place_of_birth="Mumbai", time_unknown=1)))
+
+
+class TestWhatEachGuideSees(AstroTestCase):
+	def _seeded(self):
+		user = _user()
+		person.write(user, {"notes": [{"about": "Rhenna (daughter)", "kind": "worry", "point": "Stressed about exams"}, {"about": "You", "kind": "dream", "point": "Dreams of falling from a height"},
+									  {"about": "You", "kind": "shown", "point": "Birth number 5"}], "people": [{"name": "Rhenna", "relationship": "daughter", "date_of_birth": "2015-03-03"}]}, "g", "s")
+		return user
+
+	def test_the_dream_guide_sees_only_the_dream_notes_and_who_is_in_the_family(self):
+		user = self._seeded()
+		seen = person.read(user, "dream_guide")
+		self.assertEqual([n["point"] for n in seen["notes"]], ["Dreams of falling from a height"])
+		self.assertIn("Rhenna (child): Rhenna", seen["card"])
+		for hidden in ("2015", "born", "Saved report", "Bought", "Stressed", "What we know"):
+			self.assertNotIn(hidden, seen["card"])
+
+	def test_the_other_guides_see_everything_as_before(self):
+		user = self._seeded()
+		for guide in ("pandit_ji", "numerologist"):
+			seen = person.read(user, guide)
+			self.assertEqual(len(seen["notes"]), 3)
+			self.assertIn("born 3 Mar 2015", seen["card"])
+
+	def test_the_dream_guides_profile_lookup_gives_a_name_and_dream_notes_only(self):
+		user = self._seeded()
+		out = person.member(user, "me", DREAMER)
+		self.assertEqual(out["name"], "Asha Rao")
+		self.assertEqual([n["point"] for n in out["notes"]], ["Dreams of falling from a height"])
+		self.assertNotIn("date_of_birth", out)
+		self.assertNotIn("summary", person.member(user, "my daughter", DREAMER))
+		self.assertEqual(person.member(user, "my daughter", PANDIT)["date_of_birth"], "2015-03-03")
+
+	def test_an_unknown_guide_sees_nothing(self):
+		user = self._seeded()
+		from raftor_astrohq import agents
+
+		self.assertEqual(agents.reads_of("some_new_guide"), {"notes": [], "card": "none"})
+		self.assertEqual(person.read(user, "some_new_guide"), {"notes": [], "card": ""})

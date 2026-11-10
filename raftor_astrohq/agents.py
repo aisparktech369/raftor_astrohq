@@ -16,6 +16,9 @@ READS = {doctype: ["read"] for doctype in ("Website Item", "Item", "Item Price",
 # The numerology guide (classical numerology, from the Academy's Numerology series; the numbers come from the engine through calculate_numerology). Same kind of agent, its own user and its own tools.
 # The reports each guide may open and speak from (its own area): the numerologist reads numerology, Pandit ji (who routes to stones, Rudraksha and poojas, which come from a chart and a number) reads both, the dream guide none.
 REPORT_AREAS = {"pandit_ji": ["kundli", "numerology"], "numerologist": ["numerology"], "dream_guide": []}
+# What of the person's record each guide is shown: `notes` are the kinds of note it reads (None = all), `card` is how much of the person's details it sees ("full", or "names": only who is in the family, no birth details,
+# reports or purchases). The dream guide keeps to the earlier dream talks and nothing else about the person (owner, 2026-11-10).
+READS_OF_PERSON = {"pandit_ji": {"notes": None, "card": "full"}, "numerologist": {"notes": None, "card": "full"}, "dream_guide": {"notes": ["dream"], "card": "names"}}
 
 NUMEROLOGIST = {"role": "Numerology Guide Agent", "user": "numerology-guide-agent@agents.astrohq.in", "blueprint": "numerologist", "title": "Numerology guide (AI)",
 				"tools": ["search_knowledge", "calculate_numerology", "find_services", "get_service", "search_webshop_products", "get_webshop_product", "get_family_member", "get_report"], "reads": READS}
@@ -53,3 +56,15 @@ def report_areas(agent_user: str) -> list[str]:
 		if agent["user"] == agent_user:
 			return list(REPORT_AREAS.get(agent["blueprint"], []))
 	return []
+
+
+def reads_of(blueprint: str) -> dict:
+	"""What of the person's record this guide is shown (see READS_OF_PERSON); an unknown guide is shown nothing."""
+	return READS_OF_PERSON.get(blueprint, {"notes": [], "card": "none"})
+
+
+def blueprint_of_user(agent_user: str) -> str:
+	for agent in AGENTS.values():
+		if agent["user"] == agent_user:
+			return agent["blueprint"]
+	return ""

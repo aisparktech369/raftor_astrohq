@@ -87,8 +87,12 @@ def _add_member(user: str, about: str, details: dict | None = None):
 	return frappe._dict(name=added.name, relationship=added.relationship, full_name=added.full_name, from_chat=1, summary="")
 
 
-def current(user: str, limit: int = LIMIT) -> list:
-	rows = frappe.get_all("Profile Note", filters={"user": user, "is_current": 1}, fields=["noted_on", "about", "kind", "point", "guide"], order_by="noted_on desc, creation desc", limit=limit)
+def current(user: str, limit: int = LIMIT, kinds: list | None = None) -> list:
+	"""The person's current notes, oldest first; `kinds` limits them to those kinds (None = all)."""
+	filters = {"user": user, "is_current": 1}
+	if kinds is not None:
+		filters["kind"] = ["in", kinds or [""]]
+	rows = frappe.get_all("Profile Note", filters=filters, fields=["noted_on", "about", "kind", "point", "guide"], order_by="noted_on desc, creation desc", limit=limit)
 	return [{"on": str(r.noted_on or ""), "about": r.about or "", "kind": r.kind or "", "guide": r.guide or "", "point": r.point} for r in reversed(rows)]
 
 
@@ -191,8 +195,12 @@ def _bookings(user: str) -> list[str]:
 	return [f"- Booked {name(r.offering)}{' on ' + formatdate(r.slot_start, 'd MMM yyyy') if r.slot_start else ''} ({(r.workflow_state or '').lower()})" for r in rows]
 
 
-def card(user: str) -> str:
+def card(user: str, mode: str = "full") -> str:
 	"""The person and their family as the site has them, each with the summary kept from the chats, then their reports, purchases and bookings. '' when the site knows nothing of them yet."""
+	if mode == "none":
+		return ""
+	if mode == "names":  # only who is in the family, so "my daughter" can be understood: no birth details, reports, purchases or summaries
+		return "\n".join(f"- {'You' if r.relationship == profiles.SELF else f'{r.full_name} ({r.relationship.lower()})'}: {r.full_name}" for r in _rows(user))
 	lines = []
 	for part in (lambda u: [_line(r) for r in _rows(u)], _reports, _orders, _bookings):
 		try:
@@ -202,8 +210,12 @@ def card(user: str) -> str:
 	return "\n".join(lines)
 
 
-def read(user: str) -> dict:
-	return {"notes": current(user), "card": card(user)}
+def read(user: str, guide: str = "") -> dict:
+	"""What a guide is shown of the person at the start of a turn: the notes and the card, as far as that guide's reads allow (agents.READS_OF_PERSON)."""
+	from raftor_astrohq import agents
+
+	allowed = agents.reads_of(guide) if guide else {"notes": None, "card": "full"}
+	return {"notes": current(user, kinds=allowed["notes"]), "card": card(user, allowed["card"])}
 
 
 def member(user: str, who: str, guide_user: str = "") -> dict:
@@ -212,6 +224,13 @@ def member(user: str, who: str, guide_user: str = "") -> dict:
 	row = _find(rows, who)
 	if row is None:
 		return {"found": False, "message": "No profile matches that. Ask the person for the name, or offer to add them.", "profiles": [{"name": _label(r), "relationship": r.relationship} for r in rows]}
+	from raftor_astrohq import agents
+
+	reads = agents.reads_of(agents.blueprint_of_user(guide_user)) if guide_user else {"notes": None, "card": "full"}
+	if reads["card"] != "full":  # a guide that sees only names: who they are, and the notes of the kinds it may read
+		kinds = reads["notes"] or []
+		return {"found": True, "name": row.full_name, "relationship": row.relationship, "notes": [{"on": str(n.noted_on or ""), "kind": n.kind, "point": n.point} for n in frappe.get_all(
+			"Profile Note", filters={"user": user, "profile": row.name, "is_current": 1, "kind": ["in", kinds or [""]]}, fields=["noted_on", "kind", "point"], order_by="noted_on asc", limit=20)]}
 	out = {"found": True, "name": row.full_name, "relationship": row.relationship, "date_of_birth": str(row.date_of_birth or ""), "time_of_birth": row.time_of_birth or "",
 		   "time_unknown": bool(row.time_unknown), "place_of_birth": row.place_of_birth or "", "details_complete": not profiles.row_errors(profiles.row_values(row)),
 		   "summary": row.summary or "", "notes": [{"on": str(n.noted_on or ""), "kind": n.kind, "point": n.point} for n in frappe.get_all("Profile Note", filters={"user": user, "profile": row.name, "is_current": 1}, fields=["noted_on", "kind", "point"], order_by="noted_on asc", limit=20)]}
