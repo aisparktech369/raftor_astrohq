@@ -18,11 +18,19 @@ def after_install():
 	from raftor_astrohq import ai_guides
 
 	ai_guides.ensure()
-	from raftor_astrohq import plans
-
-	plans.ensure_plans()
+	install_plans()
 	sync_written_content()
 	switch_off_unconnected_indexing()
+
+
+def install_plans():
+	"""AstroHQ's plans and their quotas (plans.json), made on a fresh install and on migrate when missing, by servicehq's plans feature: what the business team has changed stays."""
+	import json
+	from pathlib import Path
+
+	from raftor_servicehq import plans
+
+	plans.install("astrohq", json.loads((Path(__file__).parent / "plans.json").read_text(encoding="utf-8")))
 
 
 def switch_off_unconnected_indexing():

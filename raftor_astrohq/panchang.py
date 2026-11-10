@@ -330,6 +330,12 @@ def page(date=None, place=None) -> dict:
 
 	if default_place() is None:  # switched off, or the list of places or the town is not there
 		return {"items": []}
+	try:
+		from raftor_servicehq import plans
+
+		plans.use(frappe.session.user, "panchang")  # always free; counted for the stats (a visitor too)
+	except Exception:
+		frappe.log_error(title="A panchang view could not be counted", message=frappe.get_traceback())
 	chosen = place_of(place, datetime.date.today())
 	on_date = date_of(date, chosen)
 	explicit = place if place not in (None, "") and str(place) == str(chosen["id"]) else None

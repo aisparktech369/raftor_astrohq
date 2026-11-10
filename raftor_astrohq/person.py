@@ -15,7 +15,7 @@ import re
 import frappe
 from frappe.utils import formatdate, today
 
-from raftor_astrohq import answers, plans, profiles, report_view
+from raftor_astrohq import answers, plan_rules, profiles, report_view
 from raftor_astrohq import report_pdf as rp
 
 LAST = 3
@@ -71,8 +71,8 @@ def _add_member(user: str, about: str, details: dict | None = None):
 	name = (details or {}).get("name") or name
 	if len(name) < 2 or KINDRED.get(name.lower()) or name.lower() in ("you", "me", "myself", "self"):
 		return None  # 'my daughter' with no name cannot be a profile yet
-	if plans.family_room(user) < 1:
-		return None  # the person's plan holds no more people (plans.py); the notes about them are still kept
+	if plan_rules.family_room(user) < 1:
+		return None  # the person's plan holds no more people (plan_rules.py); the notes about them are still kept
 	doc = frappe.get_doc("User", user)
 	row = {"relationship": _relationship(about, (details or {}).get("relationship") or ""), "full_name": name.title() if name.islower() else name, "from_chat": 1, "permission_given": 1}  # unfiltered for now: the person's consent toggles come later and will start from the "Added From Chat" mark
 	for key in ("date_of_birth", "time_of_birth", "place_of_birth"):
@@ -219,17 +219,17 @@ def read(user: str, guide: str = "") -> dict:
 	from raftor_astrohq import agents
 
 	allowed = agents.reads_of(guide) if guide else {"notes": None, "card": "full"}
-	return {"notes": current(user, limit=plans.notes_read(user, LIMIT), kinds=allowed["notes"]), "card": card(user, allowed["card"])}
+	return {"notes": current(user, limit=LIMIT, kinds=allowed["notes"]), "card": card(user, allowed["card"])}
 
 
 def allowance(user: str, guide: str) -> dict:
-	"""Whether this guide may answer this person now, on their plan (AgentsHQ asks before it queues a message). See plans.py."""
-	return plans.allowance(user, guide)
+	"""Whether this guide may answer this person now, on their plan (AgentsHQ asks before it queues a message). See plan_rules.py."""
+	return plan_rules.allowance(user, guide)
 
 
 def turn_done(user: str, guide: str) -> None:
 	"""A reply was given: it counts against the person's plan (AgentsHQ calls this when a turn is complete)."""
-	plans.record_reply(user, guide)
+	plan_rules.turn_done(user, guide)
 
 
 def member(user: str, who: str, guide_user: str = "") -> dict:
@@ -342,7 +342,7 @@ def read_report(user: str, who: str, kind: str, guide_user: str) -> dict:
 	if item and free_reports.on_sale(item):  # kept as available: the person's own free report, once, for these details
 		clean, errors, message = free_reports._check(item, details)
 		dumped = intake_rules.dump(clean)
-		if not errors and not message and not frappe.db.exists("Free Report", {"user": user, "item": item, "details": dumped}) and plans.reports_left(user) > 0:
+		if not errors and not message and not frappe.db.exists("Free Report", {"user": user, "item": item, "details": dumped}):
 			try:
 				free_reports.check_limit(user)
 				workflows.as_system(lambda: free_reports.create(user, item, clean))

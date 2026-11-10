@@ -1,19 +1,14 @@
 {
  "words": {
-  "limit_month_message": "You have used all {limit} replies of your {plan} plan for this month. They start again on {date}. {upgrade} If it cannot wait, a live astrologer can talk with you one to one.",
-  "limit_day_message": "That is the {limit} replies a day your {plan} plan allows. I will be here again tomorrow. {upgrade} If it cannot wait, a live astrologer can talk with you one to one.",
-  "limit_reports_message": "Your {plan} plan makes {limit} reports a month, and they are made. They start again on {date}. {upgrade}",
-  "limit_guide_message": "I am not part of your {plan} plan. {upgrade}",
-  "family_message": "Your {plan} plan keeps {limit} people in your profiles. {upgrade}",
-  "no_plan_message": "To talk to the guides, take the {plan} plan: it is Rs {price} a month, and you can stop it any time. If it cannot wait, a live astrologer can talk with you one to one.",
-  "upgrade_message": "The {next} plan gives you {next_limit} replies a month."
+  "limit_message": "You have used all {quota} {unit} of {label} on your {plan} plan this month. They start again on {date}. {upgrade} If it cannot wait, a live astrologer can talk with you one to one.",
+  "upgrade_message": "The {next} plan gives you {next_quota} {unit}."
  },
  "cards": {
   "plans": {
    "kind": "service",
    "id": "plans",
    "title": "See the plans",
-   "subtitle": "Seeker and Needy give you more",
+   "subtitle": "Plus and Pro give you more",
    "price": "",
    "was": "",
    "image": "",
@@ -37,54 +32,219 @@
  },
  "plans": [
   {
-   "plan_name": "Free",
-   "sort_order": 1,
-   "monthly_price": 0,
-   "tagline": "Try the guides and keep your own profile",
-   "replies_per_month": 100,
-   "replies_per_day": 15,
-   "family_profiles": 3,
-   "notes_read": 15,
-   "reports_per_month": 20,
+   "plan_name": "Lite",
+   "plan_order": 1,
+   "price": 0,
+   "tagline": "A live astrologer session and 30 minutes with the AI astrologers",
    "button_label": "Start free",
    "button_url": "/ask/pandit-ji",
    "price_note": "No payment needed",
+   "items": [
+    {
+     "item_key": "ai_minutes",
+     "label": "AI astrologers",
+     "period": "Month",
+     "quota": 30,
+     "unit": "minutes",
+     "stress": 1,
+     "note": "30 minutes a month with the AI astrologers"
+    },
+    {
+     "item_key": "live_session",
+     "label": "First live session",
+     "period": "Included",
+     "note": "First live session with a real astrologer, 10 minutes"
+    },
+    {
+     "item_key": "family_profiles",
+     "label": "People in your profiles",
+     "period": "Total",
+     "quota": 1,
+     "unit": "person",
+     "note": "Your own profile",
+     "limit_message": "Your {plan} plan keeps {quota} {unit} in your profiles. {upgrade}"
+    },
+    {
+     "item_key": "free_reports",
+     "label": "Free reports",
+     "period": "Unlimited",
+     "note": "All free reports, always free"
+    },
+    {
+     "item_key": "panchang",
+     "label": "Panchang",
+     "period": "Unlimited",
+     "note": "Panchang for any day and town, always free"
+    },
+    {
+     "item_key": "academy",
+     "label": "Academy",
+     "period": "Unlimited",
+     "note": "Academy articles, always free"
+    }
+   ],
    "cards": [
     "plans",
     "live"
    ]
   },
   {
-   "plan_name": "Seeker",
-   "sort_order": 2,
-   "monthly_price": 149,
-   "tagline": "For when you want guidance now and then",
-   "replies_per_month": 300,
-   "replies_per_day": 40,
-   "family_profiles": 6,
-   "notes_read": 40,
-   "reports_per_month": 40,
-   "button_label": "Choose {plan}",
+   "plan_name": "Plus",
+   "plan_order": 2,
+   "price": 199,
+   "tagline": "100 minutes with the AI astrologers, family profiles and compatibility matchings",
+   "button_label": "",
    "button_url": "",
    "price_note": "Renews each month. Stop any time.",
+   "items": [
+    {
+     "item_key": "ai_minutes",
+     "label": "AI astrologers",
+     "period": "Month",
+     "quota": 100,
+     "unit": "minutes",
+     "stress": 1,
+     "note": "100 minutes a month with the AI astrologers"
+    },
+    {
+     "item_key": "live_session",
+     "label": "First live session",
+     "period": "Included",
+     "note": "First live session with a real astrologer, 10 minutes"
+    },
+    {
+     "item_key": "free_live_session",
+     "label": "Free live session",
+     "period": "Included",
+     "note": "1 free live session a month"
+    },
+    {
+     "item_key": "family_profiles",
+     "label": "People in your profiles",
+     "period": "Total",
+     "quota": 6,
+     "unit": "people",
+     "note": "Family profiles kept, up to 6 people",
+     "limit_message": "Your {plan} plan keeps {quota} {unit} in your profiles. {upgrade}"
+    },
+    {
+     "item_key": "family_matching",
+     "label": "Compatibility matchings",
+     "period": "Included",
+     "note": "Compatibility matchings for your family"
+    },
+    {
+     "item_key": "free_rudraksh",
+     "label": "Free Rudraksh",
+     "period": "Included",
+     "note": "A free Rudraksh with every Divine purchase"
+    },
+    {
+     "item_key": "free_reports",
+     "label": "Free reports",
+     "period": "Unlimited",
+     "note": "All free reports, always free"
+    },
+    {
+     "item_key": "panchang",
+     "label": "Panchang",
+     "period": "Unlimited",
+     "note": "Panchang for any day and town, always free"
+    },
+    {
+     "item_key": "academy",
+     "label": "Academy",
+     "period": "Unlimited",
+     "note": "Academy articles, always free"
+    }
+   ],
    "cards": [
     "plans",
     "live"
    ]
   },
   {
-   "plan_name": "Needy",
-   "sort_order": 3,
-   "monthly_price": 399,
-   "tagline": "For when you need guidance every day",
-   "replies_per_month": 1000,
-   "replies_per_day": 100,
-   "family_profiles": 15,
-   "notes_read": 100,
-   "reports_per_month": 100,
-   "button_label": "Choose {plan}",
+   "plan_name": "Pro",
+   "plan_order": 3,
+   "price": 399,
+   "tagline": "300 minutes with the AI astrologers, two free live sessions and priority",
+   "button_label": "",
    "button_url": "",
    "price_note": "Renews each month. Stop any time.",
+   "items": [
+    {
+     "item_key": "ai_minutes",
+     "label": "AI astrologers",
+     "period": "Month",
+     "quota": 300,
+     "unit": "minutes",
+     "stress": 1,
+     "note": "300 minutes a month with the AI astrologers"
+    },
+    {
+     "item_key": "live_session",
+     "label": "First live session",
+     "period": "Included",
+     "note": "First live session with a real astrologer, 10 minutes"
+    },
+    {
+     "item_key": "free_live_session",
+     "label": "Free live session",
+     "period": "Included",
+     "note": "2 free live sessions a month"
+    },
+    {
+     "item_key": "family_profiles",
+     "label": "People in your profiles",
+     "period": "Total",
+     "quota": 15,
+     "unit": "people",
+     "note": "Family profiles kept, up to 15 people",
+     "limit_message": "Your {plan} plan keeps {quota} {unit} in your profiles. {upgrade}"
+    },
+    {
+     "item_key": "family_matching",
+     "label": "Compatibility matchings",
+     "period": "Included",
+     "note": "Compatibility matchings for your family"
+    },
+    {
+     "item_key": "free_rudraksh",
+     "label": "Free Rudraksh",
+     "period": "Included",
+     "note": "A free Rudraksh with every Divine purchase"
+    },
+    {
+     "item_key": "divine_discount",
+     "label": "Discount on Divine purchases",
+     "period": "Included",
+     "note": "10% off Divine purchases"
+    },
+    {
+     "item_key": "priority",
+     "label": "Priority",
+     "period": "Included",
+     "note": "Priority when booking an astrologer"
+    },
+    {
+     "item_key": "free_reports",
+     "label": "Free reports",
+     "period": "Unlimited",
+     "note": "All free reports, always free"
+    },
+    {
+     "item_key": "panchang",
+     "label": "Panchang",
+     "period": "Unlimited",
+     "note": "Panchang for any day and town, always free"
+    },
+    {
+     "item_key": "academy",
+     "label": "Academy",
+     "period": "Unlimited",
+     "note": "Academy articles, always free"
+    }
+   ],
    "cards": [
     "live"
    ]

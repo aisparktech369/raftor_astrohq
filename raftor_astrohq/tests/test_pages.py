@@ -28,21 +28,11 @@ class TestPages(TestCase):
 		self.assertEqual(clean["sidebar"], 1)
 
 	def test_every_page_passes_the_kits_checks_and_needs_a_sign_in(self):
-		public = {"panchang", "plans", "ask/pandit-ji", "ask/numerologist", "ask/dream-guide"}  # for everyone: the Panchang, the plans, the guides' chats
-		self.assertEqual(set(pages()), public | {"onboarding/birth-details", "onboarding/birth-details/done", "my/birth-profiles", "my/birth-profiles/new", "my/birth-profiles/edit", "my/birth-profiles/you", "my/astro-plan",
-												 "plans/choose", "onboarding/astrologer-personas", "onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new", "provider/chart"})
+		public = {"panchang", "ask/pandit-ji", "ask/numerologist", "ask/dream-guide"}  # for everyone: the Panchang and the guides' chats
+		self.assertEqual(set(pages()), public | {"onboarding/birth-details", "onboarding/birth-details/done", "my/birth-profiles", "my/birth-profiles/new", "my/birth-profiles/edit", "my/birth-profiles/you",
+												 "onboarding/astrologer-personas", "onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new", "provider/chart"})
 		for route, page in pages().items():
 			self.assertEqual(check(page)["login_required"], route not in public, route)  # every other page is for someone signed in
-
-	def test_the_plans_page_draws_a_service_card_for_each_plan_in_a_row_from_what_this_app_gives(self):
-		from raftor_astrohq import plans
-		from raftor_websitehq.website_hq.page_groups import page_url
-
-		boxes = next(s for s in check(pages()["plans"])["sections"] if s["key"] == "boxes")
-		self.assertEqual((boxes["columns"], boxes["source"]["method"], boxes["source"]["card"]), (str(len(plans.defaults())), "raftor_astrohq.plans_api.boxes", "Service Card"))
-		source = next(s for s in check(pages()["plans/choose"])["sections"] if s["key"] == "plan")["source"]
-		self.assertEqual((source["method"], source["url_args"]), ("raftor_astrohq.plans_api.choose_card", "plan"))  # the plan is taken from the address
-		self.assertEqual((plans.PLANS_PAGE, plans.MY_PLAN_PAGE), (page_url("plans"), "/my/astro-plan"))  # the addresses the plans code sends people to are the pages
 
 	def test_onboarding_form_is_for_you_and_has_the_short_field_set(self):
 		form = form_of(pages()["onboarding/birth-details"])

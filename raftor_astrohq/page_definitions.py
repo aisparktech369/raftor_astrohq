@@ -4,7 +4,7 @@ site's. Addresses are `<group>/<page>`: a person's own birth details under `my`,
 import frappe
 from frappe import _
 
-from raftor_astrohq import details, plans, profiles
+from raftor_astrohq import details, profiles
 from raftor_servicehq.roles import SERVICE_PROVIDER_ROLE
 from raftor_websitehq.website_hq.page_groups import page_url
 
@@ -102,24 +102,6 @@ def panchang_page() -> dict:
 		 "source": {"method": "raftor_astrohq.panchang.page", "card": "Report View", "url_args": "date,place", "empty": _("The panchang is not available yet.")}, "look": TIGHT}]}
 
 
-def plans_page() -> dict:
-	"""The plans, public: a box for each plan, in a row (websitehq's Service Card, given its values by plans_api.boxes). A person who has signed in sees their own plan marked."""
-	return {"route": "plans", "title": _("Plans"), "meta_title": _("Plans | AstroHQ"),
-		"meta_description": _("Free, Seeker and Needy: monthly plans for AstroHQ. Stop any time."), "login_required": False, "sections": [
-		{"key": "head", "title": _("Choose your plan"), "subtitle": _("Pick by how often you want guidance. Plans are monthly, and you can stop any time."), "look": TIGHT},
-		{"key": "boxes", "columns": min(max(len(plans.defaults()), 1), 5), "reserve": "34rem", "look": TIGHT,
-		 "source": {"method": "raftor_astrohq.plans_api.boxes", "card": "Service Card", "empty": _("No plans are open yet.")}},
-		{"key": "note", "subtitle": _("Stop any time and the plan stays to the end of the month you paid for. Live astrologers are booked separately, one session at a time."), "look": TIGHT}]}
-
-
-def choose_plan_page() -> dict:
-	"""The page that confirms the plan a person chose on the plans page, before they are sent to agree to monthly auto-pay (plans_api.py)."""
-	return {"route": "plans/choose", "title": _("Choose a plan"), "login_required": True, "sections": [
-		{"key": "head", "title": _("Choose a plan"), "subtitle": _("Check what it gives and what it costs. You agree to monthly auto-pay on the next page."), "look": TIGHT},
-		{"key": "plan", "source": {"method": "raftor_astrohq.plans_api.choose_card", "url_args": "plan", "empty": _("That plan cannot be taken."),
-						"links": [{"label": _("All plans"), "href": page_url("plans"), "kind": "outline", "where": "bottom"}]}, "look": TIGHT}]}
-
-
 def definitions() -> list[dict]:
 	profile_list = _my("birth-profiles")
 	you = {"relationship": profiles.SELF}
@@ -131,9 +113,6 @@ def definitions() -> list[dict]:
 			"method": API + "list_profiles", "args": {"who": "you"}, "links": [
 				{"label": _("Add a family member"), "href": _my("birth-profiles/new"), "kind": "outline", "where": "bottom"},
 				{"label": _("Continue"), "href": "/", "kind": "primary", "where": "bottom"}]}),
-		_list("my/astro-plan", _("Your plan"), _("What you have used this month, and how to change your plan or stop it. Plans are monthly, and you can stop any time."), {
-			"method": "raftor_astrohq.plans_api.my_plan", "empty": _("No plans are open yet.")},
-			menu={"label": _("Your plan"), "summary": _("What you have used, and the plans."), "order": 16, "side": {"order": 31}}),
 		_list("my/birth-profiles", _("Birth profiles"), _("Keep details for the people you care about, all under your one account."), {
 			"method": API + "list_profiles", "empty": _("No profiles yet."),
 			"links": [{"label": _("Add a person"), "href": _my("birth-profiles/new"), "kind": "primary", "where": "top"}]},
@@ -170,8 +149,6 @@ def definitions() -> list[dict]:
 			"success_redirect": _start("astrologer-credentials")}),
 		chart_page(),
 		panchang_page(),
-		plans_page(),
-		choose_plan_page(),
 		ask_page(),
 		numerologist_page(),
 		dream_guide_page(),

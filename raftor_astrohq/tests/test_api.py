@@ -5,6 +5,7 @@ import frappe
 
 from raftor_astrohq import api, profiles
 from raftor_astrohq.tests.helpers import FAMILY, GOOD, TABLE, make_user
+from raftor_servicehq import plans
 
 YOU_FORM = {"relationship": "You"}
 
@@ -13,6 +14,7 @@ class ApiTestCase(TestCase):
 	def setUp(self):
 		frappe.set_user("Administrator")
 		self.me = make_user()
+		plans.assign(self.me.name, "Pro")  # a plan that keeps family: what a plan holds is test_plan_rules
 		frappe.set_user(self.me.name)
 
 	def tearDown(self):
@@ -78,10 +80,16 @@ class TestFamily(ApiTestCase):
 		out = self.save({**FAMILY, "permission_given": 0})
 		self.assertEqual(set(out["errors"]), {"permission_given"})
 
-	def test_no_limit_on_how_many(self):
-		for n in range(12):
+	def test_the_plan_decides_how_many_and_says_so(self):
+		self.save(GOOD, **YOU_FORM)
+		for n in range(13):  # Pro keeps 15 people: the person and 14 more
 			self.assertEqual(self.save({**FAMILY, "full_name": f"Person {n}"}), {"ok": True})
-		self.assertEqual(len(self.rows()), 12)
+		self.assertEqual(len(self.rows()), 14)
+		self.assertEqual(self.save({**FAMILY, "full_name": "One more"}), {"ok": True})
+		out = self.save({**FAMILY, "full_name": "Too many"})
+		self.assertEqual(out["errors"], {"full_name": "Your Pro plan keeps 15 people in your profiles."})
+		plans.assign(self.me.name, "Plus")
+		self.assertFalse(self.save({**FAMILY, "full_name": "Still too many"})["ok"])
 
 	def test_there_can_still_be_only_one_you(self):
 		self.save(GOOD, **YOU_FORM); self.save(FAMILY)

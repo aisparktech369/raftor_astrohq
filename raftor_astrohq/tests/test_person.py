@@ -6,9 +6,13 @@ from raftor_astrohq.tests.helpers import GOOD, TABLE, AstroTestCase, make_user
 
 
 def _user(**values):
+	"""A person on the Plus plan, which keeps family (these tests are about what the guides remember, not about what a plan holds: see test_plan_rules)."""
+	from raftor_servicehq import plans
+
 	user = make_user()
 	user.append(TABLE, GOOD)
 	user.save(ignore_permissions=True)
+	plans.assign(user.name, "Plus")
 	return user.name
 
 
@@ -115,9 +119,6 @@ class TestReportsFromTheChat(AstroTestCase):
 
 	def test_asking_names_what_is_missing_and_never_guesses(self):
 		user = _user()
-		from raftor_astrohq import plans
-
-		plans.assign(user, "Seeker")  # room for the people this test adds
 		person.write(user, {"notes": [], "people": [{"name": "Rhenna", "relationship": "daughter", "date_of_birth": "2015-03-03"}]}, "g", "s")
 		self.assertIn("time of birth and place of birth", person.read_report(user, "my daughter", "kundli", PANDIT)["message"])
 		self.assertIn("Say which report", person.read_report(user, "me", "tarot", PANDIT)["message"])

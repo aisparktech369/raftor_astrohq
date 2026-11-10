@@ -295,10 +295,10 @@ rfhq_report_makers = ["raftor_astrohq.reports.birth_summary"]
 rfhq_trusted_html_sources = ["raftor_astrohq.report_view.chart_view", "raftor_astrohq.panchang.page", "raftor_astrohq.panchang.widget_cards"]
 
 # Shortly after midnight the Panchang's town is worked out for the week ahead (panchang.warm).
-scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"], "40 1 * * *": ["raftor_astrohq.plan_billing.daily"]}}
+scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"]}}
 
-# The Panchang is a page group of its own: /panchang is its page (page_definitions.py). So are the plans: /plans is the page with a box for each plan (plans_api.boxes).
-rfhq_page_groups = {"panchang": "Panchang", "ask": "Ask Pandit ji", "plans": "Plans"}
+# The Panchang is a page group of its own: /panchang is its page (page_definitions.py).
+rfhq_page_groups = {"panchang": "Panchang", "ask": "Ask Pandit ji"}
 rfhq_window_guide = ["raftor_astrohq.agent_chat.guide"]  # (websitehq draws a round button on every page that opens the guide in a drawer)
 rfhq_product_pills = ["raftor_astrohq.products.product_pills"]  # (the pills of a group of products: websitehq asks, and draws them under the store's tiles)
 
@@ -318,9 +318,4 @@ agent_rag_enrichers = ["astrohq:raftor_astrohq.knowledge.enrich"]
 # What the AI guides remember about a person and the people in their profiles, and what the site knows of them: a dotted path to a module with read(user), write(user, payload, guide, session) and forget(user, name).
 agent_person = ["raftor_astrohq.person"]
 
-# The plans (plans.py, plan_billing.py): what PaymentHQ tells us about a plan's payments, and whether the website's free-report form may make another report for a person.
-paymenthq_on_paid = {"Astro Plan Member": ["raftor_astrohq.plan_billing.paid"]}
-paymenthq_on_failed = {"Astro Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
-paymenthq_on_expired = {"Astro Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
-paymenthq_on_cancelled = {"Astro Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
-free_reports_allowance = ["raftor_astrohq.plans.report_allowance"]
+# The plans are servicehq's feature; AstroHQ comes with its own (plans.json, made by install.after_install) and says what they count (plan_rules.py).
