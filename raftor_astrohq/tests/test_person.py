@@ -41,7 +41,7 @@ class TestPersonNotes(AstroTestCase):
 								   "people": [{"name": "Rhenna", "relationship": "daughter", "date_of_birth": "2015-03-03", "place_of_birth": "Pune"}]}, "Pandit ji", "s")
 		self.assertEqual(done["people_added"], 1)
 		rhenna = next(r for r in _rows(user) if r.full_name == "Rhenna")
-		self.assertEqual((rhenna.relationship, str(rhenna.date_of_birth), rhenna.place_of_birth, rhenna.from_chat, rhenna.permission_given), ("Child", "2015-03-03", "Pune", 1, 0))
+		self.assertEqual((rhenna.relationship, str(rhenna.date_of_birth), rhenna.place_of_birth, rhenna.from_chat, rhenna.permission_given), ("Child", "2015-03-03", "Pune", 1, 1))
 		self.assertEqual(rhenna.summary, "Stressed about exams")
 		self.assertEqual(len([r for r in _rows(user) if r.full_name == "Rhenna"]), 1)
 

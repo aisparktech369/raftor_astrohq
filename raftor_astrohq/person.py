@@ -2,7 +2,7 @@
 
 A note is a dated line tied to a birth profile (the account holder, "You", or a family member): "Tara (daughter): worried about exams". Notes are kept in Profile Note, never overwritten (a corrected or dropped note is
 kept as Replaced), and each profile carries a short read-only summary of its current notes ("What We Know"). When a person speaks of someone who has no profile yet, the guide adds one, marked "Added From Chat", with only
-what was said; the account holder completes the birth details on the website, and until then it is not used for reports and is not shared with an astrologer.
+what was said; the account holder completes the birth details on the website; until the birth details are complete the profile is not used for reports. Consent is not asked yet: the person's consent toggles come later.
 
 	read(user)                        {"notes": [...], "card": text}: the current notes and what the site knows of the person, for the guide at the start of a turn
 	write(user, payload, guide, ...)  keeps the notes (and new family members) the note-taker returned after a reply
@@ -70,7 +70,7 @@ def _add_member(user: str, about: str, details: dict | None = None):
 	if len(name) < 2 or KINDRED.get(name.lower()) or name.lower() in ("you", "me", "myself", "self"):
 		return None  # 'my daughter' with no name cannot be a profile yet
 	doc = frappe.get_doc("User", user)
-	row = {"relationship": _relationship(about, (details or {}).get("relationship") or ""), "full_name": name.title() if name.islower() else name, "from_chat": 1, "permission_given": 0}
+	row = {"relationship": _relationship(about, (details or {}).get("relationship") or ""), "full_name": name.title() if name.islower() else name, "from_chat": 1, "permission_given": 1}  # unfiltered for now: the person's consent toggles come later and will start from the "Added From Chat" mark
 	for key in ("date_of_birth", "time_of_birth", "place_of_birth"):
 		if (details or {}).get(key):
 			row[key] = str(details[key]).strip()
