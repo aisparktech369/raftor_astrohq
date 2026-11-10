@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 
 import frappe
-from frappe.utils.file_manager import save_file
 
 HERE = Path(__file__).parent
 DOMAIN = "guides.astrohq.in"  # the guides' own (never used) addresses: they are not people and nobody signs in as them
@@ -24,6 +23,20 @@ def ensure() -> None:
 	frappe.db.commit()
 
 
+def _keep_photo(name: str, data: bytes, slug: str) -> str:
+	"""The guide's picture, put in the site's public files with a File record made with no storage hooks: a site that keeps its files off-site would look for it in the bucket and fail. Returns its address."""
+	folder = Path(frappe.get_site_path("public", "files"))
+	folder.mkdir(parents=True, exist_ok=True)
+	if not (folder / name).exists():
+		(folder / name).write_bytes(data)
+	url = f"/files/{name}"
+	if not frappe.db.exists("File", {"file_url": url}):
+		record = frappe.get_doc({"doctype": "File", "file_url": url, "file_name": name, "is_private": 0, "file_size": len(data), "attached_to_doctype": "Provider", "attached_to_name": slug})
+		record.name = frappe.generate_hash(length=10)
+		record.db_insert()
+	return url
+
+
 def _make(row: dict) -> None:
 	slug, email = row["slug"], f"{row['slug']}@{DOMAIN}"
 	if not frappe.db.exists("Provider", slug):
@@ -33,8 +46,6 @@ def _make(row: dict) -> None:
 						"personas": [{"persona": row["persona"], "approved": 1}], "ai_guide_page": row["page"]}).insert(ignore_permissions=True)
 		frappe.db.set_value("Provider", slug, {"status": "Live", "verification_status": "Verified"})  # a Provider's stage is a Workflow: made in Draft, brought Live as the tests' fixtures do
 	if not frappe.db.get_value("Provider", slug, "photo"):
-		path = HERE / "public" / "images" / row["photo"]
-		saved = save_file(row["photo"], path.read_bytes(), "Provider", slug, is_private=0)
-		frappe.db.set_value("Provider", slug, "photo", saved.file_url)
+		frappe.db.set_value("Provider", slug, "photo", _keep_photo(row["photo"], (HERE / "public" / "images" / row["photo"]).read_bytes(), slug))
 	if frappe.db.exists("DocType", "Astrologer Profile") and not frappe.db.exists("Astrologer Profile", slug):
 		frappe.get_doc({"doctype": "Astrologer Profile", "provider": slug, "languages": row.get("languages") or "English"}).insert(ignore_permissions=True)
