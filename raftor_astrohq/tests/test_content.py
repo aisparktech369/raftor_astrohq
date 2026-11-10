@@ -1,3 +1,4 @@
+import json
 """The written content: one file per article, read by the blog and by RAG. A duplicated shared section or a repeated id must fail."""
 import re
 import tempfile
@@ -13,9 +14,15 @@ HEAD = "---\nid: {id}\ncategory: rudraksha\ntitle: {title}\nintro: x.\npublish: 
 
 class TestContent(TestCase):
 	def test_every_article_is_one_file(self):
-		items = content.load()
+		items = [i for i in content.load() if not content.rag_only(i)]
 		self.assertEqual(len(items), 145)
 		self.assertEqual(len({i["id"] for i in items}), 145)
+
+	def test_the_files_for_the_guides_only_are_the_consult_kinds_and_the_services(self):
+		only = [i for i in content.load() if content.rag_only(i)]
+		self.assertEqual({i["category"] for i in only}, {"consult", "services"})
+		self.assertEqual(len([i for i in only if i["category"] == "consult"]), 8)  # one kind.md for each kind of consultant the site has
+		self.assertTrue(all(not i["publish"] for i in only))
 
 	def test_single_mukhi_articles_do_not_repeat_the_guide(self):
 		for item in content.load():
@@ -26,7 +33,7 @@ class TestContent(TestCase):
 
 	def test_astrologer_mentions_lead_to_the_consult_page(self):
 		"""An article that tells the reader to ask an astrologer links that to /consult: a chance to book one."""
-		for item in content.load():
+		for item in [i for i in content.load() if not content.rag_only(i)]:
 			body = item["body"]
 			if "astrologer" in body.replace("astrologers", ""):
 				self.assertTrue("(/consult)" in body or 'href="/consult"' in body, item["file"])
@@ -52,7 +59,7 @@ class TestContent(TestCase):
 
 	def test_every_article_is_tabular(self):
 		"""Agreed with the owner: facts are tables across the series (at a glance, meaning, mantra), questions are the site's accordion."""
-		for item in content.load():
+		for item in [i for i in content.load() if not content.rag_only(i)]:
 			if item["id"] in ("gem-which-for-which-need", "gem-planets-gems-beads-poojas"):
 				continue  # the need-to-remedy guides are tables of their own kind
 			if item["category"] in ("numerology", "dreams"):
@@ -95,14 +102,18 @@ class TestContent(TestCase):
 				content.load(Path(folder))
 
 	def test_rag_sections_are_self_contained_and_hide_markers(self):
-		chunks = content.rag_chunks(published_only=False)
-		self.assertTrue(chunks)
-		for chunk in chunks:
-			self.assertTrue(chunk["text"].startswith(chunk["title"]), chunk["article"])
-			self.assertNotIn("[[product", chunk["text"])
-		self.assertTrue(any(c["products"] == "RUD001" for c in chunks))
-		self.assertTrue(all(c["series"] and c["article"] and c["section"] for c in chunks))
-		self.assertTrue(any(c["series"] == "Gemstones" and c["group"] == "The nine gems (Navaratna)" for c in chunks))
+		from raftor_agentshq import domain_rag
+
+		rows, _ = domain_rag._built(content.DOMAIN)
+		pieces = [r for rs in rows.values() for r in rs]
+		self.assertTrue(pieces)
+		for row in pieces:
+			meta = json.loads(row["meta"])
+			self.assertNotIn("[[product", row["text"])
+			self.assertIn(meta["title"], row["text"].split("\n", 1)[0] if meta["section"] == "Introduction" else row["text"], meta["article"])
+			self.assertTrue(meta["series"] and meta["article"] and meta["section"])
+		self.assertTrue(any(json.loads(r["meta"])["products"] == ["RUD001"] for r in pieces))
+		self.assertTrue(any(json.loads(r["meta"])["group"] == "The nine gems (Navaratna)" and r["text"].startswith("Gemstones > ") for r in pieces))
 
 	def test_the_blog_is_named_once_and_staff_names_stay(self):
 		try:

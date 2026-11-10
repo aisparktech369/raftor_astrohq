@@ -21,7 +21,7 @@ class TestAgentChat(TestCase):
 		frappe.set_user("Guest")
 		answer = agent_chat.info()
 		self.assertNotIn("blueprint", answer)  # no agent is reached before there is an account
-		self.assertTrue(answer["gate"]["greeting"].startswith("Hi, I'm Pandit ji"))
+		self.assertTrue(answer["gate"]["greeting"].startswith("Namaste, I'm Pandit ji"))
 		self.assertNotIn("promise", answer["gate"]["greeting"])  # casual first; the disclaimer is the small line at the bottom
 		self.assertIn("promise", answer["notice"])
 		self.assertIn("{name}", answer["gate"]["ask_contact"])

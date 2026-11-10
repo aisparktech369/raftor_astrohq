@@ -1,9 +1,8 @@
-"""Written content, one source: the Markdown files in content/. The blog and the RAG index both read them, so nothing is typed twice.
+"""Written content, one source: the Markdown files of the astrohq domain (rag/products, rag/consult, rag/services), read through AgentsHQ. The blog and the RAG index both read them, so nothing is typed twice.
 
 	load()          every article file, checked (unique ids and titles, no shared section pasted into a single-mukhi article)
 	sync_blog()     creates or updates the Blog Post for each file. The file is the truth: the body, the description and whether it is published
 	                all come from the file. Desk edits to these posts are overwritten on the next migrate.
-	rag_chunks()    the same bodies cut into sections, each one named by its article, with the series, group, product and source as fields for filtering
 
 A file has a header between two lines of ---: id, series, category, title, intro, products, texts, publish, and optionally group and order (the heading it is listed under in its series, and its place there). The body follows.
 """
@@ -15,14 +14,13 @@ from pathlib import Path
 import frappe
 import yaml
 
-CONTENT = Path(__file__).parent / "content"
 HEADER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 PRODUCT_MARKER = re.compile(r"^\[\[product\s+[^\]\n]+\]\]\s*$", re.M)
 # Topics that belong to the shared guide only: a single-mukhi article must not repeat them.
 SHARED_SECTIONS = ("Identifying a genuine", "How to spot a genuine", "How to wear it", "Care and cleaning")
 REQUIRED = ("id", "category", "title", "intro", "publish")
 BLOGGER = {"short_name": "astrohq-team", "full_name": "AstroHQ Team", "bio": "Written and checked by the AstroHQ Team, from the traditional texts."}
-CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones", "pooja": "Pooja", "numerology": "Numerology", "dreams": "Dreams"}
+CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones", "pooja": "Pooja", "numerology": "Numerology", "dreams": "Dreams", "consult": "Consult", "services": "Services"}
 CATEGORY_NOTES = {
 	"rudraksha": "The beads by number of faces: meaning, mantra, the traditions around each, and how to choose one.",
 	"gemstones": "Origin, treatments, the planets and stories behind each stone, and how to choose one.",
@@ -44,7 +42,22 @@ GROUP_COVERS = {  # a pooja article takes the picture of its shelf (drawn for th
 COVER = "/files/Detailed Brown Rudraksha Seed on Cream Background60cba8.png"  # used when an article has no product picture
 
 
-def load(folder: Path = CONTENT) -> list[dict]:
+DOMAIN = "astrohq"
+
+
+def load(folder: Path | None = None) -> list[dict]:
+	"""Every article file, checked. The files live in the agents factory's astrohq domain, which AgentsHQ (the one contact with the factory) reads; a folder can be given instead (the tests do)."""
+	if folder is None:
+		from raftor_agentshq import domain_rag
+
+		items = domain_rag.domain_files(DOMAIN)
+	else:
+		items = _read(folder)
+	check(items)
+	return items
+
+
+def _read(folder: Path) -> list[dict]:
 	items = []
 	for path in sorted(folder.rglob("*.md")):
 		text = path.read_text(encoding="utf-8")
@@ -58,7 +71,6 @@ def load(folder: Path = CONTENT) -> list[dict]:
 		head["body"] = text[match.end():].strip() + "\n"
 		head["file"] = path.name
 		items.append(head)
-	check(items)
 	return items
 
 
@@ -171,6 +183,8 @@ def sync_blog() -> int:
 	blogger = _blogger()
 	written = 0
 	for item in items:
+		if rag_only(item):
+			continue  # knowledge for the guides only: no blog post
 		category = _category(item["category"])
 		post = frappe.db.get_value("Blog Post", {"title": item["title"]}, "name")
 		doc = frappe.get_doc("Blog Post", post) if post else frappe.new_doc("Blog Post")
@@ -198,27 +212,9 @@ def sync_blog() -> int:
 	return written
 
 
-def rag_chunks(published_only: bool = True) -> list[dict]:
-	"""One entry per section of each article. The text is self-contained: the article's title leads each one."""
-	chunks = []
-	for item in load():
-		if published_only and not item["publish"]:
-			continue
-		body = PRODUCT_MARKER.sub("", item["body"])
-		body = re.sub(r"<details><summary>(.*?)</summary><p>(.*?)</p></details>", r"\n**\1** \2\n", body, flags=re.S)
-		intro, *sections = re.split(r"\n(?=## )", "\n" + body.strip())
-		pieces = [("Introduction", intro.strip())] + [(s.split("\n", 1)[0][3:].strip(), s.split("\n", 1)[1].strip()) for s in sections if "\n" in s]
-		for heading, text in pieces:
-			if not text:
-				continue
-			chunks.append({
-				"article": item["id"], "title": item["title"], "section": heading,
-				"category": item["category"], "route": route_of(item),
-				"series": item.get("series") or "", "group": item.get("group") or "",
-				"products": item.get("products") or "", "services": item.get("services") or "", "texts": item.get("texts") or "",
-				"text": f"{item['title']}\n{heading}\n{text}",
-			})
-	return chunks
+def rag_only(item: dict) -> bool:
+	"""A page that is knowledge for the guides and not a blog post (header `rag: true`, `publish: false`): what the consultant kinds do, what services there are."""
+	return bool(item.get("rag")) and not item["publish"]
 
 
 def slug(text: str) -> str:
@@ -227,7 +223,9 @@ def slug(text: str) -> str:
 
 
 def route_of(item: dict) -> str:
-	"""Where an article lives: /blog/<category>/<title>."""
+	"""Where an article lives: /blog/<category>/<title>. A page for the guides only points at the site page it is about (its `route`, else /consult or /services)."""
+	if rag_only(item):
+		return item.get("route") or ("/consult" if item["category"] == "consult" else "/services")
 	return f"/blog/{slug(CATEGORIES[item['category']])}/{slug(item['title'])}"
 
 

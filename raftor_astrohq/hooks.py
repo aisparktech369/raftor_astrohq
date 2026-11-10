@@ -309,3 +309,6 @@ assistant_tools = [
 	"raftor_astrohq.assistant_tools.services.GetService",
 	"raftor_astrohq.assistant_tools.numerology.CalculateNumerology",
 ]
+
+# AgentsHQ calls this when it puts the astrohq domain's files in the store: it labels each file's pieces
+agent_rag_enrichers = ["astrohq:raftor_astrohq.knowledge.enrich"]
