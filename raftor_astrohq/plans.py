@@ -1,4 +1,4 @@
-"""The three monthly plans of the AI guides, all paid: the lowest (Rs 9), Seeker (Rs 149, now and then) and Needy (Rs 399, every day), and what each one allows.
+"""The three monthly plans of the AI guides: Free (Rs 0), Seeker (Rs 149, now and then) and Needy (Rs 399, every day), and what each one allows.
 
 A plan is a row of AI Plan, and its limits are the business team's to change there: how many replies a month and a day, how many people in the profiles, how many notes a guide reads, how many reports a month, and which guides.
 A person who takes a plan has a row in AI Plan Member for a month (the PaymentHQ auto-pay agreement renews it); when the month ends without a renewal they have no plan. What a person with no plan can do is the business team's
@@ -25,14 +25,13 @@ FIELDS = ["name", "plan_name", "sort_order", "monthly_price", "tagline", "replie
 
 UPGRADE = "The {next} plan gives you {next_limit} replies a month."
 DEFAULT_PLANS = [
-	{"plan_name": "Entry", "sort_order": 1, "monthly_price": 9, "tagline": "Talk to the guides and keep your own profile",
-	 "replies_per_month": 30, "replies_per_day": 10, "family_profiles": 2, "notes_read": 10, "reports_per_month": 3},
+	{"plan_name": "Free", "sort_order": 1, "monthly_price": 0, "tagline": "Try the guides and keep your own profile",
+	 "replies_per_month": 60, "replies_per_day": 15, "family_profiles": 2, "notes_read": 10, "reports_per_month": 5},
 	{"plan_name": "Seeker", "sort_order": 2, "monthly_price": 149, "tagline": "For when you want guidance now and then",
 	 "replies_per_month": 300, "replies_per_day": 40, "family_profiles": 6, "notes_read": 40, "reports_per_month": 20},
 	{"plan_name": "Needy", "sort_order": 3, "monthly_price": 399, "tagline": "For when you need guidance every day",
 	 "replies_per_month": 1000, "replies_per_day": 100, "family_profiles": 15, "notes_read": 100, "reports_per_month": 60},
 ]
-# "Entry" is only a working name for the lowest plan (the owner has not named it yet): nothing in the code refers to it, the lowest plan is the one with the lowest order.
 LIVE_CARD = {"kind": "service", "id": "handover", "handover": True, "title": "Talk to a live astrologer", "subtitle": "One-to-one, paid session", "price": "", "was": "", "image": "", "url": "/consult",
 			 "button": "Choose an astrologer", "status": ""}
 WORDS = {
