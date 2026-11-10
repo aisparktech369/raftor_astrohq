@@ -95,9 +95,9 @@ def vocabulary() -> dict:
 									   "Made from the details you give for both. It is free: you can read it as a PDF as soon as it is made."),
 					  "details": {"fields": match_fields(), "validate": "raftor_astrohq.details.match_rules"}, "maker": "raftor_astrohq.reports.match_report",
 					  "free": {"summary": "raftor_astrohq.reports.match_summary", "picker": "raftor_astrohq.reports.match_picker", "keep": "raftor_astrohq.reports.keep_match_profiles"}},  # each of the two is chosen from the saved people or written new, and kept for next time
-			"numerology": {"kind": "Astrologer", "icon": "hash", "title": _("Numerology report"), "blurb": _("Your birth number and name number, worked out step by step by Cheiro's rules."), "price": 0,
-						   "description": _("Your birth number from the day you were born, the zodiac period, and the number of your name, each worked out step by step with the letters shown, with what Cheiro's Book of Numbers says about them.\n\n"
-											"Made from your name and date of birth. It is Cheiro's numerology, a historical doctrine, not a prediction. It is free: you can read it as a PDF as soon as it is made."),
+			"numerology": {"kind": "Astrologer", "icon": "hash", "title": _("Numerology report"), "blurb": _("Your birth number and name number, by the rules of classical numerology."), "price": 0,
+						   "description": _("Your birth number from the day you were born, the zodiac period, and the number of your name, each with what it is said to mean: your character, your dates, days and colours, the planet of your number and what the tradition links with it.\n\n"
+											"Made from your name and date of birth. It is classical numerology, a traditional system, not a prediction. It is free: you can read it as a PDF as soon as it is made."),
 						   "details": {"fields": numerology_fields(), "validate": "raftor_astrohq.details.numerology_rules"}, "maker": "raftor_astrohq.reports.numerology_report",
 						   "free": {"summary": "raftor_astrohq.reports.numerology_summary"}},
 			**arranged_reports(),

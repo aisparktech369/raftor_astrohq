@@ -107,10 +107,12 @@ class TestNumerologyGuide(TestCase):
 		from raftor_astrohq import astrology
 		from raftor_astrohq.assistant_tools.numerology import CalculateNumerology
 
-		with patch.object(astrology, "numerology", return_value={"birth": {"number": 8}}) as engine:
-			answer = CalculateNumerology().execute({"day": 26, "name": "John Smith"})
-		self.assertEqual(answer, {"found": True, "birth": {"number": 8}})
-		engine.assert_called_once_with(26, None, "John Smith")
+		reading = {"birth": {"number": 8, "headline": "The intense one", "summary": "s", "strengths": ["a"], "watch": ["b"], "colours": ["black"], "tradition_links": {}}, "safeguard": "not a prediction"}
+		with patch.object(astrology, "numerology", return_value={"birth": {"steps": ["1+7=8"]}, "reading": reading}) as engine:
+			answer = CalculateNumerology().execute({"day": 26, "name": "John Smith", "part": "birth"})
+		self.assertEqual(answer["birth"]["number"], 8)
+		self.assertNotIn("steps", str(answer))  # the working never reaches the guide
+		engine.assert_called_once_with(26, None, "John Smith", None)
 		with patch.object(astrology, "numerology", side_effect=astrology.AstrologyUnavailable("off")):
 			self.assertFalse(CalculateNumerology().execute({"day": 26})["found"])
 

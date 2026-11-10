@@ -6,7 +6,7 @@ title: 'Number 5 and Mercury: Its Gem, Rudraksha Bead and Pooja'
 intro: Number 5 is linked with Mercury in Indian numerology, and the tradition links Mercury with emerald, the 4 mukhi Rudraksha and the Budh graha shanti pooja.
 products: GEM012,RUD004
 services: Budh graha shanti pooja Personal Pooja Blessings, Budh graha shanti pooja Samuhik Pooja Blessings
-texts: Cheiro's Book of Numbers, Jyotish practice, Rudrakshajabala Upanishad
+texts: Classical numerology, Jyotish practice, Rudrakshajabala Upanishad
 publish: true
 group: Numbers and planets
 order: 100
@@ -19,7 +19,7 @@ order: 100
 |---|---|
 | Number | 5 (days of the month 5, 14, 23) |
 | Planet in Indian numerology (Ank Jyotish) | Mercury (Budha) |
-| Planet in Cheiro's book | Mercury |
+| Planet in classical numerology | Mercury |
 | Gem the tradition links with Mercury | Emerald (Panna) |
 | Rudraksha | 4 mukhi |
 | Day | Wednesday |
@@ -28,7 +28,7 @@ order: 100
 
 ## How the number and the planet are joined
 
-Cheiro and Indian numerology both link the number 5 with Mercury. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
+Classical and Indian numerology both link the number 5 with Mercury. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
 
 ## What to do with this
 

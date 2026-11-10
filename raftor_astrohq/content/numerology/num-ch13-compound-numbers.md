@@ -2,18 +2,18 @@
 id: num-ch13-compound-numbers
 series: Numerology
 category: numerology
-title: Cheiro on the Compound Numbers 10 to 52
-intro: Cheiro assigns individual meanings to compounds 10–52.
-texts: Cheiro's Book of Numbers
+title: The Compound Numbers 10 to 52
+intro: Classical numerology assigns individual meanings to compounds 10–52.
+texts: Classical numerology
 publish: true
 group: Names and dates
 order: 52
 ---
-*This is Cheiro's account, from Chapter XIII of Cheiro's Book of Numbers. It is a historical doctrine, not a fact or a prediction.*
+*This is classical numerology, a historical doctrine. It is not a fact or a prediction.*
 
-Cheiro assigns individual meanings to compounds 10–52. Keep a compound beside its root: the root column below is mechanical digit addition for navigation and does not replace the compound meaning. Meanings are source interpretations, not objective forecasts.
+Classical numerology assigns individual meanings to compounds 10–52. Keep a compound beside its root: the root column below is mechanical digit addition for navigation and does not replace the compound meaning. Meanings are source interpretations, not objective forecasts.
 
-| Compound | Root | Cheiro’s meaning, concise source summary |
+| Compound | Root | Meaning, in brief |
 |---:|---:|---|
 | 10 | 1 | “Wheel of Fortune”: honor, faith, self-confidence, rises and falls, public renown for good or ill; plans likely to succeed. |
 | 11 | 2 | Ominous warning of hidden danger, trials, treachery; “Clenched Hand” and “Lion Muzzled.” |
@@ -61,23 +61,23 @@ Cheiro assigns individual meanings to compounds 10–52. Keep a compound beside 
 
 ## Worked date example
 
-Cheiro considers “John Smith,” born January 8, asking whether April 26 is favorable:
+Classical numerology considers “John Smith,” born January 8, asking whether April 26 is favorable:
 
 1. John=18→9; Smith=17→8.
 2. Combine the name roots: 9+8=17→8.
 3. Reduce queried day 26 to 8.
 4. Add it to the prior root: 8+8=16→7.
 5. Add birth number 8: 7+8=15→6.
-6. Consult compound 15, which Cheiro calls favorable for obtaining money, gifts, and favors; he therefore calls the date favorable for that request.
+6. Consult compound 15, which is called favorable for obtaining money, gifts, and favors; it therefore calls the date favorable for that request.
 
-The general prose says to add to the name “compound numbers” and birth number, while the worked example adds roots stepwise. Cheiro adds later that a request involving another person (an employer) is less certain than the recurring personal-date rule. This arithmetic belongs to his example and is not a settled general rule.
+The general prose says to add to the name “compound numbers” and birth number, while the worked example adds roots stepwise. It adds later that a request involving another person (an employer) is less certain than the recurring personal-date rule. This arithmetic belongs to its example and is not a settled general rule.
 
 ## Related reading
 
 | Read next | Why |
 |---|---|
 | [What Numerology Can and Cannot Tell You](/blog/numerology/what-numerology-can-and-cannot-tell-you) | How to read this series with care |
-| [Cheiro on the Single Numbers and the Birth Number](/blog/numerology/cheiro-on-the-single-numbers-and-the-birth-number) | How the birth number is found |
-| [Cheiro on Using Single and Compound Numbers](/blog/numerology/cheiro-on-using-single-and-compound-numbers) | The next in the series |
-| [Cheiro on Name Numbers and the Mystic Alphabet](/blog/numerology/cheiro-on-name-numbers-and-the-mystic-alphabet) | How a name is counted |
+| [The Single Numbers and the Birth Number](/blog/numerology/the-single-numbers-and-the-birth-number) | How the birth number is found |
+| [Using Single and Compound Numbers](/blog/numerology/using-single-and-compound-numbers) | The next in the series |
+| [Name Numbers and the Mystic Alphabet](/blog/numerology/name-numbers-and-the-mystic-alphabet) | How a name is counted |
 | [Talk to a live astrologer](/consult) | A one-to-one, paid session with a person who can read the whole picture |

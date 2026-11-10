@@ -6,7 +6,7 @@ title: 'Number 8 and Saturn: Its Gem, Rudraksha Bead and Pooja'
 intro: Number 8 is linked with Saturn in Indian numerology, and the tradition links Saturn with blue sapphire, the 7 mukhi and 14 mukhi Rudraksha and the Shani graha shanti havan.
 products: GEM008,GEM021,RUD007,RUD014
 services: Shani graha shanti havan Personal Pooja Blessings, Shani graha shanti havan Samuhik Pooja Blessings
-texts: Cheiro's Book of Numbers, Jyotish practice, Rudrakshajabala Upanishad
+texts: Classical numerology, Jyotish practice, Rudrakshajabala Upanishad
 publish: true
 group: Numbers and planets
 order: 103
@@ -19,7 +19,7 @@ order: 103
 |---|---|
 | Number | 8 (days of the month 8, 17, 26) |
 | Planet in Indian numerology (Ank Jyotish) | Saturn (Shani) |
-| Planet in Cheiro's book | Saturn |
+| Planet in classical numerology | Saturn |
 | Gem the tradition links with Saturn | Blue sapphire (Neelam), a strong stone that astrologers usually ask to try first; amethyst is a milder alternative in some lineages |
 | Rudraksha | 7 mukhi and 14 mukhi |
 | Day | Saturday |
@@ -28,7 +28,7 @@ order: 103
 
 ## How the number and the planet are joined
 
-Cheiro and Indian numerology both link the number 8 with Saturn. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
+Classical and Indian numerology both link the number 8 with Saturn. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
 
 ## What to do with this
 

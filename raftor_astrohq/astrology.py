@@ -131,10 +131,10 @@ def chart(birth: dict, opcode: str = "SUPER_BASIC", partner: dict | None = None)
 	return _ask(payload)
 
 
-def numerology(day: int | None = None, month: int | None = None, name: str | None = None) -> dict:
-	"""Cheiro's numerology, calculated by the engine (opcode NUMEROLOGY): the birth number from the day, the zodiac period when the month is given, the name number
-	from a Latin spelling. It needs no birth time or place. The sums are the engine's: a language model never counts letters. Raises like `chart`."""
-	asked = {key: value for key, value in (("day", day), ("month", month), ("name", name)) if value not in (None, "")}
+def numerology(day: int | None = None, month: int | None = None, name: str | None = None, year: int | None = None, start: str | None = None) -> dict:
+	"""Classical numerology, calculated by the engine (opcode NUMEROLOGY): the birth number from the day, the zodiac period when the month is given, the year number when the year is given,
+	the name number from a Latin spelling, and a `reading` of what each is said to mean. It needs no birth time or place. The sums are the engine's: a language model never counts letters. Raises like `chart`."""
+	asked = {key: value for key, value in (("day", day), ("month", month), ("year", year), ("name", name), ("from", start)) if value not in (None, "")}
 	return _ask({"opcode": "NUMEROLOGY", "numerology": asked})
 
 

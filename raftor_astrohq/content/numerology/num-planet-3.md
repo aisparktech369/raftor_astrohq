@@ -6,7 +6,7 @@ title: 'Number 3 and Jupiter: Its Gem, Rudraksha Bead and Pooja'
 intro: Number 3 is linked with Jupiter in Indian numerology, and the tradition links Jupiter with yellow sapphire, the 5 mukhi Rudraksha and the Guru graha shanti pooja.
 products: GEM024,RUD005
 services: Guru graha shanti pooja Personal Pooja Blessings, Guru graha shanti pooja Samuhik Pooja Blessings
-texts: Cheiro's Book of Numbers, Jyotish practice, Rudrakshajabala Upanishad
+texts: Classical numerology, Jyotish practice, Rudrakshajabala Upanishad
 publish: true
 group: Numbers and planets
 order: 98
@@ -19,7 +19,7 @@ order: 98
 |---|---|
 | Number | 3 (days of the month 3, 12, 21, 30) |
 | Planet in Indian numerology (Ank Jyotish) | Jupiter (Guru) |
-| Planet in Cheiro's book | Jupiter |
+| Planet in classical numerology | Jupiter |
 | Gem the tradition links with Jupiter | Yellow sapphire (Pukhraj) |
 | Rudraksha | 5 mukhi |
 | Day | Thursday |
@@ -28,7 +28,7 @@ order: 98
 
 ## How the number and the planet are joined
 
-Cheiro and Indian numerology both link the number 3 with Jupiter. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
+Classical and Indian numerology both link the number 3 with Jupiter. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
 
 ## What to do with this
 

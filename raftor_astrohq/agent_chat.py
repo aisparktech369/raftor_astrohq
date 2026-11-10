@@ -22,8 +22,8 @@ def _gate(blueprint: str | None = None):
 def _words(blueprint: str | None = None) -> dict:
 	"""Every word the card shows for one of the site's agents, and where its page is."""
 	if blueprint == agents.NUMEROLOGIST["blueprint"]:
-		return {"title": _("Numerology guide"), "subtitle": _("AI guide · Cheiro's numerology"), "who": _("the numerology guide"), "placeholder": _("Ask the numerology guide"), "route": "numerologist",
-				"resting": _("The numerology guide is resting. Please come back a little later."), "notice": _("AI guide. I explain Cheiro's numerology from our Academy. It is not a prediction or advice."),
+		return {"title": _("Numerology guide"), "subtitle": _("AI guide · numerology"), "who": _("the numerology guide"), "placeholder": _("Ask the numerology guide"), "route": "numerologist",
+				"resting": _("The numerology guide is resting. Please come back a little later."), "notice": _("AI guide. I explain numerology from our Academy. It is not a prediction or advice."),
 				"sign_in": _("Sign up or sign in to ask the numerology guide. It takes a minute."), "ask": _("Give me a birth day or a name and I'll work out the numbers.")}
 	if blueprint == agents.DREAM_GUIDE["blueprint"]:
 		return {"title": _("Dream guide"), "subtitle": _("AI guide · Exploring your dreams"), "who": _("the dream guide"), "placeholder": _("Tell me a dream"), "route": "dream-guide",

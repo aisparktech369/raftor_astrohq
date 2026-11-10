@@ -67,3 +67,13 @@ class TestPanditJiRecord(TestCase):
 		frappe.db.set_value("Blueprint Reference", agents.BLUEPRINT, "is_active", 0)  # staff switch it off
 		agents.ensure_blueprint()
 		self.assertEqual(frappe.db.get_value("Blueprint Reference", agents.BLUEPRINT, "is_active"), 0)
+
+
+class TestNumerologyToolGivesOnePart(TestCase):
+	def test_only_the_part_asked_for_comes_back(self):
+		from raftor_astrohq.assistant_tools.numerology import _part
+
+		reading = {"birth": {"number": 8, "headline": "h", "summary": "s", "strengths": ["a"], "watch": ["b"], "famous": ["x", "y", "z", "w", "v"], "music": "m", "colours": ["black"]}, "name": {"number": 5}}
+		self.assertEqual(set(_part(reading, "birth")["birth"]), {"number", "headline", "summary", "strengths", "watch"})
+		self.assertEqual(len(_part(reading, "more")["more"]["famous"]), 4)
+		self.assertEqual(_part(reading, "name"), {"name": {"number": 5}})

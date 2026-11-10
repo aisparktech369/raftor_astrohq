@@ -314,7 +314,7 @@
   ]
  },
  {
-  "q": "How do I count a name in Cheiro's numerology?",
+  "q": "How do I count a name in numerology?",
   "expect": [
    "num-ch12-name-numbers"
   ]
@@ -326,7 +326,7 @@
   ]
  },
  {
-  "q": "Which gems and colours does Cheiro give the number 6?",
+  "q": "Which gems and colours go with the number 6?",
   "expect": [
    "num-ch08-number-6"
   ]
@@ -344,7 +344,7 @@
   ]
  },
  {
-  "q": "Cheiro on number 8 and Saturn",
+  "q": "Number 8 and Saturn in numerology",
   "expect": [
    "num-ch10-number-8"
   ]

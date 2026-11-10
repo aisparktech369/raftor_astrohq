@@ -6,7 +6,7 @@ title: 'Number 4 and Rahu: Its Gem, Rudraksha Bead and Pooja'
 intro: Number 4 is linked with Rahu in Indian numerology, and the tradition links Rahu with hessonite, the 8 mukhi Rudraksha and the Rahu graha shanti pooja.
 products: GEM015,RUD008
 services: Rahu graha shanti pooja Personal Pooja Blessings, Rahu graha shanti pooja Samuhik Pooja Blessings
-texts: Cheiro's Book of Numbers, Jyotish practice, Rudrakshajabala Upanishad
+texts: Classical numerology, Jyotish practice, Rudrakshajabala Upanishad
 publish: true
 group: Numbers and planets
 order: 99
@@ -19,7 +19,7 @@ order: 99
 |---|---|
 | Number | 4 (days of the month 4, 13, 22, 31) |
 | Planet in Indian numerology (Ank Jyotish) | Rahu |
-| Planet in Cheiro's book | Uranus |
+| Planet in classical numerology | Uranus |
 | Gem the tradition links with Rahu | Hessonite (Gomed) |
 | Rudraksha | 8 mukhi |
 | Day | Saturday |
@@ -28,7 +28,7 @@ order: 99
 
 ## How the number and the planet are joined
 
-Cheiro's book gives the number 4 to Uranus, which Jyotish does not use, so the remedies on this page follow the Indian planet Rahu. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
+Classical numerology gives the number 4 to Uranus, which Jyotish does not use, so the remedies on this page follow the Indian planet Rahu. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
 
 ## What to do with this
 

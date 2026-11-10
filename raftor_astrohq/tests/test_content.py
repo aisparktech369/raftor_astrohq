@@ -56,7 +56,7 @@ class TestContent(TestCase):
 			if item["id"] in ("gem-which-for-which-need", "gem-planets-gems-beads-poojas"):
 				continue  # the need-to-remedy guides are tables of their own kind
 			if item["category"] in ("numerology", "dreams"):
-				continue  # Cheiro's chapters keep the book's own shape: prose and a few tables
+				continue  # the numerology and dream series keep their own shape: prose and a few tables
 			if item["id"].endswith("-guide"):
 				self.assertGreaterEqual(item["body"].count("|---|"), 4, item["file"])
 				continue

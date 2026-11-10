@@ -489,19 +489,32 @@ class TestWithTheRealServiceAndPlaces(AstroTestCase):
 
 
 class TestNumerologyReport(unittest.TestCase):
-	def test_the_report_is_made_from_the_engines_numbers_and_gives_a_warning_compound_as_a_symbol_only(self):
+	def _html(self, name="John Smith", born=(1990, 4, 17)):
 		import datetime
 
-		from raftor_astrohq import reports
+		from raftor_astrohq import astrology, reports
 
-		sixteen = {"compound": 16, "root": 7, "meaning": "Shattered Citadel", "sensitive": True}
-		answer = {"safeguard": "Historical, not predictions.", "birth": {"day": 26, "compound": 26, "number": 8, "steps": ["2+6=8"], "compound_meaning": sixteen,
-				  "profile": {"cheiro_planet": "Saturn", "ank_jyotish_planet": "Saturn", "days": [8, 17, 26], "colours": ["dark grey"], "jewels": ["amethyst"], "character": "intense", "source": {"chapter": "X"}}},
-				  "zodiac": {"periods": [{"sign": "Capricorn", "from": "12-21", "to": "01-20"}], "note": ""},
-				  "name": {"spelling_counted": "John Smith", "words": [{"word": "John", "letters": [{"letter": "J", "value": 1}, {"letter": "O", "value": 7}], "total": 8, "root": 8}],
-						   "combined": {"roots": [8], "total": 8, "compound": None, "root": 8, "compound_meaning": None}}}
-		html = reports.numerology_html(reports.numerology_context("John Smith", datetime.date(1990, 1, 26), answer, datetime.date(2026, 11, 9)))
-		self.assertIn("Birth number", html)
-		self.assertIn("a cautionary symbol", html)
-		self.assertNotIn("Shattered Citadel", html)
-		self.assertIn("J1 + O7", html)
+		try:
+			answer = astrology.numerology(day=born[2], month=born[1], year=born[0], name=name, start="2026-11-09")
+		except astrology.AstrologyUnavailable:
+			self.skipTest("the astrology service is not running")
+		day = datetime.date(*born)
+		return reports.numerology_html(reports.numerology_context(name, day, answer, datetime.date(2026, 11, 9)))
+
+	def test_the_report_gives_the_interpretation_of_every_number(self):
+		html = self._html()
+		for heading in ("Who you are: birth number 8", "Your day, your period and your year", "Your good ground", "Your next dates", "The planet of your number: Saturn", "Your period: Aries", "Your year number: 1", "Your name: number 8", "Where to go next"):
+			self.assertIn(heading, html)
+		self.assertIn("intense and determined", html)  # what the number is said to mean
+		self.assertIn("Saturn", html)
+		self.assertIn("How your numbers were found", html)  # the working is kept to the end
+
+	def test_a_warning_compound_is_a_theme_never_an_event(self):
+		html = self._html()  # JOHN is 18
+		self.assertIn("A caution number", html)
+		self.assertIn("not an event", html)
+
+	def test_no_author_or_book_is_named(self):
+		html = self._html().lower()
+		for word in ("cheiro", "chapter", "book of numbers"):
+			self.assertNotIn(word, html)

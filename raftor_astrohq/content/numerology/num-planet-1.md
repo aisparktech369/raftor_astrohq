@@ -6,7 +6,7 @@ title: 'Number 1 and Sun: Its Gem, Rudraksha Bead and Pooja'
 intro: Number 1 is linked with Sun in Indian numerology, and the tradition links Sun with ruby, the 1 mukhi and 12 mukhi Rudraksha and the Surya graha shanti pooja.
 products: GEM025,RUD001,RUD012
 services: Surya graha shanti pooja Personal Pooja Blessings, Surya graha shanti pooja Samuhik Pooja Blessings
-texts: Cheiro's Book of Numbers, Jyotish practice, Rudrakshajabala Upanishad
+texts: Classical numerology, Jyotish practice, Rudrakshajabala Upanishad
 publish: true
 group: Numbers and planets
 order: 96
@@ -19,7 +19,7 @@ order: 96
 |---|---|
 | Number | 1 (days of the month 1, 10, 19, 28) |
 | Planet in Indian numerology (Ank Jyotish) | Sun (Surya) |
-| Planet in Cheiro's book | Sun |
+| Planet in classical numerology | Sun |
 | Gem the tradition links with Sun | Ruby (Manikya) |
 | Rudraksha | 1 mukhi and 12 mukhi |
 | Day | Sunday |
@@ -28,7 +28,7 @@ order: 96
 
 ## How the number and the planet are joined
 
-Cheiro and Indian numerology both link the number 1 with Sun. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
+Classical and Indian numerology both link the number 1 with Sun. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
 
 ## What to do with this
 

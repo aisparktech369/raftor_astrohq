@@ -6,7 +6,7 @@ title: 'Number 2 and Moon: Its Gem, Rudraksha Bead and Pooja'
 intro: Number 2 is linked with Moon in Indian numerology, and the tradition links Moon with pearl, the 2 mukhi Rudraksha and the Chandra graha shanti pooja.
 products: GEM022,RUD002
 services: Chandra graha shanti pooja Personal Pooja Blessings, Chandra graha shanti pooja Samuhik Pooja Blessings
-texts: Cheiro's Book of Numbers, Jyotish practice, Rudrakshajabala Upanishad
+texts: Classical numerology, Jyotish practice, Rudrakshajabala Upanishad
 publish: true
 group: Numbers and planets
 order: 97
@@ -19,7 +19,7 @@ order: 97
 |---|---|
 | Number | 2 (days of the month 2, 11, 20, 29) |
 | Planet in Indian numerology (Ank Jyotish) | Moon (Chandra) |
-| Planet in Cheiro's book | Moon |
+| Planet in classical numerology | Moon |
 | Gem the tradition links with Moon | Pearl (Moti); moonstone is a traditional alternative |
 | Rudraksha | 2 mukhi |
 | Day | Monday |
@@ -28,7 +28,7 @@ order: 97
 
 ## How the number and the planet are joined
 
-Cheiro and Indian numerology both link the number 2 with Moon. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
+Classical and Indian numerology both link the number 2 with Moon. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
 
 ## What to do with this
 

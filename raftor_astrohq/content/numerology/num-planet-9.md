@@ -6,7 +6,7 @@ title: 'Number 9 and Mars: Its Gem, Rudraksha Bead and Pooja'
 intro: Number 9 is linked with Mars in Indian numerology, and the tradition links Mars with red coral, the 3 mukhi Rudraksha and the Mangal graha shanti pooja.
 products: GEM018,RUD003
 services: Mangal graha shanti pooja Personal Pooja Blessings, Mangal graha shanti pooja Samuhik Pooja Blessings
-texts: Cheiro's Book of Numbers, Jyotish practice, Rudrakshajabala Upanishad
+texts: Classical numerology, Jyotish practice, Rudrakshajabala Upanishad
 publish: true
 group: Numbers and planets
 order: 104
@@ -19,7 +19,7 @@ order: 104
 |---|---|
 | Number | 9 (days of the month 9, 18, 27) |
 | Planet in Indian numerology (Ank Jyotish) | Mars (Mangala) |
-| Planet in Cheiro's book | Mars |
+| Planet in classical numerology | Mars |
 | Gem the tradition links with Mars | Red coral (Moonga) |
 | Rudraksha | 3 mukhi |
 | Day | Tuesday |
@@ -28,7 +28,7 @@ order: 104
 
 ## How the number and the planet are joined
 
-Cheiro and Indian numerology both link the number 9 with Mars. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
+Classical and Indian numerology both link the number 9 with Mars. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
 
 ## What to do with this
 

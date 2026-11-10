@@ -26,7 +26,7 @@ CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones", "pooja": "Pooj
 CATEGORY_NOTES = {
 	"rudraksha": "The beads by number of faces: meaning, mantra, the traditions around each, and how to choose one.",
 	"gemstones": "Origin, treatments, the planets and stories behind each stone, and how to choose one.",
-	"numerology": "Cheiro's numbers: the birth number, the name number, the compound numbers, and how to read them with care. His doctrine, calculated by rules, never a prediction.",
+	"numerology": "The birth number, the name number and the compound numbers, and how to read them with care. A traditional doctrine, calculated by rules, never a prediction.",
 	"dreams": "Dreams read as personal stories: the DREAM method, common scenarios, symbol notes, and what the Indian traditions are said to hold, each labelled by how well its source is known.",
 	"pooja": "Rituals explained: what each pooja is, when it is done, the items and steps, and what to ask before you book one.",
 }

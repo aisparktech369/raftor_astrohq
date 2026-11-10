@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<defs>
+<radialGradient id="bg" cx="50%" cy="46%" r="70%"><stop offset="0" stop-color="#FFF8E6"/><stop offset="1" stop-color="#F3EAD8"/></radialGradient>
+<radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#F2B440" stop-opacity=".55"/><stop offset="1" stop-color="#F2B440" stop-opacity="0"/></radialGradient>
+<linearGradient id="brass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E3B04B"/><stop offset=".55" stop-color="#C9922A"/><stop offset="1" stop-color="#8A5A12"/></linearGradient>
+<linearGradient id="flame" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#F29A1F"/><stop offset=".6" stop-color="#F7C54A"/><stop offset="1" stop-color="#FFF1B8"/></linearGradient>
+</defs>
+<rect width="800" height="600" fill="url(#bg)"/>
+<circle cx="400" cy="300" r="230" fill="url(#glow)"/>
+<g opacity=".9" fill="#C9922A">
+<circle cx="170" cy="470" r="5"/><circle cx="210" cy="486" r="4"/><circle cx="250" cy="496" r="3"/>
+<circle cx="630" cy="470" r="5"/><circle cx="590" cy="486" r="4"/><circle cx="550" cy="496" r="3"/>
+</g>
+<g fill="#E8C27A" opacity=".85">
+<path d="M400 520 C340 500 300 470 290 430 C340 440 380 470 400 520Z"/><path d="M400 520 C460 500 500 470 510 430 C460 440 420 470 400 520Z"/>
+<path d="M400 520 C370 490 350 440 360 400 C390 430 400 470 400 520Z"/><path d="M400 520 C430 490 450 440 440 400 C410 430 400 470 400 520Z"/>
+</g>
+<path d="M240 365 Q250 470 400 478 Q550 470 560 365 Z" fill="url(#brass)"/>
+<ellipse cx="400" cy="365" rx="160" ry="34" fill="#8A5A12"/>
+<ellipse cx="400" cy="362" rx="150" ry="28" fill="#5B3A0A"/>
+<ellipse cx="400" cy="358" rx="138" ry="22" fill="#F2B440" opacity=".35"/>
+<path d="M258 388 Q300 440 400 446" fill="none" stroke="#F6D88C" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+<path d="M400 360 C372 322 372 276 400 230 C428 276 428 322 400 360Z" fill="url(#flame)"/>
+<path d="M400 346 C388 322 388 296 400 270 C412 296 412 322 400 346Z" fill="#FFFBE6" opacity=".9"/>
+<rect x="396" y="350" width="8" height="14" rx="3" fill="#3A1D49"/>
+</svg>

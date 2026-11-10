@@ -1,6 +1,29 @@
 [
- {"slug": "cheiro", "name": "Cheiro", "persona": "Numerologist", "page": "ask/numerologist", "photo": "guide-cheiro.jpg", "languages": "English",
-  "bio": "An AI guide that explains Cheiro's Book of Numbers: your birth number and name number, worked out step by step, and what the book says about them. It is not the author. It does not predict or promise anything."},
- {"slug": "mystic-dreamer", "name": "Mystic Dreamer", "persona": "Dream interpreter", "page": "ask/dream-guide", "photo": "guide-mystic-dreamer.svg", "languages": "English",
-  "bio": "An AI guide that helps you explore what a dream may mean, from your own story and the traditions that explain dreams. It does not predict or promise anything."}
+ {
+  "slug": "pandit-ji",
+  "name": "Pandit ji",
+  "persona": "Pandit ji",
+  "page": "ask/pandit-ji",
+  "photo": "guide-pandit-ji.svg",
+  "languages": "English, Hindi",
+  "bio": "An AI guide for Rudraksha, gemstones and poojas. He answers from our Academy and shows what we offer. He does not predict or promise anything."
+ },
+ {
+  "slug": "cheiro",
+  "name": "Cheiro",
+  "persona": "Numerologist",
+  "page": "ask/numerologist",
+  "photo": "guide-cheiro.jpg",
+  "languages": "English",
+  "bio": "An AI guide that explains Cheiro's Book of Numbers: your birth number and name number, and what the book says about them. It is not the author. It does not predict or promise anything."
+ },
+ {
+  "slug": "mystic-dreamer",
+  "name": "Mystic Dreamer",
+  "persona": "Dream interpreter",
+  "page": "ask/dream-guide",
+  "photo": "guide-mystic-dreamer.svg",
+  "languages": "English",
+  "bio": "An AI guide that helps you explore what a dream may mean, from your own story and the traditions that explain dreams. It does not predict or promise anything."
+ }
 ]

@@ -6,7 +6,7 @@ title: 'Number 6 and Venus: Its Gem, Rudraksha Bead and Pooja'
 intro: Number 6 is linked with Venus in Indian numerology, and the tradition links Venus with diamond, the 6 mukhi Rudraksha and the Shukra graha shanti pooja.
 products: GEM029,RUD006
 services: Shukra graha shanti pooja Personal Pooja Blessings, Shukra graha shanti pooja Samuhik Pooja Blessings
-texts: Cheiro's Book of Numbers, Jyotish practice, Rudrakshajabala Upanishad
+texts: Classical numerology, Jyotish practice, Rudrakshajabala Upanishad
 publish: true
 group: Numbers and planets
 order: 101
@@ -19,7 +19,7 @@ order: 101
 |---|---|
 | Number | 6 (days of the month 6, 15, 24) |
 | Planet in Indian numerology (Ank Jyotish) | Venus (Shukra) |
-| Planet in Cheiro's book | Venus |
+| Planet in classical numerology | Venus |
 | Gem the tradition links with Venus | Diamond (Heera); white sapphire, white topaz and zircon are lower-cost substitutes |
 | Rudraksha | 6 mukhi |
 | Day | Friday |
@@ -28,7 +28,7 @@ order: 101
 
 ## How the number and the planet are joined
 
-Cheiro and Indian numerology both link the number 6 with Venus. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
+Classical and Indian numerology both link the number 6 with Venus. A qualified astrologer judges the birth chart first and says which planet matters for you, because a planet that helps in one chart may not in another. The number is a pointer, not a prescription.
 
 ## What to do with this
 

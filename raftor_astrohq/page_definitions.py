@@ -81,8 +81,8 @@ def ask_page() -> dict:
 def numerologist_page() -> dict:
 	"""Ask the numerology guide: a chat with the second AI guide (agent_chat.py, the card's fixed argument says which agent)."""
 	return {"route": "ask/numerologist", "title": _("Ask the numerology guide"), "meta_title": _("Ask the numerology guide | AstroHQ"),
-		"meta_description": _("Work out a birth number or a name number the way Cheiro did, and see what his book says. An AI guide that explains from our Academy."), "login_required": False, "sections": [
-		{"key": "head", "title": _("Ask the numerology guide"), "subtitle": _("Cheiro's numerology: your birth number and name number, worked out step by step."), "look": TIGHT},
+		"meta_description": _("Find your birth number and your name number and see what they are said to mean. An AI guide that explains from our Academy."), "login_required": False, "sections": [
+		{"key": "head", "title": _("Ask the numerology guide"), "subtitle": _("Your birth number and your name number, and what they are said to mean."), "look": TIGHT},
 		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info", "static_args": '{"agent": "numerologist"}'}}], "look": TIGHT}]}
 
 
