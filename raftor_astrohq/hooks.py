@@ -295,7 +295,7 @@ rfhq_report_makers = ["raftor_astrohq.reports.birth_summary"]
 rfhq_trusted_html_sources = ["raftor_astrohq.report_view.chart_view", "raftor_astrohq.panchang.page", "raftor_astrohq.panchang.widget_cards"]
 
 # Shortly after midnight the Panchang's town is worked out for the week ahead (panchang.warm).
-scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"]}}
+scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"], "40 1 * * *": ["raftor_astrohq.plan_billing.daily"]}}
 
 # The Panchang is a page group of its own: /panchang is its page (page_definitions.py).
 rfhq_page_groups = {"panchang": "Panchang", "ask": "Ask Pandit ji"}
@@ -317,3 +317,10 @@ agent_rag_enrichers = ["astrohq:raftor_astrohq.knowledge.enrich"]
 
 # What the AI guides remember about a person and the people in their profiles, and what the site knows of them: a dotted path to a module with read(user), write(user, payload, guide, session) and forget(user, name).
 agent_person = ["raftor_astrohq.person"]
+
+# The AI plans (plans.py, plan_billing.py): what PaymentHQ tells us about a plan's payments, and whether the website's free-report form may make another report for a person.
+paymenthq_on_paid = {"AI Plan Member": ["raftor_astrohq.plan_billing.paid"]}
+paymenthq_on_failed = {"AI Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
+paymenthq_on_expired = {"AI Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
+paymenthq_on_cancelled = {"AI Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
+free_reports_allowance = ["raftor_astrohq.plans.report_allowance"]

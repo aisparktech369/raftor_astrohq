@@ -346,7 +346,6 @@ def read_report(user: str, who: str, kind: str, guide_user: str) -> dict:
 			try:
 				free_reports.check_limit(user)
 				workflows.as_system(lambda: free_reports.create(user, item, clean))
-				plans.record_report(user)
 				made = True
 			except frappe.ValidationError:
 				pass  # the daily limit: the summary below is still given

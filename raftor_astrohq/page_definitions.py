@@ -113,6 +113,9 @@ def definitions() -> list[dict]:
 			"method": API + "list_profiles", "args": {"who": "you"}, "links": [
 				{"label": _("Add a family member"), "href": _my("birth-profiles/new"), "kind": "outline", "where": "bottom"},
 				{"label": _("Continue"), "href": "/", "kind": "primary", "where": "bottom"}]}),
+		_list("my/ai-plan", _("Your AI plan"), _("What your plan gives you with the guides, what you have used this month, and the plans you can take. Plans are monthly, and you can stop any time."), {
+			"method": "raftor_astrohq.plans_api.plan_cards", "empty": _("No plans are open yet.")},
+			menu={"label": _("AI plan"), "summary": _("What you have used with the guides, and the plans."), "order": 16, "side": {"order": 31}}),
 		_list("my/birth-profiles", _("Birth profiles"), _("Keep details for the people you care about, all under your one account."), {
 			"method": API + "list_profiles", "empty": _("No profiles yet."),
 			"links": [{"label": _("Add a person"), "href": _my("birth-profiles/new"), "kind": "primary", "where": "top"}]},

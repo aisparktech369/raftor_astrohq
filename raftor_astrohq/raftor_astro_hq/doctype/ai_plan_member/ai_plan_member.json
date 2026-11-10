@@ -18,10 +18,16 @@
   "user",
   "plan",
   "status",
+  "renews",
   "col1",
   "period_start",
   "period_end",
+  "months_paid",
   "source",
+  "pending_section",
+  "pending_plan",
+  "pending_agreement",
+  "charge_asked_for",
   "agreement",
   "note"
  ],
@@ -47,9 +53,10 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Active\nEnded",
+   "options": "Active\nWaiting\nEnded",
    "default": "Active",
-   "in_list_view": 1
+   "in_list_view": 1,
+   "description": "Waiting: the first payment of a plan being taken has not arrived yet."
   },
   {
    "fieldname": "col1",
@@ -58,12 +65,12 @@
   {
    "fieldname": "period_start",
    "fieldtype": "Date",
-   "label": "Month starts"
+   "label": "Plan began"
   },
   {
    "fieldname": "period_end",
    "fieldtype": "Date",
-   "label": "Month ends",
+   "label": "Paid through",
    "in_list_view": 1
   },
   {
@@ -84,6 +91,47 @@
    "fieldname": "note",
    "fieldtype": "Small Text",
    "label": "Note"
+  },
+  {
+   "fieldname": "renews",
+   "fieldtype": "Check",
+   "label": "Renews each month",
+   "default": "1",
+   "description": "Off once the person stops it: the plan then ends with its month."
+  },
+  {
+   "fieldname": "pending_section",
+   "fieldtype": "Section Break",
+   "label": "A plan being taken"
+  },
+  {
+   "fieldname": "pending_plan",
+   "fieldtype": "Link",
+   "label": "Plan being taken",
+   "options": "AI Plan",
+   "read_only": 1,
+   "description": "Set from the moment the person is sent to agree to auto-pay until the first payment arrives."
+  },
+  {
+   "fieldname": "pending_agreement",
+   "fieldtype": "Data",
+   "label": "Agreement being made",
+   "read_only": 1
+  },
+  {
+   "fieldname": "charge_asked_for",
+   "fieldtype": "Date",
+   "label": "Next month asked for",
+   "read_only": 1,
+   "description": "The day the next month starts, once its payment has been asked for."
+  },
+  {
+   "fieldname": "months_paid",
+   "fieldtype": "Int",
+   "label": "Months paid",
+   "default": "0",
+   "read_only": 1,
+   "description": "Months paid for since the plan began. Month 1 begins on 'Month starts'; the plan is paid through 'Month ends'."
   }
  ],
  "permissions": [

@@ -149,8 +149,15 @@ class TestWhenALimitIsReached(AstroTestCase):
 		plans.record_reply(user)
 		gate = plans.allowance(user, "pandit_ji")
 		self.assertIn("a live astrologer can talk with you one to one", gate["message"])
-		self.assertEqual([c["url"] for c in gate["cards"]], ["/consult"])
-		self.assertTrue(gate["cards"][0]["handover"])
+		self.assertEqual([c["url"] for c in gate["cards"]], ["/my/ai-plan", "/consult"])  # the plans, and a live astrologer
+		self.assertTrue(gate["cards"][1]["handover"])
+
+	def test_the_top_plan_is_not_sent_to_a_plan_above_it(self):
+		user = _user()
+		plans.assign(user, "Needy")
+		_set("Needy", replies_per_month=1)
+		plans.record_reply(user)
+		self.assertEqual([c["url"] for c in plans.allowance(user, "pandit_ji")["cards"]], ["/consult"])
 
 	def test_a_field_added_later_is_filled_only_when_blank(self):
 		frappe.db.set_value("AI Plan", "Seeker", {"limit_cards": "", "limit_day_message": "My own words {plan}"})
@@ -171,7 +178,7 @@ class TestWhenAPlanIsRequired(AstroTestCase):
 		gate = plans.allowance(_user(), "pandit_ji")
 		self.assertEqual((gate["ok"], gate["reason"]), (False, "no_plan"))
 		self.assertIn("take the Free plan", gate["message"])
-		self.assertEqual([c["url"] for c in gate["cards"]], ["/consult"])
+		self.assertEqual([c["url"] for c in gate["cards"]], ["/my/ai-plan", "/consult"])
 
 	def test_a_plan_taken_opens_the_guides_and_staff_are_not_asked(self):
 		self._require()

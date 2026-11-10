@@ -13,7 +13,7 @@
  "track_changes": 0,
  "autoname": "field:usage_key",
  "name": "AI Usage",
- "description": "What a person has used of their plan in one month: the replies of every guide and the reports made. Kept by the system.",
+ "description": "What a person has used of their plan in one month: the replies of every guide. Kept by the system.",
  "field_order": [
   "usage_key",
   "user",
@@ -22,7 +22,6 @@
   "replies",
   "day",
   "day_replies",
-  "reports",
   "last_reply"
  ],
  "fields": [
@@ -73,13 +72,6 @@
    "fieldname": "day_replies",
    "fieldtype": "Int",
    "label": "Replies that day",
-   "default": "0",
-   "read_only": 1
-  },
-  {
-   "fieldname": "reports",
-   "fieldtype": "Int",
-   "label": "Reports this month",
    "default": "0",
    "read_only": 1
   },

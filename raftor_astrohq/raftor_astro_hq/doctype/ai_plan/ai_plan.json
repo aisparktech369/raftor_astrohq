@@ -34,6 +34,7 @@
   "limit_day_message",
   "no_plan_message",
   "limit_guide_message",
+  "limit_reports_message",
   "family_message",
   "upgrade_message",
   "limit_cards"
@@ -179,6 +180,12 @@
    "fieldtype": "Small Text",
    "label": "No plan taken yet",
    "description": "Said to a person who has not taken a plan, when plans are required. Placeholders: {plan}, {price}, {upgrade}. Used on the lowest plan."
+  },
+  {
+   "fieldname": "limit_reports_message",
+   "fieldtype": "Small Text",
+   "label": "Reports used up",
+   "description": "Placeholders: {plan}, {limit}, {date}, {upgrade}."
   }
  ],
  "permissions": [
