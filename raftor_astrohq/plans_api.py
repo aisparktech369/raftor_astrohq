@@ -65,7 +65,7 @@ def plan_cards() -> dict:
 		plan = frappe._dict(row)
 		price = cint(plan.monthly_price)
 		mine = plan.plan_name == now["plan"] and (now.get("taken") or price == 0)
-		card = {"id": plan.plan_name, "title": f"{plan.plan_name} · " + (_("Free") if price == 0 else _("₹{0} a month").format(price)), "badge": _("Your plan") if mine else "",
+		card = {"id": plan.plan_name, "title": plan.plan_name if price == 0 else f"{plan.plan_name} · " + _("₹{0} a month").format(price), "badge": _("Your plan") if mine else "",
 				"tone": "success" if mine else "", "lines": [plan.tagline, *_limits(plan)], "actions": []}
 		if price > 0 and not mine and not now.get("staff"):
 			change = bool(now.get("taken"))
