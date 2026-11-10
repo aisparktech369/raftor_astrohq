@@ -18,7 +18,8 @@ READS = {doctype: ["read"] for doctype in ("Website Item", "Item", "Item Price",
 REPORT_AREAS = {"pandit_ji": ["kundli", "numerology"], "numerologist": ["numerology"], "dream_guide": []}
 # What of the person's record each guide is shown: `notes` are the kinds of note it reads (None = all), `card` is how much of the person's details it sees ("full", or "names": only who is in the family, no birth details,
 # reports or purchases). The dream guide keeps to the earlier dream talks and nothing else about the person (owner, 2026-11-10).
-READS_OF_PERSON = {"pandit_ji": {"notes": None, "card": "full"}, "numerologist": {"notes": None, "card": "full"}, "dream_guide": {"notes": ["dream"], "card": "names"}}
+READS_OF_PERSON = {"pandit_ji": {"notes": None, "card": "full"}, "numerologist": {"notes": None, "card": "full"}, "dream_guide": {"notes": ["dream"], "card": "names"},
+				   "tarot": {"notes": ["tarot"], "card": "names"}}  # the tarot guide, when it exists (owner, 2026-11-10: all the tarot notes, and only those); the key is its blueprint id
 
 NUMEROLOGIST = {"role": "Numerology Guide Agent", "user": "numerology-guide-agent@agents.astrohq.in", "blueprint": "numerologist", "title": "Numerology guide (AI)",
 				"tools": ["search_knowledge", "calculate_numerology", "find_services", "get_service", "search_webshop_products", "get_webshop_product", "get_family_member", "get_report"], "reads": READS}

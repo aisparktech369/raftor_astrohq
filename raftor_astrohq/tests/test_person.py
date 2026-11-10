@@ -187,3 +187,11 @@ class TestWhatEachGuideSees(AstroTestCase):
 
 		self.assertEqual(agents.reads_of("some_new_guide"), {"notes": [], "card": "none"})
 		self.assertEqual(person.read(user, "some_new_guide"), {"notes": [], "card": ""})
+
+	def test_a_tarot_guide_will_see_only_the_tarot_notes_and_the_family_names(self):
+		user = _user()
+		person.write(user, {"notes": [{"about": "You", "kind": "tarot", "point": "Drew the Tower for a question about work"}, {"about": "You", "kind": "dream", "point": "Dreams of falling"}]}, "g", "s")
+		seen = person.read(user, "tarot")
+		self.assertEqual([n["point"] for n in seen["notes"]], ["Drew the Tower for a question about work"])
+		self.assertNotIn("born", seen["card"])
+		self.assertEqual([n["point"] for n in person.read(user, "dream_guide")["notes"]], ["Dreams of falling"])
