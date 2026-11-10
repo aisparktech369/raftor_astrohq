@@ -9,14 +9,12 @@ from raftor_astrohq import agents
 
 
 def _gate(blueprint: str | None = None):
-	"""The blueprint's sign-up conversation as plain words, or None when the agent is open to everyone or the factory is not here."""
+	"""The blueprint's sign-up conversation as plain words, or None when the agent is open to everyone or AgentsHQ is not here."""
 	try:
-		from raftor_agents_factory.blueprints.registry import gate_of, load_blueprint
-
-		gate = gate_of(load_blueprint(blueprint or agents.BLUEPRINT))
-	except Exception:
+		from raftor_agentshq import agent_info
+	except ImportError:
 		return None
-	return gate.model_dump() if gate else None
+	return agent_info.gate(blueprint or agents.BLUEPRINT)
 
 
 def _words(blueprint: str | None = None) -> dict:
