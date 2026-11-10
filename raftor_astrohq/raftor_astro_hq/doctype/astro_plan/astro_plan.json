@@ -5,14 +5,14 @@
  "engine": "InnoDB",
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-11-10 00:00:00.000000",
+ "modified": "2026-11-10 22:40:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "owner": "Administrator",
  "states": [],
  "track_changes": 0,
  "autoname": "field:plan_name",
- "name": "AI Plan",
+ "name": "Astro Plan",
  "description": "What each monthly plan gives. The limits are the business team's to change here; the guides, the profiles and the reports read them on every use. Three plans, all paid, monthly only: the lowest, Seeker (now and then) and Needy (every day).",
  "field_order": [
   "plan_name",
@@ -29,6 +29,12 @@
   "notes_read",
   "reports_per_month",
   "guides",
+  "box_section",
+  "button_label",
+  "button_url",
+  "box_col",
+  "price_note",
+  "badge",
   "words_section",
   "limit_month_message",
   "limit_day_message",
@@ -71,7 +77,7 @@
   {
    "fieldname": "monthly_price",
    "fieldtype": "Currency",
-   "label": "Price per month (rupees, GST included)",
+   "label": "Price per month (rupees, what the person pays)",
    "options": "INR",
    "in_list_view": 1,
    "description": "Plans are monthly only."
@@ -133,6 +139,38 @@
    "fieldtype": "Small Text",
    "label": "Guides allowed",
    "description": "The blueprint ids of the guides this plan may talk to, separated by commas. Blank is every guide."
+  },
+  {
+   "fieldname": "box_section",
+   "fieldtype": "Section Break",
+   "label": "On the plans page"
+  },
+  {
+   "fieldname": "button_label",
+   "fieldtype": "Data",
+   "label": "Button",
+   "description": "{plan} is the plan's name. Blank on a paid plan: Choose {plan}; blank on a free one: no button."
+  },
+  {
+   "fieldname": "button_url",
+   "fieldtype": "Data",
+   "label": "Button address",
+   "description": "A path on this site. A paid plan's button goes to the page that confirms it, so leave this blank there."
+  },
+  {
+   "fieldname": "box_col",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "price_note",
+   "fieldtype": "Data",
+   "label": "Note under the price"
+  },
+  {
+   "fieldname": "badge",
+   "fieldtype": "Data",
+   "label": "Badge",
+   "description": "A few words over the box, which is then drawn as the plan to look at. Blank: none."
   },
   {
    "fieldname": "words_section",

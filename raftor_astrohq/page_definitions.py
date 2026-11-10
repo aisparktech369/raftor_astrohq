@@ -4,7 +4,7 @@ site's. Addresses are `<group>/<page>`: a person's own birth details under `my`,
 import frappe
 from frappe import _
 
-from raftor_astrohq import details, plan_site, profiles
+from raftor_astrohq import details, plans, profiles
 from raftor_servicehq.roles import SERVICE_PROVIDER_ROLE
 from raftor_websitehq.website_hq.page_groups import page_url
 
@@ -103,13 +103,12 @@ def panchang_page() -> dict:
 
 
 def plans_page() -> dict:
-	"""The plans of the AI guides, public: a box for each plan (websitehq's Service Card, made from the AI Plans by plan_site.py), and above them, for a person who has signed in, the plan they are on (plans_api.py)."""
-	boxes = [{"type": "Service Card", "values": {"plan_name": name}} for name in plan_site.plan_names()]
-	return {"route": "plans", "title": _("AI plans"), "meta_title": _("AI plans | AstroHQ"),
-		"meta_description": _("Talk to the AI guides on a plan that fits you. Monthly, and you can stop any time."), "login_required": False, "sections": [
-		{"key": "head", "title": _("Talk to the guides on the plan that fits you"), "subtitle": _("Pick the plan by how often you want guidance. Plans are monthly, and you can stop any time."), "look": TIGHT},
-		{"key": "yours", "source": {"method": "raftor_astrohq.plans_api.strip", "empty": ""}, "look": TIGHT},
-		{"key": "boxes", "columns": min(max(len(boxes), 1), 5), "cards": boxes, "look": TIGHT},
+	"""The plans, public: a box for each plan, in a row (websitehq's Service Card, given its values by plans_api.boxes). A person who has signed in sees their own plan marked."""
+	return {"route": "plans", "title": _("Plans"), "meta_title": _("Plans | AstroHQ"),
+		"meta_description": _("Free, Seeker and Needy: monthly plans for AstroHQ. Stop any time."), "login_required": False, "sections": [
+		{"key": "head", "title": _("Choose your plan"), "subtitle": _("Pick by how often you want guidance. Plans are monthly, and you can stop any time."), "look": TIGHT},
+		{"key": "boxes", "columns": min(max(len(plans.defaults()), 1), 5), "reserve": "34rem", "look": TIGHT,
+		 "source": {"method": "raftor_astrohq.plans_api.boxes", "card": "Service Card", "empty": _("No plans are open yet.")}},
 		{"key": "note", "subtitle": _("Stop any time and the plan stays to the end of the month you paid for. Live astrologers are booked separately, one session at a time."), "look": TIGHT}]}
 
 
@@ -132,10 +131,9 @@ def definitions() -> list[dict]:
 			"method": API + "list_profiles", "args": {"who": "you"}, "links": [
 				{"label": _("Add a family member"), "href": _my("birth-profiles/new"), "kind": "outline", "where": "bottom"},
 				{"label": _("Continue"), "href": "/", "kind": "primary", "where": "bottom"}]}),
-		_list("my/ai-plan", _("Your AI plan"), _("What your plan gives you with the guides, what you have used this month, and the plans you can take. Plans are monthly, and you can stop any time."), {
-			"method": "raftor_astrohq.plans_api.plan_cards", "empty": _("No plans are open yet."),
-			"links": [{"label": _("Compare the plans"), "href": page_url("plans"), "kind": "outline", "where": "top"}]},
-			menu={"label": _("AI plan"), "summary": _("What you have used with the guides, and the plans."), "order": 16, "side": {"order": 31}}),
+		_list("my/astro-plan", _("Your plan"), _("What you have used this month, and how to change your plan or stop it. Plans are monthly, and you can stop any time."), {
+			"method": "raftor_astrohq.plans_api.my_plan", "empty": _("No plans are open yet.")},
+			menu={"label": _("Your plan"), "summary": _("What you have used, and the plans."), "order": 16, "side": {"order": 31}}),
 		_list("my/birth-profiles", _("Birth profiles"), _("Keep details for the people you care about, all under your one account."), {
 			"method": API + "list_profiles", "empty": _("No profiles yet."),
 			"links": [{"label": _("Add a person"), "href": _my("birth-profiles/new"), "kind": "primary", "where": "top"}]},

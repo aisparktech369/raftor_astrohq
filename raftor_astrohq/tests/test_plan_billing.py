@@ -34,7 +34,7 @@ class PlanCase(TestCase):
 	def tearDown(self):
 		frappe.set_user("Administrator")
 		frappe.db.rollback()
-		for dt in ("AI Plan Member", "AI Usage"):
+		for dt in ("Astro Plan Member", "Astro Plan Usage"):
 			frappe.db.delete(dt, {"user": self.email})
 		pay.drop_everything() if hasattr(pay, "drop_everything") else None
 		frappe.db.delete("Contact", {"user": self.email})
@@ -48,18 +48,18 @@ class PlanCase(TestCase):
 	# ---- what a person does ----
 	def take(self, plan="Seeker"):
 		out = plan_billing.start(self.email, plan)
-		mandate = frappe.db.get_value("AI Plan Member", self.email, "pending_agreement")
-		price = frappe.db.get_value("AI Plan", plan, "monthly_price")
+		mandate = frappe.db.get_value("Astro Plan Member", self.email, "pending_agreement")
+		price = frappe.db.get_value("Astro Plan", plan, "monthly_price")
 		mandates.confirm(mandate, {"agree": 1, "amount": price})
 		return out, mandate
 
 	def member(self):
-		return frappe.db.get_value("AI Plan Member", self.email, ["plan", "status", "period_start", "period_end", "months_paid", "renews", "agreement", "pending_plan", "pending_agreement", "charge_asked_for"], as_dict=True)
+		return frappe.db.get_value("Astro Plan Member", self.email, ["plan", "status", "period_start", "period_end", "months_paid", "renews", "agreement", "pending_plan", "pending_agreement", "charge_asked_for"], as_dict=True)
 
 	def near_the_end_of_the_month(self):
 		"""The month the plan is in ends in two days: its anchor is a month before the day after tomorrow's tomorrow."""
 		anchor = add_months(add_days(today(), 3), -1)
-		frappe.db.set_value("AI Plan Member", self.email, {"period_start": anchor, "months_paid": 1, "period_end": plan_billing.paid_through(anchor, 1)})
+		frappe.db.set_value("Astro Plan Member", self.email, {"period_start": anchor, "months_paid": 1, "period_end": plan_billing.paid_through(anchor, 1)})
 
 	def charge(self, mandate):
 		for payment in frappe.get_all("Payment", filters={"mandate": mandate, "workflow_state": "Requested", "method": "Auto-pay"}, pluck="name"):
@@ -83,7 +83,7 @@ class TestTakingAPlan(PlanCase):
 	def test_a_plan_that_costs_nothing_or_is_off_cannot_be_taken(self):
 		with self.assertRaises(frappe.ValidationError):
 			plan_billing.start(self.email, "Free")
-		frappe.db.set_value("AI Plan", "Needy", "enabled", 0)
+		frappe.db.set_value("Astro Plan", "Needy", "enabled", 0)
 		with self.assertRaises(frappe.ValidationError):
 			plan_billing.start(self.email, "Needy")
 
@@ -143,7 +143,7 @@ class TestKeepingIt(PlanCase):
 		self.addCleanup(frappe.cache().delete_value, f"paymenthq_sandbox_fail:{mandate}")
 		self.charge(mandate)
 		self.assertEqual(self.member().months_paid, 1)
-		frappe.db.set_value("AI Plan Member", self.email, "period_end", add_days(today(), -1))
+		frappe.db.set_value("Astro Plan Member", self.email, "period_end", add_days(today(), -1))
 		self.assertEqual(plan_billing.end_lapsed(), 1)
 		self.assertEqual((self.member().status, plans.plan_of(self.email).taken), ("Ended", False))
 
@@ -173,62 +173,88 @@ class TestKeepingIt(PlanCase):
 
 
 class TestThePage(PlanCase):
-	def cards(self):
+	def card(self):
 		frappe.set_user(self.email)
-		return {c["id"]: c for c in plans_api.plan_cards()["items"]}
+		items = plans_api.my_plan()["items"]
+		self.assertEqual(len(items), 1)  # the plans to choose from are on the plans page, not here
+		return items[0]
 
-	def test_the_page_shows_the_plan_the_use_and_the_plans_with_a_button_for_each_paid_one(self):
+	def test_the_persons_page_shows_the_plan_and_the_use_with_a_way_to_the_plans(self):
 		plans.record_reply(self.email)
-		cards = self.cards()
-		self.assertEqual(list(cards), ["now", "Free", "Seeker", "Needy"])
-		self.assertEqual(cards["now"]["title"], "Your plan: Free")
-		self.assertTrue(any("1 / 100" in line for line in cards["now"]["lines"]))
-		self.assertEqual(cards["Free"]["badge"], "Your plan")
-		self.assertEqual([a["args"] for a in cards["Seeker"]["actions"]], [{"plan": "Seeker"}])
-		self.assertIn("149", cards["Seeker"]["title"])
-		self.assertEqual(cards["Free"]["actions"], [])
+		card = self.card()
+		self.assertEqual((card["title"], card["badge"]), ("Your plan: Free", "No cost"))
+		self.assertTrue(any("1 / 100" in line for line in card["lines"]))
+		self.assertEqual([(a["label"], a["href"]) for a in card["actions"]], [("See the plans", plans.PLANS_PAGE)])
 
 	def test_after_taking_a_plan_the_page_says_when_it_renews_and_offers_to_change_or_stop(self):
 		self.take("Seeker")
-		cards = self.cards()
-		self.assertEqual(cards["now"]["title"], "Your plan: Seeker")
-		self.assertTrue(cards["now"]["badge"].startswith("Renews on"))
-		self.assertEqual([a["label"] for a in cards["now"]["actions"]], ["Stop renewing"])
-		self.assertEqual(cards["Seeker"]["badge"], "Your plan")
-		self.assertEqual(cards["Seeker"]["actions"], [])
-		self.assertEqual(cards["Needy"]["actions"][0]["label"], "Change to Needy")
-		self.assertIn("charged now", cards["Needy"]["actions"][0]["confirm"])
+		card = self.card()
+		self.assertEqual(card["title"], "Your plan: Seeker")
+		self.assertTrue(card["badge"].startswith("Renews on"))
+		self.assertEqual([a["label"] for a in card["actions"]], ["Change plan", "Stop renewing"])
+		self.assertEqual(card["actions"][0]["href"], plans.PLANS_PAGE)
 
 	def test_buying_and_stopping_are_for_the_signed_in_person_only(self):
 		frappe.set_user("Guest")
 		with self.assertRaises(frappe.PermissionError):
-			plans_api.plan_cards()
+			plans_api.my_plan()
 		frappe.set_user(self.email)
 		self.assertIn("redirect", plans_api.start("Seeker"))
 
-	def test_the_plans_page_says_which_plan_the_signed_in_person_is_on(self):
+	def boxes(self):
+		return {b["title"]: b for b in plans_api.boxes()["items"]}
+
+	def test_a_visitor_is_shown_a_box_for_each_plan_with_its_price_and_a_button(self):
 		frappe.set_user("Guest")
-		self.assertEqual(plans_api.strip(), {"items": []})  # a visitor who has not signed in sees only the boxes
+		boxes = self.boxes()
+		self.assertEqual(list(boxes), ["Free", "Seeker", "Needy"])
+		self.assertEqual((boxes["Free"]["price"], boxes["Free"]["interval"]), (frappe.db.get_single_value("Website HQ Settings", "free_price_word") or "Free", ""))
+		self.assertEqual((boxes["Seeker"]["price"], boxes["Seeker"]["interval"]), ("₹149", "month"))
+		self.assertEqual((boxes["Free"]["button_label"], boxes["Free"]["button_url"]), ("Start free", "/ask/pandit-ji"))  # (the words and the address are the plan's, in Desk)
+		self.assertEqual((boxes["Seeker"]["button_label"], boxes["Seeker"]["button_url"]), ("Choose Seeker", "/plans/choose?plan=Seeker"))  # a paid plan goes to the page that confirms it
+		self.assertEqual(boxes["Needy"]["feature_lines"].split("\n")[0], "* 1,000 AI replies a month")  # the replies are what the plans differ by, so they are stressed
+		self.assertEqual(boxes["Seeker"]["feature_lines"].split("\n")[1:], plans.limit_lines(frappe._dict(frappe.db.get_value("Astro Plan", "Seeker", plans.FIELDS, as_dict=True)))[1:])
+		self.assertEqual({b["badge"] for b in boxes.values()}, {""})
+
+	def test_the_persons_own_plan_is_marked_and_its_button_leads_to_what_they_have_used(self):
 		frappe.set_user(self.email)
-		card = plans_api.strip()["items"][0]
-		self.assertEqual((card["title"], card["badge"]), ("You are on the Free plan", "No cost"))
-		self.assertEqual([a["href"] for a in card["actions"]], [plans.MY_PLAN_PAGE])
+		boxes = self.boxes()
+		self.assertEqual((boxes["Free"]["badge"], boxes["Free"]["button_label"], boxes["Free"]["button_url"]), ("Your plan", "See what you have used", plans.MY_PLAN_PAGE))
+		self.assertEqual(boxes["Seeker"]["badge"], "")
 		self.take("Seeker")
-		card = plans_api.strip()["items"][0]
-		self.assertEqual(card["title"], "You are on the Seeker plan")
-		self.assertTrue(card["badge"].startswith("Renews on"))
-		self.assertIn("of 300 AI replies used this month", card["lines"][0])
+		frappe.set_user(self.email)
+		boxes = self.boxes()
+		self.assertEqual((boxes["Seeker"]["badge"], boxes["Seeker"]["button_url"]), ("Your plan", plans.MY_PLAN_PAGE))
+		self.assertTrue(boxes["Seeker"]["price_note"].startswith("Renews on"))
+		self.assertEqual((boxes["Free"]["badge"], boxes["Free"]["button_label"]), ("", "Start free"))
+
+	def test_a_plan_the_team_has_switched_off_has_no_box_and_a_badge_they_wrote_is_shown(self):
+		frappe.db.set_value("Astro Plan", "Needy", "enabled", 0)
+		frappe.db.set_value("Astro Plan", "Seeker", "badge", "Chosen most")
+		frappe.set_user("Guest")
+		boxes = self.boxes()
+		self.assertEqual(list(boxes), ["Free", "Seeker"])
+		self.assertEqual(boxes["Seeker"]["badge"], "Chosen most")
+
+	def test_the_boxes_are_drawn_by_the_service_card_from_what_this_app_gives(self):
+		from raftor_websitehq.website_hq import feed
+
+		frappe.set_user("Guest")
+		html = "".join(feed.cards("Service Card", "raftor_astrohq.plans_api.boxes")["html"])
+		for text in ("Free", "Seeker", "Needy", "₹149", "₹399", "300 AI replies a month", "Choose Seeker", "/plans/choose?plan=Needy"):
+			self.assertIn(text, html)
+		self.assertNotIn("149.00", html)
 
 	def test_the_choose_page_confirms_a_paid_plan_before_the_person_is_sent_to_agree_to_auto_pay(self):
 		frappe.set_user(self.email)
 		card = plans_api.choose_card("Seeker")["items"][0]
 		self.assertEqual(card["title"], "Seeker · ₹149 a month")
-		self.assertEqual(card["lines"][1:1 + len(plans.limit_lines(frappe._dict(frappe.db.get_value("AI Plan", "Seeker", plans.FIELDS, as_dict=True))))], plans.limit_lines(frappe._dict(frappe.db.get_value("AI Plan", "Seeker", plans.FIELDS, as_dict=True))))
+		self.assertEqual(card["lines"][1:1 + len(plans.limit_lines(frappe._dict(frappe.db.get_value("Astro Plan", "Seeker", plans.FIELDS, as_dict=True))))], plans.limit_lines(frappe._dict(frappe.db.get_value("Astro Plan", "Seeker", plans.FIELDS, as_dict=True))))
 		self.assertIn("₹149 is charged now, and then each month", card["lines"][-1])
 		self.assertEqual([(a["label"], a["call"], a["args"]) for a in card["actions"]], [("Agree and pay ₹149", "raftor_astrohq.plans_api.start", {"plan": "Seeker"})])
 		for plan in ("Free", "Nope", ""):  # nothing to pay, or no such plan
 			self.assertEqual(plans_api.choose_card(plan), {"items": []}, plan)
-		frappe.db.set_value("AI Plan", "Needy", "enabled", 0)
+		frappe.db.set_value("Astro Plan", "Needy", "enabled", 0)
 		self.assertEqual(plans_api.choose_card("Needy"), {"items": []})
 
 	def test_the_choose_page_for_someone_who_has_a_plan_says_so_or_what_changing_costs(self):
@@ -246,7 +272,7 @@ class TestThePage(PlanCase):
 			plans_api.choose_card("Seeker")
 		frappe.set_user("Administrator")
 		self.assertEqual(plans_api.choose_card("Seeker")["items"][0]["actions"], [])
-		self.assertEqual(plans_api.strip(), {"items": []})
+		self.assertEqual({b["badge"] for b in self.boxes().values()}, {""})  # no box is marked as theirs
 
 	def test_the_bar_fills_with_use(self):
 		self.assertEqual(plans_api._bar(0, 100), "░" * 10)
@@ -259,9 +285,9 @@ class TestTheReportLimit(PlanCase):
 	def test_the_websites_free_report_form_asks_the_plan_before_it_makes_another(self):
 		from raftor_servicehq import free_reports
 
-		frappe.db.set_value("AI Plan", "Free", "reports_per_month", 0)
+		frappe.db.set_value("Astro Plan", "Free", "reports_per_month", 0)
 		with self.assertRaises(frappe.ValidationError) as caught:
 			free_reports.check_limit(self.email)
 		self.assertIn("makes 0 reports a month", str(caught.exception))
-		frappe.db.set_value("AI Plan", "Free", "reports_per_month", 5)
+		frappe.db.set_value("Astro Plan", "Free", "reports_per_month", 5)
 		free_reports.check_limit(self.email)  # room again: no error

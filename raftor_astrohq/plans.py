@@ -1,10 +1,11 @@
-"""The three monthly plans of the AI guides: Free (Rs 0), Seeker (Rs 149, now and then) and Needy (Rs 399, every day), and what each one allows.
+"""AstroHQ's three monthly plans: Free (Rs 0), Seeker (Rs 149, now and then) and Needy (Rs 399, every day), and what each one allows.
 
-A plan is a row of AI Plan, and its limits are the business team's to change there: how many replies a month and a day, how many people in the profiles, how many notes a guide reads, how many reports a month, and which guides.
-A person who takes a plan has a row in AI Plan Member for a month (the PaymentHQ auto-pay agreement renews it); when the month ends without a renewal they have no plan. What a person with no plan can do is the business team's
-choice in AI Plan Settings: while plans are not required they have the lowest plan's limits (so the guides can be tried before buying is open); once required they need a plan, after the few trial replies the settings give, if any.
+The plans are AstroHQ's own: servicehq has a plan engine for its services and knows nothing of these. The standard plans are data (plans.json), made by `ensure_plans()` on a fresh install and on migrate when they are missing.
+A plan is a row of Astro Plan, and its limits are the business team's to change there: how many replies a month and a day, how many people in the profiles, how many notes a guide reads, how many reports a month, and which guides.
+A person who takes a plan has a row in Astro Plan Member for a month (the PaymentHQ auto-pay agreement renews it); when the month ends without a renewal they have no plan. What a person with no plan can do is the business team's
+choice in Astro Plan Settings: while plans are not required they have the lowest plan's limits (so the guides can be tried before buying is open); once required they need a plan, after the few trial replies the settings give, if any.
 
-What a person has used lives in AI Usage, one row for each month. Staff (System Users) are not counted or limited.
+What a person has used lives in Astro Plan Usage, one row for each month. Staff (System Users) are not counted or limited.
 
     plan_of(user)                   the plan the person has now, with the month it counts in
     allowance(user, guide)          whether a guide may answer now: {"ok": True, ...} or {"ok": False, "reason", "message", "cards"} (the words and cards the guide gives)
@@ -18,38 +19,20 @@ What a person has used lives in AI Usage, one row for each month. Staff (System 
 """
 import calendar
 import json
+from pathlib import Path
 
 import frappe
 from frappe import _
 from frappe.utils import add_days, add_months, cint, getdate, now_datetime, today
 
 FIELDS = ["name", "plan_name", "sort_order", "monthly_price", "tagline", "replies_per_month", "replies_per_day", "family_profiles", "notes_read", "reports_per_month", "guides",
-		  "limit_month_message", "limit_day_message", "limit_guide_message", "family_message", "upgrade_message", "limit_cards", "no_plan_message", "limit_reports_message"]
+		  "limit_month_message", "limit_day_message", "limit_guide_message", "family_message", "upgrade_message", "limit_cards", "no_plan_message", "limit_reports_message",
+		  "button_label", "button_url", "price_note", "badge"]
 
-UPGRADE = "The {next} plan gives you {next_limit} replies a month."
-DEFAULT_PLANS = [
-	{"plan_name": "Free", "sort_order": 1, "monthly_price": 0, "tagline": "Try the guides and keep your own profile",
-	 "replies_per_month": 100, "replies_per_day": 15, "family_profiles": 3, "notes_read": 15, "reports_per_month": 20},
-	{"plan_name": "Seeker", "sort_order": 2, "monthly_price": 149, "tagline": "For when you want guidance now and then",
-	 "replies_per_month": 300, "replies_per_day": 40, "family_profiles": 6, "notes_read": 40, "reports_per_month": 40},
-	{"plan_name": "Needy", "sort_order": 3, "monthly_price": 399, "tagline": "For when you need guidance every day",
-	 "replies_per_month": 1000, "replies_per_day": 100, "family_profiles": 15, "notes_read": 100, "reports_per_month": 100},
-]
-PLANS_PAGE = "/plans"      # the plans to choose from, three boxes (plan_site.py)
-MY_PLAN_PAGE = "/my/ai-plan"  # the person's own plan, what they have used and how to change or stop it (plans_api.py)
-PLANS_CARD = {"kind": "service", "id": "plans", "title": "See the plans", "subtitle": "Seeker and Needy give you more", "price": "", "was": "", "image": "", "url": PLANS_PAGE, "button": "See plans", "status": ""}
-LIVE_CARD = {"kind": "service", "id": "handover", "handover": True, "title": "Talk to a live astrologer", "subtitle": "One-to-one, paid session", "price": "", "was": "", "image": "", "url": "/consult",
-			 "button": "Choose an astrologer", "status": ""}
-WORDS = {
-	"limit_month_message": "You have used all {limit} replies of your {plan} plan for this month. They start again on {date}. {upgrade} If it cannot wait, a live astrologer can talk with you one to one.",
-	"limit_day_message": "That is the {limit} replies a day your {plan} plan allows. I will be here again tomorrow. {upgrade} If it cannot wait, a live astrologer can talk with you one to one.",
-	"limit_cards": json.dumps([PLANS_CARD, LIVE_CARD]),
-	"limit_reports_message": "Your {plan} plan makes {limit} reports a month, and they are made. They start again on {date}. {upgrade}",
-	"limit_guide_message": "I am not part of your {plan} plan. {upgrade}",
-	"family_message": "Your {plan} plan keeps {limit} people in your profiles. {upgrade}",
-	"no_plan_message": "To talk to the guides, take the {plan} plan: it is Rs {price} a month, and you can stop it any time. If it cannot wait, a live astrologer can talk with you one to one.",
-	"upgrade_message": UPGRADE,
-}
+HERE = Path(__file__).parent
+PLANS_PAGE = "/plans"            # the plans to choose from, a box for each (plans_api.boxes)
+MY_PLAN_PAGE = "/my/astro-plan"  # the person's own plan, what they have used and how to change or stop it (plans_api.my_plan)
+WORDS = ["limit_month_message", "limit_day_message", "limit_guide_message", "family_message", "upgrade_message", "limit_reports_message", "no_plan_message", "limit_cards"]  # what a guide says at a limit: filled when blank, never over what staff wrote
 
 
 def limit_lines(plan) -> list[str]:
@@ -63,22 +46,26 @@ def limit_lines(plan) -> list[str]:
 	return lines
 
 
-def _words_for(plan_name: str) -> dict:
-	words = dict(WORDS)
-	if plan_name == DEFAULT_PLANS[-1]["plan_name"]:
-		words["limit_cards"] = json.dumps([LIVE_CARD])
-	return words
+def defaults() -> list[dict]:
+	"""The plans that ship (plans.json), each as the fields of an Astro Plan: its own, the words every plan says at a limit, and the cards it hands over then."""
+	data = json.loads((HERE / "plans.json").read_text(encoding="utf-8"))
+	rows = []
+	for plan in data["plans"]:
+		row = {**data["words"], **{k: v for k, v in plan.items() if k != "cards"}}
+		row["limit_cards"] = json.dumps([data["cards"][name] for name in plan.get("cards", [])])
+		rows.append(row)
+	return rows
 
 
 def ensure_plans() -> None:
-	"""Makes the three plans if they are not there; one that exists is left as the business team has set it. Safe to repeat."""
-	for plan in DEFAULT_PLANS:
-		if not frappe.db.exists("AI Plan", plan["plan_name"]):
-			frappe.get_doc({"doctype": "AI Plan", "enabled": 1, **_words_for(plan["plan_name"]), **plan}).insert(ignore_permissions=True)
-		else:  # a field added later (new words, new cards) is filled when it is blank; one the business team has written is left alone
-			blank = {k: v for k, v in _words_for(plan["plan_name"]).items() if not frappe.db.get_value("AI Plan", plan["plan_name"], k)}
+	"""Makes the standard plans that are not there (a fresh install); one that exists is left as the business team has set it, except that the words it lacks are filled. Safe to repeat."""
+	for plan in defaults():
+		if not frappe.db.exists("Astro Plan", plan["plan_name"]):
+			frappe.get_doc({"doctype": "Astro Plan", "enabled": 1, **plan}).insert(ignore_permissions=True)
+		else:  # the words a guide says at a limit, added later, are filled when blank; one the business team has written is left alone
+			blank = {k: plan[k] for k in WORDS if k in plan and not frappe.db.get_value("Astro Plan", plan["plan_name"], k)}
 			if blank:
-				frappe.db.set_value("AI Plan", plan["plan_name"], blank)
+				frappe.db.set_value("Astro Plan", plan["plan_name"], blank)
 
 
 def _staff(user: str) -> bool:
@@ -91,25 +78,25 @@ def _month_of(day) -> tuple:
 
 
 def _plan_row(name: str):
-	return frappe.db.get_value("AI Plan", name, FIELDS, as_dict=True)
+	return frappe.db.get_value("Astro Plan", name, FIELDS, as_dict=True)
 
 
 def entry_plan() -> frappe._dict:
 	"""The lowest plan: the enabled one with the lowest order."""
-	rows = frappe.get_all("AI Plan", filters={"enabled": 1}, fields=FIELDS, order_by="sort_order asc", limit=1)
+	rows = frappe.get_all("Astro Plan", filters={"enabled": 1}, fields=FIELDS, order_by="sort_order asc", limit=1)
 	return frappe._dict(rows[0]) if rows else frappe._dict(plan_name="", replies_per_month=0, replies_per_day=0, family_profiles=1, notes_read=10, reports_per_month=0, guides="", sort_order=1, monthly_price=0)
 
 
 def membership(user: str):
 	"""The plan the person has taken and that has not run out, or None."""
-	member = frappe.db.get_value("AI Plan Member", user, ["plan", "status", "period_start", "period_end"], as_dict=True)
-	if member and member.status == "Active" and member.period_end and getdate(member.period_end) >= getdate(today()) and frappe.db.get_value("AI Plan", member.plan, "enabled"):
+	member = frappe.db.get_value("Astro Plan Member", user, ["plan", "status", "period_start", "period_end"], as_dict=True)
+	if member and member.status == "Active" and member.period_end and getdate(member.period_end) >= getdate(today()) and frappe.db.get_value("Astro Plan", member.plan, "enabled"):
 		return member
 	return None
 
 
 def payment_required() -> bool:
-	return bool(cint(frappe.db.get_single_value("AI Plan Settings", "payment_required")))
+	return bool(cint(frappe.db.get_single_value("Astro Plan Settings", "payment_required")))
 
 
 def month_window(anchor, day=None) -> tuple:
@@ -143,7 +130,7 @@ def plan_of(user: str) -> frappe._dict:
 
 def next_plan(plan) -> frappe._dict | None:
 	"""The plan one step above, if there is one."""
-	rows = frappe.get_all("AI Plan", filters={"enabled": 1, "sort_order": [">", cint(plan.sort_order)]}, fields=FIELDS, order_by="sort_order asc", limit=1)
+	rows = frappe.get_all("Astro Plan", filters={"enabled": 1, "sort_order": [">", cint(plan.sort_order)]}, fields=FIELDS, order_by="sort_order asc", limit=1)
 	return frappe._dict(rows[0]) if rows else None
 
 
@@ -154,7 +141,7 @@ def _key(user: str, start) -> str:
 def usage(user: str, plan=None) -> frappe._dict:
 	"""What the person has used in the plan's month: replies, and the replies of today."""
 	plan = plan or plan_of(user)
-	row = frappe.db.get_value("AI Usage", _key(user, plan.period_start), ["replies", "day", "day_replies"], as_dict=True) or frappe._dict(replies=0, day=None, day_replies=0)
+	row = frappe.db.get_value("Astro Plan Usage", _key(user, plan.period_start), ["replies", "day", "day_replies"], as_dict=True) or frappe._dict(replies=0, day=None, day_replies=0)
 	if not row.day or getdate(row.day) != getdate(today()):
 		row.day_replies = 0
 	return row
@@ -162,12 +149,12 @@ def usage(user: str, plan=None) -> frappe._dict:
 
 def _bump(user: str, plan) -> None:
 	key = _key(user, plan.period_start)
-	if not frappe.db.exists("AI Usage", key):
+	if not frappe.db.exists("Astro Plan Usage", key):
 		try:
-			frappe.get_doc({"doctype": "AI Usage", "usage_key": key, "user": user, "period_start": plan.period_start}).insert(ignore_permissions=True)
+			frappe.get_doc({"doctype": "Astro Plan Usage", "usage_key": key, "user": user, "period_start": plan.period_start}).insert(ignore_permissions=True)
 		except frappe.DuplicateEntryError:
 			pass  # another reply made it at the same moment
-	frappe.db.sql("update `tabAI Usage` set replies = replies + 1, day_replies = if(day = %(day)s, day_replies + 1, 1), day = %(day)s, last_reply = %(now)s where name = %(key)s",
+	frappe.db.sql("update `tabAstro Plan Usage` set replies = replies + 1, day_replies = if(day = %(day)s, day_replies + 1, 1), day = %(day)s, last_reply = %(now)s where name = %(key)s",
 				  {"day": getdate(today()), "now": now_datetime(), "key": key})
 
 
@@ -178,12 +165,12 @@ def record_reply(user: str, guide: str = "") -> None:
 	plan = plan_of(user)
 	if not plan.taken and payment_required():  # a trial reply, once, before any plan
 		key = f"{user}|trial"
-		if not frappe.db.exists("AI Usage", key):
+		if not frappe.db.exists("Astro Plan Usage", key):
 			try:
-				frappe.get_doc({"doctype": "AI Usage", "usage_key": key, "user": user}).insert(ignore_permissions=True)
+				frappe.get_doc({"doctype": "Astro Plan Usage", "usage_key": key, "user": user}).insert(ignore_permissions=True)
 			except frappe.DuplicateEntryError:
 				pass
-		frappe.db.sql("update `tabAI Usage` set replies = replies + 1, last_reply = %(now)s where name = %(key)s", {"now": now_datetime(), "key": key})
+		frappe.db.sql("update `tabAstro Plan Usage` set replies = replies + 1, last_reply = %(now)s where name = %(key)s", {"now": now_datetime(), "key": key})
 		return
 	_bump(user, plan)
 
@@ -218,8 +205,8 @@ def allowance(user: str, guide: str) -> dict:
 		return {"ok": True}
 	plan = plan_of(user)
 	if not plan.taken and payment_required():
-		spent = frappe.db.get_value("AI Usage", f"{user}|trial", "replies") or 0
-		if cint(spent) >= cint(frappe.db.get_single_value("AI Plan Settings", "trial_replies")):
+		spent = frappe.db.get_value("Astro Plan Usage", f"{user}|trial", "replies") or 0
+		if cint(spent) >= cint(frappe.db.get_single_value("Astro Plan Settings", "trial_replies")):
 			return {"ok": False, "reason": "no_plan", "plan": plan.plan_name, "message": _say(plan.no_plan_message, plan), "cards": _cards(plan)}
 		return {"ok": True, "plan": plan.plan_name, "trial": True}
 	allowed = [g.strip() for g in str(plan.guides or "").split(",") if g.strip()]
@@ -281,7 +268,7 @@ def quota(user: str) -> dict:
 	if _staff(user):
 		return {"staff": True, "plan": plan.plan_name}
 	used = usage(user, plan)
-	member = frappe.db.get_value("AI Plan Member", user, ["renews", "agreement"], as_dict=True) if plan.taken else None
+	member = frappe.db.get_value("Astro Plan Member", user, ["renews", "agreement"], as_dict=True) if plan.taken else None
 	return {"staff": False, "plan": plan.plan_name, "taken": plan.taken, "price": cint(plan.monthly_price), "period_start": plan.period_start, "period_end": plan.period_end,
 			"renews": bool(member and cint(member.renews) and member.agreement), "paid_through": plan.paid_through, "replies": [cint(used.replies), cint(plan.replies_per_month)], "day": [cint(used.day_replies), cint(plan.replies_per_day)],
 			"people": [frappe.db.count("Astro Birth Profile", {"parent": user, "parenttype": "User"}), cint(plan.family_profiles)], "reports": [reports_used(user, plan), cint(plan.reports_per_month)],
@@ -290,20 +277,20 @@ def quota(user: str) -> dict:
 
 def assign(user: str, plan: str, days: int = 31, source: str = "Desk", agreement: str = "", note: str = "") -> frappe._dict:
 	"""Gives the person a plan for a month (31 days from today, or `days`). Returns the row."""
-	if not frappe.db.exists("AI Plan", plan):
+	if not frappe.db.exists("Astro Plan", plan):
 		frappe.throw(f"There is no plan called {plan}.")
 	values = {"plan": plan, "status": "Active", "period_start": getdate(today()), "period_end": add_days(today(), days - 1), "months_paid": 1, "source": source, "agreement": agreement, "note": note, "renews": 1 if agreement else 0,
 			  "pending_plan": None, "pending_agreement": None}
-	if frappe.db.exists("AI Plan Member", user):
-		doc = frappe.get_doc("AI Plan Member", user)
+	if frappe.db.exists("Astro Plan Member", user):
+		doc = frappe.get_doc("Astro Plan Member", user)
 		doc.update(values)
 		doc.save(ignore_permissions=True)
 	else:
-		doc = frappe.get_doc({"doctype": "AI Plan Member", "user": user, **values}).insert(ignore_permissions=True)
+		doc = frappe.get_doc({"doctype": "Astro Plan Member", "user": user, **values}).insert(ignore_permissions=True)
 	return doc
 
 
 def end(user: str) -> None:
 	"""Ends the person's plan (they have none until they take one again)."""
-	if frappe.db.exists("AI Plan Member", user):
-		frappe.db.set_value("AI Plan Member", user, "status", "Ended")
+	if frappe.db.exists("Astro Plan Member", user):
+		frappe.db.set_value("Astro Plan Member", user, "status", "Ended")

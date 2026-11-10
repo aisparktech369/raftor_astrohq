@@ -1,5 +1,5 @@
 from frappe.model.document import Document
 
 
-class AIPlanMember(Document):
+class AstroPlanSettings(Document):
 	pass

@@ -1,13 +1,15 @@
-"""The pages of the AI plans: the person's own page (/my/ai-plan), the line on the plans page that says which plan they are on (/plans), and the page that confirms the plan they chose (/plans/choose).
+"""The pages of the plans: the plans page with a box for each plan (/plans), the page that confirms the plan a person chose (/plans/choose), and the person's own page (/my/astro-plan).
 
-The person's page is a list of cards (website_hq's App Records): one for the plan they have, then one for each plan. Taking a plan sends the person to PaymentHQ's page to agree to monthly auto-pay; the plan is theirs when the first
-payment arrives (plan_billing.py). Everything it says about limits comes from the plans themselves (AI Plan). The three boxes of the plans page are websitehq's Service Card, made from the plans by plan_site.py.
+The boxes are websitehq's Service Card: this app answers the values (`boxes`), the card is websitehq's (website_hq/feed.py). The person's page is one card (App Records): the plan they have and what they have used. Taking a plan sends the
+person to PaymentHQ's page to agree to monthly auto-pay; the plan is theirs when the first payment arrives (plan_billing.py). Everything these pages say about limits comes from the plans themselves (Astro Plan).
 """
 import frappe
 from frappe import _
 from frappe.utils import add_days, cint, formatdate
 
 from raftor_astrohq import plan_billing, plans
+from raftor_websitehq.website_hq import free_price
+from raftor_websitehq.website_hq.page_groups import page_url
 
 API = "raftor_astrohq.plans_api."
 BAR = 10
@@ -46,7 +48,7 @@ def _current_card(user: str, now: dict) -> dict:
 	badge = _badge(now)
 	lines = [_line(_("AI replies this month"), *now["replies"]), _line(_("Today"), *now["day"]), _line(_("People saved"), *now["people"]), _line(_("Reports made"), *now["reports"]),
 			 _("This month: {0} to {1}").format(formatdate(now["period_start"], "d MMM"), formatdate(now["period_end"], "d MMM"))]
-	actions = []
+	actions = [{"label": _("Change plan") if now["taken"] else _("See the plans"), "href": plans.PLANS_PAGE, "kind": "primary"}]
 	if now["taken"] and now["renews"]:
 		actions.append({"label": _("Stop renewing"), "call": API + "stop", "kind": "danger", "confirm": _("Stop renewing? Your plan stays until {0}.").format(formatdate(now["paid_through"], "d MMMM")),
 						"confirm_label": _("Stop renewing")})
@@ -54,45 +56,43 @@ def _current_card(user: str, now: dict) -> dict:
 
 
 @frappe.whitelist(methods=["POST"])
-def plan_cards() -> dict:
-	"""The page: the person's plan and use, then each plan. The cards of the App Records list."""
+def my_plan() -> dict:
+	"""The person's own page: the plan they have, what they have used of it, and the way to change it or stop it. The card of the App Records list; the plans to choose from are on the plans page."""
 	user = _user()
-	now = plans.quota(user)
-	items = [_current_card(user, now)]
-	for row in frappe.get_all("AI Plan", filters={"enabled": 1}, fields=plans.FIELDS, order_by="sort_order asc"):
-		plan = frappe._dict(row)
-		price = cint(plan.monthly_price)
-		mine = _is_mine(plan, now)
-		card = {"id": plan.plan_name, "title": plan.plan_name if price == 0 else f"{plan.plan_name} · " + _("₹{0} a month").format(price), "badge": _("Your plan") if mine else "",
-				"tone": "success" if mine else "", "lines": [plan.tagline, *plans.limit_lines(plan)], "actions": []}
-		if price > 0 and not mine and not now.get("staff"):
-			change = bool(now.get("taken"))
-			card["actions"].append({"label": _("Change to {0}").format(plan.plan_name) if change else _("Choose {0}").format(plan.plan_name), "call": API + "start", "args": {"plan": plan.plan_name}, "kind": "primary",
-									**({"confirm": _("Your new month begins today and takes the place of the rest of this one. ₹{0} is charged now, and then each month. Stop any time.").format(price),
-										"confirm_label": _("Change plan")} if change else {})})
-		items.append(card)
-	return {"items": items}
+	return {"items": [_current_card(user, plans.quota(user))]}
+
+
+def _money(amount) -> str:
+	return _("₹{0}").format(f"{cint(amount):,}")
 
 
 @frappe.whitelist(allow_guest=True, methods=["POST"])
-def strip() -> dict:
-	"""The line above the boxes of the plans page: the plan the signed-in person is on and where to see what they have used. Nothing for a visitor who has not signed in, or for staff."""
-	if frappe.session.user == "Guest":
-		return {"items": []}
-	now = plans.quota(frappe.session.user)
-	if now.get("staff"):
-		return {"items": []}
-	used, limit = now["replies"]
-	return {"items": [{"id": "now", "title": _("You are on the {0} plan").format(now["plan"]), "badge": _badge(now), "tone": "success",
-					   "lines": [_("{0} of {1} AI replies used this month").format(used, limit)],
-					   "actions": [{"label": _("See what you have used"), "href": plans.MY_PLAN_PAGE, "kind": "outline"}]}]}
+def boxes() -> dict:
+	"""The boxes of the plans page, one for each plan on offer, as the values websitehq's Service Card draws. The plan a signed-in person has is marked, and its button leads to what they have used."""
+	now = plans.quota(frappe.session.user) if frappe.session.user != "Guest" else {}
+	items = []
+	for row in frappe.get_all("Astro Plan", filters={"enabled": 1}, fields=plans.FIELDS, order_by="sort_order asc"):
+		plan = frappe._dict(row)
+		price = cint(plan.monthly_price)
+		mine = bool(now) and not now.get("staff") and _is_mine(plan, now)
+		lines = plans.limit_lines(plan)
+		label = plans._fill(plan.button_label or ("" if price == 0 else _("Choose {plan}")), plan=plan.plan_name)
+		url = plan.button_url or ("" if price == 0 else page_url("plans", "choose", plan=plan.plan_name))
+		note, badge = plan.price_note or "", plan.badge or ""
+		if mine:
+			badge, label, url = _("Your plan"), _("See what you have used"), plans.MY_PLAN_PAGE
+			note = _badge(now) if now["taken"] else note
+		items.append({"title": plan.plan_name, "tagline": plan.tagline or "", "price": (free_price.rfhq_free_price_word() or _("Free")) if price == 0 else _money(price), "interval": "" if price == 0 else _("month"),
+					  "price_note": note, "feature_lines": "\n".join(["* " + lines[0], *lines[1:]]), "badge": badge, "button_label": label, "button_url": url,
+					  "button_style": "Primary" if price > 0 and not mine else "Outline"})
+	return {"items": items}
 
 
 @frappe.whitelist(methods=["POST"])
 def choose_card(plan: str = "") -> dict:
 	"""The page that confirms the plan the person chose on the plans page: what it gives, what it costs, and the button that sends them to agree to monthly auto-pay. A plan that cannot be taken gives no card."""
 	user = _user()
-	row = frappe.db.get_value("AI Plan", {"name": plan, "enabled": 1}, plans.FIELDS, as_dict=True) if plan else None
+	row = frappe.db.get_value("Astro Plan", {"name": plan, "enabled": 1}, plans.FIELDS, as_dict=True) if plan else None
 	if not row or cint(row.monthly_price) <= 0:
 		return {"items": []}
 	plan_row, now, price = frappe._dict(row), plans.quota(user), cint(row.monthly_price)

@@ -261,8 +261,7 @@ after_install = "raftor_astrohq.install.after_install"
 after_migrate = "raftor_astrohq.install.after_install"
 
 # Birth profiles are rows of a table on the User; these rules run whenever a User is saved.
-doc_events = {"User": {"validate": "raftor_astrohq.profiles.validate_user", "on_trash": "raftor_astrohq.answers.forget_user"},
-			  "AI Plan": {"on_update": "raftor_astrohq.plan_site.on_plan_saved", "on_trash": "raftor_astrohq.plan_site.on_plan_removed"}}
+doc_events = {"User": {"validate": "raftor_astrohq.profiles.validate_user", "on_trash": "raftor_astrohq.answers.forget_user"}}
 
 # Pages as data for websitehq to build (page_definitions.py), and the old addresses forwarded to them.
 rfhq_page_definitions = ["raftor_astrohq.page_definitions.definitions"]
@@ -298,8 +297,8 @@ rfhq_trusted_html_sources = ["raftor_astrohq.report_view.chart_view", "raftor_as
 # Shortly after midnight the Panchang's town is worked out for the week ahead (panchang.warm).
 scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"], "40 1 * * *": ["raftor_astrohq.plan_billing.daily"]}}
 
-# The Panchang is a page group of its own: /panchang is its page (page_definitions.py). So are the plans of the AI guides: /plans (plan_site.py).
-rfhq_page_groups = {"panchang": "Panchang", "ask": "Ask Pandit ji", "plans": "AI plans"}
+# The Panchang is a page group of its own: /panchang is its page (page_definitions.py). So are the plans: /plans is the page with a box for each plan (plans_api.boxes).
+rfhq_page_groups = {"panchang": "Panchang", "ask": "Ask Pandit ji", "plans": "Plans"}
 rfhq_window_guide = ["raftor_astrohq.agent_chat.guide"]  # (websitehq draws a round button on every page that opens the guide in a drawer)
 rfhq_product_pills = ["raftor_astrohq.products.product_pills"]  # (the pills of a group of products: websitehq asks, and draws them under the store's tiles)
 
@@ -319,9 +318,9 @@ agent_rag_enrichers = ["astrohq:raftor_astrohq.knowledge.enrich"]
 # What the AI guides remember about a person and the people in their profiles, and what the site knows of them: a dotted path to a module with read(user), write(user, payload, guide, session) and forget(user, name).
 agent_person = ["raftor_astrohq.person"]
 
-# The AI plans (plans.py, plan_billing.py): what PaymentHQ tells us about a plan's payments, and whether the website's free-report form may make another report for a person.
-paymenthq_on_paid = {"AI Plan Member": ["raftor_astrohq.plan_billing.paid"]}
-paymenthq_on_failed = {"AI Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
-paymenthq_on_expired = {"AI Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
-paymenthq_on_cancelled = {"AI Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
+# The plans (plans.py, plan_billing.py): what PaymentHQ tells us about a plan's payments, and whether the website's free-report form may make another report for a person.
+paymenthq_on_paid = {"Astro Plan Member": ["raftor_astrohq.plan_billing.paid"]}
+paymenthq_on_failed = {"Astro Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
+paymenthq_on_expired = {"Astro Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
+paymenthq_on_cancelled = {"Astro Plan Member": ["raftor_astrohq.plan_billing.payment_not_taken"]}
 free_reports_allowance = ["raftor_astrohq.plans.report_allowance"]

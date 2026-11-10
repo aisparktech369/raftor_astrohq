@@ -8,7 +8,7 @@
     stop(user)               the person stops renewing: the plan stays to the end of the month they have paid for
     end_lapsed()             (daily) a plan whose month ended without a renewal is marked Ended
 
-Payment is not this app's: it asks PaymentHQ through servicehq's payments_port, and is told what happened. The plans are monthly only; the price of a month is the plan's `monthly_price` (GST included).
+Payment is not this app's: it asks PaymentHQ through servicehq's payments_port, and is told what happened. The plans are monthly only; the price of a month is the plan's `monthly_price`, what the person pays.
 A month runs from the day the plan began to the day before the same day next month (the 12th to the 11th); a person who changes plan begins again on the day the new plan's first payment arrives, and the old agreement is stopped.
 The next month's payment is asked a few days early, so a month paid for early only moves 'paid through' on; the month the person's replies are counted in does not change until it ends.
 """
@@ -20,7 +20,7 @@ from raftor_astrohq import plans
 
 AGREEMENT_DAYS = 3 * 365  # how long an auto-pay agreement runs (a person starts a new one if it ends)
 ASK_AHEAD_DAYS = 3        # next month's payment is asked this many days before the month ends (PaymentHQ gives notice before it takes it)
-MEMBER = "AI Plan Member"
+MEMBER = "Astro Plan Member"
 
 
 def _port():
@@ -35,7 +35,7 @@ def paid_through(anchor, months: int):
 
 
 def _plan_to_take(plan: str):
-	row = frappe.db.get_value("AI Plan", plan, ["plan_name", "monthly_price", "enabled"], as_dict=True)
+	row = frappe.db.get_value("Astro Plan", plan, ["plan_name", "monthly_price", "enabled"], as_dict=True)
 	if not row or not cint(row.enabled) or flt(row.monthly_price) <= 0:
 		frappe.throw(_("That plan cannot be taken."))
 	return row
@@ -108,8 +108,8 @@ def request_renewals(now=None) -> int:
 		begin = add_days(row.period_end, 1)
 		if row.charge_asked_for and getdate(row.charge_asked_for) == getdate(begin):
 			continue
-		price = flt(frappe.db.get_value("AI Plan", row.plan, "monthly_price"), 2)
-		if price <= 0 or not frappe.db.get_value("AI Plan", row.plan, "enabled"):
+		price = flt(frappe.db.get_value("Astro Plan", row.plan, "monthly_price"), 2)
+		if price <= 0 or not frappe.db.get_value("Astro Plan", row.plan, "enabled"):
 			continue
 		frappe.db.savepoint("renewal")
 		try:

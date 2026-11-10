@@ -1,5 +1,5 @@
 from frappe.model.document import Document
 
 
-class AIUsage(Document):
+class AstroPlan(Document):
 	pass

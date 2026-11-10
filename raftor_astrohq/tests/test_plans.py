@@ -1,4 +1,6 @@
 """The three monthly plans: Free, Seeker, Needy. What each allows, what a person has used, and the words a guide says when a limit is reached."""
+import json
+
 import frappe
 from frappe.utils import add_days, getdate, today
 
@@ -18,18 +20,18 @@ def _user(profiles_count=1):
 
 
 def _set(plan, **values):
-	frappe.db.set_value("AI Plan", plan, values)
+	frappe.db.set_value("Astro Plan", plan, values)
 
 
 class TestThePlans(AstroTestCase):
 	def test_the_three_plans_exist_in_order_and_are_left_alone_once_edited(self):
 		plans.ensure_plans()
-		rows = frappe.get_all("AI Plan", fields=["plan_name", "monthly_price", "replies_per_month"], order_by="sort_order asc")
+		rows = frappe.get_all("Astro Plan", fields=["plan_name", "monthly_price", "replies_per_month"], order_by="sort_order asc")
 		self.assertEqual([r.plan_name for r in rows], ["Free", "Seeker", "Needy"])
 		self.assertEqual([r.monthly_price for r in rows], [0, 149, 399])
 		_set("Seeker", replies_per_month=77)
 		plans.ensure_plans()
-		self.assertEqual(frappe.db.get_value("AI Plan", "Seeker", "replies_per_month"), 77)
+		self.assertEqual(frappe.db.get_value("Astro Plan", "Seeker", "replies_per_month"), 77)
 
 	def test_a_person_with_no_plan_has_free_and_a_month_is_the_calendar_month(self):
 		plan = plans.plan_of(_user())
@@ -40,7 +42,7 @@ class TestThePlans(AstroTestCase):
 		user = _user()
 		plans.assign(user, "Seeker", days=31)
 		self.assertEqual((plans.plan_of(user).plan_name, plans.plan_of(user).taken), ("Seeker", True))
-		frappe.db.set_value("AI Plan Member", user, "period_end", add_days(today(), -1))
+		frappe.db.set_value("Astro Plan Member", user, "period_end", add_days(today(), -1))
 		self.assertEqual((plans.plan_of(user).plan_name, plans.plan_of(user).taken), ("Free", False))
 		plans.assign(user, "Needy")
 		self.assertTrue(plans.plan_of(user).taken)
@@ -48,19 +50,58 @@ class TestThePlans(AstroTestCase):
 		self.assertFalse(plans.plan_of(user).taken)
 
 
+class TestTheStandardPlans(AstroTestCase):
+	"""The standard plans are data (plans.json), made on a fresh install; they are AstroHQ's own and nothing is written into servicehq's or ERPNext's plan records."""
+
+	def test_the_file_has_the_three_plans_in_order_and_only_fields_of_a_plan(self):
+		rows = plans.defaults()
+		self.assertEqual([r["plan_name"] for r in rows], ["Free", "Seeker", "Needy"])
+		self.assertEqual([r["monthly_price"] for r in rows], [0, 149, 399])
+		fields = {f.fieldname for f in frappe.get_meta("Astro Plan").fields}
+		for row in rows:
+			self.assertFalse(set(row) - fields, row["plan_name"])
+			self.assertTrue(all(row[w] for w in plans.WORDS), row["plan_name"])  # every plan says something at every limit, and hands over its cards
+
+	def test_each_plan_that_ships_gives_more_than_the_one_below_it(self):
+		for field in ("replies_per_month", "replies_per_day", "family_profiles", "reports_per_month", "notes_read"):
+			values = [p[field] for p in plans.defaults()]
+			self.assertEqual(values, sorted(set(values)), field)  # a step up in every limit, so the boxes show a reason to pay
+
+	def test_the_cards_a_guide_hands_over_at_a_limit_lead_to_the_plans_and_to_live_astrologers(self):
+		from raftor_websitehq.website_hq.page_groups import page_url
+
+		cards = {r["plan_name"]: [c["url"] for c in json.loads(r["limit_cards"])] for r in plans.defaults()}
+		self.assertEqual(cards["Free"], [plans.PLANS_PAGE, page_url("consult")])
+		self.assertEqual(cards["Needy"], [page_url("consult")])  # the top plan is not sent to a plan above it
+
+	def test_a_fresh_install_makes_the_plans_and_a_repeat_changes_nothing_the_team_has_set(self):
+		frappe.db.delete("Astro Plan")
+		plans.ensure_plans()
+		self.assertEqual(frappe.get_all("Astro Plan", pluck="name", order_by="sort_order asc"), ["Free", "Seeker", "Needy"])
+		row = {r["plan_name"]: r for r in plans.defaults()}["Seeker"]
+		self.assertEqual(frappe.db.get_value("Astro Plan", "Seeker", ["replies_per_month", "button_label", "limit_day_message"]), (row["replies_per_month"], row["button_label"], row["limit_day_message"]))
+		_set("Seeker", replies_per_month=77, reports_per_month=0, button_label="Take Seeker", limit_day_message="")
+		plans.ensure_plans()
+		self.assertEqual(frappe.db.get_value("Astro Plan", "Seeker", ["replies_per_month", "reports_per_month", "button_label"]), (77, 0, "Take Seeker"))  # what the team set, a 0 included, stays
+		self.assertEqual(frappe.db.get_value("Astro Plan", "Seeker", "limit_day_message"), row["limit_day_message"])  # the words a guide says are filled when blank
+
+	def test_nothing_is_written_into_the_service_plans_of_servicehq_or_erpnext(self):
+		before = (frappe.db.count("Subscription Plan"), frappe.db.count("Subscription Plan Details"), frappe.db.count("Item", {"item_code": ["like", "%plan%"]}))
+		frappe.db.delete("Astro Plan")
+		plans.ensure_plans()
+		_set("Seeker", replies_per_month=88, tagline="Changed")
+		self.assertEqual((frappe.db.count("Subscription Plan"), frappe.db.count("Subscription Plan Details"), frappe.db.count("Item", {"item_code": ["like", "%plan%"]})), before)
+		self.assertFalse(frappe.db.exists("Subscription Plan", "Seeker"))
+
+
 class TestWhatAPlanGives(AstroTestCase):
 	def test_the_lines_of_a_plan_are_its_limits_in_words_the_replies_first(self):
 		plans.ensure_plans()
-		plan = frappe._dict(frappe.db.get_value("AI Plan", "Needy", plans.FIELDS, as_dict=True))
+		plan = frappe._dict(frappe.db.get_value("Astro Plan", "Needy", plans.FIELDS, as_dict=True))
 		plan.update(replies_per_month=1000, replies_per_day=100, family_profiles=15, reports_per_month=100, notes_read=100, guides="")
 		self.assertEqual(plans.limit_lines(plan), ["1,000 AI replies a month", "Up to 100 replies a day", "15 people in your profiles", "100 free reports a month", "Guides remember 100 notes", "All the AI guides"])
 		plan.guides = "pandit_ji, numerologist"
 		self.assertEqual(plans.limit_lines(plan)[-1], "Guides: pandit_ji, numerologist")
-
-	def test_each_plan_that_ships_gives_more_than_the_one_below_it(self):
-		for field in ("replies_per_month", "replies_per_day", "family_profiles", "reports_per_month", "notes_read"):
-			values = [p[field] for p in plans.DEFAULT_PLANS]
-			self.assertEqual(values, sorted(set(values)), field)  # a step up in every limit, so the boxes show a reason to pay
 
 
 class TestWhatAGuideMayDo(AstroTestCase):
@@ -74,7 +115,7 @@ class TestWhatAGuideMayDo(AstroTestCase):
 		self.assertFalse(gate["ok"])
 		self.assertEqual(gate["reason"], "month")
 		self.assertIn("all 3 replies of your Free plan", gate["message"])
-		self.assertIn(f"The Seeker plan gives you {frappe.db.get_value('AI Plan', 'Seeker', 'replies_per_month')} replies a month.", gate["message"])
+		self.assertIn(f"The Seeker plan gives you {frappe.db.get_value('Astro Plan', 'Seeker', 'replies_per_month')} replies a month.", gate["message"])
 		self.assertRegex(gate["message"], r"start again on \d{1,2} \w+")
 
 	def test_the_day_has_its_own_pace(self):
@@ -85,7 +126,7 @@ class TestWhatAGuideMayDo(AstroTestCase):
 		gate = plans.allowance(user, "pandit_ji")
 		self.assertEqual((gate["ok"], gate["reason"]), (False, "day"))
 		self.assertIn("2 replies a day", gate["message"])
-		frappe.db.set_value("AI Usage", f"{user}|{plans.plan_of(user).period_start}", "day", add_days(today(), -1))
+		frappe.db.set_value("Astro Plan Usage", f"{user}|{plans.plan_of(user).period_start}", "day", add_days(today(), -1))
 		self.assertTrue(plans.allowance(user, "pandit_ji")["ok"])  # a new day
 
 	def test_the_top_plan_has_no_upgrade_to_offer(self):
@@ -110,7 +151,7 @@ class TestWhatAGuideMayDo(AstroTestCase):
 		self.assertTrue(plans.allowance("Administrator", "pandit_ji")["ok"])
 		self.assertTrue(plans.allowance("Guest", "pandit_ji")["ok"])
 		plans.record_reply("Administrator")
-		self.assertFalse(frappe.db.exists("AI Usage", {"user": "Administrator"}))
+		self.assertFalse(frappe.db.exists("Astro Plan Usage", {"user": "Administrator"}))
 
 
 class TestTheOtherLimits(AstroTestCase):
@@ -129,7 +170,7 @@ class TestTheOtherLimits(AstroTestCase):
 	def test_the_website_refuses_one_person_too_many_with_the_plans_words(self):
 		from raftor_astrohq import api
 
-		limit = frappe.db.get_value("AI Plan", "Free", "family_profiles")
+		limit = frappe.db.get_value("Astro Plan", "Free", "family_profiles")
 		user = _user(profiles_count=limit)  # the plan is full
 		frappe.set_user(user)
 		out = api.save_profile(values={"relationship": "Spouse", "full_name": "Ravi Rao", "date_of_birth": "1988-03-02", "time_unknown": 1, "place_of_birth": "Jaipur, India", "permission_given": 1})
@@ -175,15 +216,15 @@ class TestWhenALimitIsReached(AstroTestCase):
 		self.assertEqual([c["url"] for c in plans.allowance(user, "pandit_ji")["cards"]], ["/consult"])
 
 	def test_a_field_added_later_is_filled_only_when_blank(self):
-		frappe.db.set_value("AI Plan", "Seeker", {"limit_cards": "", "limit_day_message": "My own words {plan}"})
+		frappe.db.set_value("Astro Plan", "Seeker", {"limit_cards": "", "limit_day_message": "My own words {plan}"})
 		plans.ensure_plans()
-		self.assertIn("/consult", frappe.db.get_value("AI Plan", "Seeker", "limit_cards"))
-		self.assertEqual(frappe.db.get_value("AI Plan", "Seeker", "limit_day_message"), "My own words {plan}")
+		self.assertIn("/consult", frappe.db.get_value("Astro Plan", "Seeker", "limit_cards"))
+		self.assertEqual(frappe.db.get_value("Astro Plan", "Seeker", "limit_day_message"), "My own words {plan}")
 
 
 class TestWhenAPlanIsRequired(AstroTestCase):
 	def _require(self, trial=0):
-		frappe.db.set_single_value("AI Plan Settings", {"payment_required": 1, "trial_replies": trial})
+		frappe.db.set_single_value("Astro Plan Settings", {"payment_required": 1, "trial_replies": trial})
 
 	def test_while_plans_are_not_required_a_person_with_none_has_the_lowest_plans_limits(self):
 		self.assertTrue(plans.allowance(_user(), "pandit_ji")["ok"])
@@ -211,6 +252,6 @@ class TestWhenAPlanIsRequired(AstroTestCase):
 			self.assertTrue(plans.allowance(user, "pandit_ji")["ok"])
 			plans.record_reply(user)
 		self.assertEqual(plans.allowance(user, "pandit_ji")["reason"], "no_plan")
-		self.assertEqual(frappe.db.get_value("AI Usage", f"{user}|trial", "replies"), 2)
+		self.assertEqual(frappe.db.get_value("Astro Plan Usage", f"{user}|trial", "replies"), 2)
 		plans.assign(user, "Free")
 		self.assertTrue(plans.allowance(user, "pandit_ji")["ok"])  # the trial is not counted against the plan
