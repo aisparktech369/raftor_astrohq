@@ -13,12 +13,14 @@ What a person has used lives in AI Usage, one row for each month. Staff (System 
     notes_read(user)                how many notes a guide reads each turn
     reports_used(user), reports_left(user), report_allowance(user)
     quota(user)                     what the plan allows and what has been used, for the page that shows it
+    limit_lines(plan)               what a plan gives, in words (its box on the plans page and its card on the person's own page)
     assign(user, plan, ...), end(user)   gives a person a plan for a month (the Desk, or a payment), or ends it
 """
 import calendar
 import json
 
 import frappe
+from frappe import _
 from frappe.utils import add_days, add_months, cint, getdate, now_datetime, today
 
 FIELDS = ["name", "plan_name", "sort_order", "monthly_price", "tagline", "replies_per_month", "replies_per_day", "family_profiles", "notes_read", "reports_per_month", "guides",
@@ -29,11 +31,12 @@ DEFAULT_PLANS = [
 	{"plan_name": "Free", "sort_order": 1, "monthly_price": 0, "tagline": "Try the guides and keep your own profile",
 	 "replies_per_month": 100, "replies_per_day": 15, "family_profiles": 3, "notes_read": 15, "reports_per_month": 20},
 	{"plan_name": "Seeker", "sort_order": 2, "monthly_price": 149, "tagline": "For when you want guidance now and then",
-	 "replies_per_month": 300, "replies_per_day": 40, "family_profiles": 6, "notes_read": 40, "reports_per_month": 20},
+	 "replies_per_month": 300, "replies_per_day": 40, "family_profiles": 6, "notes_read": 40, "reports_per_month": 40},
 	{"plan_name": "Needy", "sort_order": 3, "monthly_price": 399, "tagline": "For when you need guidance every day",
-	 "replies_per_month": 1000, "replies_per_day": 100, "family_profiles": 15, "notes_read": 100, "reports_per_month": 60},
+	 "replies_per_month": 1000, "replies_per_day": 100, "family_profiles": 15, "notes_read": 100, "reports_per_month": 100},
 ]
-PLANS_PAGE = "/my/ai-plan"
+PLANS_PAGE = "/plans"      # the plans to choose from, three boxes (plan_site.py)
+MY_PLAN_PAGE = "/my/ai-plan"  # the person's own plan, what they have used and how to change or stop it (plans_api.py)
 PLANS_CARD = {"kind": "service", "id": "plans", "title": "See the plans", "subtitle": "Seeker and Needy give you more", "price": "", "was": "", "image": "", "url": PLANS_PAGE, "button": "See plans", "status": ""}
 LIVE_CARD = {"kind": "service", "id": "handover", "handover": True, "title": "Talk to a live astrologer", "subtitle": "One-to-one, paid session", "price": "", "was": "", "image": "", "url": "/consult",
 			 "button": "Choose an astrologer", "status": ""}
@@ -47,6 +50,17 @@ WORDS = {
 	"no_plan_message": "To talk to the guides, take the {plan} plan: it is Rs {price} a month, and you can stop it any time. If it cannot wait, a live astrologer can talk with you one to one.",
 	"upgrade_message": UPGRADE,
 }
+
+
+def limit_lines(plan) -> list[str]:
+	"""What a plan gives, in words, the one that matters most first. A plan that names no guides gives all of them."""
+	lines = [_("{0} AI replies a month").format(f"{cint(plan.replies_per_month):,}"),
+			 _("Up to {0} replies a day").format(f"{cint(plan.replies_per_day):,}"),
+			 _("{0} people in your profiles").format(f"{cint(plan.family_profiles):,}"),
+			 _("{0} free reports a month").format(f"{cint(plan.reports_per_month):,}"),
+			 _("Guides remember {0} notes").format(f"{cint(plan.notes_read):,}")]
+	lines.append(_("Guides: {0}").format(plan.guides) if plan.guides else _("All the AI guides"))
+	return lines
 
 
 def _words_for(plan_name: str) -> dict:

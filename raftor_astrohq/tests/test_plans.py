@@ -48,6 +48,21 @@ class TestThePlans(AstroTestCase):
 		self.assertFalse(plans.plan_of(user).taken)
 
 
+class TestWhatAPlanGives(AstroTestCase):
+	def test_the_lines_of_a_plan_are_its_limits_in_words_the_replies_first(self):
+		plans.ensure_plans()
+		plan = frappe._dict(frappe.db.get_value("AI Plan", "Needy", plans.FIELDS, as_dict=True))
+		plan.update(replies_per_month=1000, replies_per_day=100, family_profiles=15, reports_per_month=100, notes_read=100, guides="")
+		self.assertEqual(plans.limit_lines(plan), ["1,000 AI replies a month", "Up to 100 replies a day", "15 people in your profiles", "100 free reports a month", "Guides remember 100 notes", "All the AI guides"])
+		plan.guides = "pandit_ji, numerologist"
+		self.assertEqual(plans.limit_lines(plan)[-1], "Guides: pandit_ji, numerologist")
+
+	def test_each_plan_that_ships_gives_more_than_the_one_below_it(self):
+		for field in ("replies_per_month", "replies_per_day", "family_profiles", "reports_per_month", "notes_read"):
+			values = [p[field] for p in plans.DEFAULT_PLANS]
+			self.assertEqual(values, sorted(set(values)), field)  # a step up in every limit, so the boxes show a reason to pay
+
+
 class TestWhatAGuideMayDo(AstroTestCase):
 	def test_replies_are_counted_and_the_month_runs_out_with_the_words_of_the_plan(self):
 		user = _user()
@@ -149,7 +164,7 @@ class TestWhenALimitIsReached(AstroTestCase):
 		plans.record_reply(user)
 		gate = plans.allowance(user, "pandit_ji")
 		self.assertIn("a live astrologer can talk with you one to one", gate["message"])
-		self.assertEqual([c["url"] for c in gate["cards"]], ["/my/ai-plan", "/consult"])  # the plans, and a live astrologer
+		self.assertEqual([c["url"] for c in gate["cards"]], [plans.PLANS_PAGE, "/consult"])  # the plans, and a live astrologer
 		self.assertTrue(gate["cards"][1]["handover"])
 
 	def test_the_top_plan_is_not_sent_to_a_plan_above_it(self):
@@ -178,7 +193,7 @@ class TestWhenAPlanIsRequired(AstroTestCase):
 		gate = plans.allowance(_user(), "pandit_ji")
 		self.assertEqual((gate["ok"], gate["reason"]), (False, "no_plan"))
 		self.assertIn("take the Free plan", gate["message"])
-		self.assertEqual([c["url"] for c in gate["cards"]], ["/my/ai-plan", "/consult"])
+		self.assertEqual([c["url"] for c in gate["cards"]], [plans.PLANS_PAGE, "/consult"])
 
 	def test_a_plan_taken_opens_the_guides_and_staff_are_not_asked(self):
 		self._require()

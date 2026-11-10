@@ -206,6 +206,48 @@ class TestThePage(PlanCase):
 		frappe.set_user(self.email)
 		self.assertIn("redirect", plans_api.start("Seeker"))
 
+	def test_the_plans_page_says_which_plan_the_signed_in_person_is_on(self):
+		frappe.set_user("Guest")
+		self.assertEqual(plans_api.strip(), {"items": []})  # a visitor who has not signed in sees only the boxes
+		frappe.set_user(self.email)
+		card = plans_api.strip()["items"][0]
+		self.assertEqual((card["title"], card["badge"]), ("You are on the Free plan", "No cost"))
+		self.assertEqual([a["href"] for a in card["actions"]], [plans.MY_PLAN_PAGE])
+		self.take("Seeker")
+		card = plans_api.strip()["items"][0]
+		self.assertEqual(card["title"], "You are on the Seeker plan")
+		self.assertTrue(card["badge"].startswith("Renews on"))
+		self.assertIn("of 300 AI replies used this month", card["lines"][0])
+
+	def test_the_choose_page_confirms_a_paid_plan_before_the_person_is_sent_to_agree_to_auto_pay(self):
+		frappe.set_user(self.email)
+		card = plans_api.choose_card("Seeker")["items"][0]
+		self.assertEqual(card["title"], "Seeker · ₹149 a month")
+		self.assertEqual(card["lines"][1:1 + len(plans.limit_lines(frappe._dict(frappe.db.get_value("AI Plan", "Seeker", plans.FIELDS, as_dict=True))))], plans.limit_lines(frappe._dict(frappe.db.get_value("AI Plan", "Seeker", plans.FIELDS, as_dict=True))))
+		self.assertIn("₹149 is charged now, and then each month", card["lines"][-1])
+		self.assertEqual([(a["label"], a["call"], a["args"]) for a in card["actions"]], [("Agree and pay ₹149", "raftor_astrohq.plans_api.start", {"plan": "Seeker"})])
+		for plan in ("Free", "Nope", ""):  # nothing to pay, or no such plan
+			self.assertEqual(plans_api.choose_card(plan), {"items": []}, plan)
+		frappe.db.set_value("AI Plan", "Needy", "enabled", 0)
+		self.assertEqual(plans_api.choose_card("Needy"), {"items": []})
+
+	def test_the_choose_page_for_someone_who_has_a_plan_says_so_or_what_changing_costs(self):
+		self.take("Seeker")
+		frappe.set_user(self.email)
+		own = plans_api.choose_card("Seeker")["items"][0]
+		self.assertEqual((own["badge"], own["actions"]), ("Your plan", []))
+		change = plans_api.choose_card("Needy")["items"][0]
+		self.assertEqual([a["label"] for a in change["actions"]], ["Change to Needy and pay ₹399"])
+		self.assertIn("takes the place of the rest of this one", change["lines"][-1])
+
+	def test_the_choose_page_is_for_the_signed_in_person_and_staff_are_not_sold_a_plan(self):
+		frappe.set_user("Guest")
+		with self.assertRaises(frappe.PermissionError):
+			plans_api.choose_card("Seeker")
+		frappe.set_user("Administrator")
+		self.assertEqual(plans_api.choose_card("Seeker")["items"][0]["actions"], [])
+		self.assertEqual(plans_api.strip(), {"items": []})
+
 	def test_the_bar_fills_with_use(self):
 		self.assertEqual(plans_api._bar(0, 100), "░" * 10)
 		self.assertEqual(plans_api._bar(50, 100), "█" * 5 + "░" * 5)

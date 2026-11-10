@@ -261,7 +261,8 @@ after_install = "raftor_astrohq.install.after_install"
 after_migrate = "raftor_astrohq.install.after_install"
 
 # Birth profiles are rows of a table on the User; these rules run whenever a User is saved.
-doc_events = {"User": {"validate": "raftor_astrohq.profiles.validate_user", "on_trash": "raftor_astrohq.answers.forget_user"}}
+doc_events = {"User": {"validate": "raftor_astrohq.profiles.validate_user", "on_trash": "raftor_astrohq.answers.forget_user"},
+			  "AI Plan": {"on_update": "raftor_astrohq.plan_site.on_plan_saved", "on_trash": "raftor_astrohq.plan_site.on_plan_removed"}}
 
 # Pages as data for websitehq to build (page_definitions.py), and the old addresses forwarded to them.
 rfhq_page_definitions = ["raftor_astrohq.page_definitions.definitions"]
@@ -297,8 +298,8 @@ rfhq_trusted_html_sources = ["raftor_astrohq.report_view.chart_view", "raftor_as
 # Shortly after midnight the Panchang's town is worked out for the week ahead (panchang.warm).
 scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"], "40 1 * * *": ["raftor_astrohq.plan_billing.daily"]}}
 
-# The Panchang is a page group of its own: /panchang is its page (page_definitions.py).
-rfhq_page_groups = {"panchang": "Panchang", "ask": "Ask Pandit ji"}
+# The Panchang is a page group of its own: /panchang is its page (page_definitions.py). So are the plans of the AI guides: /plans (plan_site.py).
+rfhq_page_groups = {"panchang": "Panchang", "ask": "Ask Pandit ji", "plans": "AI plans"}
 rfhq_window_guide = ["raftor_astrohq.agent_chat.guide"]  # (websitehq draws a round button on every page that opens the guide in a drawer)
 rfhq_product_pills = ["raftor_astrohq.products.product_pills"]  # (the pills of a group of products: websitehq asks, and draws them under the store's tiles)
 

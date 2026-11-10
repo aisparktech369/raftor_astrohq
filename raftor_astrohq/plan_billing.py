@@ -50,7 +50,7 @@ def start(user: str, plan: str) -> dict:
 	price = flt(row.monthly_price, 2)
 	if not frappe.db.exists(MEMBER, user):  # PaymentHQ's payment is for this record, so it has to be there first
 		frappe.get_doc({"doctype": MEMBER, "user": user, "plan": plan, "status": "Waiting", "source": "Payment", "renews": 0}).insert(ignore_permissions=True)
-	agreement = _port().agreement_start(user, price, price, add_days(today(), AGREEMENT_DAYS), MEMBER, user, _("{0} plan, each month").format(plan)[:140], first_for=(MEMBER, user), return_to=plans.PLANS_PAGE)
+	agreement = _port().agreement_start(user, price, price, add_days(today(), AGREEMENT_DAYS), MEMBER, user, _("{0} plan, each month").format(plan)[:140], first_for=(MEMBER, user), return_to=plans.MY_PLAN_PAGE)
 	frappe.db.set_value(MEMBER, user, {"pending_plan": plan, "pending_agreement": agreement["mandate"]})
 	return {"redirect": agreement["url"]}
 
