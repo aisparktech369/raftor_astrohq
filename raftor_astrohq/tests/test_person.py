@@ -93,3 +93,40 @@ class TestPersonNotes(AstroTestCase):
 		self.assertFalse(person.forget(other, name))
 		self.assertTrue(person.forget(mine, name))
 		self.assertEqual(_rows(mine)[0].summary, "")
+
+
+class TestReportsFromTheChat(AstroTestCase):
+	def test_asking_for_a_report_names_what_is_missing_and_never_guesses(self):
+		user = _user()
+		person.write(user, {"notes": [], "people": [{"name": "Rhenna", "relationship": "daughter", "date_of_birth": "2015-03-03"}]}, "g", "s")
+		self.assertFalse(person.make_report(user, "my daughter", "kundli")["found"])
+		self.assertIn("time of birth and place of birth", person.make_report(user, "my daughter", "kundli")["message"])
+		self.assertIn("Say which report", person.make_report(user, "me", "tarot")["message"])
+		self.assertIn("No profile matches", person.make_report(user, "my uncle", "numerology")["message"])
+		person.write(user, {"notes": [], "people": [{"name": "Nameless", "relationship": "other"}]}, "g", "s")
+		self.assertIn("date of birth is not saved", person.make_report(user, "Nameless", "numerology")["message"])
+
+	def test_a_numerology_report_is_made_once_and_comes_back_as_a_card_the_person_asked_for(self):
+		user = _user()
+		first = person.make_report(user, "me", "numerology")
+		self.assertTrue(first["made"])
+		card = first["services"][0]
+		self.assertTrue(card["always"] and card["bookable"] and card["book_link"].endswith(frappe.db.get_value("Service Proof", {"ref_doctype": "Free Report"}, "name", order_by="creation desc")))
+		self.assertEqual(person.make_report(user, "me", "numerology")["services"][0]["book_link"], card["book_link"])
+		self.assertEqual(frappe.db.count("Free Report", {"user": user}), 1)
+
+	def test_the_chart_headline_comes_from_the_kept_engine_answer(self):
+		from unittest.mock import patch
+
+		user = _user()
+		row = frappe._dict(date_of_birth="1980-05-12", time_of_birth="10:30", place_of_birth="Mumbai", time_unknown=0)
+		chart = {"lagna": {"sign": "♋︎Cancer", "lord": "Moon"},
+				 "planetary_positions": [{"planet": "Su☉", "sign": "♈︎Aries", "absolute_longitude": 28.0, "nakshatra": "Bharani", "pada": 4},
+										 {"planet": "Mo☾", "sign": "♓︎Pisces", "absolute_longitude": 356.0, "nakshatra": "Revathi", "pada": 3}],
+				 "dasha_sequences": {"vimshottari": {"mahadasha": [{"lord": "Mo☾", "start_date": "2018-01-01", "end_date": "2099-01-01",
+																	 "antardasha": [{"lord": "Ve♀", "start_date": "2018-01-01", "end_date": "2099-01-01"}]}]}}}
+		with patch.object(person.report_view, "profile_numbers", lambda r: {"day": 12}), patch.object(person.answers, "get", lambda *a, **k: chart):
+			out = person.chart_summary(user, row)
+		self.assertEqual((out["ascendant"], out["sun_sign"], out["moon_sign"], out["moon_nakshatra"]), ("Cancer", "Aries", "Pisces", "Revathi, pada 3"))
+		self.assertTrue(out["running_mahadasha"].startswith("Moon until") and out["running_antardasha"].startswith("Venus until"))
+		self.assertIsNone(person.chart_summary(user, frappe._dict(date_of_birth="1980-05-12", time_of_birth="", place_of_birth="Mumbai", time_unknown=1)))

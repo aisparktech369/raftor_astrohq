@@ -6,7 +6,8 @@ what was said; the account holder completes the birth details on the website; un
 
 	read(user)                        {"notes": [...], "card": text}: the current notes and what the site knows of the person, for the guide at the start of a turn
 	write(user, payload, guide, ...)  keeps the notes (and new family members) the note-taker returned after a reply
-	member(user, who)                 one profile with its summary, notes and numerology headline, for the guide's tool
+	member(user, who)                 one profile with its summary, notes, chart headline and numerology headline, for the guide's tool
+	make_report(user, who, kind)      the person's free kundli or numerology report for themself or a family member, made now, with the link to open it
 	forget(user, name)                removes one note for good
 """
 import re
@@ -14,7 +15,8 @@ import re
 import frappe
 from frappe.utils import formatdate, today
 
-from raftor_astrohq import profiles
+from raftor_astrohq import answers, profiles, report_view
+from raftor_astrohq import report_pdf as rp
 
 LAST = 3
 LIMIT = 40
@@ -213,6 +215,12 @@ def member(user: str, who: str) -> dict:
 	out = {"found": True, "name": row.full_name, "relationship": row.relationship, "date_of_birth": str(row.date_of_birth or ""), "time_of_birth": row.time_of_birth or "",
 		   "time_unknown": bool(row.time_unknown), "place_of_birth": row.place_of_birth or "", "details_complete": not profiles.row_errors(profiles.row_values(row)),
 		   "summary": row.summary or "", "notes": [{"on": str(n.noted_on or ""), "kind": n.kind, "point": n.point} for n in frappe.get_all("Profile Note", filters={"user": user, "profile": row.name, "is_current": 1}, fields=["noted_on", "kind", "point"], order_by="noted_on asc", limit=20)]}
+	try:
+		chart = chart_summary(user, row)
+	except Exception:
+		chart = None
+	if chart:
+		out["chart"] = chart
 	if row.date_of_birth:
 		try:
 			from raftor_astrohq import astrology
@@ -223,3 +231,86 @@ def member(user: str, who: str) -> dict:
 		except Exception:
 			pass
 	return out
+
+
+def _plain(text) -> str:
+	"""A sign or planet as the engine writes it, without its little symbol: '♋︎Cancer' -> 'Cancer'."""
+	return re.sub(r"[^A-Za-z ]", "", str(text or "")).strip()
+
+
+def chart_summary(user: str, row) -> dict | None:
+	"""The headline of the person's kundli, from the engine's kept answer for their birth (no new call after the first): the ascendant, the Sun and Moon signs, the Moon's nakshatra and the dasha running now.
+	None when the birth time or place is not known, because a chart needs the minute and the place."""
+	if row.time_unknown or not row.time_of_birth or not row.place_of_birth or not row.date_of_birth:
+		return None
+	numbers = report_view.profile_numbers(row)
+	if not numbers:
+		return None
+	chart = answers.get(user, numbers, "SUPER_BASIC")
+	by = {rp.planet_code(p["planet"]): p for p in chart["planetary_positions"]}
+	on = frappe.utils.getdate(today())
+	out = {"ascendant": _plain(chart["lagna"]["sign"]), "ascendant_lord": _plain(chart["lagna"].get("lord")), "sun_sign": _plain(by["Su"]["sign"]), "moon_sign": _plain(by["Mo"]["sign"]),
+		   "moon_nakshatra": f"{by['Mo']['nakshatra']}, pada {by['Mo']['pada']}"}
+	for period in chart["dasha_sequences"]["vimshottari"]["mahadasha"]:
+		if period.get("start_date") and frappe.utils.getdate(period["start_date"]) <= on and (not period.get("end_date") or on <= frappe.utils.getdate(period["end_date"])):
+			out["running_mahadasha"] = f"{rp.PLANETS.get(rp.planet_code(period['lord']), _plain(period['lord']))} until {formatdate(period['end_date'], 'd MMM yyyy')}" if period.get("end_date") else rp.PLANETS.get(rp.planet_code(period["lord"]), "")
+			for sub in period.get("antardasha") or []:
+				if frappe.utils.getdate(sub["start_date"]) <= on <= frappe.utils.getdate(sub["end_date"]):
+					out["running_antardasha"] = f"{rp.PLANETS.get(rp.planet_code(sub['lord']), _plain(sub['lord']))} until {formatdate(sub['end_date'], 'd MMM yyyy')}"
+			break
+	return out
+
+
+REPORTS = {"kundli": ("kundli", "Kundli report"), "numerology": ("numerology", "Numerology report")}
+
+
+def make_report(user: str, who: str, kind: str) -> dict:
+	"""The person's free report (a kundli or a numerology report) for themself or for someone in their profiles, made now with what the profile already holds. Returns the link to open it, as a card the chat shows.
+	When the profile lacks what the report needs, it says what is missing so the guide can ask for it."""
+	from raftor_servicehq import free_reports, intake as intake_rules, workflows
+
+	kind = str(kind or "").strip().lower()
+	if kind not in REPORTS:
+		return {"found": False, "message": "Say which report: kundli or numerology."}
+	row = _find(_rows(user), who)
+	if row is None:
+		return {"found": False, "message": "No profile matches that. Ask for the name, or open the profiles first."}
+	item = frappe.db.get_value("Item", {"custom_report_kind": REPORTS[kind][0], "custom_vertical": "astrohq"})
+	if not item or not free_reports.on_sale(item):
+		return {"found": False, "message": f"The {kind} report is not free to make right now. Offer it from the shop instead."}
+	if not row.date_of_birth:
+		return {"found": False, "message": f"{row.full_name}'s date of birth is not saved yet. Ask for it first."}
+	details = {"report_name": row.full_name, "birth_date": str(row.date_of_birth)}
+	if kind == "kundli":
+		missing = [label for label, value in (("time of birth", row.time_of_birth and not row.time_unknown), ("place of birth", row.place_of_birth)) if not value]
+		if missing:
+			return {"found": False, "message": f"A kundli needs {row.full_name}'s {' and '.join(missing)}. Ask for it, then try again."}
+		details.update({"whose": row.relationship, "birth_time": row.time_of_birth, "birth_place": row.place_of_birth})
+	clean, errors, message = free_reports._check(item, details)
+	if errors or message:
+		return {"found": False, "message": message or "; ".join(errors.values())}
+	try:
+		free_reports.check_limit(user)
+	except frappe.ValidationError as error:
+		return {"found": False, "message": re.sub(r"<.*?>", "", str(error))}
+	dumped = intake_rules.dump(clean)
+	name = frappe.db.get_value("Free Report", {"user": user, "item": item, "details": dumped, "workflow_state": free_reports.READY}, "name", order_by="creation desc")
+	if not name:
+		name = workflows.as_system(lambda: free_reports.create(user, item, clean))
+	state = frappe.db.get_value("Free Report", name, "workflow_state")
+	proof = frappe.db.get_value("Service Proof", {"ref_doctype": "Free Report", "ref_name": name}, "name") if state == free_reports.READY else None
+	if not proof:
+		return {"found": True, "made": False, "message": f"{REPORTS[kind][1]} for {row.full_name} is being made; it will be under the person's reports when ready."}
+	from raftor_servicehq import proof as proofs
+
+	link = frappe.utils.get_url(proofs.link(proof))
+	headline = None
+	if kind == "kundli":
+		try:
+			headline = chart_summary(user, row)
+		except Exception:
+			headline = None
+	return {"found": True, "made": True, "report": f"{REPORTS[kind][1]} for {row.full_name}",
+			"message": f"The {kind} report for {row.full_name} is ready, and its card is shown with your reply: say so in a few words and do not offer the link again." + (" Their chart headline is in `chart`; use it if they asked what the chart says." if headline else ""),
+			**({"chart": headline} if headline else {}),
+			"services": [{"title": f"{REPORTS[kind][1]} for {row.full_name}", "topic": "Free report, ready to read", "price": "Free", "bookable": True, "book_link": link, "button": "Open report", "always": True}]}

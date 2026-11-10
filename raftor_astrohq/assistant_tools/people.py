@@ -36,3 +36,33 @@ class GetFamilyMember(BaseTool):
 		if not user or user == "Guest":
 			return {"found": False, "message": "Nobody is signed in, so there is no profile to open."}
 		return person.member(user, str(arguments.get("who") or ""))
+
+
+class MakeReport(BaseTool):
+	def __init__(self):
+		super().__init__()
+		self.name = "make_report"
+		self.description = (
+			"Make the signed-in person's free report, a kundli or a numerology report, for themself or for someone in their saved profiles ('me', 'Tara', 'my daughter'), using the details the profile already holds, and "
+			"give them the card to open it. Use it when they ask for a chart or a report for someone, or when it would help what you are explaining; do not ask again for details the profile has. "
+			"If a detail is missing it says which, so ask for that one thing and try again. It never charges."
+		)
+		self.requires_permission = None
+		self.annotations = {"module": "astrohq.people", "tags": ["write"], "tier": "T2"}
+		self.inputSchema = {
+			"type": "object",
+			"properties": {
+				"who": {"type": "string", "description": "The name or the relation, as the person said it: 'Tara', 'my daughter', 'me'."},
+				"kind": {"type": "string", "enum": ["kundli", "numerology"], "description": "Which report."},
+				"user": {"type": "string", "description": "Set by the system. Leave it out."},
+			},
+			"required": ["who", "kind"],
+		}
+
+	def execute(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+		from raftor_astrohq import person
+
+		user = (arguments.get("user") or "").strip()
+		if not user or user == "Guest":
+			return {"found": False, "message": "Nobody is signed in, so no report can be made."}
+		return person.make_report(user, str(arguments.get("who") or ""), str(arguments.get("kind") or ""))
