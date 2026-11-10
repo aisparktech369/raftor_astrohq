@@ -26,7 +26,7 @@ KINDRED = {"daughter": "Child", "son": "Child", "child": "Child", "kid": "Child"
 
 
 def _rows(user: str) -> list:
-	return frappe.get_all("Astro Birth Profile", filters={"parent": user, "parenttype": "User", "parentfield": profiles.TABLE}, fields=["name", "relationship", "full_name", "date_of_birth", "time_of_birth", "time_unknown", "place_of_birth", "permission_given", "from_chat", "summary"], order_by="idx")
+	return frappe.get_all("Astro Birth Profile", filters={"parent": user, "parenttype": "User", "parentfield": profiles.TABLE}, fields=["name", "relationship", "full_name", "date_of_birth", "time_of_birth", "time_unknown", "place_of_birth", "permission_given", "from_chat", "summary", "creation"], order_by="idx")
 
 
 def _label(row) -> str:
@@ -159,7 +159,9 @@ def _line(row) -> str:
 	clock = "birth time not known" if row.time_unknown else (f"at {row.time_of_birth}" if row.time_of_birth else "birth time not given")
 	place = f", {row.place_of_birth}" if row.place_of_birth else ""
 	who = "You" if row.relationship == profiles.SELF else f"{row.full_name} ({row.relationship.lower()})"
-	status = " [added from chat, details to be completed by the person]" if row.from_chat else ""
+	fresh = row.from_chat and row.creation and (frappe.utils.now_datetime() - frappe.utils.get_datetime(row.creation)).total_seconds() < 1800
+	status = (" [saved from this chat a moment ago: tell them once, in a few words, that you saved " + row.full_name + " and they can complete or remove it in their profiles]" if fresh
+			  else " [added from chat, details to be completed by the person]" if row.from_chat else "")
 	line = f"- {who}: {row.full_name}, born {born}, {clock}{place}{status}"
 	return line + (f"\n  What we know: {row.summary}" if row.summary else "")
 
