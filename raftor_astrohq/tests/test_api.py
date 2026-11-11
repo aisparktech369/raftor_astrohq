@@ -106,12 +106,12 @@ class TestFamily(ApiTestCase):
 		self.save(FAMILY); self.save(GOOD, **YOU_FORM)
 		listed = api.list_profiles()["items"]
 		items = [i for i in listed if i["id"] != "match"]
-		self.assertEqual([i["badge"] for i in items], ["You", "Spouse"])
+		self.assertEqual([i["tags"][0] for i in items], ["You", "Spouse"])
 		self.assertEqual([i["id"] for i in listed][-1], "match")  # with two people saved, one more card offers to check how well they match
 		self.assertEqual([a["label"] for a in items[0]["actions"]], ["Edit"])
 		self.assertEqual([a["label"] for a in items[1]["actions"]], ["Edit", "Delete"])
 		self.assertIn("06:42", items[0]["lines"][0]); self.assertIn("time not known", items[1]["lines"][0])
-		self.assertEqual([i["badge"] for i in api.list_profiles(who="you")["items"]], ["You"])
+		self.assertEqual([i["tags"][0] for i in api.list_profiles(who="you")["items"]], ["You"])
 
 
 class TestOtherPeopleCannotBeTouched(ApiTestCase):

@@ -64,39 +64,42 @@ def specials(day: dict) -> list[str]:
 	return out
 
 
+def _set(value) -> list[str]:
+	"""A saved choice or several (Ashtami,Amavasya) as a list."""
+	return [part.strip() for part in str(value or "").split(",") if part.strip()]
+
+
+def _tithi_holds(reminder, day: dict) -> bool:
+	return day["tithi"] in _set(reminder.get("tithi")) and (reminder.get("paksha") in (None, "", "Both") or day["paksha"] == reminder["paksha"])
+
+
 def follows(reminder, day: dict) -> bool:
-	"""Whether the day is one this reminder names: ANY of the things it names is enough (a tithi, a weekday or a special day), and it must name at least one. A fortnight only narrows its tithi."""
-	if reminder.get("tithi") and day["tithi"] == reminder["tithi"] and (reminder.get("paksha") in (None, "", "Both") or day["paksha"] == reminder["paksha"]):
-		return True
-	if reminder.get("weekday") and day["weekday"] == reminder["weekday"]:
-		return True
-	return bool(reminder.get("special")) and reminder["special"] in specials(day)
+	"""Whether the day is one this reminder names: ANY of the things it names is enough (one of its tithis, one of its weekdays or one of its special days), and it must name at least one. A fortnight only narrows
+	the tithis."""
+	return _tithi_holds(reminder, day) or day["weekday"] in _set(reminder.get("weekday")) or bool(set(_set(reminder.get("special"))) & set(specials(day)))
 
 
 def why(reminder, day: dict) -> str:
 	"""Every part of the reminder that holds on this day, in words, for the message: Amavasya, a Tuesday, Ashtami (Krishna) and a Tuesday."""
 	parts = []
-	if reminder.get("tithi") and day["tithi"] == reminder["tithi"] and (reminder.get("paksha") in (None, "", "Both") or day["paksha"] == reminder["paksha"]):
-		parts.append(title_of({"tithi": reminder["tithi"], "paksha": reminder.get("paksha")}))
-	if reminder.get("special") and reminder["special"] in specials(day):
-		parts.append(reminder["special"])
-	if reminder.get("weekday") and day["weekday"] == reminder["weekday"]:
-		parts.append(_("a {0}").format(_(reminder["weekday"])))
+	if _tithi_holds(reminder, day):
+		parts.append(title_of({"tithi": day["tithi"], "paksha": reminder.get("paksha")}))
+	parts += [name for name in _set(reminder.get("special")) if name in specials(day)]
+	if day["weekday"] in _set(reminder.get("weekday")):
+		parts.append(_("a {0}").format(_(day["weekday"])))
 	return _(" and ").join(parts)
 
 
 # ---- the words ----
 def title_of(reminder) -> str:
-	"""Ashtami (Krishna), Every Tuesday, Ravi Pushya, or several joined by "or": Ashtami (Krishna) or Every Tuesday"""
+	"""Ashtami (Krishna), Amavasya, Every Tuesday: everything the reminder names, one after another"""
 	parts = []
-	if reminder.get("tithi"):
-		fortnight = reminder.get("paksha")
-		parts.append(reminder["tithi"] + (f" ({fortnight})" if fortnight in ("Shukla", "Krishna") and reminder["tithi"] not in ("Purnima", "Amavasya") else ""))
-	if reminder.get("special"):
-		parts.append(reminder["special"])
-	if reminder.get("weekday"):
-		parts.append(_("Every {0}").format(_(reminder["weekday"])))
-	return _(" or ").join(parts)
+	fortnight = reminder.get("paksha")
+	for tithi in _set(reminder.get("tithi")):
+		parts.append(tithi + (f" ({fortnight})" if fortnight in ("Shukla", "Krishna") and tithi not in ("Purnima", "Amavasya") else ""))
+	parts += _set(reminder.get("special"))
+	parts += [_("Every {0}").format(_(day)) for day in _set(reminder.get("weekday"))]
+	return ", ".join(parts)
 
 
 def lead_words(lead: str) -> str:
@@ -112,7 +115,7 @@ def text_for(reminder, day: dict, slot: str) -> str:
 	tithi = f"{day['tithi']} ({day['paksha']})" if day["tithi"] not in ("Purnima", "Amavasya") else day["tithi"]
 	if day["tithi_begins"] and day["tithi_ends"]:
 		lines.append(_("The tithi is {0}: it begins {1} and ends {2}.").format(tithi, when(day["tithi_begins"], date), when(day["tithi_ends"], date)))
-	if reminder.get("special") and reminder["special"] in specials(day):
+	if set(_set(reminder.get("special"))) & set(specials(day)):
 		lines.append(_("Nakshatra: {0}.").format(day["nakshatra"]))
 	return " ".join(lines)
 
@@ -182,9 +185,10 @@ def list_reminders() -> dict:
 	rows = frappe.get_all(DOCTYPE, filters={"user": _me()}, fields=["name", "tithi", "paksha", "weekday", "special", "lead", "enabled"], order_by="creation asc")
 	items = []
 	for row in rows:
-		actions = [{"label": _("Pause") if row.enabled else _("Turn on"), "call": "raftor_astrohq.reminders.toggle_reminder", "args": {"id": row.name}},
-				   {"label": _("Delete"), "kind": "danger", "call": "raftor_astrohq.reminders.delete_reminder", "args": {"id": row.name}, "confirm": _("Delete this reminder?"), "confirm_label": _("Yes, delete")}]
-		items.append({"id": row.name, "title": title_of(row), "badge": "" if row.enabled else _("Paused"), "lines": [_("Reminds you {0}.").format(lead_words(row.lead))], "actions": actions})
+		actions = [{"label": _("Delete"), "kind": "danger", "call": "raftor_astrohq.reminders.delete_reminder", "args": {"id": row.name}, "confirm": _("Delete this reminder?"), "confirm_label": _("Yes, delete")}]
+		items.append({"id": row.name, "layout": "profile", "mark": "\u263e", "title": title_of(row), "subtitle": _("Reminds you {0}.").format(lead_words(row.lead)),
+					  "switch": {"on": bool(row.enabled), "on_label": _("On"), "off_label": _("Paused"), "label": _("Reminder on"), "call": "raftor_astrohq.reminders.toggle_reminder", "args": {"id": row.name}},
+					  "actions": actions})
 	return {"items": items}
 
 
@@ -195,12 +199,11 @@ def save_reminder(values=None) -> dict:
 	values = frappe.parse_json(values) if isinstance(values, str) else (values or {})
 	clean = {key: str(values.get(key) or "").strip() for key in ("tithi", "paksha", "weekday", "special", "lead")}
 	errors = {}
-	if clean["tithi"] and clean["tithi"] not in TITHIS:
-		errors["tithi"] = _("Choose a tithi from the list.")
-	if clean["weekday"] and clean["weekday"] not in WEEKDAYS:
-		errors["weekday"] = _("Choose a day from the list.")
-	if clean["special"] and clean["special"] not in SPECIALS:
-		errors["special"] = _("Choose a special day from the list.")
+	for key, allowed, message in (("tithi", TITHIS, _("Choose tithis from the list.")), ("weekday", WEEKDAYS, _("Choose days from the list.")), ("special", SPECIALS, _("Choose special days from the list."))):
+		chosen = [name for name in _set(clean[key]) if name in allowed]  # only what the list has, once each, in the list's order
+		if len(chosen) != len(set(_set(clean[key]))):
+			errors[key] = message
+		clean[key] = ",".join(name for name in allowed if name in chosen)
 	if clean["paksha"] and clean["paksha"] not in ("Both", "Shukla", "Krishna"):
 		errors["paksha"] = _("Choose Shukla, Krishna or both.")
 	if not clean["lead"]:
@@ -209,7 +212,7 @@ def save_reminder(values=None) -> dict:
 		errors["lead"] = _("Choose when to remind you.")
 	if not (clean["tithi"] or clean["weekday"] or clean["special"]) and not errors:
 		errors["tithi"] = _("Choose at least a tithi, a weekday or a special day.")
-	if clean["tithi"] in ("Purnima", "Amavasya"):
+	if set(_set(clean["tithi"])) <= {"Purnima", "Amavasya"}:
 		clean["paksha"] = "Both"
 	if errors:
 		return {"ok": False, "errors": errors}

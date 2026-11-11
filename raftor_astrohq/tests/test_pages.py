@@ -54,7 +54,7 @@ class TestPages(TestCase):
 		spouse = {**GOOD, "relationship": "Spouse", "permission_given": 0}
 		self.assertIn("permission_given", api.save_profile(values=spouse)["errors"])  # the server still asks for others
 		self.assertEqual(api.save_profile(values={**GOOD, "relationship": "You"}), {"ok": True})  # and not for yourself
-		self.assertEqual([i["badge"] for i in api.list_profiles()["items"]], ["You"])
+		self.assertEqual([i["tags"][0] for i in api.list_profiles()["items"]], ["You"])
 
 	def test_the_all_set_page_shows_only_you_and_offers_family_and_continue(self):
 		source = check(pages()["onboarding/birth-details/done"])["sections"][1]["source"]
@@ -70,14 +70,14 @@ class TestPages(TestCase):
 		user = make_user()
 		frappe.set_user(user.name)
 		first = api.list_profiles()["items"][0]
-		self.assertEqual((first["badge"], first["actions"][0]["href"]), ("You", "/my/birth-profiles/you"))
+		self.assertEqual((first["tags"][0], first["actions"][0]["href"]), ("You", "/my/birth-profiles/you"))
 		self.assertEqual(api.list_profiles(who="you")["items"], [])  # the onboarding summary shows only a saved one
 		frappe.set_user("Administrator")
 		user.append(TABLE, GOOD)
 		user.save(ignore_permissions=True)
 		frappe.set_user(user.name)
 		items = api.list_profiles()["items"]
-		self.assertEqual([i["badge"] for i in items], ["You"])
+		self.assertEqual([i["tags"][0] for i in items], ["You"])
 		self.assertNotEqual(items[0]["id"], "you")
 
 	def test_the_page_for_you_saves_back_to_the_list(self):

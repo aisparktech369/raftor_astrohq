@@ -43,7 +43,7 @@ def time_fields() -> list[dict]:
 	return [
 		{"name": "time_of_birth", "label": _("Time of birth"), "type": "time_text", "placeholder": "HH:MM",
 		 "hint": _("As on your birth record."), "disabled_when": "time_unknown"},
-		{"name": "time_unknown", "label": _("I don't know my birth time"), "type": "checkbox"},
+		{"name": "time_unknown", "label": _("I don't know my birth time"), "type": "checkbox", "switch": True},
 	]
 
 

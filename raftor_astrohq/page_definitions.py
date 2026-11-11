@@ -26,13 +26,12 @@ def _you_fields():
 
 def _person_fields():
 	return [
-		{"name": "relationship", "label": _("Relationship"), "type": "select", "required": True, "placeholder": _("Choose"),
-		 "options": profiles.relationships()},
+		{"name": "relationship", "label": _("Who is this?"), "type": "chips", "grid": True, "required": True, "options": profiles.relationships()},
 		{"name": "full_name", "label": _("Full name"), "required": True},
 		{"name": "date_of_birth", "label": _("Date of birth"), "type": "date", "required": True},
 		*_time_fields(),
 		details.place_field("place_of_birth", _("Place of birth")),
-		{"name": "permission_given", "label": _("I have permission to keep this person's details"), "type": "checkbox",
+		{"name": "permission_given", "label": _("I have permission to keep this person's details"), "type": "checkbox", "switch": True,
 		 "hint": _("Needed for anyone but yourself.")},
 	]
 
@@ -175,13 +174,13 @@ def definitions() -> list[dict]:
 			"method": REMIND + "list_reminders", "empty": _("You have no reminders yet. Add the days you follow and we will tell you before each one."),
 			"links": [{"label": _("Add a reminder"), "href": _my("reminders/new"), "kind": "primary", "where": "top"}]},
 			menu={"label": _("My reminders"), "summary": _("Be told before Ashtami, Amavasya, Ekadashi and the days you follow."), "order": 18, "side": {"order": 29}}),
-		_form("my/reminders/new", _("Add a reminder"), _("Fill in what you follow. Fill in more than one and you are told on each of them, such as Ashtami or every Tuesday."), {
+		_form("my/reminders/new", _("Add a reminder"), _("Tap what you follow. You are told on each of them: any tithi you tap, any day, any special day."), {
 			"save": REMIND + "save_reminder", "submit_label": _("Save"), "cancel_label": _("Cancel"), "cancel_url": _my("reminders"), "success_redirect": _my("reminders"),
 			"fields": [
-				{"name": "tithi", "label": _("Tithi"), "type": "select", "placeholder": _("Any tithi"), "options": reminders.TITHIS, "hint": _("For example Ashtami, Ekadashi, Amavasya.")},
-				{"name": "paksha", "label": _("Fortnight"), "type": "select", "placeholder": _("Both"), "options": ["Shukla", "Krishna"],
+				{"name": "tithi", "label": _("Tithis I follow"), "type": "chips", "multiple": True, "grid": True, "options": reminders.TITHIS, "hint": _("Tap as many as you follow, for example Ashtami and Amavasya.")},
+				{"name": "paksha", "label": _("Which fortnight"), "type": "chips", "segmented": True, "default": "Both", "options": [{"value": "Both", "label": _("Both")}, {"value": "Shukla", "label": _("Shukla")}, {"value": "Krishna", "label": _("Krishna")}],
 				 "hint": _("Shukla is the bright half, Krishna the dark half. Purnima and Amavasya need no choice.")},
-				{"name": "weekday", "label": _("Weekday"), "type": "select", "placeholder": _("Any day"), "options": reminders.WEEKDAYS},
-				{"name": "special", "label": _("Special day"), "type": "select", "placeholder": _("None"), "options": reminders.SPECIALS},
-				{"name": "lead", "label": _("Remind me"), "type": "select", "options": reminders.LEADS}]}, note=_("The day is the one the panchang gives at sunrise. The message says when the tithi begins and ends.")),
+				{"name": "weekday", "label": _("Days of the week"), "type": "chips", "multiple": True, "options": [{"value": d, "label": _(d)[:3]} for d in reminders.WEEKDAYS]},
+				{"name": "special", "label": _("Special days"), "type": "chips", "multiple": True, "options": reminders.SPECIALS},
+				{"name": "lead", "label": _("Tell me"), "type": "chips", "segmented": True, "required": True, "default": "Evening before", "options": [{"value": v, "label": _(v)} for v in reminders.LEADS]}]}, note=_("The day is the one the panchang gives at sunrise. The message says when the tithi begins and ends.")),
 	]

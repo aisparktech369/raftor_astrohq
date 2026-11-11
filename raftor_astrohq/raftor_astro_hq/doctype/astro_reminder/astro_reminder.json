@@ -26,10 +26,10 @@
   },
   {
    "fieldname": "tithi",
-   "fieldtype": "Select",
+   "fieldtype": "Small Text",
    "label": "Tithi",
-   "options": "\nPratipada\nDwitiya\nTritiya\nChaturthi\nPanchami\nShashthi\nSaptami\nAshtami\nNavami\nDashami\nEkadashi\nDwadashi\nTrayodashi\nChaturdashi\nPurnima\nAmavasya",
-   "in_list_view": 1
+   "in_list_view": 1,
+   "description": "Choices separated by commas."
   },
   {
    "fieldname": "paksha",
@@ -40,17 +40,17 @@
   },
   {
    "fieldname": "weekday",
-   "fieldtype": "Select",
+   "fieldtype": "Small Text",
    "label": "Weekday",
-   "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
-   "in_list_view": 1
+   "in_list_view": 1,
+   "description": "Choices separated by commas."
   },
   {
    "fieldname": "special",
-   "fieldtype": "Select",
+   "fieldtype": "Small Text",
    "label": "Special day",
-   "options": "\nRavi Pushya\nGuru Pushya\nSarvartha Siddhi\nAmrit Siddhi",
-   "in_list_view": 1
+   "in_list_view": 1,
+   "description": "Choices separated by commas."
   },
   {
    "fieldname": "lead",

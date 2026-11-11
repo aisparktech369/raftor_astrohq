@@ -54,11 +54,18 @@ class TestWhichDays(AstroTestCase):
 		self.assertEqual(reminders.specials(day(weekday="Friday", nakshatras={"Bharani"})), [])
 		self.assertTrue(reminders.follows({"special": "Ravi Pushya"}, day(weekday="Sunday", nakshatras={"Pushya"})))
 
+	def test_several_choices_in_one_reminder(self):
+		reminder = {"tithi": "Ashtami,Amavasya", "paksha": "Both", "weekday": "Tuesday,Friday", "special": ""}
+		self.assertTrue(reminders.follows(reminder, day(tithi="Amavasya", weekday="Monday")))
+		self.assertTrue(reminders.follows(reminder, day(tithi="Dashami", weekday="Friday")))
+		self.assertFalse(reminders.follows(reminder, day(tithi="Dashami", weekday="Monday")))
+		self.assertEqual(reminders.title_of(reminder), "Ashtami, Amavasya, Every Tuesday, Every Friday")
+
 	def test_the_words(self):
 		self.assertEqual(reminders.title_of({"tithi": "Ashtami", "paksha": "Krishna"}), "Ashtami (Krishna)")
 		self.assertEqual(reminders.title_of({"tithi": "Amavasya", "paksha": "Both"}), "Amavasya")
 		self.assertEqual(reminders.title_of({"weekday": "Tuesday"}), "Every Tuesday")
-		self.assertEqual(reminders.title_of({"tithi": "Ashtami", "paksha": "Both", "weekday": "Tuesday"}), "Ashtami or Every Tuesday")
+		self.assertEqual(reminders.title_of({"tithi": "Ashtami", "paksha": "Both", "weekday": "Tuesday"}), "Ashtami, Every Tuesday")
 		text = reminders.text_for({"tithi": "Ashtami", "paksha": "Krishna"}, day(), "evening")
 		self.assertIn("Tomorrow", text)
 		self.assertIn("begins", text)
@@ -79,7 +86,7 @@ class TestMyList(AstroTestCase):
 		(item,) = reminders.list_reminders()["items"]
 		self.assertEqual(item["title"], "Ashtami (Krishna)")
 		reminders.toggle_reminder(item["id"])
-		self.assertEqual(reminders.list_reminders()["items"][0]["badge"], "Paused")
+		self.assertFalse(reminders.list_reminders()["items"][0]["switch"]["on"])
 		reminders.delete_reminder(item["id"])
 		self.assertEqual(reminders.list_reminders()["items"], [])
 
@@ -107,6 +114,13 @@ class TestMyList(AstroTestCase):
 		self.assertIn("special", reminders.save_reminder({"special": "Made up"})["errors"])
 		self.assertIn("lead", reminders.save_reminder({"weekday": "Monday", "lead": "Whenever"})["errors"])
 
+	def test_several_choices_are_kept_in_the_lists_order_and_unknown_ones_refused(self):
+		self._as(self.me)
+		self.assertTrue(reminders.save_reminder({"tithi": "Amavasya,Ashtami", "weekday": "Friday,Tuesday"})["ok"])
+		row = frappe.db.get_value("Astro Reminder", {"user": self.me.name}, ["tithi", "weekday"], as_dict=True)
+		self.assertEqual((row.tithi, row.weekday), ("Ashtami,Amavasya", "Tuesday,Friday"))
+		self.assertIn("tithi", reminders.save_reminder({"tithi": "Ashtami,Nonsense"})["errors"])
+
 	def test_the_same_reminder_twice_and_too_many_are_refused(self):
 		self._as(self.me)
 		self.assertTrue(reminders.save_reminder({"tithi": "Ekadashi"})["ok"])
@@ -118,6 +132,8 @@ class TestMyList(AstroTestCase):
 class TestSending(AstroTestCase):
 	def setUp(self):
 		super().setUp()
+		frappe.db.delete(reminders.DOCTYPE)  # (only for this test: what real people saved is back when it ends)
+		frappe.db.delete(reminders.SENT)
 		self.me = make_user()
 		frappe.set_user(self.me.name)
 		reminders.save_reminder({"tithi": "Ashtami", "paksha": "Krishna", "lead": "Both"})
