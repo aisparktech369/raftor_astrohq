@@ -102,7 +102,7 @@ class TestSkills(AstroTestCase):
 
 
 def _profile(**kw):
-	one = json.loads((Path(ai_profiles.HERE) / "guide_profiles" / "ASTRO-NUM-001.json").read_text(encoding="utf-8"))
+	one = next(p for p in ai_profiles.profiles() if p["profile_id"] == "ASTRO-NUM-001")
 	return {**one, "profile_id": "T-PROF-001", "slug": "t-prof", "display_name": "T Prof", **kw}
 
 
@@ -110,15 +110,17 @@ class TestProfiles(AstroTestCase):
 	def setUp(self):
 		super().setUp()
 		_clean()
-		self.folder = tempfile.mkdtemp()
+		self.source = Path(tempfile.mkdtemp()) / "guides.json"
+		self.pack = {"held": {}, "profiles": []}
 
 	def tearDown(self):
 		frappe.set_user("Administrator")
 		frappe.db.rollback()
 		_clean()
 
-	def _put(self, profile, name="ASTRO-p.json"):
-		(Path(self.folder) / name).write_text(json.dumps(profile), encoding="utf-8")
+	def _put(self, profile, name=None):
+		self.pack["profiles"].append(profile)
+		self.source.write_text(json.dumps(self.pack), encoding="utf-8")
 
 	def test_every_profile_that_ships_fits_the_schema_and_a_skill(self):
 		shipped = ai_profiles.profiles()
@@ -131,35 +133,36 @@ class TestProfiles(AstroTestCase):
 	def test_a_profile_that_does_not_fit_is_reported_and_skipped(self):
 		bad = _profile(); del bad["persona"]
 		self._put(bad, "ASTRO-a.json"); self._put(_profile(discipline="astro_cooking", slug="t-bad2", profile_id="T-BAD-2"), "ASTRO-b.json")
-		steps = ai_profiles.plan(Path(self.folder))
+		steps = ai_profiles.plan(self.source)
 		self.assertEqual([s["action"] for s in steps], ["skipped", "skipped"])
 		self.assertTrue(any("persona" in w for w in steps[0]["why"]))
 
 	def test_preview_changes_nothing_and_a_run_makes_the_guide_once(self):
 		self._put(_profile())
-		self.assertEqual(ai_profiles.run(preview=True, folder=self.folder)[0]["action"], "made")
+		self.assertEqual(ai_profiles.run(preview=True, source=str(self.source))[0]["action"], "made")
 		self.assertFalse(frappe.db.exists("AI Guide Persona", "t-prof"))
-		ai_profiles.run(folder=self.folder)
+		ai_profiles.run(source=str(self.source))
 		guide = frappe.get_doc("AI Guide Persona", "t-prof")
 		self.assertEqual((guide.profile_id, guide.area, guide.enabled, guide.languages, [s.skill for s in guide.skills]), ("T-PROF-001", "numerologist", 1, "Hinglish, English", ["numerology"]))
 		self.assertEqual(guide.greeting, guide.signature_line)
 		frappe.db.set_value("AI Guide Persona", "t-prof", "guide_name", "Edited in Desk")
-		again = ai_profiles.run(folder=self.folder)
+		again = ai_profiles.run(source=str(self.source))
 		self.assertEqual(again[0]["action"], "kept")
 		self.assertEqual(frappe.db.get_value("AI Guide Persona", "t-prof", "guide_name"), "Edited in Desk")
 		self.assertEqual(frappe.db.count("AI Guide Persona", {"profile_id": "T-PROF-001"}), 1)
 
 	def test_a_guide_whose_skill_is_off_is_made_switched_off(self):
 		self._put(_profile(discipline="tarot"))
-		ai_profiles.run(folder=self.folder)
+		ai_profiles.run(source=str(self.source))
 		self.assertEqual(frappe.db.get_value("AI Guide Persona", "t-prof", ["enabled", "area"]), (0, ""))
 
 	def test_a_guide_that_waits_for_a_calculation_the_engine_lacks_is_made_switched_off_with_the_reason(self):
 		self._put(_profile())
-		(Path(self.folder) / "held.json").write_text(json.dumps({"T-PROF-001": "no Pythagorean sums in the engine"}), encoding="utf-8")
-		step = ai_profiles.plan(Path(self.folder))[0]
+		self.pack["held"] = {"T-PROF-001": "no Pythagorean sums in the engine"}
+		self.source.write_text(json.dumps(self.pack), encoding="utf-8")
+		step = ai_profiles.plan(self.source)[0]
 		self.assertEqual((step["action"], step["on"], step["why"]), ("made", False, ["no Pythagorean sums in the engine"]))
-		ai_profiles.run(folder=self.folder)
+		ai_profiles.run(source=str(self.source))
 		self.assertEqual(frappe.db.get_value("AI Guide Persona", "t-prof", "enabled"), 0)
 
 	def test_every_held_profile_exists_and_is_a_numerology_one_the_engine_cannot_do(self):

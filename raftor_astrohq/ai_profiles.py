@@ -1,11 +1,11 @@
-"""The AI guide profiles that come with the app (guide_profiles/*.json, written to the AstroHQ expert profile schema) made into AI Guide Personas.
+"""The AI guide profiles in AstroHQ's pack (pack/guides.json, each written to the AstroHQ expert profile schema in pack/guides.schema.json) made into AI Guide Personas.
 
 	plan()                   what an import would do with each profile (a preview: nothing is touched)
 	run(preview=False)       makes the guides that are missing; safe to repeat
 
 A profile is known by its profile_id: a guide already made from it is left exactly as staff have it in Desk, and a profile that does not fit the schema or names an unknown discipline is reported and skipped. The skills a profile
 needs are the AI Guide Skill records (ai_skills.json): a guide whose skill is not switched on is made switched off.
-A profile listed in guide_profiles/held.json is made switched off, with the reason in the plan. `bench --site <site> execute raftor_astrohq.ai_profiles.run --kwargs '{"preview": 1}'` shows the plan."""
+A profile listed under "held" in the pack is made switched off, with the reason in the plan. `bench --site <site> execute raftor_astrohq.ai_profiles.run --kwargs '{"preview": 1}'` shows the plan."""
 import json
 import re
 from pathlib import Path
@@ -20,15 +20,22 @@ NEEDED_PERSONA = ("traits", "mindset", "communication_style", "voice_direction",
 NEEDED_METHOD = ("workflow", "response_format")
 
 
-def profiles(folder: Path | None = None) -> list[dict]:
-	return [json.loads(f.read_text(encoding="utf-8")) for f in sorted((folder or HERE / "guide_profiles").glob("ASTRO-*.json"))]
+PACK = HERE / "pack" / "guides.json"
+
+
+def _pack(source: Path | None = None) -> dict:
+	return json.loads((source or PACK).read_text(encoding="utf-8"))
+
+
+def profiles(source: Path | None = None) -> list[dict]:
+	return _pack(source)["profiles"]
 
 
 def problems(profile: dict) -> list[str]:
 	"""Why a profile cannot be used: what the schema says is wrong with it, or the discipline no skill covers."""
 	import jsonschema
 
-	schema = json.loads((HERE / "guide_profiles" / "schema.json").read_text(encoding="utf-8")) if (HERE / "guide_profiles" / "schema.json").exists() else {}
+	schema = json.loads((HERE / "pack" / "guides.schema.json").read_text(encoding="utf-8"))
 	found = [f"{'/'.join(str(p) for p in e.absolute_path) or 'profile'}: {e.message}" for e in sorted(jsonschema.Draft202012Validator(schema).iter_errors(profile), key=lambda e: list(e.absolute_path))][:ISSUES_FIRST]
 	if not found:  # the schema keeps these loose; the guide needs them
 		who, method = profile["persona"], profile.get("consultation_method") or {}
@@ -74,20 +81,18 @@ def persona_values(profile: dict, sequence: int) -> dict:
 
 
 def _avatar_prompt(profile: dict) -> str:
-	f = HERE / "guide_profiles" / "avatar-prompts" / f"{profile['profile_id']}.txt"
-	return f.read_text(encoding="utf-8").strip() if f.exists() else (profile.get("identity") or {}).get("appearance", "")
+	return profile.get("avatar_prompt") or (profile.get("identity") or {}).get("appearance", "")
 
 
-def held(folder: Path | None = None) -> dict:
-	"""Profiles whose guide waits for something the site cannot do yet (guide_profiles/held.json: profile_id -> why). They are made, switched off."""
-	f = (folder or HERE / "guide_profiles") / "held.json"
-	return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
+def held(source: Path | None = None) -> dict:
+	"""Profiles whose guide waits for something the site cannot do yet (the pack's "held": profile_id -> why). They are made, switched off."""
+	return _pack(source).get("held") or {}
 
 
-def plan(folder: Path | None = None) -> list[dict]:
+def plan(source: Path | None = None) -> list[dict]:
 	"""For each profile: made (new), kept (a guide from it exists) or skipped (with the reasons), and whether the guide would be on."""
 	out = []
-	for profile in profiles(folder):
+	for profile in profiles(source):
 		pid = profile.get("profile_id") or "?"
 		bad = problems(profile)
 		if bad:
@@ -98,17 +103,17 @@ def plan(folder: Path | None = None) -> list[dict]:
 			out.append({"profile": pid, "action": "skipped", "why": [f"another guide already uses the key {profile['slug']}"]})
 		else:
 			skill = frappe.db.get_value(SKILL, DISCIPLINE_SKILL[profile["discipline"]], ["enabled", "area"], as_dict=True)
-			wait = held(folder).get(pid)
+			wait = held(source).get(pid)
 			out.append({"profile": pid, "action": "made", "why": [wait] if wait else [], "on": bool(skill and skill.enabled and skill.area and not wait)})
 	return out
 
 
-def run(preview: bool = False, folder: str | None = None) -> list[dict]:
+def run(preview: bool = False, source: str | None = None) -> list[dict]:
 	"""Makes each guide that is missing (nothing at all with preview). Needs the skills to exist first."""
-	steps = plan(Path(folder) if folder else None)
+	steps = plan(Path(source) if source else None)
 	if preview or not frappe.db.exists("DocType", PERSONA):
 		return steps
-	by_id = {p.get("profile_id"): p for p in profiles(Path(folder) if folder else None)}
+	by_id = {p.get("profile_id"): p for p in profiles(Path(source) if source else None)}
 	made = 0
 	for step in steps:
 		if step["action"] != "made":
