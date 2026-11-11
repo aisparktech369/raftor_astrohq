@@ -175,7 +175,7 @@ def definitions() -> list[dict]:
 			"method": REMIND + "list_reminders", "empty": _("You have no reminders yet. Add the days you follow and we will tell you before each one."),
 			"links": [{"label": _("Add a reminder"), "href": _my("reminders/new"), "kind": "primary", "where": "top"}]},
 			menu={"label": _("My reminders"), "summary": _("Be told before Ashtami, Amavasya, Ekadashi and the days you follow."), "order": 18, "side": {"order": 29}}),
-		_form("my/reminders/new", _("Add a reminder"), _("Fill in what you follow. Fill in more than one and the reminder is for the days when all of them hold, such as Ashtami on a Tuesday."), {
+		_form("my/reminders/new", _("Add a reminder"), _("Fill in what you follow. Fill in more than one and you are told on each of them, such as Ashtami or every Tuesday."), {
 			"save": REMIND + "save_reminder", "submit_label": _("Save"), "cancel_label": _("Cancel"), "cancel_url": _my("reminders"), "success_redirect": _my("reminders"),
 			"fields": [
 				{"name": "tithi", "label": _("Tithi"), "type": "select", "placeholder": _("Any tithi"), "options": reminders.TITHIS, "hint": _("For example Ashtami, Ekadashi, Amavasya.")},

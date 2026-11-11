@@ -27,10 +27,20 @@ class TestWhichDays(AstroTestCase):
 		self.assertTrue(reminders.follows({"tithi": "Amavasya"}, day(tithi="Amavasya", paksha="Krishna")))
 		self.assertTrue(reminders.follows({"tithi": "Purnima", "paksha": "Both"}, day(tithi="Purnima", paksha="Shukla")))
 
-	def test_everything_a_reminder_names_must_hold(self):
-		self.assertTrue(reminders.follows({"tithi": "Ashtami", "weekday": "Tuesday"}, day()))
-		self.assertFalse(reminders.follows({"tithi": "Ashtami", "weekday": "Friday"}, day()))
-		self.assertTrue(reminders.follows({"weekday": "Tuesday"}, day(tithi="Dashami")))
+	def test_any_of_the_things_a_reminder_names_is_enough(self):
+		self.assertTrue(reminders.follows({"tithi": "Ashtami", "weekday": "Friday"}, day()))  # an Ashtami that is not a Friday
+		self.assertTrue(reminders.follows({"tithi": "Ekadashi", "weekday": "Tuesday"}, day()))  # a Tuesday that is not an Ekadashi
+		self.assertFalse(reminders.follows({"tithi": "Ekadashi", "weekday": "Friday"}, day()))  # neither
+		self.assertTrue(reminders.follows({"tithi": "Ekadashi", "special": "Ravi Pushya"}, day(weekday="Sunday", nakshatras={"Pushya"})))
+
+	def test_a_fortnight_only_narrows_its_tithi(self):
+		self.assertFalse(reminders.follows({"tithi": "Ashtami", "paksha": "Shukla"}, day()))  # a Krishna Ashtami
+		self.assertTrue(reminders.follows({"tithi": "Ashtami", "paksha": "Shukla", "weekday": "Tuesday"}, day()))  # but the Tuesday still counts
+
+	def test_the_message_says_which_one_the_day_is(self):
+		reminder = {"tithi": "Ekadashi", "weekday": "Tuesday", "paksha": "Both"}
+		self.assertIn("is a Tuesday", reminders.text_for(reminder, day(), "evening"))
+		self.assertEqual(reminders.why({"tithi": "Ashtami", "paksha": "Krishna", "weekday": "Tuesday"}, day()), "Ashtami (Krishna) and a Tuesday")
 
 	def test_a_reminder_that_names_nothing_never_holds(self):
 		self.assertFalse(reminders.follows({"tithi": "", "weekday": "", "special": ""}, day()))
@@ -48,7 +58,7 @@ class TestWhichDays(AstroTestCase):
 		self.assertEqual(reminders.title_of({"tithi": "Ashtami", "paksha": "Krishna"}), "Ashtami (Krishna)")
 		self.assertEqual(reminders.title_of({"tithi": "Amavasya", "paksha": "Both"}), "Amavasya")
 		self.assertEqual(reminders.title_of({"weekday": "Tuesday"}), "Every Tuesday")
-		self.assertEqual(reminders.title_of({"tithi": "Ashtami", "paksha": "Both", "weekday": "Tuesday"}), "Ashtami on a Tuesday")
+		self.assertEqual(reminders.title_of({"tithi": "Ashtami", "paksha": "Both", "weekday": "Tuesday"}), "Ashtami or Every Tuesday")
 		text = reminders.text_for({"tithi": "Ashtami", "paksha": "Krishna"}, day(), "evening")
 		self.assertIn("Tomorrow", text)
 		self.assertIn("begins", text)
@@ -134,7 +144,7 @@ class TestSending(AstroTestCase):
 		sent, _ = self._run("morning")  # the Ashtami reminder is Both, the Friday one is Morning of but today is a Tuesday
 		self.assertEqual(sent, 1)
 		sent, _ = self._run("morning", weekday="Friday", tithi="Dashami")
-		self.assertEqual(sent, 1)  # the Friday reminder holds, the Ashtami one does not
+		self.assertEqual(sent, 1)  # the Friday reminder holds, the Ashtami one does not (and the first was already sent for the Tuesday)
 
 	def test_a_paused_reminder_or_a_disabled_person_is_not_told(self):
 		for name in frappe.get_all("Astro Reminder", filters={"user": self.me.name}, pluck="name"):

@@ -2,7 +2,7 @@
 
 A signed-in person says which days they follow and is told before each one. Page `/my/reminders` (in the account menu) lists them (Pause or turn on, Delete) and `/my/reminders/new` adds one.
 
-A reminder names any of: a **tithi** (Pratipada to Chaturdashi, Purnima, Amavasya) with a **fortnight** (Shukla, Krishna or Both), a **weekday**, a **special day** (Ravi Pushya, Guru Pushya, Sarvartha Siddhi, Amrit Siddhi), and when to tell them: the evening before, the morning of, or both. It holds on a day when **everything it names holds** (Ashtami on a Tuesday). Up to 20 a person; the same one twice is refused.
+A reminder names any of: a **tithi** (Pratipada to Chaturdashi, Purnima, Amavasya) with a **fortnight** (Shukla, Krishna or Both), a **weekday**, a **special day** (Ravi Pushya, Guru Pushya, Sarvartha Siddhi, Amrit Siddhi), and when to tell them: the evening before, the morning of, or both. It holds on a day when **any of the things it names holds** (Ashtami, or every Tuesday): the message says which one the day is. Up to 20 a person; the same one twice is refused.
 
 ## How it runs (reminders.py)
 * The day's facts come from the Panchang's engine answer at the Panchang's town (`panchang.day`): the tithi at sunrise with when it begins and ends, the weekday, the nakshatra (it counts for a special day when it holds at sunrise or begins before the next sunrise). No AI.

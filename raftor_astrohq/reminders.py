@@ -1,7 +1,7 @@
 """My reminders: a person says which days they follow (a tithi such as Ashtami or Amavasya in either fortnight, a weekday, a special day such as Ravi Pushya, or a mix such as Ashtami on a Tuesday)
 and is told before each one, by the evening before and/or the morning of, through Notification HQ (the bell in the app and email today; SMS and WhatsApp when they are switched on there).
 
-Nothing is sent that a person did not add. A reminder holds when EVERY thing it names holds on the day:
+Nothing is sent that a person did not add. A reminder holds when ANY thing it names holds on the day (it can name a tithi, a weekday and a special day: it is told on each of them):
   tithi (and the fortnight, unless Both)   the tithi at sunrise, as the Panchang says it and as a person keeps a vrat; the message also says when it begins and ends
   weekday                                  the day of the week
   special day                              Ravi Pushya (Sunday with Pushya), Guru Pushya (Thursday with Pushya), Sarvartha Siddhi and Amrit Siddhi (a weekday with its nakshatras); the nakshatra counts
@@ -65,26 +65,29 @@ def specials(day: dict) -> list[str]:
 
 
 def follows(reminder, day: dict) -> bool:
-	"""Whether the day is one this reminder names: every part it names must hold, and it must name at least one."""
-	named = False
-	if reminder.get("tithi"):
-		named = True
-		if day["tithi"] != reminder["tithi"] or (reminder.get("paksha") not in (None, "", "Both") and day["paksha"] != reminder["paksha"]):
-			return False
-	if reminder.get("weekday"):
-		named = True
-		if day["weekday"] != reminder["weekday"]:
-			return False
-	if reminder.get("special"):
-		named = True
-		if reminder["special"] not in specials(day):
-			return False
-	return named
+	"""Whether the day is one this reminder names: ANY of the things it names is enough (a tithi, a weekday or a special day), and it must name at least one. A fortnight only narrows its tithi."""
+	if reminder.get("tithi") and day["tithi"] == reminder["tithi"] and (reminder.get("paksha") in (None, "", "Both") or day["paksha"] == reminder["paksha"]):
+		return True
+	if reminder.get("weekday") and day["weekday"] == reminder["weekday"]:
+		return True
+	return bool(reminder.get("special")) and reminder["special"] in specials(day)
+
+
+def why(reminder, day: dict) -> str:
+	"""Every part of the reminder that holds on this day, in words, for the message: Amavasya, a Tuesday, Ashtami (Krishna) and a Tuesday."""
+	parts = []
+	if reminder.get("tithi") and day["tithi"] == reminder["tithi"] and (reminder.get("paksha") in (None, "", "Both") or day["paksha"] == reminder["paksha"]):
+		parts.append(title_of({"tithi": reminder["tithi"], "paksha": reminder.get("paksha")}))
+	if reminder.get("special") and reminder["special"] in specials(day):
+		parts.append(reminder["special"])
+	if reminder.get("weekday") and day["weekday"] == reminder["weekday"]:
+		parts.append(_("a {0}").format(_(reminder["weekday"])))
+	return _(" and ").join(parts)
 
 
 # ---- the words ----
 def title_of(reminder) -> str:
-	"""Ashtami (Krishna), Every Tuesday, Ravi Pushya, Ashtami on a Tuesday"""
+	"""Ashtami (Krishna), Every Tuesday, Ravi Pushya, or several joined by "or": Ashtami (Krishna) or Every Tuesday"""
 	parts = []
 	if reminder.get("tithi"):
 		fortnight = reminder.get("paksha")
@@ -92,8 +95,8 @@ def title_of(reminder) -> str:
 	if reminder.get("special"):
 		parts.append(reminder["special"])
 	if reminder.get("weekday"):
-		parts.append(_("on a {0}").format(_(reminder["weekday"])) if parts else _("Every {0}").format(_(reminder["weekday"])))
-	return " ".join(parts)
+		parts.append(_("Every {0}").format(_(reminder["weekday"])))
+	return _(" or ").join(parts)
 
 
 def lead_words(lead: str) -> str:
@@ -101,16 +104,15 @@ def lead_words(lead: str) -> str:
 
 
 def text_for(reminder, day: dict, slot: str) -> str:
-	"""What the message says: the day, what it is, and when the tithi begins and ends."""
+	"""What the message says: the day, which of the things you follow it is, and when the tithi begins and ends."""
 	date = day["date"]
 	label = date.strftime("%A %d %B")
 	opening = _("Tomorrow, {0}, is {1}.") if slot == "evening" else _("Today, {0}, is {1}.")
-	lines = [opening.format(label, title_of(reminder))]
+	lines = [opening.format(label, why(reminder, day))]
 	tithi = f"{day['tithi']} ({day['paksha']})" if day["tithi"] not in ("Purnima", "Amavasya") else day["tithi"]
 	if day["tithi_begins"] and day["tithi_ends"]:
-		only_tithi = reminder.get("tithi") and not reminder.get("weekday") and not reminder.get("special")
-		lines.append((_("It begins {1} and ends {2}.") if only_tithi else _("{0} begins {1} and ends {2}.")).format(tithi, when(day["tithi_begins"], date), when(day["tithi_ends"], date)))
-	if reminder.get("special"):
+		lines.append(_("The tithi is {0}: it begins {1} and ends {2}.").format(tithi, when(day["tithi_begins"], date), when(day["tithi_ends"], date)))
+	if reminder.get("special") and reminder["special"] in specials(day):
 		lines.append(_("Nakshatra: {0}.").format(day["nakshatra"]))
 	return " ".join(lines)
 
