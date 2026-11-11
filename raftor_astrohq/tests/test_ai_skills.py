@@ -3,6 +3,7 @@ import copy
 import json
 import tempfile
 from pathlib import Path
+from unittest.mock import patch
 
 import frappe
 
@@ -101,9 +102,12 @@ class TestSkills(AstroTestCase):
 		self.assertIn("add to your other rules", voice)
 
 
-def _profile(**kw):
-	one = next(p for p in ai_profiles.profiles() if p["profile_id"] == "ASTRO-NUM-001")
-	return {**one, "profile_id": "T-PROF-001", "slug": "t-prof", "display_name": "T Prof", **kw}
+def _person(**kw):
+	"""A person as the factory gives it (through AgentsHQ), made up for the test."""
+	from raftor_agentshq import personas
+
+	one = next(p for p in personas.catalogue() if p["profile_id"] == "ASTRO-NUM-001")
+	return {**one, "profile_id": "T-PROF-001", "key": "t-prof", "name": "T Prof", **kw}
 
 
 class TestProfiles(AstroTestCase):
@@ -111,34 +115,31 @@ class TestProfiles(AstroTestCase):
 		super().setUp()
 		_clean()
 		self.source = Path(tempfile.mkdtemp()) / "guides.json"
-		self.pack = {"held": {}, "profiles": []}
+		self.pack = {"held": {}, "names": {}}
+		self.people = []
+		patcher = patch.object(ai_profiles, "persons", lambda: self.people)
+		patcher.start()
+		self.addCleanup(patcher.stop)
 
 	def tearDown(self):
 		frappe.set_user("Administrator")
 		frappe.db.rollback()
 		_clean()
 
-	def _put(self, profile, name=None):
-		self.pack["profiles"].append(profile)
+	def _use(self, *people):
+		self.people.extend(people)
 		self.source.write_text(json.dumps(self.pack), encoding="utf-8")
 
-	def test_every_profile_that_ships_fits_the_schema_and_a_skill(self):
-		shipped = ai_profiles.profiles()
-		self.assertEqual(len(shipped), 50)
-		for profile in shipped:
-			self.assertEqual(ai_profiles.problems(profile), [], profile["profile_id"])
-		self.assertEqual(len({p["slug"] for p in shipped}), 50)
-		self.assertEqual(len({p["profile_id"] for p in shipped}), 50)
+	def test_the_factory_carries_fifty_persons_and_every_one_has_a_skill_here(self):
+		from raftor_agentshq import personas
 
-	def test_a_profile_that_does_not_fit_is_reported_and_skipped(self):
-		bad = _profile(); del bad["persona"]
-		self._put(bad, "ASTRO-a.json"); self._put(_profile(discipline="astro_cooking", slug="t-bad2", profile_id="T-BAD-2"), "ASTRO-b.json")
-		steps = ai_profiles.plan(self.source)
-		self.assertEqual([s["action"] for s in steps], ["skipped", "skipped"])
-		self.assertTrue(any("persona" in w for w in steps[0]["why"]))
+		shipped = personas.catalogue()
+		self.assertEqual(len(shipped), 50)
+		self.assertEqual(len({p["key"] for p in shipped}), 50)
+		self.assertTrue(all(p["discipline"] in ai_profiles.DISCIPLINE_SKILL for p in shipped))
 
 	def test_preview_changes_nothing_and_a_run_makes_the_guide_once(self):
-		self._put(_profile())
+		self._use(_person())
 		self.assertEqual(ai_profiles.run(preview=True, source=str(self.source))[0]["action"], "made")
 		self.assertFalse(frappe.db.exists("AI Guide Persona", "t-prof"))
 		ai_profiles.run(source=str(self.source))
@@ -151,25 +152,42 @@ class TestProfiles(AstroTestCase):
 		self.assertEqual(frappe.db.get_value("AI Guide Persona", "t-prof", "guide_name"), "Edited in Desk")
 		self.assertEqual(frappe.db.count("AI Guide Persona", {"profile_id": "T-PROF-001"}), 1)
 
+	def test_this_platform_may_give_the_person_another_name(self):
+		self.pack["names"] = {"T-PROF-001": "Arjun of Astro"}
+		self._use(_person())
+		ai_profiles.run(source=str(self.source))
+		self.assertEqual(frappe.db.get_value("AI Guide Persona", "t-prof", "guide_name"), "Arjun of Astro")
+
 	def test_a_guide_whose_skill_is_off_is_made_switched_off(self):
-		self._put(_profile(discipline="tarot"))
+		self._use(_person(discipline="tarot"))
 		ai_profiles.run(source=str(self.source))
 		self.assertEqual(frappe.db.get_value("AI Guide Persona", "t-prof", ["enabled", "area"]), (0, ""))
 
+	def test_a_person_with_a_discipline_no_skill_covers_is_skipped_with_the_reason(self):
+		self._use(_person(discipline="astro_cooking"))
+		step = ai_profiles.plan(self.source)[0]
+		self.assertEqual(step["action"], "skipped")
+		self.assertIn("astro_cooking", step["why"][0])
+
 	def test_a_guide_that_waits_for_a_calculation_the_engine_lacks_is_made_switched_off_with_the_reason(self):
-		self._put(_profile())
 		self.pack["held"] = {"T-PROF-001": "no Pythagorean sums in the engine"}
-		self.source.write_text(json.dumps(self.pack), encoding="utf-8")
+		self._use(_person())
 		step = ai_profiles.plan(self.source)[0]
 		self.assertEqual((step["action"], step["on"], step["why"]), ("made", False, ["no Pythagorean sums in the engine"]))
 		ai_profiles.run(source=str(self.source))
 		self.assertEqual(frappe.db.get_value("AI Guide Persona", "t-prof", "enabled"), 0)
 
-	def test_every_held_profile_exists_and_is_a_numerology_one_the_engine_cannot_do(self):
-		held = ai_profiles.held()
-		self.assertTrue(set(held) <= {p["profile_id"] for p in ai_profiles.profiles()})
+	def test_every_held_person_is_one_the_factory_carries(self):
+		from raftor_agentshq import personas
 
-	def test_the_voice_direction_sets_the_language(self):
-		self.assertEqual(ai_profiles.languages("Deep, Hindi-first with clear explanations"), "Hindi, English")
-		self.assertEqual(ai_profiles.languages("Calm male voice; conversational English and Hinglish."), "Hinglish, English")
-		self.assertEqual(ai_profiles.languages("Mature male voice, neutral Indian English with clear Hindi"), "English")
+		self.assertTrue(set(ai_profiles.held()) <= {p["profile_id"] for p in personas.catalogue()})
+
+	def test_a_portrait_the_factory_carries_becomes_the_guides_picture_unless_one_is_attached(self):
+		self._use(_person())
+		with patch("raftor_agentshq.personas.image", lambda pid: ("ASTRO-NUM-001.png", b"\x89PNG fake")):
+			ai_profiles.run(source=str(self.source))
+		avatar = frappe.db.get_value("AI Guide Persona", "t-prof", "avatar")
+		self.assertEqual(avatar, "/files/guide-t-prof.png")
+		self.assertEqual(frappe.db.get_value("Provider", "t-prof", "photo"), avatar)
+		frappe.db.delete("File", {"file_url": avatar})
+		Path(frappe.get_site_path("public", "files", "guide-t-prof.png")).unlink(missing_ok=True)

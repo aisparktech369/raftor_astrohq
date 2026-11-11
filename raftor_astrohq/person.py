@@ -366,16 +366,13 @@ def read_report(user: str, who: str, kind: str, guide_user: str) -> dict:
 
 
 def persona_voice(persona: str, guide: str) -> str:
-	"""The words that make one guide of an area sound like itself (AgentsHQ asks with the name the chat gives and the area's agent). Only an enabled guide of that very area has a voice; any other name gives nothing."""
+	"""The words that make one guide of an area sound like itself (AgentsHQ asks with the name the chat gives and the area's agent). Only an enabled guide of that very area, with all its skills on, has a voice; any other name gives nothing. The words are built by the factory's person (raftor_agentshq.personas) from the fields staff keep in Desk."""
+	from raftor_agentshq import personas
 	from raftor_astrohq import ai_guides
 
-	row = frappe.db.get_value("AI Guide Persona", {"slug": persona, "area": guide, "enabled": 1}, ["guide_name", "voice", "traits", "mindset", "communication_style", "signature_line", "topics", "workflow", "response_format", "boundaries"], as_dict=True) if persona else None
-	if not (row and ai_guides.is_on(persona) and ai_guides.voice_of(row)):
-		return ""
-	first = ((frappe.db.get_value("AI Guide Persona", persona, "languages") or "").split(",")[0] or "").strip().lower()
-	language = {"hinglish": "Hinglish: Hindi words written in Roman letters, mixed with English as the person does", "hindi": "Hindi (Devanagari, unless the person writes in Roman letters)"}.get(first, "")
-	return (f"Voice for this chat. You are {row.guide_name}, one of several AI guides of the same kind, each with its own way of speaking. For the language, the tone and the length of your replies, the following takes precedence over any default language or tone you were given; "
-			f"your boundaries, rules and tools do not change. " + (f"Write every reply in {language}. " if language else "") + ai_guides.voice_of(row)).strip()
+	fields = ["guide_name", "voice", "languages", "traits", "mindset", "communication_style", "signature_line", "topics", "workflow", "response_format", "boundaries"]
+	row = frappe.db.get_value("AI Guide Persona", {"slug": persona, "area": guide, "enabled": 1}, fields, as_dict=True) if persona else None
+	return personas.voice(row.guide_name, row) if row and ai_guides.is_on(persona) else ""
 
 
 def persona_shelves(persona: str, guide: str) -> list:

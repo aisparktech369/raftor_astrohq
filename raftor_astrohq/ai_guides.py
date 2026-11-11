@@ -94,29 +94,13 @@ def shelves(persona: str, area: str) -> list[str]:
 	return found
 
 
-def voice_of(row) -> str:
-	"""The words a guide is given: what staff wrote as its voice, then what its profile says of its character, its way of working, the shape of its answers and its boundaries."""
-	lines = [row.voice or ""]
-	if row.traits or row.mindset or row.communication_style:
-		lines.append("Your character: " + "; ".join(x for x in (row.traits and f"{row.traits}", row.mindset and f"mindset: {row.mindset}", row.communication_style and f"you communicate: {row.communication_style}") if x))
-	if row.signature_line:
-		lines.append(f'Your signature line, to use now and then and not in every reply: "{row.signature_line}"')
-	if row.topics:
-		lines.append(f"You lean toward: {row.topics}.")
-	if row.workflow:
-		lines.append("Your way of working, in this order when it fits the question:\n" + "\n".join(f"{i}. {x}" for i, x in enumerate((l for l in row.workflow.splitlines() if l.strip()), 1)))
-	if row.response_format:
-		lines.append("When you give a full reading, shape it as: " + "; ".join(l.strip() for l in row.response_format.splitlines() if l.strip()) + ".")
-	if row.boundaries:
-		lines.append("You also always keep to (these add to your other rules):\n" + "\n".join(f"- {l.strip()}" for l in row.boundaries.splitlines() if l.strip()))
-	return "\n".join(x for x in lines if x).strip()
-
 
 def sync_persona(persona) -> None:
 	"""A persona's listing: its Provider (the card on Seek guidance, always online, labelled AI), made when missing and kept in step with what staff write in Desk (name, words, languages, picture, on or off)."""
 	if not _available() or persona.area not in AREA_WORD:
 		return
 	slug = persona.slug
+	_portrait(persona)
 	_make({"slug": slug, "name": persona.guide_name, "persona": AREA_WORD[persona.area], "page": f"ask/guide?persona={slug}", "photo": f"guide-{slug}.svg", "languages": persona.languages or "English",
 		   "bio": " ".join(x for x in (persona.tagline and persona.tagline.rstrip(".") + ".", persona.bio) if x)})
 	values = {"display_name": persona.guide_name, "bio": f"<p>{' '.join(x for x in (persona.tagline and persona.tagline.rstrip('.') + '.', persona.bio) if x)}</p>", "status": "Live" if persona.enabled and all(s and s.enabled for s in skills_of(persona)) else "Paused"}
@@ -125,6 +109,22 @@ def sync_persona(persona) -> None:
 	frappe.db.set_value("Provider", slug, values)
 	if frappe.db.exists("Astrologer Profile", slug) and persona.languages:
 		frappe.db.set_value("Astrologer Profile", slug, "languages", persona.languages)
+
+
+def _portrait(persona) -> None:
+	"""The portrait the factory carries for the person this guide was made from, when the guide has no picture of its own yet (one attached in Desk is never replaced)."""
+	if persona.avatar or not persona.profile_id:
+		return
+	try:
+		from raftor_agentshq import personas
+
+		found = personas.image(persona.profile_id)
+	except ImportError:
+		return
+	if found:
+		name, data = found
+		persona.avatar = _keep_photo(f"guide-{persona.slug}{Path(name).suffix}", data, persona.slug)
+		frappe.db.set_value(PERSONA, persona.name, "avatar", persona.avatar)
 
 
 PICTURE_TONES = {"Pandit ji": ("#8a3b12", "#f0a04b"), "Numerologist": ("#5b2a86", "#c86bd0"), "Dream interpreter": ("#1f3b73", "#6fa8f0")}
