@@ -45,8 +45,9 @@ AREAS = {"love": ("Venus", "Moon", "Jupiter"), "money": ("Jupiter", "Mercury", "
 # the lucky colour and number: those of the first planet in this order that is in a good house
 LUCKY = [("Jupiter", "Yellow", "पीला", 3), ("Venus", "White", "सफ़ेद", 6), ("Moon", "Silver white", "चाँदी जैसा सफ़ेद", 2), ("Mercury", "Green", "हरा", 5),
 		 ("Sun", "Orange", "नारंगी", 1), ("Mars", "Red", "लाल", 9), ("Saturn", "Blue", "नीला", 8), ("Ketu", "Brown", "भूरा", 7), ("Rahu", "Grey", "स्लेटी", 4)]
-LABELS = {"en": {"love": "Love", "money": "Money", "work": "Work", "health": "Health", "colour": "Lucky colour", "number": "Number", "tap": "Tap to read", "title": "Today's rashifal"},
-		  "hi": {"love": "प्रेम", "money": "धन", "work": "कार्य", "health": "स्वास्थ्य", "colour": "शुभ रंग", "number": "अंक", "tap": "पढ़ने के लिए छुएँ", "title": "आज का राशिफल"}}
+SWATCH = {"Yellow": "#f2c230", "White": "#f4f1ea", "Silver white": "#cfd3da", "Green": "#3fae6a", "Orange": "#f28a30", "Red": "#d9433b", "Blue": "#3b6fd9", "Brown": "#8a5a3c", "Grey": "#8b8f98"}
+LABELS = {"en": {"love": "Love", "money": "Money", "work": "Work", "health": "Health", "colour": "Lucky colour", "number": "Number", "tap": "Tap to reveal", "good": "A good day", "steady": "A steady day", "slow": "Go slowly"},
+		  "hi": {"love": "प्रेम", "money": "धन", "work": "कार्य", "health": "स्वास्थ्य", "colour": "शुभ रंग", "number": "अंक", "tap": "देखने के लिए छुएँ", "good": "शुभ दिन", "steady": "सामान्य दिन", "slow": "धीरे चलें"}}
 PARTS = ("summary", "love", "money", "work", "health")
 LIMITS = {"summary": 110, "love": 90, "money": 90, "work": 90, "health": 90}
 DEVANAGARI = re.compile("[ऀ-ॿ]")
@@ -114,6 +115,11 @@ def house(planet_sign: int, from_sign: int) -> int:
 	return (planet_sign - from_sign) % 12 + 1
 
 
+def score(share: float) -> int:
+	"""A share of good planets (0 to 1) as a bar from 35 to 95: never near empty (a bar is a mood, not a verdict) and never full, because a sky is never all one thing."""
+	return round(35 + min(max(share, 0.0), 1.0) * 60)
+
+
 def lean(share: float) -> str:
 	return "positive" if share >= 0.67 else "careful" if share <= 0.34 else "mixed"
 
@@ -123,13 +129,14 @@ def facts(sky_: dict, number: int) -> dict:
 	good = {}
 	for planet, where in sky_["positions"].items():
 		good[planet] = house(where["sign"], number) in GOOD[planet]
-	leans = {area: lean(sum(good[p] for p in planets) / len(planets)) for area, planets in AREAS.items()}
+	shares = {area: sum(good[p] for p in planets) / len(planets) for area, planets in AREAS.items()}
+	leans = {area: lean(share) for area, share in shares.items()}
 	colour = next(((en, hi, n) for planet, en, hi, n in LUCKY if good.get(planet)), None) or LUCKY[0][1:]
 	moon_house = house(sky_["positions"]["Moon"]["sign"], number)
 	count, element_ruler = sum(good.values()), CHARACTER[number]
 	best, worst = max(leans, key=lambda a: (RANK[leans[a]], -list(AREAS).index(a))), min(leans, key=lambda a: (RANK[leans[a]], list(AREAS).index(a)))
 	return {"sign": rashi(number)[1], "element": element_ruler[0], "ruling_planet": element_ruler[1], "weekday": sky_["weekday"], "moon_nakshatra": sky_["nakshatra"],
-			"moon_house_from_sign": moon_house, "day": "a good day" if count >= 6 else "a day to go slowly" if count <= 3 else "a steady day", "lean": leans,
+			"moon_house_from_sign": moon_house, "day": "a good day" if count >= 6 else "a day to go slowly" if count <= 3 else "a steady day", "lean": leans, "scores": {area: score(share) for area, share in shares.items()},
 			"best_area": best if leans[best] != "careful" else "", "area_to_handle_gently": worst if leans[worst] != "positive" else "",
 			"planets_in_good_houses": count, "lucky_colour": colour[0], "lucky_colour_hindi": colour[1], "lucky_number": colour[2]}
 
@@ -206,7 +213,7 @@ def write_day(on_date=None, manual: bool = False) -> dict:
 			continue
 		record = {"doctype": DOCTYPE, "for_date": on_date, "rashi_no": number, "rashi": rashi(number)[1], "status": "Published" if s.publish_at_once else "Draft",
 				  "lucky_number": given["lucky_number"], "facts": json.dumps(given, ensure_ascii=False), "model": model, "written_on": now_datetime(),
-				  "colour_en": given["lucky_colour"], "colour_hi": given["lucky_colour_hindi"]}
+				  "colour_en": given["lucky_colour"], "colour_hi": given["lucky_colour_hindi"], **{f"{area}_score": value for area, value in given["scores"].items()}}
 		for language in ("en", "hi"):
 			for part in PARTS:
 				record[f"{part}_{language}"] = words[language][part]
@@ -252,9 +259,11 @@ def cards() -> dict:
 	for number in sorted(rows):
 		row = rows[number]
 		names = {"en": rashi(number)[1], "hi": rashi(number)[3]}
-		lines = [f"{labels[area]}: {row.get(f'{area}_{language}') or ''}" for area in AREAS]
+		scores = {area: int(row.get(f"{area}_score") or 0) for area in AREAS}
+		average = sum(scores.values()) / len(scores)
+		mood = labels["good"] if average >= 66 else labels["slow"] if average <= 52 else labels["steady"]
 		items.append({"layout": "Flip", "number": rashi(number)[4] + "\ufe0e", "title": names[language], "meta": names[other], "tag": frappe.utils.formatdate(day, "d MMM"),
-					  "link_label": labels["tap"], "body": row.get(f"summary_{language}") or "", "pills": "\n".join(lines),
+					  "link_label": labels["tap"], "body": mood, "pills": "\n".join(f"{labels[area]}: {scores[area]}" for area in AREAS), "about": SWATCH.get(row.colour_en or "", ""),
 					  "note": f"{labels['colour']}: {row.get(f'colour_{language}') or ''} · {labels['number']}: {row.lucky_number or ''}"})
 	return {"items": items}
 

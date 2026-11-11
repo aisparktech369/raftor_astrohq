@@ -11,6 +11,11 @@
   "rashi",
   "status",
   "lucky_number",
+  "scores_section",
+  "love_score",
+  "money_score",
+  "work_score",
+  "health_score",
   "en_section",
   "summary_en",
   "love_en",
@@ -180,6 +185,35 @@
    "fieldname": "problem",
    "fieldtype": "Small Text",
    "label": "Problem",
+   "read_only": 1
+  },
+  {
+   "fieldname": "scores_section",
+   "fieldtype": "Section Break",
+   "label": "How the day leans (0 to 100, from the sky)"
+  },
+  {
+   "fieldname": "love_score",
+   "fieldtype": "Int",
+   "label": "Love",
+   "read_only": 1
+  },
+  {
+   "fieldname": "money_score",
+   "fieldtype": "Int",
+   "label": "Money",
+   "read_only": 1
+  },
+  {
+   "fieldname": "work_score",
+   "fieldtype": "Int",
+   "label": "Work",
+   "read_only": 1
+  },
+  {
+   "fieldname": "health_score",
+   "fieldtype": "Int",
+   "label": "Health",
    "read_only": 1
   }
  ],
