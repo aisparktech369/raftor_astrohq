@@ -12,6 +12,7 @@ A finished round is counted for the stats of the plans (the meter temple_pooja, 
 """
 import json
 import os
+import re
 
 import frappe
 from frappe import _
@@ -24,6 +25,7 @@ SESSION = "Pooja Session"
 METER = "temple_pooja"
 PHOTO_TYPES = ("jpg", "jpeg", "png", "webp")
 PHOTO_MAX_MB = 8
+CHANNEL = re.compile(r"^UC[A-Za-z0-9_-]{22}$")  # a YouTube channel id
 MANDIRS_MAX = 12  # the mandirs a person may keep for their daily setup
 TILAKS_MAX = 12  # the marks of sandal a person may leave in a round: a deity or several
 
@@ -59,6 +61,18 @@ def _session(user: str, deity, kind, create: bool = False, lock: bool = False):
 	return frappe.get_doc({"doctype": SESSION, "user": user, "deity": deity.name, "kind": kind.name, "session_date": today(), "steps_done": 0, "status": "Open"}).insert(ignore_permissions=True)
 
 
+def _live(deity):
+	"""The live darshan this mandir stands for, if it is one: the page of the channel's current stream, played by YouTube's own player (muted, so the temple's own sounds are heard), and whose it is. None for a mandir made of a picture."""
+	if not (deity and deity.mandir_image):
+		return None
+	row = frappe.db.get_value(GALLERY, deity.mandir_image, ["title", "live_channel", "channel_name", "official", "aarti_times", "donate_url"], as_dict=True)
+	if not (row and CHANNEL.match(row.live_channel or "")):
+		return None
+	name = row.channel_name or row.title
+	return {"url": f"https://www.youtube-nocookie.com/embed/live_stream?channel={row.live_channel}&autoplay=1&mute=1&controls=0&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&iv_load_policy=3",
+			"credit": (_("Live from {0}") if cint(row.official) else _("Relayed from {0}")).format(name), "times": row.aarti_times or "", "official": bool(cint(row.official))}
+
+
 def _tilaks(session) -> list:
 	"""Where the person left the sandal in this round: [{"x", "y"}] in percent across and down the photo."""
 	try:
@@ -82,6 +96,7 @@ def words(kind) -> dict:
 		},
 		"done": _("Done"), "auto": _("Do it for me"), "cancel": _("Cancel"), "turn_of": _("Turn {0} of {1}"), "marks": _("{0} placed"), "fed": _("{0} offered"),
 		"not_image": _("Choose a photo (JPG, PNG or WebP)."), "too_big": _("The photo must be smaller than {0} MB.").format(PHOTO_MAX_MB), "failed": _("The photo could not be saved. Please try again."),
+		"live": _("Live"), "stream_on": _("Hear the stream"), "stream_off": _("Mute the stream"),
 		"mandirs": _("My mandirs"), "choose": _("Choose a mandir"), "upload_own": _("Upload your own"), "close": _("Close"), "current": _("Open now"), "remove": _("Remove"), "credit": _("Photo: {0} · {1}"), "gallery_title": _("Popular mandirs"), "mine_title": _("Your mandirs"),
 		"title": _("Your Digital Temple"), "enter": _("Enter"), "ring_bell": _("Ring the bell"), "sound_on": _("Turn the sound on"), "sound_off": _("Turn the sound off"),
 		"close_doors": _("Close the temple doors"), "leave": _("Leave the temple"),
@@ -93,7 +108,8 @@ def _payload(user: str, deity, played: str = "") -> dict:
 	if not kind:
 		return {"empty": _("The pooja is not available yet.")}
 	session = _session(user, deity, kind) if deity else None
-	has_photo = bool(deity and deity.photo)
+	live = _live(deity)
+	has_photo = bool(deity and (deity.photo or live))
 	total = len(kind.steps)
 	done = min(cint(session.steps_done), total) if session and has_photo else 0
 	finished = has_photo and done >= total
@@ -111,15 +127,15 @@ def _payload(user: str, deity, played: str = "") -> dict:
 		card = {"title": f"{w['next']} · {step.label}", "deva": step.devanagari or "", "mantra": step.mantra or "", "meaning": step.meaning or ""}
 	tilaks = _tilaks(session) if has_photo else []
 	mine = frappe.get_all(DEITY, filters={"user": user}, fields=["name", "title", "photo", "is_main", "mandir_image"], order_by="creation asc")
-	gallery = frappe.get_all(GALLERY, filters={"enabled": 1}, fields=["image_key", "title", "deity", "mandir", "image", "credit", "licence"], order_by="sequence asc, creation asc")
+	gallery = frappe.get_all(GALLERY, filters={"enabled": 1}, fields=["image_key", "title", "deity", "mandir", "image", "credit", "licence", "live_channel"], order_by="sequence asc, creation asc")
 	stock = frappe.db.get_value(GALLERY, deity.mandir_image, ["title", "donate_url", "credit", "licence"], as_dict=True) if deity and deity.mandir_image else None
-	return {"title": (deity.title if deity else "") or _("Your deity"), "subtitle": _("{0} Pooja · {1} offerings").format(kind.title, total), "photo": (deity.photo if has_photo else ""),
+	return {"title": (deity.title if deity else "") or _("Your deity"), "subtitle": _("{0} Pooja · {1} offerings").format(kind.title, total), "photo": (deity.photo or "") if deity else "", "live": live,
 			"steps": steps, "done": done, "total": total, "finished": finished, "card": card, "tilaks": tilaks, "played": played, "rounds": cint(session.rounds) if session else 0,
 			"words": w, "upload": {"accept": list(PHOTO_TYPES), "max_mb": PHOTO_MAX_MB}, "deity": deity.name if deity else "",
 			"mandirs": [{"id": m.name, "title": m.title or "", "photo": m.photo or "", "current": bool(deity and m.name == deity.name)} for m in mine],
-			"gallery": [{"id": g.image_key, "title": g.title, "deity": g.deity or "", "mandir": g.mandir or "", "image": g.image, "credit": w["credit"].format(g.credit or "", g.licence or "") if g.credit else ""} for g in gallery],
+			"gallery": [{"id": g.image_key, "title": g.title, "deity": g.deity or "", "mandir": g.mandir or "", "image": g.image or "", "live": bool(CHANNEL.match(g.live_channel or "")), "credit": w["credit"].format(g.credit or "", g.licence or "") if g.credit else ""} for g in gallery],
 			"donate": {"label": _("Donate to {0}").format(stock.title), "url": stock.donate_url} if stock and stock.donate_url else None,
-			"can_add": len(mine) < MANDIRS_MAX, "credit": w["credit"].format(stock.credit, stock.licence or "") if stock and stock.credit else "", "immersive": True, "haptics": True, "leave_url": "/",
+			"can_add": len(mine) < MANDIRS_MAX, "credit": (live["credit"] if live else w["credit"].format(stock.credit, stock.licence or "") if stock and stock.credit else ""), "immersive": True, "haptics": True, "leave_url": "/",
 			"sounds": {"open": kind.sound_open or "", "bell": kind.sound_bell or "", "done": kind.sound_done or "", "aarti": kind.sound_aarti or ""}}
 
 
@@ -137,7 +153,7 @@ def offer(step: str, deity: str = "") -> dict:
 	kind, found = _kind(), _deity(user, deity)
 	if not kind:
 		frappe.throw(_("The pooja is not available yet."), frappe.ValidationError)
-	if not (found and found.photo):
+	if not (found and (found.photo or _live(found))):
 		frappe.throw(_("Add your deity's photo first."), frappe.ValidationError)
 	keys = [row.step_key for row in kind.steps]
 	if step not in keys:
@@ -242,7 +258,7 @@ def choose_mandir(image: str) -> dict:
 	if not stock:
 		frappe.throw(_("That mandir is not in the gallery."), frappe.ValidationError)
 	have = frappe.db.get_value(DEITY, {"user": user, "mandir_image": stock.name}, "name")
-	found = frappe.get_doc(DEITY, have) if have else _new_mandir(user, stock.title, stock.image, stock.name)
+	found = frappe.get_doc(DEITY, have) if have else _new_mandir(user, stock.title, stock.image or "", stock.name)
 	_make_main(user, found)
 	return _payload(user, found)
 
@@ -275,7 +291,7 @@ def place_tilak(x, y, deity: str = "") -> dict:
 	"""The person leaves a mark of sandal on a deity of their photo (percent across and down); it stays for the round, and another mark may be left for another deity."""
 	user = _user()
 	kind, found = _kind(), _deity(user, deity)
-	if not (kind and found and found.photo):
+	if not (kind and found and (found.photo or _live(found))):
 		frappe.throw(_("Add your deity's photo first."), frappe.ValidationError)
 	session = _session(user, found, kind, create=True, lock=True)
 	marks = _tilaks(session)

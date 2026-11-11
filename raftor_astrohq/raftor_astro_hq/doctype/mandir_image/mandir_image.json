@@ -11,6 +11,11 @@
   "mandir",
   "enabled",
   "sequence",
+  "live_section",
+  "live_channel",
+  "channel_name",
+  "official",
+  "aarti_times",
   "image",
   "credit_section",
   "credit",
@@ -67,11 +72,40 @@
    "description": "The lowest number comes first in the gallery."
   },
   {
+   "fieldname": "live_section",
+   "fieldtype": "Section Break",
+   "label": "Live darshan"
+  },
+  {
+   "fieldname": "live_channel",
+   "fieldtype": "Data",
+   "label": "YouTube channel id",
+   "description": "Makes this a live darshan: the temple screen plays whatever this channel is streaming now, through YouTube's own player. The id starts with UC and is 24 characters."
+  },
+  {
+   "fieldname": "channel_name",
+   "fieldtype": "Data",
+   "label": "Channel name",
+   "description": "Shown under the stream as its source."
+  },
+  {
+   "fieldname": "official",
+   "fieldtype": "Check",
+   "label": "The temple's own channel",
+   "description": "Tick only for the temple's or the trust's own channel. Others are shown as relayed by the channel."
+  },
+  {
+   "fieldname": "aarti_times",
+   "fieldtype": "Small Text",
+   "label": "Aarti and darshan times",
+   "description": "Shown with the stream, for example Morning aarti 4:00, evening aarti 7:00."
+  },
+  {
    "fieldname": "image",
    "fieldtype": "Attach Image",
    "label": "Picture",
-   "reqd": 1,
-   "description": "A tall picture of the deity, ideally 900 pixels wide or more. Only a picture you have the right to use."
+   "reqd": 0,
+   "description": "A tall picture of the deity, ideally 900 pixels wide or more. Only a picture you have the right to use. Leave blank for a live darshan."
   },
   {
    "fieldname": "credit_section",
@@ -115,7 +149,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-11-11 12:30:00.000000",
+ "modified": "2026-11-11 13:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Mandir Image",

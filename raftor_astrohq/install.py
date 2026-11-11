@@ -100,7 +100,7 @@ def seed_mandirs():
 	if frappe.db.count("Mandir Image"):
 		return
 	for row in json.loads((Path(__file__).parent / "mandirs.json").read_text(encoding="utf-8"))["images"]:
-		frappe.get_doc({"doctype": "Mandir Image", "enabled": row.get("enabled", 1), "image_key": row["key"], **{k: row[k] for k in ("title", "deity", "mandir", "image", "credit", "licence", "licence_url", "source_url", "sequence")}}).insert(ignore_permissions=True)
+		frappe.get_doc({"doctype": "Mandir Image", "enabled": row.get("enabled", 1), "image_key": row["key"], **{k: row.get(k) or "" for k in ("title", "deity", "mandir", "image", "credit", "licence", "licence_url", "source_url", "live_channel", "channel_name", "official")}, "sequence": row["sequence"]}).insert(ignore_permissions=True)
 
 
 def sync_portal_menu():

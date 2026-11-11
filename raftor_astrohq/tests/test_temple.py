@@ -203,15 +203,16 @@ class TestTemple(AstroTestCase):
 	def test_the_gallery_comes_with_pictures_credited_and_licensed_and_a_person_picks_one(self):
 		gallery = temple.view()["gallery"]
 		self.assertGreaterEqual(len(gallery), 12)
-		for row in gallery:
+		pictures = [g for g in gallery if not g["live"]]
+		for row in pictures:
 			self.assertTrue(row["image"].startswith("/assets/raftor_astrohq/mandirs/"), row["id"])
 			self.assertTrue(os.path.exists(frappe.get_app_path("raftor_astrohq", "public", "mandirs", row["image"].rsplit("/", 1)[1])), row["id"])
-		for licence in frappe.get_all("Mandir Image", pluck="licence"):
+		for licence in frappe.get_all("Mandir Image", filters={"live_channel": ["in", ["", None]]}, pluck="licence"):
 			self.assertRegex(licence, r"^(CC0|CC BY|Public domain)", licence)  # nothing without a licence that allows its use
-		out = temple.choose_mandir(gallery[0]["id"])
-		self.assertEqual(out["photo"], gallery[0]["image"])
+		out = temple.choose_mandir(pictures[0]["id"])
+		self.assertEqual(out["photo"], pictures[0]["image"])
 		self.assertEqual([m["current"] for m in out["mandirs"]], [True])
-		self.assertEqual(temple.choose_mandir(gallery[0]["id"])["mandirs"][0]["id"], out["mandirs"][0]["id"])  # again: it only opens it
+		self.assertEqual(temple.choose_mandir(pictures[0]["id"])["mandirs"][0]["id"], out["mandirs"][0]["id"])  # again: it only opens it
 		self.assertEqual(out["steps"][0]["state"], "next")
 
 	def test_a_person_keeps_several_mandirs_opens_one_and_puts_one_away(self):
@@ -247,6 +248,27 @@ class TestTemple(AstroTestCase):
 		frappe.set_user(self.user)
 		out = temple.choose_mandir("ganesh")
 		self.assertEqual(out["donate"], {"label": "Donate to Ganesh ji", "url": "https://example.org/donate"})
+
+	def test_a_live_darshan_is_a_mandir_whose_picture_is_the_temples_own_stream(self):
+		live = [g for g in temple.view()["gallery"] if g["live"]]
+		self.assertGreaterEqual(len(live), 2)
+		out = temple.choose_mandir("somnath-live")
+		self.assertEqual(out["photo"], "")
+		self.assertRegex(out["live"]["url"], r"^https://www\.youtube-nocookie\.com/embed/live_stream\?channel=UC[\w-]{22}&")
+		self.assertEqual(out["live"]["credit"], "Live from Somnath Temple - Official Channel")  # the temple's own channel
+		self.assertEqual(out["credit"], out["live"]["credit"])
+		self.assertEqual(out["steps"][0]["state"], "next")  # the offerings can be made over the stream
+		self.assertEqual(temple.place_tilak(40, 40)["tilaks"], [{"x": 40, "y": 40}])
+		self.assertEqual(self.make("gandha")["done"], 1)
+		self.assertTrue(temple.choose_mandir("mahakal-live")["live"]["credit"].startswith("Relayed from "))  # someone else's relay says so
+
+	def test_a_channel_that_is_not_a_channel_id_plays_nothing(self):
+		frappe.set_user("Administrator")
+		frappe.db.set_value("Mandir Image", "somnath-live", "live_channel", "UC\"><script>alert(1)</script>")
+		frappe.set_user(self.user)
+		out = temple.choose_mandir("somnath-live")
+		self.assertIsNone(out["live"])
+		self.assertEqual(out["steps"][0]["state"], "locked")
 
 	def test_the_page_names_the_card_and_methods_that_exist(self):
 		page = page_definitions.temple_page()
