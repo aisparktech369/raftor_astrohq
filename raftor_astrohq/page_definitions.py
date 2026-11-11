@@ -115,7 +115,7 @@ def temple_page() -> dict:
 	values = {"view": TEMPLE + "view", "offer": TEMPLE + "offer", "photo": TEMPLE + "set_photo", "tilak": TEMPLE + "place_tilak", "again": TEMPLE + "again",
 			  "choose": TEMPLE + "choose_mandir", "switch": TEMPLE + "switch_mandir", "remove": TEMPLE + "remove_mandir"}
 	return {"route": "my/temple", "title": _("Your Digital Temple"), "login_required": True,
-			"sections": [{"key": "temple", "cards": [{"type": "Offering Stage Card", "values": values}], "look": TIGHT}]}  # (not in the account menu: it is a tab of the phone's bottom bar for customers, bottom_bar.py)
+			"sections": [{"key": "temple", "cards": [{"type": "Offering Stage Card", "values": values}], "look": {**TIGHT, "theme": "Temple"}}]}  # (the theme variant made for it: its tones are the room's)  # (not in the account menu: it is a tab of the phone's bottom bar for customers, bottom_bar.py)
 
 
 def definitions() -> list[dict]:

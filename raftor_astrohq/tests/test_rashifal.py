@@ -121,7 +121,9 @@ class TestADay(AstroTestCase):
 			self.assertEqual(rashifal.publish_day(DAY)["published"], 12)
 			items = rashifal.cards()["items"]
 		self.assertEqual(len(items), 12)
-		self.assertEqual(items[0]["layout"], "Flip")
+		self.assertNotIn("layout", items[0])  # the look is the variant's (websitehq), not the feed's
+		self.assertNotIn("theme", items[0])
+		self.assertEqual(items[0]["about"], "yellow")  # a colour by name, never a colour value
 		self.assertEqual((items[0]["title"], items[0]["meta"]), ("Aries", "मेष"))
 		self.assertTrue(items[0]["body"] and items[0]["pills"].count("\n") == 3 and items[0]["note"])
 
