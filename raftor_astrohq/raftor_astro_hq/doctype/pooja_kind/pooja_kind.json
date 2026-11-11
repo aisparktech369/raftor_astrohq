@@ -1,0 +1,78 @@
+{
+ "actions": [],
+ "autoname": "field:title",
+ "creation": "2026-11-11 08:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "enabled",
+  "sequence",
+  "note",
+  "steps"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Pooja",
+   "reqd": 1,
+   "unique": 1,
+   "description": "The name of the pooja, for example Panchopchar. The digital temple performs it step by step, in the order of the steps below."
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "On"
+  },
+  {
+   "default": "10",
+   "fieldname": "sequence",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Order",
+   "description": "When there is more than one pooja, the one with the lowest number is offered first."
+  },
+  {
+   "fieldname": "note",
+   "fieldtype": "Small Text",
+   "label": "About this pooja",
+   "description": "A line of words about the pooja, shown under its name."
+  },
+  {
+   "fieldname": "steps",
+   "fieldtype": "Table",
+   "label": "Steps",
+   "options": "Pooja Step",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-11 08:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Pooja Kind",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "sequence",
+ "sort_order": "ASC",
+ "states": []
+}

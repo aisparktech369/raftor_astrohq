@@ -15,6 +15,7 @@ def after_install():
 	register_provider_steps()
 	sync_portal_menu()
 	seed_topics_and_wishes()
+	seed_pooja()
 	from raftor_astrohq import ai_guides
 
 	ai_guides.ensure()
@@ -77,6 +78,17 @@ def seed_topics_and_wishes():
 			continue
 		for n, name in enumerate(names, 1):
 			frappe.get_doc({"doctype": doctype, field: name, "enabled": 1, "sequence": n * 10}).insert(ignore_permissions=True)
+
+
+def seed_pooja():
+	"""The poojas of the digital temple (pooja.json: Panchopchar), as records staff correct in Desk. Only when there are none, so a pooja staff have edited is never put back."""
+	import json
+	from pathlib import Path
+
+	if frappe.db.count("Pooja Kind"):
+		return
+	for kind in json.loads((Path(__file__).parent / "pooja.json").read_text(encoding="utf-8"))["kinds"]:
+		frappe.get_doc({"doctype": "Pooja Kind", "enabled": 1, **kind}).insert(ignore_permissions=True)
 
 
 def sync_portal_menu():

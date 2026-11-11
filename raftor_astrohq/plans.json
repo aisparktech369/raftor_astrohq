@@ -77,6 +77,12 @@
      "meter": "panchang"
     },
     {
+     "label": "Digital temple",
+     "period": "Unlimited",
+     "note": "Your own digital temple and its pooja, always free",
+     "meter": "temple_pooja"
+    },
+    {
      "label": "Academy",
      "period": "Unlimited",
      "note": "Academy articles, always free",
@@ -150,6 +156,12 @@
      "period": "Unlimited",
      "note": "Panchang for any day and town, always free",
      "meter": "panchang"
+    },
+    {
+     "label": "Digital temple",
+     "period": "Unlimited",
+     "note": "Your own digital temple and its pooja, always free",
+     "meter": "temple_pooja"
     },
     {
      "label": "Academy",
@@ -237,6 +249,12 @@
      "period": "Unlimited",
      "note": "Panchang for any day and town, always free",
      "meter": "panchang"
+    },
+    {
+     "label": "Digital temple",
+     "period": "Unlimited",
+     "note": "Your own digital temple and its pooja, always free",
+     "meter": "temple_pooja"
     },
     {
      "label": "Academy",

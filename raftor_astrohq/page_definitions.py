@@ -11,6 +11,7 @@ from raftor_websitehq.website_hq.page_groups import page_url
 API = "raftor_astrohq.api."
 ASTRO = "raftor_astrohq.astrologer_api."
 VIEW = "raftor_astrohq.report_view."
+TEMPLE = "raftor_astrohq.temple."
 TIGHT = {"padding": "Small", "gap": "Small"}
 
 
@@ -102,6 +103,14 @@ def panchang_page() -> dict:
 		 "source": {"method": "raftor_astrohq.panchang.page", "card": "Report View", "url_args": "date,place", "empty": _("The panchang is not available yet.")}, "look": TIGHT}]}
 
 
+def temple_page() -> dict:
+	"""The person's digital temple (temple.py), signed in: their own photo of the deity they worship and the pooja performed before it, drawn by websitehq's Offering Stage Card."""
+	values = {"view": TEMPLE + "view", "offer": TEMPLE + "offer", "photo": TEMPLE + "set_photo", "tilak": TEMPLE + "place_tilak", "again": TEMPLE + "again"}
+	return {"route": "my/temple", "title": _("Your Digital Temple"), "login_required": True,
+			"sections": [{"key": "temple", "cards": [{"type": "Offering Stage Card", "values": values}], "look": TIGHT}],
+			"menu": {"label": _("My temple"), "summary": _("Worship your deity and make the offerings, one after another."), "order": 12, "side": {"order": 28}}}
+
+
 def definitions() -> list[dict]:
 	profile_list = _my("birth-profiles")
 	you = {"relationship": profiles.SELF}
@@ -152,4 +161,5 @@ def definitions() -> list[dict]:
 		ask_page(),
 		numerologist_page(),
 		dream_guide_page(),
+		temple_page(),
 	]

@@ -30,7 +30,7 @@ class TestPages(TestCase):
 	def test_every_page_passes_the_kits_checks_and_needs_a_sign_in(self):
 		public = {"panchang", "ask/pandit-ji", "ask/numerologist", "ask/dream-guide"}  # for everyone: the Panchang and the guides' chats
 		self.assertEqual(set(pages()), public | {"onboarding/birth-details", "onboarding/birth-details/done", "my/birth-profiles", "my/birth-profiles/new", "my/birth-profiles/edit", "my/birth-profiles/you",
-												 "onboarding/astrologer-personas", "onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new", "provider/chart"})
+												 "onboarding/astrologer-personas", "onboarding/astrologer-details", "onboarding/astrologer-credentials", "onboarding/astrologer-credentials/new", "provider/chart", "my/temple"})
 		for route, page in pages().items():
 			self.assertEqual(check(page)["login_required"], route not in public, route)  # every other page is for someone signed in
 

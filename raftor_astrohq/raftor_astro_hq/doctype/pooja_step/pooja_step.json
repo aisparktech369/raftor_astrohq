@@ -1,0 +1,68 @@
+{
+ "actions": [],
+ "creation": "2026-11-11 08:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "step_key",
+  "label",
+  "devanagari",
+  "effect",
+  "mantra",
+  "meaning"
+ ],
+ "fields": [
+  {
+   "fieldname": "step_key",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Key",
+   "reqd": 1,
+   "description": "A short name for the step in lower case, for example gandha."
+  },
+  {
+   "fieldname": "label",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "devanagari",
+   "fieldtype": "Data",
+   "label": "In Devanagari"
+  },
+  {
+   "fieldname": "effect",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Offering shown",
+   "options": "sandal\nflower\nincense\nlamp\nfood",
+   "reqd": 1,
+   "description": "What the digital temple draws for this step: a sandal tilak, flowers, incense smoke, a lit lamp, or food on the shelf."
+  },
+  {
+   "fieldname": "mantra",
+   "fieldtype": "Data",
+   "label": "Mantra line"
+  },
+  {
+   "fieldname": "meaning",
+   "fieldtype": "Small Text",
+   "label": "What it means"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-11-11 08:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Pooja Step",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
