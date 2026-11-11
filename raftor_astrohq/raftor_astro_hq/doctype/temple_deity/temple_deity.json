@@ -8,6 +8,7 @@
   "user",
   "title",
   "photo",
+  "mandir_image",
   "is_main"
  ],
  "fields": [
@@ -34,6 +35,13 @@
    "description": "The person's own photo of the deity they worship. It is a private file, shown only to them."
   },
   {
+   "fieldname": "mandir_image",
+   "fieldtype": "Link",
+   "label": "Gallery picture",
+   "options": "Mandir Image",
+   "description": "The gallery picture this deity was chosen from; blank when the person uploaded their own."
+  },
+  {
    "default": "1",
    "fieldname": "is_main",
    "fieldtype": "Check",
@@ -42,7 +50,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-11-11 10:00:00.000000",
+ "modified": "2026-11-11 11:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Temple Deity",

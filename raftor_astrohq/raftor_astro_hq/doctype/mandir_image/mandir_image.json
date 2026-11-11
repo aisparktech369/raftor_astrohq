@@ -1,0 +1,141 @@
+{
+ "actions": [],
+ "autoname": "field:image_key",
+ "creation": "2026-11-11 11:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "image_key",
+  "title",
+  "deity",
+  "mandir",
+  "enabled",
+  "sequence",
+  "image",
+  "credit_section",
+  "credit",
+  "licence",
+  "licence_url",
+  "source_url",
+  "donate_section",
+  "donate_url"
+ ],
+ "fields": [
+  {
+   "fieldname": "image_key",
+   "fieldtype": "Data",
+   "label": "Key",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "description": "A short name in lower case, for example balaji."
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Name",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "What the person sees, for example Tirupati Balaji."
+  },
+  {
+   "fieldname": "deity",
+   "fieldtype": "Data",
+   "label": "Deity",
+   "in_list_view": 1,
+   "description": "The deity, to group the gallery, for example Hanuman."
+  },
+  {
+   "fieldname": "mandir",
+   "fieldtype": "Data",
+   "label": "Mandir or place",
+   "description": "Where the picture was taken or the mandir it stands for."
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "On",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Int",
+   "label": "Order",
+   "default": "10",
+   "in_list_view": 1,
+   "description": "The lowest number comes first in the gallery."
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Picture",
+   "reqd": 1,
+   "description": "A tall picture of the deity, ideally 900 pixels wide or more. Only a picture you have the right to use."
+  },
+  {
+   "fieldname": "credit_section",
+   "fieldtype": "Section Break",
+   "label": "Credit and licence"
+  },
+  {
+   "fieldname": "credit",
+   "fieldtype": "Data",
+   "label": "Credit",
+   "description": "Who made the picture; shown under it when one is needed."
+  },
+  {
+   "fieldname": "licence",
+   "fieldtype": "Data",
+   "label": "Licence",
+   "description": "For example CC0, CC BY 4.0, CC BY-SA 4.0, Owned, Licensed."
+  },
+  {
+   "fieldname": "licence_url",
+   "fieldtype": "Small Text",
+   "label": "Licence link"
+  },
+  {
+   "fieldname": "source_url",
+   "fieldtype": "Small Text",
+   "label": "Where it came from",
+   "description": "The page the picture was taken from, or a note of who gave permission."
+  },
+  {
+   "fieldname": "donate_section",
+   "fieldtype": "Section Break",
+   "label": "Donation"
+  },
+  {
+   "fieldname": "donate_url",
+   "fieldtype": "Small Text",
+   "label": "The mandir's own donation page",
+   "description": "Only the mandir's official page. A Donate button opens it in a new tab; no money passes through us."
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-11 12:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Mandir Image",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "sequence",
+ "sort_order": "ASC",
+ "states": []
+}

@@ -105,7 +105,8 @@ def panchang_page() -> dict:
 
 def temple_page() -> dict:
 	"""The person's digital temple (temple.py), signed in: their own photo of the deity they worship and the pooja performed before it, drawn by websitehq's Offering Stage Card."""
-	values = {"view": TEMPLE + "view", "offer": TEMPLE + "offer", "photo": TEMPLE + "set_photo", "tilak": TEMPLE + "place_tilak", "again": TEMPLE + "again"}
+	values = {"view": TEMPLE + "view", "offer": TEMPLE + "offer", "photo": TEMPLE + "set_photo", "tilak": TEMPLE + "place_tilak", "again": TEMPLE + "again",
+			  "choose": TEMPLE + "choose_mandir", "switch": TEMPLE + "switch_mandir", "remove": TEMPLE + "remove_mandir"}
 	return {"route": "my/temple", "title": _("Your Digital Temple"), "login_required": True,
 			"sections": [{"key": "temple", "cards": [{"type": "Offering Stage Card", "values": values}], "look": TIGHT}],
 			"menu": {"label": _("My temple"), "summary": _("Worship your deity and make the offerings, one after another."), "order": 12, "side": {"order": 28}}}

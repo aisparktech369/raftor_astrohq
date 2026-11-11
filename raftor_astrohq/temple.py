@@ -17,12 +17,14 @@ import frappe
 from frappe import _
 from frappe.utils import cint, now_datetime, today
 
+GALLERY = "Mandir Image"
 KIND = "Pooja Kind"
 DEITY = "Temple Deity"
 SESSION = "Pooja Session"
 METER = "temple_pooja"
 PHOTO_TYPES = ("jpg", "jpeg", "png", "webp")
 PHOTO_MAX_MB = 8
+MANDIRS_MAX = 12  # the mandirs a person may keep for their daily setup
 TILAKS_MAX = 12  # the marks of sandal a person may leave in a round: a deity or several
 
 
@@ -80,6 +82,7 @@ def words(kind) -> dict:
 		},
 		"done": _("Done"), "auto": _("Do it for me"), "cancel": _("Cancel"), "turn_of": _("Turn {0} of {1}"), "marks": _("{0} placed"), "fed": _("{0} offered"),
 		"not_image": _("Choose a photo (JPG, PNG or WebP)."), "too_big": _("The photo must be smaller than {0} MB.").format(PHOTO_MAX_MB), "failed": _("The photo could not be saved. Please try again."),
+		"mandirs": _("My mandirs"), "choose": _("Choose a mandir"), "upload_own": _("Upload your own"), "close": _("Close"), "current": _("Open now"), "remove": _("Remove"), "credit": _("Photo: {0} · {1}"), "gallery_title": _("Popular mandirs"), "mine_title": _("Your mandirs"),
 		"title": _("Your Digital Temple"), "enter": _("Enter"), "ring_bell": _("Ring the bell"), "sound_on": _("Turn the sound on"), "sound_off": _("Turn the sound off"),
 		"close_doors": _("Close the temple doors"), "leave": _("Leave the temple"),
 	}
@@ -107,9 +110,16 @@ def _payload(user: str, deity, played: str = "") -> dict:
 		step = kind.steps[min(done, total - 1)]
 		card = {"title": f"{w['next']} · {step.label}", "deva": step.devanagari or "", "mantra": step.mantra or "", "meaning": step.meaning or ""}
 	tilaks = _tilaks(session) if has_photo else []
+	mine = frappe.get_all(DEITY, filters={"user": user}, fields=["name", "title", "photo", "is_main", "mandir_image"], order_by="creation asc")
+	gallery = frappe.get_all(GALLERY, filters={"enabled": 1}, fields=["image_key", "title", "deity", "mandir", "image", "credit", "licence"], order_by="sequence asc, creation asc")
+	stock = frappe.db.get_value(GALLERY, deity.mandir_image, ["title", "donate_url", "credit", "licence"], as_dict=True) if deity and deity.mandir_image else None
 	return {"title": (deity.title if deity else "") or _("Your deity"), "subtitle": _("{0} Pooja · {1} offerings").format(kind.title, total), "photo": (deity.photo if has_photo else ""),
 			"steps": steps, "done": done, "total": total, "finished": finished, "card": card, "tilaks": tilaks, "played": played, "rounds": cint(session.rounds) if session else 0,
-			"words": w, "upload": {"accept": list(PHOTO_TYPES), "max_mb": PHOTO_MAX_MB}, "immersive": True, "haptics": True, "leave_url": "/",
+			"words": w, "upload": {"accept": list(PHOTO_TYPES), "max_mb": PHOTO_MAX_MB}, "deity": deity.name if deity else "",
+			"mandirs": [{"id": m.name, "title": m.title or "", "photo": m.photo or "", "current": bool(deity and m.name == deity.name)} for m in mine],
+			"gallery": [{"id": g.image_key, "title": g.title, "deity": g.deity or "", "mandir": g.mandir or "", "image": g.image, "credit": w["credit"].format(g.credit or "", g.licence or "") if g.credit else ""} for g in gallery],
+			"donate": {"label": _("Donate to {0}").format(stock.title), "url": stock.donate_url} if stock and stock.donate_url else None,
+			"can_add": len(mine) < MANDIRS_MAX, "credit": w["credit"].format(stock.credit, stock.licence or "") if stock and stock.credit else "", "immersive": True, "haptics": True, "leave_url": "/",
 			"sounds": {"open": kind.sound_open or "", "bell": kind.sound_bell or "", "done": kind.sound_done or "", "aarti": kind.sound_aarti or ""}}
 
 
@@ -183,19 +193,37 @@ def _checked_image(file_name: str) -> None:
 		frappe.throw(_("Choose a photo (JPG, PNG or WebP)."), frappe.ValidationError)
 
 
+def _make_main(user: str, deity) -> None:
+	"""This mandir is the one open now; the person's others are put by."""
+	for other in frappe.get_all(DEITY, filters={"user": user, "name": ["!=", deity.name], "is_main": 1}, pluck="name"):
+		frappe.db.set_value(DEITY, other, "is_main", 0, update_modified=False)
+	if not deity.is_main:
+		deity.is_main = 1
+		deity.save(ignore_permissions=True)
+
+
+def _new_mandir(user: str, title: str, photo: str, stock: str = ""):
+	if frappe.db.count(DEITY, {"user": user}) >= MANDIRS_MAX:
+		frappe.throw(_("You have kept as many mandirs as you can. Remove one first."), frappe.ValidationError)
+	deity = frappe.get_doc({"doctype": DEITY, "user": user, "title": title, "photo": photo, "mandir_image": stock or None, "is_main": 0}).insert(ignore_permissions=True)
+	_make_main(user, deity)
+	return deity
+
+
 @frappe.whitelist(methods=["POST"])
-def set_photo(file_url: str, deity: str = "") -> dict:
-	"""The person's photo of their deity, uploaded as a private file of their own just before. The first photo makes their deity; a later one replaces it and begins today's round again."""
+def set_photo(file_url: str, deity: str = "", new: int = 0) -> dict:
+	"""The person's own photo of a mandir, uploaded as a private file of their own just before. It becomes a mandir of theirs and the one open now (`new`), or replaces the picture of the deity named; either way today's round begins again."""
 	user = _user()
 	file_name = frappe.db.get_value("File", {"file_url": file_url, "owner": user, "is_private": 1}, "name")
 	if not file_name:
 		frappe.throw(_("The photo could not be found."), frappe.ValidationError)
 	_checked_image(file_name)
-	found = _deity(user, deity)
+	found = None if cint(new) else _deity(user, deity)
 	if not found:
-		found = frappe.get_doc({"doctype": DEITY, "user": user, "title": _("My deity"), "is_main": 1, "photo": file_url}).insert(ignore_permissions=True)
+		count = frappe.db.count(DEITY, {"user": user})
+		found = _new_mandir(user, _("My mandir") if not count else _("My mandir {0}").format(count + 1), file_url)
 	else:
-		found.photo = file_url
+		found.photo, found.mandir_image = file_url, None
 		found.save(ignore_permissions=True)
 		kind = _kind()
 		session = _session(user, found, kind, lock=True) if kind else None
@@ -204,6 +232,42 @@ def set_photo(file_url: str, deity: str = "") -> dict:
 			session.save(ignore_permissions=True)
 	frappe.db.set_value("File", file_name, {"attached_to_doctype": DEITY, "attached_to_name": found.name, "attached_to_field": "photo"}, update_modified=False)
 	return _payload(user, found)
+
+
+@frappe.whitelist(methods=["POST"])
+def choose_mandir(image: str) -> dict:
+	"""The person picks a mandir from the gallery: it becomes one of theirs and the one open now. Picking one they already keep only opens it."""
+	user = _user()
+	stock = frappe.db.get_value(GALLERY, {"image_key": image, "enabled": 1}, ["name", "title", "image"], as_dict=True)
+	if not stock:
+		frappe.throw(_("That mandir is not in the gallery."), frappe.ValidationError)
+	have = frappe.db.get_value(DEITY, {"user": user, "mandir_image": stock.name}, "name")
+	found = frappe.get_doc(DEITY, have) if have else _new_mandir(user, stock.title, stock.image, stock.name)
+	_make_main(user, found)
+	return _payload(user, found)
+
+
+@frappe.whitelist(methods=["POST"])
+def switch_mandir(deity: str) -> dict:
+	"""The person opens another of their mandirs."""
+	user = _user()
+	found = _deity(user, deity) if deity else None
+	if not (found and found.name == deity):
+		frappe.throw(_("That mandir is not yours."), frappe.ValidationError)
+	_make_main(user, found)
+	return _payload(user, found)
+
+
+@frappe.whitelist(methods=["POST"])
+def remove_mandir(deity: str) -> dict:
+	"""The person puts one of their mandirs away, with its rounds."""
+	user = _user()
+	found = _deity(user, deity) if deity else None
+	if not (found and found.name == deity):
+		frappe.throw(_("That mandir is not yours."), frappe.ValidationError)
+	frappe.db.delete(SESSION, {"user": user, "deity": found.name})
+	frappe.delete_doc(DEITY, found.name, ignore_permissions=True, force=True)
+	return _payload(user, _deity(user))
 
 
 @frappe.whitelist(methods=["POST"])

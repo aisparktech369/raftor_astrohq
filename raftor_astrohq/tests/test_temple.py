@@ -200,6 +200,54 @@ class TestTemple(AstroTestCase):
 		self.assertEqual(out["sounds"]["open"], "/files/shankh.mp3")
 		self.assertEqual(out["steps"][0]["sound"], "/files/gandha.mp3")
 
+	def test_the_gallery_comes_with_pictures_credited_and_licensed_and_a_person_picks_one(self):
+		gallery = temple.view()["gallery"]
+		self.assertGreaterEqual(len(gallery), 12)
+		for row in gallery:
+			self.assertTrue(row["image"].startswith("/assets/raftor_astrohq/mandirs/"), row["id"])
+			self.assertTrue(os.path.exists(frappe.get_app_path("raftor_astrohq", "public", "mandirs", row["image"].rsplit("/", 1)[1])), row["id"])
+		for licence in frappe.get_all("Mandir Image", pluck="licence"):
+			self.assertRegex(licence, r"^(CC0|CC BY|Public domain)", licence)  # nothing without a licence that allows its use
+		out = temple.choose_mandir(gallery[0]["id"])
+		self.assertEqual(out["photo"], gallery[0]["image"])
+		self.assertEqual([m["current"] for m in out["mandirs"]], [True])
+		self.assertEqual(temple.choose_mandir(gallery[0]["id"])["mandirs"][0]["id"], out["mandirs"][0]["id"])  # again: it only opens it
+		self.assertEqual(out["steps"][0]["state"], "next")
+
+	def test_a_person_keeps_several_mandirs_opens_one_and_puts_one_away(self):
+		first = temple.choose_mandir("ganesh")
+		second = temple.choose_mandir("lakshmi")
+		own = temple.set_photo(_photo(self.user), new=1)
+		ids = [m["id"] for m in own["mandirs"]]
+		self.assertEqual(len(ids), 3)
+		self.assertEqual([m["current"] for m in own["mandirs"]], [False, False, True])
+		self.assertEqual(temple.switch_mandir(ids[0])["deity"], ids[0])
+		self.assertEqual(temple.view()["deity"], ids[0])
+		self.assertEqual(temple.remove_mandir(ids[1])["mandirs"][0]["id"], ids[0])
+		self.assertEqual(len(temple.view()["mandirs"]), 2)
+
+	def test_a_mandir_of_another_person_cannot_be_opened_or_removed_and_the_number_is_limited(self):
+		mine = temple.choose_mandir("ganesh")["deity"]
+		frappe.set_user(make_user().name)
+		for call in (lambda: temple.switch_mandir(mine), lambda: temple.remove_mandir(mine)):
+			with self.assertRaises(frappe.ValidationError):
+				call()
+		with self.assertRaises(frappe.ValidationError):
+			temple.choose_mandir("no-such-mandir")
+		keys = frappe.get_all("Mandir Image", filters={"enabled": 1}, pluck="image_key")
+		with patch.object(temple, "MANDIRS_MAX", 2):
+			temple.choose_mandir(keys[0]); temple.choose_mandir(keys[1])
+			with self.assertRaises(frappe.ValidationError):
+				temple.choose_mandir(keys[2])
+
+	def test_the_donate_button_is_only_the_mandirs_own_https_page(self):
+		self.assertIsNone(temple.choose_mandir("ganesh")["donate"])
+		frappe.set_user("Administrator")
+		frappe.db.set_value("Mandir Image", "ganesh", "donate_url", "https://example.org/donate")
+		frappe.set_user(self.user)
+		out = temple.choose_mandir("ganesh")
+		self.assertEqual(out["donate"], {"label": "Donate to Ganesh ji", "url": "https://example.org/donate"})
+
 	def test_the_page_names_the_card_and_methods_that_exist(self):
 		page = page_definitions.temple_page()
 		self.assertTrue(page["login_required"])

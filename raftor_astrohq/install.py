@@ -16,6 +16,7 @@ def after_install():
 	sync_portal_menu()
 	seed_topics_and_wishes()
 	seed_pooja()
+	seed_mandirs()
 	from raftor_astrohq import ai_guides
 
 	ai_guides.ensure()
@@ -89,6 +90,17 @@ def seed_pooja():
 		return
 	for kind in json.loads((Path(__file__).parent / "pooja.json").read_text(encoding="utf-8"))["kinds"]:
 		frappe.get_doc({"doctype": "Pooja Kind", "enabled": 1, **kind}).insert(ignore_permissions=True)
+
+
+def seed_mandirs():
+	"""The gallery of mandir pictures (mandirs.json, with their pictures in public/mandirs), as records staff change in Desk: swap a picture, add a mandir, switch one off. Only when there are none, so a gallery staff have edited is never put back."""
+	import json
+	from pathlib import Path
+
+	if frappe.db.count("Mandir Image"):
+		return
+	for row in json.loads((Path(__file__).parent / "mandirs.json").read_text(encoding="utf-8"))["images"]:
+		frappe.get_doc({"doctype": "Mandir Image", "enabled": row.get("enabled", 1), "image_key": row["key"], **{k: row[k] for k in ("title", "deity", "mandir", "image", "credit", "licence", "licence_url", "source_url", "sequence")}}).insert(ignore_permissions=True)
 
 
 def sync_portal_menu():

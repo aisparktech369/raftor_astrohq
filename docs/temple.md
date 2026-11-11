@@ -23,6 +23,8 @@ A person's own photo of the deity they worship, and the pooja performed before i
 
 Each also has a "Do it for me" button, for a person who cannot use the screen that way. The lamp comes before the incense (the incense is lit from the lamp).
 
+**Mandirs (the gallery and the person's own).** A person keeps up to 12 mandirs (`MANDIRS_MAX`), opens one for the day from "My mandirs", and can pick from the gallery or upload their own. The gallery is the doctype **Mandir Image** (Desk): picture, deity, mandir, credit, licence, where it came from, and the mandir's own donation page (the Donate button only opens that page, in a new tab; no money passes through us). Seeded once from `mandirs.json` with the pictures in `public/mandirs/`; a gallery staff have edited is never put back. **The interim set is generic and every picture is CC0, CC BY, CC BY-SA or public domain (from Wikimedia Commons), with its credit shown on the temple and in the gallery; the owner is collecting the final pictures himself, so replace or switch off any of them in Desk.** Famous mandirs (Tirupati Balaji, Vaishno Devi) are not in the set: their official pictures need the shrine's permission.
+
 **Counted for the stats:** a finished round is counted on the meter `temple_pooja` (always free, in every plan of `plans.json`).
 
 **Adding another pooja (Shodashopchar):** make a Pooja Kind with its steps in Desk. The card shows the first pooja that is on; choosing between several is not built yet. The five offerings the card can draw are the effect names above; a new kind of offering needs the card to learn its picture (a variant of the card, not a new card).
