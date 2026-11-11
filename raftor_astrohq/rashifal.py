@@ -244,7 +244,7 @@ def _language() -> str:
 
 @frappe.whitelist(allow_guest=True, methods=["POST"])
 def cards() -> dict:
-	"""The twelve cards of the day as Feature Card (layout Flip) fields: the front is the sign (mark in `number`, name, date), the back is its reading. The newest Published day that is not older than yesterday;
+	"""The twelve cards of the day as Feature Card (layout Flip) fields: the front is the sign (mark in `number`, name), the back is its reading. The newest Published day that is not older than yesterday;
 	none when there is none (the section then shows nothing)."""
 	earliest = today() - datetime.timedelta(days=1)
 	day = frappe.db.get_value(DOCTYPE, {"status": "Published", "for_date": [">=", earliest]}, "for_date", order_by="for_date desc")
@@ -261,7 +261,7 @@ def cards() -> dict:
 		scores = {area: int(row.get(f"{area}_score") or 0) for area in AREAS}
 		average = sum(scores.values()) / len(scores)
 		mood = labels["good"] if average >= 66 else labels["slow"] if average <= 52 else labels["steady"]
-		items.append({"layout": "Flip", "number": rashi(number)[4] + "\ufe0e", "title": names[language], "meta": names[other], "tag": frappe.utils.formatdate(day, "d MMM"),
+		items.append({"layout": "Flip", "number": rashi(number)[4] + "\ufe0e", "title": names[language], "meta": names[other],
 					  "link_label": labels["tap"], "body": mood, "pills": "\n".join(f"{labels[area]}: {scores[area]}" for area in AREAS), "about": SWATCH.get(row.colour_en or "", ""),
 					  "note": f"{labels['colour']}: {row.get(f'colour_{language}') or ''} · {labels['number']}: {row.lucky_number or ''}"})
 	return {"items": items}
