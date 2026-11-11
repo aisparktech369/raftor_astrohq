@@ -12,7 +12,8 @@
   "steps_done",
   "rounds",
   "status",
-  "completed_on"
+  "completed_on",
+  "tilaks"
  ],
  "fields": [
   {
@@ -71,11 +72,18 @@
    "fieldname": "completed_on",
    "fieldtype": "Datetime",
    "label": "Last completed"
+  },
+  {
+   "fieldname": "tilaks",
+   "fieldtype": "Long Text",
+   "label": "Sandal left on the photo",
+   "description": "Where the person left the sandal in this round, as a list of positions (percent across and down).",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-11-11 08:00:00.000000",
+ "modified": "2026-11-11 10:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Pooja Session",

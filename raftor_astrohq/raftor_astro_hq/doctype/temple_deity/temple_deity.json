@@ -8,9 +8,7 @@
   "user",
   "title",
   "photo",
-  "is_main",
-  "tilak_x",
-  "tilak_y"
+  "is_main"
  ],
  "fields": [
   {
@@ -40,23 +38,11 @@
    "fieldname": "is_main",
    "fieldtype": "Check",
    "label": "Main deity"
-  },
-  {
-   "default": "50",
-   "fieldname": "tilak_x",
-   "fieldtype": "Int",
-   "label": "Tilak across (%)"
-  },
-  {
-   "default": "42",
-   "fieldname": "tilak_y",
-   "fieldtype": "Int",
-   "label": "Tilak down (%)"
   }
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-11-11 08:00:00.000000",
+ "modified": "2026-11-11 10:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Temple Deity",

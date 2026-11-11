@@ -9,6 +9,8 @@
   "label",
   "devanagari",
   "effect",
+  "action",
+  "turns",
   "mantra",
   "meaning",
   "sound"
@@ -44,6 +46,22 @@
    "description": "What the digital temple draws for this step: a sandal tilak, flowers, incense smoke, a lit lamp, or food on the shelf."
   },
   {
+   "fieldname": "action",
+   "fieldtype": "Select",
+   "label": "What the person does",
+   "options": "none\napply\ncircle\ncarry",
+   "default": "none",
+   "description": "none: one tap makes the offering. apply: the person taps each deity to leave it there (sandal). circle: the person moves it in a circle before the deity (a lamp, incense). carry: the person drags it to the deity's mouth (food)."
+  },
+  {
+   "fieldname": "turns",
+   "fieldtype": "Int",
+   "label": "Turns",
+   "default": "3",
+   "depends_on": "eval:doc.action=='circle'",
+   "description": "How many times round, for a circle."
+  },
+  {
    "fieldname": "mantra",
    "fieldtype": "Data",
    "label": "Mantra line"
@@ -63,7 +81,7 @@
  "index_web_pages_for_search": 0,
  "istable": 1,
  "links": [],
- "modified": "2026-11-11 09:00:00.000000",
+ "modified": "2026-11-11 10:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Pooja Step",

@@ -12,6 +12,17 @@ A person's own photo of the deity they worship, and the pooja performed before i
 | `temple.py` | AstroHQ | `view`, `offer`, `again`, `set_photo`, `place_tilak`: every word on the card and every rule (a step out of order is refused; a file must be the person's own private photo and a real image under 8 MB). |
 | Offering Stage Card | websitehq | Draws what `view` answers. Holds no wording and no rules. |
 
+**The offerings are made by hand** (Pooja Step.action, and `turns` for a circle):
+
+| Action | What the person does | Done when |
+|---|---|---|
+| `none` | One tap (the flowers) | At once |
+| `apply` | Taps each deity's forehead; a mark of sandal stays on the photo for the round (several deities may be on one photo) | The person taps Done (at least one mark is needed, and the server asks for it) |
+| `circle` | Moves the lamp or the incense in a circle, clockwise, round the guide ring; the lamp's light moves over the photo and the incense leaves a trail of smoke | After the set turns |
+| `carry` | Drags a sweet from the thali to the deity's mouth, once for each deity | The person taps Done |
+
+Each also has a "Do it for me" button, for a person who cannot use the screen that way. The lamp comes before the incense (the incense is lit from the lamp).
+
 **Counted for the stats:** a finished round is counted on the meter `temple_pooja` (always free, in every plan of `plans.json`).
 
 **Adding another pooja (Shodashopchar):** make a Pooja Kind with its steps in Desk. The card shows the first pooja that is on; choosing between several is not built yet. The five offerings the card can draw are the effect names above; a new kind of offering needs the card to learn its picture (a variant of the card, not a new card).

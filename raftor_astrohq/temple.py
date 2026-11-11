@@ -10,6 +10,7 @@ The pooja is data, not code (and so are its sounds: a recording of the conch, th
 A person's deity is their photo (Temple Deity, a private file only they can open). A round of the pooja is kept for the day (Pooja Session): the steps made so far, and how many rounds were completed.
 A finished round is counted for the stats of the plans (the meter temple_pooja, always free).
 """
+import json
 import os
 
 import frappe
@@ -22,7 +23,7 @@ SESSION = "Pooja Session"
 METER = "temple_pooja"
 PHOTO_TYPES = ("jpg", "jpeg", "png", "webp")
 PHOTO_MAX_MB = 8
-TILAK = (50, 42)  # where the sandal tilak is first put (percent across and down the photo): the forehead of a deity seated in the middle
+TILAKS_MAX = 12  # the marks of sandal a person may leave in a round: a deity or several
 
 
 def _user() -> str:
@@ -56,6 +57,15 @@ def _session(user: str, deity, kind, create: bool = False, lock: bool = False):
 	return frappe.get_doc({"doctype": SESSION, "user": user, "deity": deity.name, "kind": kind.name, "session_date": today(), "steps_done": 0, "status": "Open"}).insert(ignore_permissions=True)
 
 
+def _tilaks(session) -> list:
+	"""Where the person left the sandal in this round: [{"x", "y"}] in percent across and down the photo."""
+	try:
+		marks = json.loads(session.tilaks or "[]") if session else []
+	except ValueError:
+		marks = []
+	return [{"x": cint(m.get("x")), "y": cint(m.get("y"))} for m in marks if isinstance(m, dict)][:TILAKS_MAX]
+
+
 def words(kind) -> dict:
 	"""Every word the card shows besides the pooja's own (its steps, mantras and meanings come from the Pooja Kind)."""
 	return {
@@ -63,7 +73,12 @@ def words(kind) -> dict:
 		"upload_label": _("Upload a photo of your deity"), "tilak_label": _("Place the sandal tilak on the forehead"),
 		"begin": _("Add your deity's photo to begin."), "aarti": _("Perform Aarti"), "aarti_end": _("Aarti in progress · tap to end"), "again": _("Again"),
 		"next": _("Next"), "done_aria": _("Done: {0}"), "next_aria": _("Offer next: {0}"), "locked_aria": _("Locked until the earlier offerings: {0}"),
-		"tilak_hint": _("Tap the photo to place the tilak where you wish."),
+		"prompts": {
+			"apply": _("Tap each deity's forehead to leave the sandal there. Tap Done when you have offered it to all."),
+			"circle": _("Move your finger in a circle, clockwise, to wave it before the deity."),
+			"carry": _("Drag the sweet from the thali to the deity's mouth. Tap Done when you have offered it to all."),
+		},
+		"done": _("Done"), "auto": _("Do it for me"), "cancel": _("Cancel"), "turn_of": _("Turn {0} of {1}"), "marks": _("{0} placed"), "fed": _("{0} offered"),
 		"not_image": _("Choose a photo (JPG, PNG or WebP)."), "too_big": _("The photo must be smaller than {0} MB.").format(PHOTO_MAX_MB), "failed": _("The photo could not be saved. Please try again."),
 		"title": _("Your Digital Temple"), "enter": _("Enter"), "ring_bell": _("Ring the bell"), "sound_on": _("Turn the sound on"), "sound_off": _("Turn the sound off"),
 		"close_doors": _("Close the temple doors"), "leave": _("Leave the temple"),
@@ -84,17 +99,16 @@ def _payload(user: str, deity, played: str = "") -> dict:
 	for i, step in enumerate(kind.steps):
 		state = "done" if i < done else ("next" if i == done and has_photo else "locked")
 		aria = {"done": w["done_aria"], "next": w["next_aria"], "locked": w["locked_aria"]}[state].format(step.label)
-		steps.append({"key": step.step_key, "label": step.label, "deva": step.devanagari or "", "effect": step.effect, "state": state, "aria": aria, "sound": step.sound or ""})
+		steps.append({"key": step.step_key, "label": step.label, "deva": step.devanagari or "", "effect": step.effect, "state": state, "aria": aria, "sound": step.sound or "",
+					  "action": step.action or "none", "turns": cint(step.turns) or 3})
 	if finished:
 		card = {"title": _("{0} complete").format(kind.title), "deva": "सम्पन्न", "mantra": "", "meaning": _("All {0} offerings are made. You can now do the aarti.").format(total)}
 	else:
 		step = kind.steps[min(done, total - 1)]
 		card = {"title": f"{w['next']} · {step.label}", "deva": step.devanagari or "", "mantra": step.mantra or "", "meaning": step.meaning or ""}
-		if step.effect == "sandal":
-			card["hint"] = w["tilak_hint"]
-	tilak = {"x": cint(deity.tilak_x) if deity else TILAK[0], "y": cint(deity.tilak_y) if deity else TILAK[1]}
+	tilaks = _tilaks(session) if has_photo else []
 	return {"title": (deity.title if deity else "") or _("Your deity"), "subtitle": _("{0} Pooja · {1} offerings").format(kind.title, total), "photo": (deity.photo if has_photo else ""),
-			"steps": steps, "done": done, "total": total, "finished": finished, "card": card, "tilak": tilak, "played": played, "rounds": cint(session.rounds) if session else 0,
+			"steps": steps, "done": done, "total": total, "finished": finished, "card": card, "tilaks": tilaks, "played": played, "rounds": cint(session.rounds) if session else 0,
 			"words": w, "upload": {"accept": list(PHOTO_TYPES), "max_mb": PHOTO_MAX_MB}, "immersive": True, "haptics": True, "leave_url": "/",
 			"sounds": {"open": kind.sound_open or "", "bell": kind.sound_bell or "", "done": kind.sound_done or "", "aarti": kind.sound_aarti or ""}}
 
@@ -121,6 +135,8 @@ def offer(step: str, deity: str = "") -> dict:
 	index, session = keys.index(step), _session(user, found, kind, create=True, lock=True)
 	if index > cint(session.steps_done):
 		frappe.throw(_("Make the earlier offerings first."), frappe.ValidationError)
+	if kind.steps[index].action == "apply" and index == cint(session.steps_done) and not _tilaks(session):
+		frappe.throw(_("Leave the sandal on a deity first."), frappe.ValidationError)
 	if index == cint(session.steps_done) and index < len(keys):
 		session.steps_done = index + 1
 		if session.steps_done == len(keys):
@@ -138,7 +154,7 @@ def again(deity: str = "") -> dict:
 	if kind and found:
 		session = _session(user, found, kind, lock=True)
 		if session:
-			session.steps_done, session.status = 0, "Open"
+			session.steps_done, session.status, session.tilaks = 0, "Open", "[]"
 			session.save(ignore_permissions=True)
 	return _payload(user, found)
 
@@ -169,7 +185,7 @@ def _checked_image(file_name: str) -> None:
 
 @frappe.whitelist(methods=["POST"])
 def set_photo(file_url: str, deity: str = "") -> dict:
-	"""The person's photo of their deity, uploaded as a private file of their own just before. The first photo makes their deity; a later one replaces it and the tilak goes back to its first place."""
+	"""The person's photo of their deity, uploaded as a private file of their own just before. The first photo makes their deity; a later one replaces it and begins today's round again."""
 	user = _user()
 	file_name = frappe.db.get_value("File", {"file_url": file_url, "owner": user, "is_private": 1}, "name")
 	if not file_name:
@@ -177,21 +193,31 @@ def set_photo(file_url: str, deity: str = "") -> dict:
 	_checked_image(file_name)
 	found = _deity(user, deity)
 	if not found:
-		found = frappe.get_doc({"doctype": DEITY, "user": user, "title": _("My deity"), "is_main": 1, "photo": file_url, "tilak_x": TILAK[0], "tilak_y": TILAK[1]}).insert(ignore_permissions=True)
+		found = frappe.get_doc({"doctype": DEITY, "user": user, "title": _("My deity"), "is_main": 1, "photo": file_url}).insert(ignore_permissions=True)
 	else:
-		found.update({"photo": file_url, "tilak_x": TILAK[0], "tilak_y": TILAK[1]})
+		found.photo = file_url
 		found.save(ignore_permissions=True)
+		kind = _kind()
+		session = _session(user, found, kind, lock=True) if kind else None
+		if session:  # a different photo is a different deity: today's round begins again
+			session.steps_done, session.status, session.tilaks = 0, "Open", "[]"
+			session.save(ignore_permissions=True)
 	frappe.db.set_value("File", file_name, {"attached_to_doctype": DEITY, "attached_to_name": found.name, "attached_to_field": "photo"}, update_modified=False)
 	return _payload(user, found)
 
 
 @frappe.whitelist(methods=["POST"])
 def place_tilak(x, y, deity: str = "") -> dict:
-	"""Where on the photo the person wants the sandal tilak (percent across and down); kept for the next time."""
+	"""The person leaves a mark of sandal on a deity of their photo (percent across and down); it stays for the round, and another mark may be left for another deity."""
 	user = _user()
-	found = _deity(user, deity)
-	if not found:
+	kind, found = _kind(), _deity(user, deity)
+	if not (kind and found and found.photo):
 		frappe.throw(_("Add your deity's photo first."), frappe.ValidationError)
-	found.tilak_x, found.tilak_y = max(0, min(100, cint(x))), max(0, min(100, cint(y)))
-	found.save(ignore_permissions=True)
-	return {"x": found.tilak_x, "y": found.tilak_y}
+	session = _session(user, found, kind, create=True, lock=True)
+	marks = _tilaks(session)
+	if len(marks) >= TILAKS_MAX:
+		frappe.throw(_("That is enough sandal for one round."), frappe.ValidationError)
+	marks.append({"x": max(0, min(100, cint(x))), "y": max(0, min(100, cint(y)))})
+	session.tilaks = json.dumps(marks)
+	session.save(ignore_permissions=True)
+	return _payload(user, found)

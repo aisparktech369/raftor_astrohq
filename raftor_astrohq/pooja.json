@@ -3,13 +3,13 @@
   {
    "title": "Panchopchar",
    "sequence": 10,
-   "note": "The five offerings, made one after another.",
+   "note": "The five offerings, made one after another: the lamp is lit first and the incense is lit from it.",
    "steps": [
-    {"step_key": "gandha", "label": "Gandha", "devanagari": "गन्ध", "effect": "sandal", "mantra": "Gandham samarpayami", "meaning": "I offer fragrant sandal paste."},
-    {"step_key": "pushpa", "label": "Pushpa", "devanagari": "पुष्प", "effect": "flower", "mantra": "Pushpam samarpayami", "meaning": "I offer flowers."},
-    {"step_key": "dhoop", "label": "Dhoop", "devanagari": "धूप", "effect": "incense", "mantra": "Dhoopam aghrapayami", "meaning": "I offer incense; let its fragrance reach you."},
-    {"step_key": "deep", "label": "Deep", "devanagari": "दीप", "effect": "lamp", "mantra": "Deepam darshayami", "meaning": "I show you the lamp, the light that clears the dark."},
-    {"step_key": "naivedya", "label": "Naivedya", "devanagari": "नैवेद्य", "effect": "food", "mantra": "Naivedyam nivedayami", "meaning": "I offer this food with devotion."}
+    {"step_key": "gandha", "label": "Gandha", "devanagari": "गन्ध", "effect": "sandal", "mantra": "Gandham samarpayami", "meaning": "I offer fragrant sandal paste.", "action": "apply"},
+    {"step_key": "pushpa", "label": "Pushpa", "devanagari": "पुष्प", "effect": "flower", "mantra": "Pushpam samarpayami", "meaning": "I offer flowers.", "action": "none"},
+    {"step_key": "deep", "label": "Deep", "devanagari": "दीप", "effect": "lamp", "mantra": "Deepam darshayami", "meaning": "I show you the lamp, the light that clears the dark.", "action": "circle", "turns": 3},
+    {"step_key": "dhoop", "label": "Dhoop", "devanagari": "धूप", "effect": "incense", "mantra": "Dhoopam aghrapayami", "meaning": "I offer incense; let its fragrance reach you.", "action": "circle", "turns": 3},
+    {"step_key": "naivedya", "label": "Naivedya", "devanagari": "नैवेद्य", "effect": "food", "mantra": "Naivedyam nivedayami", "meaning": "I offer this food with devotion.", "action": "carry"}
    ]
   }
  ]
