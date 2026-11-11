@@ -186,7 +186,7 @@ def list_reminders() -> dict:
 	items = []
 	for row in rows:
 		actions = [{"label": _("Delete"), "kind": "danger", "call": "raftor_astrohq.reminders.delete_reminder", "args": {"id": row.name}, "confirm": _("Delete this reminder?"), "confirm_label": _("Yes, delete")}]
-		items.append({"id": row.name, "layout": "profile", "mark": "\u263e", "title": title_of(row), "subtitle": _("Reminds you {0}.").format(lead_words(row.lead)),
+		items.append({"id": row.name, "avatar": "\u263e", "compact": True, "title": title_of(row), "lines": [_("Reminds you {0}.").format(lead_words(row.lead))], "menu": True,
 					  "switch": {"on": bool(row.enabled), "on_label": _("On"), "off_label": _("Paused"), "label": _("Reminder on"), "call": "raftor_astrohq.reminders.toggle_reminder", "args": {"id": row.name}},
 					  "actions": actions})
 	return {"items": items}

@@ -13,7 +13,7 @@ Scheduled at 04:00 and again at 06:00 (site time, IST): the second run writes on
 
 ## Where it plugs in
 
-* websitehq Feature Card has a layout **Flip** (a premium dark card: a gold ring turning round the sign's mark, twinkling stars, a light sweep, bars that fill as it turns; all of it still under reduced motion) (library preset "Flip Card"; `rfhq_flip_card.js`, styles at the end of `rfhq_templates.css`). The sign's mark is in `number` (the `icon` field is an icon name and drops anything else). Both faces share one grid cell, so the card is as tall as the taller face; without the script both faces show one under the other; with reduced motion the faces swap with no turning.
+* websitehq Feature Card has a layout **Flip** (every colour is a theme token: the feed asks for the Dark theme, the accent is the site's accent, the stars are the Pattern axis's Starfield; change the look by changing the theme or an axis, not the card) (a premium dark card: a gold ring turning round the sign's mark, twinkling stars, a light sweep, bars that fill as it turns; all of it still under reduced motion) (library preset "Flip Card"; `rfhq_flip_card.js`, styles at the end of `rfhq_templates.css`). The sign's mark is in `number` (the `icon` field is an icon name and drops anything else). Both faces share one grid cell, so the card is as tall as the taller face; without the script both faces show one under the other; with reduced motion the faces swap with no turning.
 
 ## Limits to know
 

@@ -261,7 +261,7 @@ def cards() -> dict:
 		scores = {area: int(row.get(f"{area}_score") or 0) for area in AREAS}
 		average = sum(scores.values()) / len(scores)
 		mood = labels["good"] if average >= 66 else labels["slow"] if average <= 52 else labels["steady"]
-		items.append({"layout": "Flip", "number": rashi(number)[4] + "\ufe0e", "title": names[language], "meta": names[other],
+		items.append({"layout": "Flip", "theme": "Dark", "number": rashi(number)[4] + "\ufe0e", "title": names[language], "meta": names[other],
 					  "link_label": labels["tap"], "body": mood, "pills": "\n".join(f"{labels[area]}: {scores[area]}" for area in AREAS), "about": SWATCH.get(row.colour_en or "", ""),
 					  "note": f"{labels['colour']}: {row.get(f'colour_{language}') or ''} · {labels['number']}: {row.lucky_number or ''}"})
 	return {"items": items}

@@ -38,7 +38,7 @@ def _item(row) -> dict:
 	if row.relationship != profiles.SELF:
 		actions.append({"label": _("Delete"), "kind": "danger", "call": DELETE, "args": {"id": row.name},
 						"confirm": _("Delete {0}?").format(row.full_name), "confirm_label": _("Yes, delete")})
-	return {"id": row.name, "layout": "profile", "title": row.full_name, "tags": [row.relationship], "lines": [_line(row)], "actions": actions}
+	return {"id": row.name, "avatar": True, "compact": True, "title": row.full_name, "tags": [row.relationship], "lines": [_line(row)], "menu": True, "actions": actions}
 
 
 @frappe.whitelist(methods=["POST"])
@@ -49,7 +49,7 @@ def list_profiles(who=None):
 		rows = [r for r in rows if r.relationship == profiles.SELF]
 	items = [_item(r) for r in rows]
 	if who != "you" and not any(r.relationship == profiles.SELF for r in rows):  # the account holder always has a place in the list, to fill in
-		items.insert(0, {"id": "you", "layout": "profile", "title": frappe.utils.get_fullname(frappe.session.user), "tags": [profiles.SELF], "lines": [_("Add your own date, time and place of birth.")],
+		items.insert(0, {"id": "you", "avatar": True, "compact": True, "title": frappe.utils.get_fullname(frappe.session.user), "tags": [profiles.SELF], "lines": [_("Add your own date, time and place of birth.")],
 						 "actions": [{"label": _("Add your details"), "href": page_url("my", "birth-profiles/you")}]})
 	match = _match_card(rows) if who != "you" else None
 	return {"items": items + ([match] if match else [])}
@@ -64,7 +64,7 @@ def _match_card(rows) -> dict | None:
 	code = frappe.db.get_value("Item", {"custom_report_kind": "match"}, "name")
 	if not code or not free_reports.on_sale(code):
 		return None
-	return {"id": "match", "layout": "profile", "mark": "\u2661", "title": _("Check compatibility"), "badge": _("Free"), "tone": "success", "lines": [_("Match any two of the people you have saved, by the eight kootas out of 36.")],
+	return {"id": "match", "avatar": "\u2661", "compact": True, "title": _("Check compatibility"), "badge": _("Free"), "tone": "success", "lines": [_("Match any two of the people you have saved, by the eight kootas out of 36.")],
 			"actions": [{"label": _("Match two people"), "href": links.free_report(code)}]}
 
 
