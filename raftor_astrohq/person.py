@@ -367,10 +367,19 @@ def read_report(user: str, who: str, kind: str, guide_user: str) -> dict:
 
 def persona_voice(persona: str, guide: str) -> str:
 	"""The words that make one guide of an area sound like itself (AgentsHQ asks with the name the chat gives and the area's agent). Only an enabled guide of that very area has a voice; any other name gives nothing."""
-	row = frappe.db.get_value("AI Guide Persona", {"slug": persona, "area": guide, "enabled": 1}, ["guide_name", "voice"], as_dict=True) if persona else None
-	if not (row and row.voice):
+	from raftor_astrohq import ai_guides
+
+	row = frappe.db.get_value("AI Guide Persona", {"slug": persona, "area": guide, "enabled": 1}, ["guide_name", "voice", "traits", "mindset", "communication_style", "signature_line", "topics", "workflow", "response_format", "boundaries"], as_dict=True) if persona else None
+	if not (row and ai_guides.is_on(persona) and ai_guides.voice_of(row)):
 		return ""
 	first = ((frappe.db.get_value("AI Guide Persona", persona, "languages") or "").split(",")[0] or "").strip().lower()
 	language = {"hinglish": "Hinglish: Hindi words written in Roman letters, mixed with English as the person does", "hindi": "Hindi (Devanagari, unless the person writes in Roman letters)"}.get(first, "")
 	return (f"Voice for this chat. You are {row.guide_name}, one of several AI guides of the same kind, each with its own way of speaking. For the language, the tone and the length of your replies, the following takes precedence over any default language or tone you were given; "
-			f"your boundaries, rules and tools do not change. " + (f"Write every reply in {language}. " if language else "") + row.voice).strip()
+			f"your boundaries, rules and tools do not change. " + (f"Write every reply in {language}. " if language else "") + ai_guides.voice_of(row)).strip()
+
+
+def persona_shelves(persona: str, guide: str) -> list:
+	"""The knowledge shelves one guide of an area reads, from its skills (AgentsHQ asks with the name the chat gives and the area's agent). Nothing for a guide that is not on or has no skills."""
+	from raftor_astrohq import ai_guides
+
+	return ai_guides.shelves(persona, guide) if persona and frappe.db.exists("AI Guide Persona", persona) and ai_guides.is_on(persona) else []

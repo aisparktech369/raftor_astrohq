@@ -45,7 +45,7 @@ class TestPersonas(AstroTestCase):
 			frappe.get_doc({"doctype": "AI Guide Persona", "slug": slug, "guide_name": name, "area": area, "tagline": "Love and numbers", "bio": "An AI guide.", "audience": "Gen Z", "languages": languages, "topics": "Love",
 							"voice": "Speak in short messages.", "greeting": "Tell me your birth date.", "enabled": 1, "ai_image": 1, "sequence": 10}).insert(ignore_permissions=True)
 
-	def test_the_app_ships_no_guides_of_its_own(self):
+	def test_the_guides_come_from_the_profiles_the_app_carries_and_none_are_hard_coded(self):
 		self.assertEqual(json.loads((Path(ai_guides.__file__).parent / "ai_personas.json").read_text(encoding="utf-8")), [])
 
 	def test_a_guide_must_belong_to_one_of_the_sites_areas(self):

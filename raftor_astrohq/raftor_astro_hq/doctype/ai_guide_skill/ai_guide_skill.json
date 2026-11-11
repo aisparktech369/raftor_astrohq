@@ -1,0 +1,85 @@
+{
+ "actions": [],
+ "autoname": "field:skill_key",
+ "creation": "2026-11-11 18:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "skill_key",
+  "title",
+  "area",
+  "enabled",
+  "shelves",
+  "about"
+ ],
+ "fields": [
+  {
+   "fieldname": "skill_key",
+   "fieldtype": "Data",
+   "label": "Key",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "description": "A short name in lower case with underscores, for example numerology. Guides name their skills by it."
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Skill",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "area",
+   "fieldtype": "Data",
+   "label": "Area",
+   "in_list_view": 1,
+   "description": "Which of the site's guides does this skill: pandit_ji, numerologist or dream_guide. Its rules and tools are the area's. Blank while no guide can do it yet."
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "On",
+   "default": "0",
+   "in_list_view": 1,
+   "description": "Switch on only when the area's guide has the knowledge and the tools for it. A guide whose skill is off is not shown."
+  },
+  {
+   "fieldname": "shelves",
+   "fieldtype": "Data",
+   "label": "Knowledge it reads",
+   "description": "The shelves of the Academy knowledge a guide with this skill searches, separated by commas, for example numerology, consult. A guide never reads beyond its area's own shelves, and with several skills it reads the shelves of all of them."
+  },
+  {
+   "fieldname": "about",
+   "fieldtype": "Small Text",
+   "label": "What it needs",
+   "description": "What must be in place before this skill is switched on."
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-11 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "AI Guide Skill",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

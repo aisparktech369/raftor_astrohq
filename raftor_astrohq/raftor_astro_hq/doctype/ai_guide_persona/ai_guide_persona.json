@@ -10,6 +10,9 @@
   "area",
   "enabled",
   "sequence",
+  "profile_id",
+  "skills_section",
+  "skills",
   "who_section",
   "tagline",
   "bio",
@@ -19,9 +22,18 @@
   "voice_section",
   "voice",
   "greeting",
+  "profile_section",
+  "traits",
+  "mindset",
+  "communication_style",
+  "signature_line",
+  "workflow",
+  "response_format",
+  "boundaries",
   "picture_section",
   "avatar",
-  "ai_image"
+  "ai_image",
+  "avatar_prompt"
  ],
  "fields": [
   {
@@ -44,9 +56,9 @@
    "fieldname": "area",
    "fieldtype": "Data",
    "label": "Area",
-   "reqd": 1,
+   "reqd": 0,
    "in_list_view": 1,
-   "description": "Which of the site's guides does the work: pandit_ji (astrology, Rudraksha, gemstones and poojas), numerologist or dream_guide. The rules, tools and knowledge are the area's; this guide only speaks differently."
+   "description": "Which of the site's guides does the work: pandit_ji (astrology, Rudraksha, gemstones and poojas), numerologist or dream_guide. The rules, tools and knowledge are the area's; this guide only speaks differently. Filled from the skills when left blank."
   },
   {
    "fieldname": "enabled",
@@ -106,8 +118,8 @@
    "fieldname": "voice",
    "fieldtype": "Long Text",
    "label": "How it speaks",
-   "reqd": 1,
-   "description": "A few lines the guide is given: its tone, its language, how long its replies are, what it leans toward. The area's own rules, boundaries and tools still apply and cannot be changed here."
+   "reqd": 0,
+   "description": "A few lines the guide is given: its tone, its language, how long its replies are. Not needed when the profile below is filled. The area's own rules, boundaries and tools still apply and cannot be changed here."
   },
   {
    "fieldname": "greeting",
@@ -132,11 +144,81 @@
    "label": "The picture is AI-made",
    "default": "1",
    "description": "Tick when the picture is made by an AI tool and the person it shows does not exist. It is then labelled on the guide's page."
+  },
+  {
+   "fieldname": "profile_id",
+   "fieldtype": "Data",
+   "label": "Profile id",
+   "description": "The id of the profile this guide was made from (for example ASTRO-NUM-001). Importing the same profile again never makes a second guide."
+  },
+  {
+   "fieldname": "skills_section",
+   "fieldtype": "Section Break",
+   "label": "Skills"
+  },
+  {
+   "fieldname": "skills",
+   "fieldtype": "Table",
+   "label": "Skills",
+   "options": "AI Guide Persona Skill",
+   "description": "Up to three. A guide uses the knowledge and tools of its skills, within its area's own. All of them must be on for the guide to be shown."
+  },
+  {
+   "fieldname": "profile_section",
+   "fieldtype": "Section Break",
+   "label": "Profile",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "traits",
+   "fieldtype": "Data",
+   "label": "Traits",
+   "description": "Separated by commas."
+  },
+  {
+   "fieldname": "mindset",
+   "fieldtype": "Small Text",
+   "label": "Mindset"
+  },
+  {
+   "fieldname": "communication_style",
+   "fieldtype": "Small Text",
+   "label": "How it communicates"
+  },
+  {
+   "fieldname": "signature_line",
+   "fieldtype": "Small Text",
+   "label": "Signature line",
+   "description": "Used now and then, not in every reply."
+  },
+  {
+   "fieldname": "workflow",
+   "fieldtype": "Long Text",
+   "label": "Way of working",
+   "description": "One step per line, in order."
+  },
+  {
+   "fieldname": "response_format",
+   "fieldtype": "Small Text",
+   "label": "Shape of an answer",
+   "description": "One part per line."
+  },
+  {
+   "fieldname": "boundaries",
+   "fieldtype": "Long Text",
+   "label": "Boundaries",
+   "description": "One per line. Added to the area's own, never replacing them."
+  },
+  {
+   "fieldname": "avatar_prompt",
+   "fieldtype": "Long Text",
+   "label": "Picture brief",
+   "description": "What the portrait should show, for whoever makes the picture."
   }
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-11-11 16:00:00.000000",
+ "modified": "2026-11-11 18:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "AI Guide Persona",

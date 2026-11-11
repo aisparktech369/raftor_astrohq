@@ -38,7 +38,9 @@ def _persona(args: dict):
 	"""One of the guides of an area, when the page asks for it by name (?persona=kavya): only an enabled guide of one of the site's own agents; anything else is the area's own guide."""
 	slug = (args.get("persona") or "").strip()[:80]
 	row = frappe.db.get_value("AI Guide Persona", {"slug": slug, "enabled": 1}, ["slug", "guide_name", "area", "tagline", "greeting", "ai_image"], as_dict=True) if slug else None
-	return row if row and row.area in agents.AGENTS else None
+	from raftor_astrohq import ai_guides
+
+	return row if row and row.area in agents.AGENTS and ai_guides.is_on(row.slug) else None
 
 
 def _frame(blueprint: str | None = None, persona=None) -> dict:

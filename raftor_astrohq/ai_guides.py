@@ -37,15 +37,79 @@ def ensure() -> None:
 	frappe.db.commit()
 
 
+SKILL = "AI Guide Skill"
+
+
+def skills() -> list[dict]:
+	"""What a guide can be skilled in (ai_skills.json): data, made into records on install and then kept in Desk."""
+	return json.loads((HERE / "ai_skills.json").read_text(encoding="utf-8"))
+
+
+def seed_skills() -> None:
+	"""Each skill that is missing, as a record staff switch on and off in Desk. Never changed once it exists."""
+	if not frappe.db.exists("DocType", SKILL):
+		return
+	for row in skills():
+		if not frappe.db.exists(SKILL, row["skill_key"]):
+			frappe.get_doc({"doctype": SKILL, **row}).insert(ignore_permissions=True)
+
+
 def seed_personas() -> None:
-	"""The guides of each area, as records staff change in Desk (AI Guide Persona): made once, never put back once they exist, and each given its listing on the Seek guidance page."""
+	"""The guides of each area, as records staff change in Desk (AI Guide Persona): the profiles that come with the app (ai_profiles) made once, never put back once they exist, and each given its listing on the Seek guidance page."""
 	if not frappe.db.exists("DocType", PERSONA):
 		return
+	from raftor_astrohq import ai_profiles
+
+	seed_skills()
 	if not frappe.db.count(PERSONA):
 		for row in personas():
 			frappe.get_doc({"doctype": PERSONA, "enabled": 1, "ai_image": 0, **row}).insert(ignore_permissions=True)
+	ai_profiles.run()
 	for name in frappe.get_all(PERSONA, pluck="name"):
 		sync_persona(frappe.get_doc(PERSONA, name))
+
+
+def skills_of(persona) -> list[dict]:
+	"""A guide's skills as {title, area, enabled, shelves}: from the guide's rows or, for a guide as a plain record, from the database."""
+	rows = persona.skills if hasattr(persona, "skills") else frappe.get_all("AI Guide Persona Skill", filters={"parent": persona, "parenttype": PERSONA}, fields=["skill"], order_by="idx")
+	return [frappe.db.get_value(SKILL, r.skill if hasattr(r, "skill") else r["skill"], ["title", "area", "enabled", "shelves"], as_dict=True) for r in rows]
+
+
+def is_on(persona: str) -> bool:
+	"""Whether a guide is shown and answers: it is on, and every skill it has is on."""
+	if not frappe.db.get_value(PERSONA, persona, "enabled"):
+		return False
+	return all(s and s.enabled for s in skills_of(persona))
+
+
+def shelves(persona: str, area: str) -> list[str]:
+	"""The knowledge categories a guide of this area reads: those of all its skills together, without repeats. Nothing for a guide with no skills (it then reads what its area allows)."""
+	if frappe.db.get_value(PERSONA, persona, "area") != area:
+		return []
+	found: list[str] = []
+	for skill in skills_of(persona):
+		for shelf in (skill.shelves or "").split(","):
+			if shelf.strip() and shelf.strip() not in found:
+				found.append(shelf.strip())
+	return found
+
+
+def voice_of(row) -> str:
+	"""The words a guide is given: what staff wrote as its voice, then what its profile says of its character, its way of working, the shape of its answers and its boundaries."""
+	lines = [row.voice or ""]
+	if row.traits or row.mindset or row.communication_style:
+		lines.append("Your character: " + "; ".join(x for x in (row.traits and f"{row.traits}", row.mindset and f"mindset: {row.mindset}", row.communication_style and f"you communicate: {row.communication_style}") if x))
+	if row.signature_line:
+		lines.append(f'Your signature line, to use now and then and not in every reply: "{row.signature_line}"')
+	if row.topics:
+		lines.append(f"You lean toward: {row.topics}.")
+	if row.workflow:
+		lines.append("Your way of working, in this order when it fits the question:\n" + "\n".join(f"{i}. {x}" for i, x in enumerate((l for l in row.workflow.splitlines() if l.strip()), 1)))
+	if row.response_format:
+		lines.append("When you give a full reading, shape it as: " + "; ".join(l.strip() for l in row.response_format.splitlines() if l.strip()) + ".")
+	if row.boundaries:
+		lines.append("You also always keep to (these add to your other rules):\n" + "\n".join(f"- {l.strip()}" for l in row.boundaries.splitlines() if l.strip()))
+	return "\n".join(x for x in lines if x).strip()
 
 
 def sync_persona(persona) -> None:
@@ -55,7 +119,7 @@ def sync_persona(persona) -> None:
 	slug = persona.slug
 	_make({"slug": slug, "name": persona.guide_name, "persona": AREA_WORD[persona.area], "page": f"ask/guide?persona={slug}", "photo": f"guide-{slug}.svg", "languages": persona.languages or "English",
 		   "bio": " ".join(x for x in (persona.tagline and persona.tagline.rstrip(".") + ".", persona.bio) if x)})
-	values = {"display_name": persona.guide_name, "bio": f"<p>{' '.join(x for x in (persona.tagline and persona.tagline.rstrip('.') + '.', persona.bio) if x)}</p>", "status": "Live" if persona.enabled else "Paused"}
+	values = {"display_name": persona.guide_name, "bio": f"<p>{' '.join(x for x in (persona.tagline and persona.tagline.rstrip('.') + '.', persona.bio) if x)}</p>", "status": "Live" if persona.enabled and all(s and s.enabled for s in skills_of(persona)) else "Paused"}
 	if persona.avatar and frappe.db.get_value("Provider", slug, "photo") != persona.avatar:
 		values["photo"] = persona.avatar
 	frappe.db.set_value("Provider", slug, values)

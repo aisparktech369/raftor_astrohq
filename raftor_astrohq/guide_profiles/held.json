@@ -1,0 +1,7 @@
+{
+ "ASTRO-NUM-003": "Pythagorean numerology: the site's numerology engine and Academy are Chaldean only, so this guide would work out sums the engine cannot",
+ "ASTRO-NUM-005": "Lo Shu grid: the engine has no grid calculation",
+ "ASTRO-NUM-008": "Mobile and vehicle numbers: the engine has no calculation for them and the Academy no chapter",
+ "ASTRO-NUM-009": "Compatibility of two people's numbers: the engine reads one person at a time",
+ "ASTRO-NUM-010": "Comparing numerology systems needs the other systems in the engine"
+}
