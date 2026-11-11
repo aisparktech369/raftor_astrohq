@@ -74,6 +74,11 @@ def rashi(number: int) -> tuple:
 	return RASHIS[number - 1]
 
 
+def art(number: int) -> str:
+	"""The picture of a sign: gold line art of its Vedic symbol (the ram, the bull, the couple, the crab, the lion, the maiden with grain, the scales, the scorpion, the archer's bow, the makara, the water pot, the two fish): public/rashi/<Sanskrit name>.svg."""
+	return f"/assets/raftor_astrohq/rashi/{rashi(number)[2].lower()}.svg"
+
+
 # ---- the sky and the facts of a sign ----
 def place_for(on_date: datetime.date | None = None) -> dict:
 	"""The town whose sunrise the sky is taken at: the Panchang's town, else Delhi."""
@@ -244,7 +249,7 @@ def _language() -> str:
 
 @frappe.whitelist(allow_guest=True, methods=["POST"])
 def cards() -> dict:
-	"""The twelve cards of the day as Feature Card (layout Flip) fields: the front is the sign (mark in `number`, name), the back is its reading. The newest Published day that is not older than yesterday;
+	"""The twelve cards of the day as Feature Card (layout Flip) fields: the front is the sign (picture in `image`, name), the back is its reading. The newest Published day that is not older than yesterday;
 	none when there is none (the section then shows nothing)."""
 	earliest = today() - datetime.timedelta(days=1)
 	day = frappe.db.get_value(DOCTYPE, {"status": "Published", "for_date": [">=", earliest]}, "for_date", order_by="for_date desc")
@@ -261,7 +266,7 @@ def cards() -> dict:
 		scores = {area: int(row.get(f"{area}_score") or 0) for area in AREAS}
 		average = sum(scores.values()) / len(scores)
 		mood = labels["good"] if average >= 66 else labels["slow"] if average <= 52 else labels["steady"]
-		items.append({"layout": "Flip", "number": rashi(number)[4] + "\ufe0e", "title": names[language], "meta": names[other],
+		items.append({"layout": "Flip", "number": rashi(number)[4] + "\ufe0e", "image": art(number), "title": names[language], "meta": names[other],
 					  "link_label": labels["tap"], "body": mood, "pills": "\n".join(f"{labels[area]}: {scores[area]}" for area in AREAS), "about": SWATCH.get(row.colour_en or "", ""),
 					  "note": f"{labels['colour']}: {row.get(f'colour_{language}') or ''} · {labels['number']}: {row.lucky_number or ''}"})
 	return {"items": items}
