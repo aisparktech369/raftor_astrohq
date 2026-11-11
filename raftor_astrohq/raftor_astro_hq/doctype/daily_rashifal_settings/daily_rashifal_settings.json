@@ -1,0 +1,109 @@
+{
+ "actions": [],
+ "creation": "2026-11-11 19:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "note",
+  "enabled",
+  "publish_at_once",
+  "writer_section",
+  "hub_address",
+  "hub_site",
+  "hub_key",
+  "api_name",
+  "timeout_seconds",
+  "run_section",
+  "write_today",
+  "publish_drafts"
+ ],
+ "fields": [
+  {
+   "fieldname": "note",
+   "fieldtype": "HTML",
+   "options": "<p>Each morning before sunrise AstroHQ asks the astrology service where the planets are, works out for each of the 12 signs where they stand counted from that sign, and asks the writer below to put it in plain words in English and Hindi. The writer is given only those numbers. The readings are kept as drafts until you publish them (or tick the box below). They appear on the Consult page above the free reports.</p>"
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Write the daily rashifal",
+   "default": "0"
+  },
+  {
+   "fieldname": "publish_at_once",
+   "fieldtype": "Check",
+   "label": "Publish at once",
+   "default": "0",
+   "description": "Off: each reading waits as a Draft until staff publish it. On: it is shown as soon as it is written."
+  },
+  {
+   "fieldname": "writer_section",
+   "fieldtype": "Section Break",
+   "label": "The writer (the hub's text-to-text)"
+  },
+  {
+   "fieldname": "hub_address",
+   "fieldtype": "Data",
+   "label": "Hub address",
+   "description": "For example http://127.0.0.1:8800. No trailing slash."
+  },
+  {
+   "fieldname": "hub_site",
+   "fieldtype": "Data",
+   "label": "Hub site name",
+   "description": "Only when the hub serves several sites on one address; sent as X-Frappe-Site-Name."
+  },
+  {
+   "fieldname": "hub_key",
+   "fieldtype": "Password",
+   "label": "Hub key"
+  },
+  {
+   "fieldname": "api_name",
+   "fieldtype": "Data",
+   "label": "API name",
+   "default": "text-to-text"
+  },
+  {
+   "fieldname": "timeout_seconds",
+   "fieldtype": "Int",
+   "label": "Seconds to wait for one reading",
+   "default": "90"
+  },
+  {
+   "fieldname": "run_section",
+   "fieldtype": "Section Break",
+   "label": "Now"
+  },
+  {
+   "fieldname": "write_today",
+   "fieldtype": "Button",
+   "label": "Write today's readings now",
+   "description": "Writes the signs that have no reading yet for today. Safe to press again."
+  },
+  {
+   "fieldname": "publish_drafts",
+   "fieldtype": "Button",
+   "label": "Publish today's drafts"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-11-11 19:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Daily Rashifal Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

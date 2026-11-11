@@ -1,0 +1,206 @@
+{
+ "actions": [],
+ "autoname": "field:key",
+ "creation": "2026-11-11 19:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "key",
+  "for_date",
+  "rashi_no",
+  "rashi",
+  "status",
+  "lucky_number",
+  "en_section",
+  "summary_en",
+  "love_en",
+  "money_en",
+  "work_en",
+  "health_en",
+  "colour_en",
+  "hi_section",
+  "summary_hi",
+  "love_hi",
+  "money_hi",
+  "work_hi",
+  "health_hi",
+  "colour_hi",
+  "made_section",
+  "facts",
+  "model",
+  "written_on",
+  "problem"
+ ],
+ "fields": [
+  {
+   "fieldname": "key",
+   "fieldtype": "Data",
+   "label": "Key",
+   "reqd": 1,
+   "unique": 1,
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "for_date",
+   "fieldtype": "Date",
+   "label": "Day",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "rashi_no",
+   "fieldtype": "Int",
+   "label": "Sign number",
+   "reqd": 1,
+   "in_list_view": 1,
+   "read_only": 1,
+   "description": "1 Mesha (Aries) to 12 Meena (Pisces)."
+  },
+  {
+   "fieldname": "rashi",
+   "fieldtype": "Data",
+   "label": "Sign",
+   "in_list_view": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nPublished\nRejected",
+   "default": "Draft",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "description": "Only a Published reading is shown to visitors."
+  },
+  {
+   "fieldname": "lucky_number",
+   "fieldtype": "Int",
+   "label": "Lucky number"
+  },
+  {
+   "fieldname": "en_section",
+   "fieldtype": "Section Break",
+   "label": "English"
+  },
+  {
+   "fieldname": "summary_en",
+   "fieldtype": "Small Text",
+   "label": "Summary"
+  },
+  {
+   "fieldname": "love_en",
+   "fieldtype": "Small Text",
+   "label": "Love"
+  },
+  {
+   "fieldname": "money_en",
+   "fieldtype": "Small Text",
+   "label": "Money"
+  },
+  {
+   "fieldname": "work_en",
+   "fieldtype": "Small Text",
+   "label": "Work"
+  },
+  {
+   "fieldname": "health_en",
+   "fieldtype": "Small Text",
+   "label": "Health"
+  },
+  {
+   "fieldname": "colour_en",
+   "fieldtype": "Small Text",
+   "label": "Lucky colour"
+  },
+  {
+   "fieldname": "hi_section",
+   "fieldtype": "Section Break",
+   "label": "हिन्दी (Hindi)"
+  },
+  {
+   "fieldname": "summary_hi",
+   "fieldtype": "Small Text",
+   "label": "Summary (Hindi)"
+  },
+  {
+   "fieldname": "love_hi",
+   "fieldtype": "Small Text",
+   "label": "Love (Hindi)"
+  },
+  {
+   "fieldname": "money_hi",
+   "fieldtype": "Small Text",
+   "label": "Money (Hindi)"
+  },
+  {
+   "fieldname": "work_hi",
+   "fieldtype": "Small Text",
+   "label": "Work (Hindi)"
+  },
+  {
+   "fieldname": "health_hi",
+   "fieldtype": "Small Text",
+   "label": "Health (Hindi)"
+  },
+  {
+   "fieldname": "colour_hi",
+   "fieldtype": "Small Text",
+   "label": "Lucky colour (Hindi)"
+  },
+  {
+   "fieldname": "made_section",
+   "fieldtype": "Section Break",
+   "label": "How it was made",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "facts",
+   "fieldtype": "Long Text",
+   "label": "The sky it was written from",
+   "read_only": 1,
+   "description": "The astrology engine's numbers for this sign, the only thing the writer was given."
+  },
+  {
+   "fieldname": "model",
+   "fieldtype": "Data",
+   "label": "Written by",
+   "read_only": 1
+  },
+  {
+   "fieldname": "written_on",
+   "fieldtype": "Datetime",
+   "label": "Written on",
+   "read_only": 1
+  },
+  {
+   "fieldname": "problem",
+   "fieldtype": "Small Text",
+   "label": "Problem",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-11 19:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Daily Rashifal",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  }
+ ],
+ "sort_field": "for_date",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
