@@ -63,6 +63,17 @@ def sync_persona(persona) -> None:
 		frappe.db.set_value("Astrologer Profile", slug, "languages", persona.languages)
 
 
+PICTURE_TONES = {"Pandit ji": ("#8a3b12", "#f0a04b"), "Numerologist": ("#5b2a86", "#c86bd0"), "Dream interpreter": ("#1f3b73", "#6fa8f0")}
+
+
+def _lettered(name: str, kind: str) -> bytes:
+	"""A plain picture for a guide that has none yet: its first letter on a colour for its kind. A guide's real picture, attached in Desk, takes its place."""
+	a, b = PICTURE_TONES.get(kind, ("#3a120e", "#d9a441"))
+	letter = (name.strip()[:1] or "A").upper().replace("&", "").replace("<", "")
+	return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{a}"/><stop offset="1" stop-color="{b}"/></linearGradient></defs>'
+			f'<rect width="300" height="400" fill="url(#g)"/><circle cx="150" cy="170" r="70" fill="#ffffff" fill-opacity="0.18"/><text x="150" y="196" font-family="Georgia,serif" font-size="84" fill="#fff" text-anchor="middle">{letter}</text></svg>').encode()
+
+
 def _keep_photo(name: str, data: bytes, slug: str) -> str:
 	"""The guide's picture, put in the site's public files with a File record made with no storage hooks: a site that keeps its files off-site would look for it in the bucket and fail. Returns its address."""
 	folder = Path(frappe.get_site_path("public", "files"))
@@ -86,6 +97,7 @@ def _make(row: dict) -> None:
 						"personas": [{"persona": row["persona"], "approved": 1}], "ai_guide_page": row["page"]}).insert(ignore_permissions=True)
 		frappe.db.set_value("Provider", slug, {"status": "Live", "verification_status": "Verified"})  # a Provider's stage is a Workflow: made in Draft, brought Live as the tests' fixtures do
 	if not frappe.db.get_value("Provider", slug, "photo"):
-		frappe.db.set_value("Provider", slug, "photo", _keep_photo(row["photo"], (HERE / "public" / "images" / row["photo"]).read_bytes(), slug))
+		shipped = HERE / "public" / "images" / row["photo"]
+		frappe.db.set_value("Provider", slug, "photo", _keep_photo(row["photo"], shipped.read_bytes() if shipped.exists() else _lettered(row["name"], row.get("persona", "")), slug))
 	if frappe.db.exists("DocType", "Astrologer Profile") and not frappe.db.exists("Astrologer Profile", slug):
 		frappe.get_doc({"doctype": "Astrologer Profile", "provider": slug, "languages": row.get("languages") or "English"}).insert(ignore_permissions=True)
