@@ -44,7 +44,7 @@ AREAS = {"love": ("Venus", "Moon", "Jupiter"), "money": ("Jupiter", "Mercury", "
 # the lucky colour and number: those of the first planet in this order that is in a good house
 LUCKY = [("Jupiter", "Yellow", "पीला", 3), ("Venus", "White", "सफ़ेद", 6), ("Moon", "Silver white", "चाँदी जैसा सफ़ेद", 2), ("Mercury", "Green", "हरा", 5),
 		 ("Sun", "Orange", "नारंगी", 1), ("Mars", "Red", "लाल", 9), ("Saturn", "Blue", "नीला", 8), ("Ketu", "Brown", "भूरा", 7), ("Rahu", "Grey", "स्लेटी", 4)]
-SWATCH = {"Yellow": "#f2c230", "White": "#f4f1ea", "Silver white": "#cfd3da", "Green": "#3fae6a", "Orange": "#f28a30", "Red": "#d9433b", "Blue": "#3b6fd9", "Brown": "#8a5a3c", "Grey": "#8b8f98"}
+SWATCH = {"Yellow": "yellow", "White": "white", "Silver white": "silver", "Green": "green", "Orange": "orange", "Red": "red", "Blue": "blue", "Brown": "brown", "Grey": "grey"}  # the lucky colour by the name websitehq knows it by (its --rfhq-swatch-* tokens): no colour value is kept here
 LABELS = {"en": {"love": "Love", "money": "Money", "work": "Work", "health": "Health", "colour": "Lucky colour", "number": "Number", "tap": "Tap to reveal", "good": "A good day", "steady": "A steady day", "slow": "Go slowly"},
 		  "hi": {"love": "प्रेम", "money": "धन", "work": "कार्य", "health": "स्वास्थ्य", "colour": "शुभ रंग", "number": "अंक", "tap": "देखने के लिए छुएँ", "good": "शुभ दिन", "steady": "सामान्य दिन", "slow": "धीरे चलें"}}
 PARTS = ("summary", "love", "money", "work", "health")
@@ -244,7 +244,7 @@ def _language() -> str:
 
 @frappe.whitelist(allow_guest=True, methods=["POST"])
 def cards() -> dict:
-	"""The twelve cards of the day as Feature Card (layout Flip) fields: the front is the sign (mark in `number`, name), the back is its reading. The newest Published day that is not older than yesterday;
+	"""The twelve cards of the day as the fields of the Flip Card variant (websitehq gives it its layout and its theme; this gives only words, numbers and the name of a colour): the front is the sign (mark in `number`, name), the back is its reading. The newest Published day that is not older than yesterday;
 	none when there is none (the section then shows nothing)."""
 	earliest = today() - datetime.timedelta(days=1)
 	day = frappe.db.get_value(DOCTYPE, {"status": "Published", "for_date": [">=", earliest]}, "for_date", order_by="for_date desc")
@@ -261,7 +261,7 @@ def cards() -> dict:
 		scores = {area: int(row.get(f"{area}_score") or 0) for area in AREAS}
 		average = sum(scores.values()) / len(scores)
 		mood = labels["good"] if average >= 66 else labels["slow"] if average <= 52 else labels["steady"]
-		items.append({"layout": "Flip", "theme": "Dark", "number": rashi(number)[4] + "\ufe0e", "title": names[language], "meta": names[other],
+		items.append({"number": rashi(number)[4] + "\ufe0e", "title": names[language], "meta": names[other],
 					  "link_label": labels["tap"], "body": mood, "pills": "\n".join(f"{labels[area]}: {scores[area]}" for area in AREAS), "about": SWATCH.get(row.colour_en or "", ""),
 					  "note": f"{labels['colour']}: {row.get(f'colour_{language}') or ''} · {labels['number']}: {row.lucky_number or ''}"})
 	return {"items": items}
