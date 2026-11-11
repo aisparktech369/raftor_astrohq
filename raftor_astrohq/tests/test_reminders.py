@@ -1,0 +1,143 @@
+"""My reminders (reminders.py): which days a reminder holds on, the special days, what a person may keep, and that a reminder is sent once."""
+import datetime
+from unittest.mock import patch
+
+import frappe
+
+from raftor_astrohq import reminders
+from raftor_astrohq.tests.helpers import AstroTestCase, make_user
+
+DAY = datetime.date(2031, 3, 9)
+
+
+def day(**kw):
+	base = {"date": DAY, "weekday": "Tuesday", "tithi": "Ashtami", "paksha": "Krishna", "tithi_begins": datetime.datetime(2031, 3, 8, 22, 5), "tithi_ends": datetime.datetime(2031, 3, 9, 20, 40),
+			"nakshatras": {"Ashwini"}, "nakshatra": "Ashwini"}
+	return {**base, **kw}
+
+
+class TestWhichDays(AstroTestCase):
+	def test_a_tithi_in_either_fortnight_or_one(self):
+		self.assertTrue(reminders.follows({"tithi": "Ashtami", "paksha": "Both"}, day()))
+		self.assertTrue(reminders.follows({"tithi": "Ashtami", "paksha": "Krishna"}, day()))
+		self.assertFalse(reminders.follows({"tithi": "Ashtami", "paksha": "Shukla"}, day()))
+		self.assertFalse(reminders.follows({"tithi": "Ekadashi", "paksha": "Both"}, day()))
+
+	def test_amavasya_and_purnima_need_no_fortnight(self):
+		self.assertTrue(reminders.follows({"tithi": "Amavasya"}, day(tithi="Amavasya", paksha="Krishna")))
+		self.assertTrue(reminders.follows({"tithi": "Purnima", "paksha": "Both"}, day(tithi="Purnima", paksha="Shukla")))
+
+	def test_everything_a_reminder_names_must_hold(self):
+		self.assertTrue(reminders.follows({"tithi": "Ashtami", "weekday": "Tuesday"}, day()))
+		self.assertFalse(reminders.follows({"tithi": "Ashtami", "weekday": "Friday"}, day()))
+		self.assertTrue(reminders.follows({"weekday": "Tuesday"}, day(tithi="Dashami")))
+
+	def test_a_reminder_that_names_nothing_never_holds(self):
+		self.assertFalse(reminders.follows({"tithi": "", "weekday": "", "special": ""}, day()))
+
+	def test_the_special_days(self):
+		self.assertIn("Ravi Pushya", reminders.specials(day(weekday="Sunday", nakshatras={"Pushya"})))
+		self.assertIn("Guru Pushya", reminders.specials(day(weekday="Thursday", nakshatras={"Pushya"})))
+		self.assertNotIn("Ravi Pushya", reminders.specials(day(weekday="Monday", nakshatras={"Pushya"})))
+		self.assertIn("Sarvartha Siddhi", reminders.specials(day(weekday="Tuesday", nakshatras={"Krittika"})))
+		self.assertIn("Amrit Siddhi", reminders.specials(day(weekday="Wednesday", nakshatras={"Anuradha"})))
+		self.assertEqual(reminders.specials(day(weekday="Friday", nakshatras={"Bharani"})), [])
+		self.assertTrue(reminders.follows({"special": "Ravi Pushya"}, day(weekday="Sunday", nakshatras={"Pushya"})))
+
+	def test_the_words(self):
+		self.assertEqual(reminders.title_of({"tithi": "Ashtami", "paksha": "Krishna"}), "Ashtami (Krishna)")
+		self.assertEqual(reminders.title_of({"tithi": "Amavasya", "paksha": "Both"}), "Amavasya")
+		self.assertEqual(reminders.title_of({"weekday": "Tuesday"}), "Every Tuesday")
+		self.assertEqual(reminders.title_of({"tithi": "Ashtami", "paksha": "Both", "weekday": "Tuesday"}), "Ashtami on a Tuesday")
+		text = reminders.text_for({"tithi": "Ashtami", "paksha": "Krishna"}, day(), "evening")
+		self.assertIn("Tomorrow", text)
+		self.assertIn("begins", text)
+		self.assertIn("ends", text)
+
+
+class TestMyList(AstroTestCase):
+	def setUp(self):
+		super().setUp()
+		self.me, self.other = make_user(), make_user()
+
+	def _as(self, user):
+		frappe.set_user(user.name)
+
+	def test_a_person_adds_lists_pauses_and_deletes_their_own(self):
+		self._as(self.me)
+		self.assertTrue(reminders.save_reminder({"tithi": "Ashtami", "paksha": "Krishna", "lead": "Both"})["ok"])
+		(item,) = reminders.list_reminders()["items"]
+		self.assertEqual(item["title"], "Ashtami (Krishna)")
+		reminders.toggle_reminder(item["id"])
+		self.assertEqual(reminders.list_reminders()["items"][0]["badge"], "Paused")
+		reminders.delete_reminder(item["id"])
+		self.assertEqual(reminders.list_reminders()["items"], [])
+
+	def test_a_person_cannot_touch_another_persons_reminder(self):
+		self._as(self.me)
+		reminders.save_reminder({"weekday": "Tuesday"})
+		name = reminders.list_reminders()["items"][0]["id"]
+		self._as(self.other)
+		self.assertEqual(reminders.list_reminders()["items"], [])
+		with self.assertRaises(frappe.DoesNotExistError):
+			reminders.delete_reminder(name)
+		with self.assertRaises(frappe.DoesNotExistError):
+			reminders.toggle_reminder(name)
+
+	def test_a_guest_is_refused(self):
+		frappe.set_user("Guest")
+		with self.assertRaises(frappe.PermissionError):
+			reminders.list_reminders()
+
+	def test_what_is_wrong_comes_back_per_field(self):
+		self._as(self.me)
+		self.assertIn("tithi", reminders.save_reminder({})["errors"])  # nothing named
+		self.assertIn("tithi", reminders.save_reminder({"tithi": "Nonsense"})["errors"])
+		self.assertIn("weekday", reminders.save_reminder({"weekday": "Funday"})["errors"])
+		self.assertIn("special", reminders.save_reminder({"special": "Made up"})["errors"])
+		self.assertIn("lead", reminders.save_reminder({"weekday": "Monday", "lead": "Whenever"})["errors"])
+
+	def test_the_same_reminder_twice_and_too_many_are_refused(self):
+		self._as(self.me)
+		self.assertTrue(reminders.save_reminder({"tithi": "Ekadashi"})["ok"])
+		self.assertFalse(reminders.save_reminder({"tithi": "Ekadashi"})["ok"])
+		with patch.object(reminders, "MAX_PER_PERSON", 1):
+			self.assertFalse(reminders.save_reminder({"weekday": "Friday"})["ok"])
+
+
+class TestSending(AstroTestCase):
+	def setUp(self):
+		super().setUp()
+		self.me = make_user()
+		frappe.set_user(self.me.name)
+		reminders.save_reminder({"tithi": "Ashtami", "paksha": "Krishna", "lead": "Both"})
+		reminders.save_reminder({"weekday": "Friday", "lead": "Morning of"})
+		frappe.set_user("Administrator")
+
+	def _run(self, slot, **kw):
+		with patch("raftor_astrohq.panchang.default_place", return_value={"timezone": "Asia/Kolkata"}), patch("raftor_astrohq.panchang.today", return_value=DAY - datetime.timedelta(days=1 if slot == "evening" else 0)), \
+				patch.object(reminders, "facts", return_value=day(**kw)), patch("raftor_servicehq.messages.send") as send, patch.object(frappe.db, "commit"):
+			return reminders.remind(slot), send
+
+	def test_the_evening_before_tells_those_whose_day_it_is_once(self):
+		sent, send = self._run("evening")
+		self.assertEqual(sent, 1)
+		event, user, context = send.call_args.args
+		self.assertEqual((event, user), ("astro.reminder", self.me.name))
+		self.assertEqual(context["title"], "Ashtami (Krishna)")
+		self.assertIn("Tomorrow", context["text"])
+		again, send = self._run("evening")  # a run that is repeated sends nothing new
+		self.assertEqual(again, 0)
+		send.assert_not_called()
+
+	def test_the_morning_is_a_different_time_and_respects_the_lead(self):
+		sent, _ = self._run("morning")  # the Ashtami reminder is Both, the Friday one is Morning of but today is a Tuesday
+		self.assertEqual(sent, 1)
+		sent, _ = self._run("morning", weekday="Friday", tithi="Dashami")
+		self.assertEqual(sent, 1)  # the Friday reminder holds, the Ashtami one does not
+
+	def test_a_paused_reminder_or_a_disabled_person_is_not_told(self):
+		for name in frappe.get_all("Astro Reminder", filters={"user": self.me.name}, pluck="name"):
+			frappe.db.set_value("Astro Reminder", name, "enabled", 0)
+		sent, _ = self._run("evening")
+		self.assertEqual(sent, 0)

@@ -1,0 +1,59 @@
+{
+ "actions": [],
+ "autoname": "field:key",
+ "creation": "2026-11-11 20:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "key",
+  "reminder",
+  "for_date",
+  "slot"
+ ],
+ "fields": [
+  {
+   "fieldname": "key",
+   "fieldtype": "Data",
+   "label": "Key",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "reminder",
+   "fieldtype": "Link",
+   "options": "Astro Reminder",
+   "label": "Reminder",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "for_date",
+   "fieldtype": "Date",
+   "label": "The day it was about",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "slot",
+   "fieldtype": "Data",
+   "label": "Evening or morning",
+   "in_list_view": 1
+  }
+ ],
+ "links": [],
+ "modified": "2026-11-11 20:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Astro Reminder Sent",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

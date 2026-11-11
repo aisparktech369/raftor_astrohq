@@ -4,12 +4,13 @@ site's. Addresses are `<group>/<page>`: a person's own birth details under `my`,
 import frappe
 from frappe import _
 
-from raftor_astrohq import details, profiles
+from raftor_astrohq import details, profiles, reminders
 from raftor_servicehq.roles import SERVICE_PROVIDER_ROLE
 from raftor_websitehq.website_hq.page_groups import page_url
 
 API = "raftor_astrohq.api."
 ASTRO = "raftor_astrohq.astrologer_api."
+REMIND = "raftor_astrohq.reminders."
 VIEW = "raftor_astrohq.report_view."
 TEMPLE = "raftor_astrohq.temple."
 TIGHT = {"padding": "Small", "gap": "Small"}
@@ -170,4 +171,17 @@ def definitions() -> list[dict]:
 		dream_guide_page(),
 		guide_page(),
 		temple_page(),
+		_list("my/reminders", _("My reminders"), _("Tell me before the days I follow: a tithi such as Ashtami or Amavasya, a weekday, or a special day."), {
+			"method": REMIND + "list_reminders", "empty": _("You have no reminders yet. Add the days you follow and we will tell you before each one."),
+			"links": [{"label": _("Add a reminder"), "href": _my("reminders/new"), "kind": "primary", "where": "top"}]},
+			menu={"label": _("My reminders"), "summary": _("Be told before Ashtami, Amavasya, Ekadashi and the days you follow."), "order": 18, "side": {"order": 29}}),
+		_form("my/reminders/new", _("Add a reminder"), _("Fill in what you follow. Fill in more than one and the reminder is for the days when all of them hold, such as Ashtami on a Tuesday."), {
+			"save": REMIND + "save_reminder", "submit_label": _("Save"), "cancel_label": _("Cancel"), "cancel_url": _my("reminders"), "success_redirect": _my("reminders"),
+			"fields": [
+				{"name": "tithi", "label": _("Tithi"), "type": "select", "placeholder": _("Any tithi"), "options": reminders.TITHIS, "hint": _("For example Ashtami, Ekadashi, Amavasya.")},
+				{"name": "paksha", "label": _("Fortnight"), "type": "select", "placeholder": _("Both"), "options": ["Shukla", "Krishna"],
+				 "hint": _("Shukla is the bright half, Krishna the dark half. Purnima and Amavasya need no choice.")},
+				{"name": "weekday", "label": _("Weekday"), "type": "select", "placeholder": _("Any day"), "options": reminders.WEEKDAYS},
+				{"name": "special", "label": _("Special day"), "type": "select", "placeholder": _("None"), "options": reminders.SPECIALS},
+				{"name": "lead", "label": _("Remind me"), "type": "select", "options": reminders.LEADS}]}, note=_("The day is the one the panchang gives at sunrise. The message says when the tithi begins and ends.")),
 	]

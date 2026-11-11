@@ -1,0 +1,89 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-11-11 20:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "tithi",
+  "paksha",
+  "weekday",
+  "special",
+  "lead",
+  "enabled"
+ ],
+ "fields": [
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "options": "User",
+   "label": "Person",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "tithi",
+   "fieldtype": "Select",
+   "label": "Tithi",
+   "options": "\nPratipada\nDwitiya\nTritiya\nChaturthi\nPanchami\nShashthi\nSaptami\nAshtami\nNavami\nDashami\nEkadashi\nDwadashi\nTrayodashi\nChaturdashi\nPurnima\nAmavasya",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "paksha",
+   "fieldtype": "Select",
+   "label": "Fortnight",
+   "options": "Both\nShukla\nKrishna",
+   "default": "Both"
+  },
+  {
+   "fieldname": "weekday",
+   "fieldtype": "Select",
+   "label": "Weekday",
+   "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "special",
+   "fieldtype": "Select",
+   "label": "Special day",
+   "options": "\nRavi Pushya\nGuru Pushya\nSarvartha Siddhi\nAmrit Siddhi",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "lead",
+   "fieldtype": "Select",
+   "label": "Remind",
+   "options": "Evening before\nMorning of\nBoth",
+   "default": "Evening before",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "On",
+   "default": "1",
+   "in_list_view": 1
+  }
+ ],
+ "links": [],
+ "modified": "2026-11-11 20:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Astro Reminder",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

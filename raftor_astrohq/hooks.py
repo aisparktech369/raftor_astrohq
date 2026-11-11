@@ -288,6 +288,7 @@ standard_portal_menu_items = [
 ]
 
 # servicehq's service kinds, in astrohq's words (vocabulary.py). Only words; the mechanics are servicehq's.
+notification_definitions = ["raftor_astrohq.notifications.definitions"]
 servicehq_vocabulary = {"astrohq": "raftor_astrohq.vocabulary.vocabulary"}
 rfhq_report_makers = ["raftor_astrohq.reports.birth_summary"]
 
@@ -295,7 +296,8 @@ rfhq_report_makers = ["raftor_astrohq.reports.birth_summary"]
 rfhq_trusted_html_sources = ["raftor_astrohq.report_view.chart_view", "raftor_astrohq.panchang.page", "raftor_astrohq.panchang.widget_cards"]
 
 # Shortly after midnight the Panchang's town is worked out for the week ahead (panchang.warm).
-scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"], "0 4 * * *": ["raftor_astrohq.rashifal.daily"], "0 6 * * *": ["raftor_astrohq.rashifal.daily"]}}
+scheduler_events = {"cron": {"10 0 * * *": ["raftor_astrohq.panchang.warm"], "0 4 * * *": ["raftor_astrohq.rashifal.daily"], "0 6 * * *": ["raftor_astrohq.rashifal.daily"],
+						  "0 19 * * *": ["raftor_astrohq.reminders.evening"], "30 5 * * *": ["raftor_astrohq.reminders.morning"]}}
 
 # The Panchang is a page group of its own: /panchang is its page (page_definitions.py).
 rfhq_page_groups = {"panchang": "Panchang", "ask": "Ask Pandit ji"}

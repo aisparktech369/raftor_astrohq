@@ -11,8 +11,14 @@ PACK = Path(__file__).parent / "pack"
 
 
 def pack_services() -> list[dict]:
-	"""The dated services (and their dates) the installation pack ships: every .json file in the pack folder, a list of service entries. Add a file to add more."""
-	return [entry for path in sorted(PACK.glob("*.json")) for entry in json.loads(path.read_text())]
+	"""The dated services (and their dates) the installation pack ships: every .json file in the pack folder that is a list of service entries. Add a file to add more. A file that is not a list
+	(guides.json is the AI guide profiles, not services) is not read here."""
+	found = []
+	for path in sorted(PACK.glob("*.json")):
+		data = json.loads(path.read_text())
+		if isinstance(data, list):
+			found += data
+	return found
 
 
 def person_free() -> dict:
