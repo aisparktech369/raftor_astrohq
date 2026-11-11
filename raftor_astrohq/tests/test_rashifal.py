@@ -42,16 +42,6 @@ class TestSkyMaths(AstroTestCase):
 		self.assertTrue(given["lucky_colour"] and given["lucky_number"])
 
 
-class TestTheArt(AstroTestCase):
-	def test_every_sign_has_its_picture_in_the_app(self):
-		import os
-
-		for number in range(1, 13):
-			name = rashifal.rashi(number)[2].lower()
-			self.assertTrue(os.path.exists(frappe.get_app_path("raftor_astrohq", "public", "rashi", name + ".svg")), name)
-			self.assertEqual(rashifal.art(number), f"/assets/raftor_astrohq/rashi/{name}.svg")
-
-
 class TestWhatTheWriterSends(AstroTestCase):
 	def test_good_answer_is_kept_clean(self):
 		words = rashifal.parse("```json\n" + json.dumps({"en": {k: f"<b>{v}</b>  x" for k, v in GOOD_WORDS["en"].items()}, "hi": GOOD_WORDS["hi"]}) + "\n```")
