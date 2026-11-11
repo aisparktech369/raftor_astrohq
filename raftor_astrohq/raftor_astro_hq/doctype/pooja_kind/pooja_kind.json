@@ -9,6 +9,11 @@
   "enabled",
   "sequence",
   "note",
+  "sounds_section",
+  "sound_open",
+  "sound_bell",
+  "sound_done",
+  "sound_aarti",
   "steps"
  ],
  "fields": [
@@ -43,6 +48,35 @@
    "description": "A line of words about the pooja, shown under its name."
   },
   {
+   "fieldname": "sounds_section",
+   "fieldtype": "Section Break",
+   "label": "Sounds"
+  },
+  {
+   "fieldname": "sound_open",
+   "fieldtype": "Attach",
+   "label": "Sound when the doors open",
+   "description": "A recording of a conch, played when the person opens the temple doors. Blank: the temple makes a conch sound of its own."
+  },
+  {
+   "fieldname": "sound_bell",
+   "fieldtype": "Attach",
+   "label": "Sound of the bell",
+   "description": "A recording of a bell, played with each offering and when the person rings the bell. Blank: the temple makes a bell sound of its own."
+  },
+  {
+   "fieldname": "sound_done",
+   "fieldtype": "Attach",
+   "label": "Sound when the pooja is complete",
+   "description": "Played when the last offering is made. Blank: a conch and a long bell of its own."
+  },
+  {
+   "fieldname": "sound_aarti",
+   "fieldtype": "Attach",
+   "label": "Aarti",
+   "description": "The aarti, played again and again while the person performs the aarti. Blank: bells and a beat of its own."
+  },
+  {
    "fieldname": "steps",
    "fieldtype": "Table",
    "label": "Steps",
@@ -52,7 +86,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-11-11 08:00:00.000000",
+ "modified": "2026-11-11 09:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Pooja Kind",

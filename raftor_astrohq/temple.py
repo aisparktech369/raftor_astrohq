@@ -4,7 +4,7 @@
     temple.view()                  # what the Offering Stage Card draws: the photo, the offerings in order, the card for the next one
     temple.offer("pushpa")         # the person makes the next offering (or repeats one already made)
 
-The pooja is data, not code: a Pooja Kind (Panchopchar, made from pooja.json on install) holds its steps in order, each with its name, its mantra line, what it means and the offering the card draws for it
+The pooja is data, not code (and so are its sounds: a recording of the conch, the bell, the aarti and of each mantra, any of which may be left blank, and then the card makes a bell, a conch and a chime of its own): a Pooja Kind (Panchopchar, made from pooja.json on install) holds its steps in order, each with its name, its mantra line, what it means and the offering the card draws for it
 (Pooja Step.effect). Staff correct or add a pooja in Desk. The card holds no wording and no rules: every word on it and every step it may take is answered here, and a step out of order is refused here.
 
 A person's deity is their photo (Temple Deity, a private file only they can open). A round of the pooja is kept for the day (Pooja Session): the steps made so far, and how many rounds were completed.
@@ -65,7 +65,8 @@ def words(kind) -> dict:
 		"next": _("Next"), "done_aria": _("Done: {0}"), "next_aria": _("Offer next: {0}"), "locked_aria": _("Locked until the earlier offerings: {0}"),
 		"tilak_hint": _("Tap the photo to place the tilak where you wish."),
 		"not_image": _("Choose a photo (JPG, PNG or WebP)."), "too_big": _("The photo must be smaller than {0} MB.").format(PHOTO_MAX_MB), "failed": _("The photo could not be saved. Please try again."),
-		"title": _("Your Digital Temple"),
+		"title": _("Your Digital Temple"), "enter": _("Enter"), "ring_bell": _("Ring the bell"), "sound_on": _("Turn the sound on"), "sound_off": _("Turn the sound off"),
+		"close_doors": _("Close the temple doors"), "leave": _("Leave the temple"),
 	}
 
 
@@ -83,7 +84,7 @@ def _payload(user: str, deity, played: str = "") -> dict:
 	for i, step in enumerate(kind.steps):
 		state = "done" if i < done else ("next" if i == done and has_photo else "locked")
 		aria = {"done": w["done_aria"], "next": w["next_aria"], "locked": w["locked_aria"]}[state].format(step.label)
-		steps.append({"key": step.step_key, "label": step.label, "deva": step.devanagari or "", "effect": step.effect, "state": state, "aria": aria})
+		steps.append({"key": step.step_key, "label": step.label, "deva": step.devanagari or "", "effect": step.effect, "state": state, "aria": aria, "sound": step.sound or ""})
 	if finished:
 		card = {"title": _("{0} complete").format(kind.title), "deva": "सम्पन्न", "mantra": "", "meaning": _("All {0} offerings are made. You can now do the aarti.").format(total)}
 	else:
@@ -94,7 +95,8 @@ def _payload(user: str, deity, played: str = "") -> dict:
 	tilak = {"x": cint(deity.tilak_x) if deity else TILAK[0], "y": cint(deity.tilak_y) if deity else TILAK[1]}
 	return {"title": (deity.title if deity else "") or _("Your deity"), "subtitle": _("{0} Pooja · {1} offerings").format(kind.title, total), "photo": (deity.photo if has_photo else ""),
 			"steps": steps, "done": done, "total": total, "finished": finished, "card": card, "tilak": tilak, "played": played, "rounds": cint(session.rounds) if session else 0,
-			"words": w, "upload": {"accept": list(PHOTO_TYPES), "max_mb": PHOTO_MAX_MB}}
+			"words": w, "upload": {"accept": list(PHOTO_TYPES), "max_mb": PHOTO_MAX_MB}, "immersive": True, "haptics": True, "leave_url": "/",
+			"sounds": {"open": kind.sound_open or "", "bell": kind.sound_bell or "", "done": kind.sound_done or "", "aarti": kind.sound_aarti or ""}}
 
 
 @frappe.whitelist(methods=["POST"])

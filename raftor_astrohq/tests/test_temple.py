@@ -165,6 +165,24 @@ class TestTemple(AstroTestCase):
 		frappe.db.set_value("Pooja Session", {"user": self.user}, "session_date", frappe.utils.add_days(frappe.utils.today(), -1))
 		self.assertEqual(temple.view()["done"], 0)
 
+	def test_the_card_is_given_its_doors_words_sounds_and_the_way_out(self):
+		out = self.with_photo()
+		for word in ("enter", "ring_bell", "sound_on", "sound_off", "close_doors", "leave", "title"):
+			self.assertTrue(out["words"][word], word)
+		self.assertEqual((out["immersive"], out["leave_url"]), (True, "/"))
+		self.assertEqual(out["sounds"], {"open": "", "bell": "", "done": "", "aarti": ""})  # none given yet: the card makes its own
+		self.assertEqual({s["sound"] for s in out["steps"]}, {""})
+
+	def test_a_recording_staff_attach_reaches_the_card(self):
+		frappe.set_user("Administrator")
+		kind = frappe.get_doc("Pooja Kind", "Panchopchar")
+		kind.sound_open, kind.steps[0].sound = "/files/shankh.mp3", "/files/gandha.mp3"
+		kind.save()
+		frappe.set_user(self.user)
+		out = self.with_photo()
+		self.assertEqual(out["sounds"]["open"], "/files/shankh.mp3")
+		self.assertEqual(out["steps"][0]["sound"], "/files/gandha.mp3")
+
 	def test_the_page_names_the_card_and_methods_that_exist(self):
 		page = page_definitions.temple_page()
 		self.assertTrue(page["login_required"])

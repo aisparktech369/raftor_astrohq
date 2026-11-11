@@ -10,7 +10,8 @@
   "devanagari",
   "effect",
   "mantra",
-  "meaning"
+  "meaning",
+  "sound"
  ],
  "fields": [
   {
@@ -51,12 +52,18 @@
    "fieldname": "meaning",
    "fieldtype": "Small Text",
    "label": "What it means"
+  },
+  {
+   "fieldname": "sound",
+   "fieldtype": "Attach",
+   "label": "Mantra recording",
+   "description": "A recording of this step's mantra, played after the bell when the offering is made. Blank: no chant."
   }
  ],
  "index_web_pages_for_search": 0,
  "istable": 1,
  "links": [],
- "modified": "2026-11-11 08:00:00.000000",
+ "modified": "2026-11-11 09:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Pooja Step",
