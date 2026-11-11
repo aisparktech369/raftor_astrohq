@@ -1,6 +1,6 @@
 # Daily rashifal (built 11 Nov 2026, after the owner's "Ok"; dev only)
 
-Twelve cards at the top of the Consult page, above the free reports: a sign's mark, name and date; a tap turns the card over to bars, not sentences: how love, money, work and health lean (35 to 95, from the sky), a one-word mood, the lucky colour (a swatch) and number. The sentences the writer makes are kept on the record (and could be shown elsewhere) but are not on the card. Free, no sign-in.
+Twelve cards on the Home page, right under the three boxes (a section of its own, not in a tab, so every box shows it; the section is in the Home page's site script, `sites/<site>/site_pages/home.py`): a sign's mark, name and date; a tap turns the card over to bars, not sentences: how love, money, work and health lean (35 to 95, from the sky), a one-word mood, the lucky colour (a swatch) and number. The sentences the writer makes are kept on the record (and could be shown elsewhere) but are not on the card. Free, no sign-in.
 
 ## How a reading is made (rashifal.py)
 
@@ -13,7 +13,6 @@ Scheduled at 04:00 and again at 06:00 (site time, IST): the second run writes on
 
 ## Where it plugs in
 
-* servicehq `consult_page` asks every app for bands to put on top (hook `servicehq_consult_bands`, a list of functions that give sections); AstroHQ's is `rashifal.band`.
 * websitehq Feature Card has a layout **Flip** (a premium dark card: a gold ring turning round the sign's mark, twinkling stars, a light sweep, bars that fill as it turns; all of it still under reduced motion) (library preset "Flip Card"; `rfhq_flip_card.js`, styles at the end of `rfhq_templates.css`). The sign's mark is in `number` (the `icon` field is an icon name and drops anything else). Both faces share one grid cell, so the card is as tall as the taller face; without the script both faces show one under the other; with reduced motion the faces swap with no turning.
 
 ## Limits to know
@@ -25,4 +24,4 @@ Scheduled at 04:00 and again at 06:00 (site time, IST): the second run writes on
 
 ## Tests
 
-`tests/test_rashifal.py` (houses, leans, the check on the writer's answer, a day written once, a failure retried, only Published shown) and servicehq `test_consult_page.py` (a band comes first).
+`tests/test_rashifal.py` (houses, leans, the check on the writer's answer, a day written once, a failure retried, only Published shown) .

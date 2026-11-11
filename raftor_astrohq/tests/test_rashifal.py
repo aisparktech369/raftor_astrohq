@@ -131,13 +131,3 @@ class TestADay(AstroTestCase):
 		with patch.object(rashifal, "today", return_value=DAY + datetime.timedelta(days=3)):
 			self.assertEqual(rashifal.cards(), {"items": []})
 
-
-class TestTheBand(AstroTestCase):
-	def test_the_band_is_one_carousel_section_fed_by_the_cards(self):
-		(section,) = rashifal.band()
-		self.assertEqual(section["layout"], "Carousel")
-		self.assertEqual(section["source"]["method"], "raftor_astrohq.rashifal.cards")
-		self.assertEqual(section["source"]["card"], "Feature Card")
-
-	def test_astrohq_asks_servicehq_to_put_it_on_the_consult_page(self):
-		self.assertIn("raftor_astrohq.rashifal.band", frappe.get_hooks("servicehq_consult_bands"))

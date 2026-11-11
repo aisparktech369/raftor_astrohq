@@ -24,7 +24,6 @@ from raftor_astrohq import astrology, panchang, places
 
 SETTINGS, DOCTYPE = "Daily Rashifal Settings", "Daily Rashifal"
 GATEWAY = "/api/method/raftor_apimanager.gateway.call"
-TIGHT = {"padding": "Small", "gap": "Small"}
 DELHI = {"latitude": 28.6139, "longitude": 77.209, "timezone": "Asia/Kolkata", "name": "Delhi"}
 # the twelve signs: number, English, Sanskrit name, Hindi, mark
 RASHIS = [
@@ -267,8 +266,3 @@ def cards() -> dict:
 					  "note": f"{labels['colour']}: {row.get(f'colour_{language}') or ''} · {labels['number']}: {row.lucky_number or ''}"})
 	return {"items": items}
 
-
-def band() -> list[dict]:
-	"""The section that goes on top of the Consult page, above the free reports (ServiceHQ asks every app for these: hook `servicehq_consult_bands`)."""
-	return [{"key": "rashifal", "title": _("Today's rashifal"), "subtitle": _("Tap your sign to read your day."), "layout": "Carousel", "slides": {"mobile": 2, "tablet": 4, "desktop": 6},
-			 "source": {"method": "raftor_astrohq.rashifal.cards", "card": "Feature Card", "empty": ""}, "look": TIGHT}]

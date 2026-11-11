@@ -289,7 +289,6 @@ standard_portal_menu_items = [
 
 # servicehq's service kinds, in astrohq's words (vocabulary.py). Only words; the mechanics are servicehq's.
 servicehq_vocabulary = {"astrohq": "raftor_astrohq.vocabulary.vocabulary"}
-servicehq_consult_bands = ["raftor_astrohq.rashifal.band"]  # (sections ServiceHQ puts on top of the Consult page: today's rashifal, above the free reports)
 rfhq_report_makers = ["raftor_astrohq.reports.birth_summary"]
 
 # The methods whose markup websitehq lets reach a page (website_hq/report_html.py cleans it first): the astrologer's page of a customer's chart, and the Panchang page.
