@@ -2,6 +2,8 @@
 
 A visitor who is not signed in meets the agent's sign-up conversation, which its blueprint declares (the factory's `gate`, with defaults for any agent that needs a signed-in user); the card plays it
 and uses the site's own code sign-in. A signed-in person gets the chat."""
+from urllib.parse import quote
+
 import frappe
 from frappe import _
 
@@ -32,8 +34,19 @@ def _words(blueprint: str | None = None) -> dict:
 			"sign_in": _("Sign up or sign in to ask Pandit ji, our AI guide to Rudraksha, gemstones and poojas. It takes a minute, and booking and buying need an account too."), "ask": _("What would you like to know?")}
 
 
-def _frame(blueprint: str | None = None) -> dict:
+def _persona(args: dict):
+	"""One of the guides of an area, when the page asks for it by name (?persona=kavya): only an enabled guide of one of the site's own agents; anything else is the area's own guide."""
+	slug = (args.get("persona") or "").strip()[:80]
+	row = frappe.db.get_value("AI Guide Persona", {"slug": slug, "enabled": 1}, ["slug", "guide_name", "area", "tagline", "greeting", "ai_image"], as_dict=True) if slug else None
+	return row if row and row.area in agents.AGENTS else None
+
+
+def _frame(blueprint: str | None = None, persona=None) -> dict:
 	w = _words(blueprint)
+	if persona:
+		photo = frappe.db.get_value("Provider", persona.slug, "photo") or "/files/astrohq-icon.svg"
+		sub = _("AI guide") + (" · " + persona.tagline if persona.tagline else "") + (" · " + _("AI-made picture") if persona.ai_image else "")
+		return {"title": persona.guide_name, "subtitle": sub, "avatar": photo, "send_word": _("Send"), "new_chat_word": _("New chat")}
 	return {"title": w["title"], "subtitle": w["subtitle"], "avatar": "/files/astrohq-icon.svg", "send_word": _("Send"), "new_chat_word": _("New chat")}
 
 
@@ -45,18 +58,22 @@ def _blueprint_of(args: dict) -> str:
 @frappe.whitelist(allow_guest=True, methods=["POST"])
 def info(**args) -> dict:
 	"""A guest gets the sign-up conversation (or, with none, a button to sign in). A signed-in person gets the agent's name and words. If the agent is switched off the card says so and draws no chat."""
-	blueprint = _blueprint_of(args)
+	persona = _persona(args)
+	blueprint = persona.area if persona else _blueprint_of(args)
 	w = _words(blueprint)
+	if persona:
+		w = {**w, "who": persona.guide_name, "placeholder": _("Ask {0}").format(persona.guide_name), "route": "guide?persona=" + persona.slug, "ask": persona.greeting or w["ask"],
+			 "resting": _("{0} is resting. Please come back a little later.").format(persona.guide_name), "sign_in": _("Sign up or sign in to talk to {0}. It takes a minute.").format(persona.guide_name)}
 	if not frappe.db.get_value("Blueprint Reference", blueprint, "is_active"):
 		return {"notice": w["resting"]}
 	if frappe.session.user == "Guest":
 		gate = _gate(blueprint)
 		if gate:
-			return {**_frame(blueprint), "gate": gate, "placeholder": _("Type your answer"), "notice": w["notice"]}
-		return {"sign_in": {"message": w["sign_in"], "label": _("Sign up or sign in"), "href": "/login?redirect-to=/ask/" + w["route"]}}
+			return {**_frame(blueprint, persona), "gate": gate, "placeholder": _("Type your answer"), "notice": w["notice"]}
+		return {"sign_in": {"message": w["sign_in"], "label": _("Sign up or sign in"), "href": "/login?redirect-to=" + quote("/ask/" + w["route"], safe="/")}}
 	name = (frappe.db.get_value("User", frappe.session.user, "first_name") or "").strip()
 	return {
-		**_frame(blueprint), "blueprint": blueprint,
+		**_frame(blueprint, persona), "blueprint": blueprint, **({"persona": persona.slug} if persona else {}),
 		"welcome": (_("Hi {0}, I'm {1}. ").format(name, w["who"]) if name else _("Hi, I'm {0}. ").format(w["who"])) + w["ask"],
 		"placeholder": w["placeholder"], "notice": w["notice"],
 		"talk": False,  # no talk mode: the guide is text only (owner, 2026-11-09)
@@ -68,4 +85,4 @@ def guide() -> dict:
 	from raftor_astrohq import ai_guides
 
 	pages = ["/" + row["page"].strip("/") for row in ai_guides.rows()]  # the AI guides' chats open in the same drawer from their cards (data: ai_guides.json)
-	return {"url": "/ask/pandit-ji", "title": _("Pandit ji"), "label": _("Ask Pandit ji"), "icon": "/files/astrohq-icon.svg", "hide_on": ["/login", "/signup", "/ask/pandit-ji", *pages], "pages": pages}
+	return {"url": "/ask/pandit-ji", "title": _("Pandit ji"), "label": _("Ask Pandit ji"), "icon": "/files/astrohq-icon.svg", "hide_on": ["/login", "/signup", "/ask/pandit-ji", "/ask/guide", *pages], "pages": pages}

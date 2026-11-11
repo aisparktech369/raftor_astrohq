@@ -95,6 +95,13 @@ def dream_guide_page() -> dict:
 		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info", "static_args": '{"agent": "dream_guide"}'}}], "look": TIGHT}]}
 
 
+def guide_page() -> dict:
+	"""Talk to one of the AI guides of an area (?persona=kavya): one chat page for all of them (agent_chat.py reads the name from the address and the card tells the chat which guide it is)."""
+	return {"route": "ask/guide", "title": _("Talk to an AI guide"), "meta_title": _("Talk to an AI guide | AstroHQ"),
+		"meta_description": _("Choose an AI guide who talks the way you like, in your language, about what matters to you."), "login_required": False, "sections": [
+		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info", "url_args": "persona"}}], "look": TIGHT}]}
+
+
 def panchang_page() -> dict:
 	"""The Panchang page (panchang.py), public: the panchang and the chaugharia of any day and town, and the next seven days. The address takes ?date=2026-10-24&place=<the town's id>."""
 	return {"route": "panchang", "title": _("Panchang"), "meta_title": _("Today's Panchang | AstroHQ"),
@@ -162,5 +169,6 @@ def definitions() -> list[dict]:
 		ask_page(),
 		numerologist_page(),
 		dream_guide_page(),
+		guide_page(),
 		temple_page(),
 	]

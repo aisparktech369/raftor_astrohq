@@ -1,0 +1,162 @@
+{
+ "actions": [],
+ "autoname": "field:slug",
+ "creation": "2026-11-11 16:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "slug",
+  "guide_name",
+  "area",
+  "enabled",
+  "sequence",
+  "who_section",
+  "tagline",
+  "bio",
+  "audience",
+  "languages",
+  "topics",
+  "voice_section",
+  "voice",
+  "greeting",
+  "picture_section",
+  "avatar",
+  "ai_image"
+ ],
+ "fields": [
+  {
+   "fieldname": "slug",
+   "fieldtype": "Data",
+   "label": "Key",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "description": "A short name in lower case, for example kavya. It is the guide's address and its id."
+  },
+  {
+   "fieldname": "guide_name",
+   "fieldtype": "Data",
+   "label": "Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "area",
+   "fieldtype": "Data",
+   "label": "Area",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Which of the site's guides does the work: pandit_ji (astrology, Rudraksha, gemstones and poojas), numerologist or dream_guide. The rules, tools and knowledge are the area's; this guide only speaks differently."
+  },
+  {
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "On",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Int",
+   "label": "Order",
+   "default": "10",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "who_section",
+   "fieldtype": "Section Break",
+   "label": "Who it is for"
+  },
+  {
+   "fieldname": "tagline",
+   "fieldtype": "Data",
+   "label": "One line",
+   "description": "Shown under the name, for example Love and compatibility, in Hinglish."
+  },
+  {
+   "fieldname": "bio",
+   "fieldtype": "Small Text",
+   "label": "About",
+   "description": "Two or three lines on how this guide talks and what it helps with. It is an AI guide; say so, and claim no years of experience or credentials."
+  },
+  {
+   "fieldname": "audience",
+   "fieldtype": "Data",
+   "label": "Suits",
+   "description": "Who it suits, separated by commas, for example Gen Z, Students."
+  },
+  {
+   "fieldname": "languages",
+   "fieldtype": "Data",
+   "label": "Languages",
+   "description": "For example Hinglish, English."
+  },
+  {
+   "fieldname": "topics",
+   "fieldtype": "Data",
+   "label": "Leans toward",
+   "description": "What it is best at, separated by commas, for example Love, Marriage."
+  },
+  {
+   "fieldname": "voice_section",
+   "fieldtype": "Section Break",
+   "label": "Voice"
+  },
+  {
+   "fieldname": "voice",
+   "fieldtype": "Long Text",
+   "label": "How it speaks",
+   "reqd": 1,
+   "description": "A few lines the guide is given: its tone, its language, how long its replies are, what it leans toward. The area's own rules, boundaries and tools still apply and cannot be changed here."
+  },
+  {
+   "fieldname": "greeting",
+   "fieldtype": "Small Text",
+   "label": "First line",
+   "description": "What the guide says when a chat opens, after Hi and the person's name."
+  },
+  {
+   "fieldname": "picture_section",
+   "fieldtype": "Section Break",
+   "label": "Picture"
+  },
+  {
+   "fieldname": "avatar",
+   "fieldtype": "Attach Image",
+   "label": "Picture",
+   "description": "A portrait, 3:4, head and shoulders. Until one is attached a lettered picture is shown."
+  },
+  {
+   "fieldname": "ai_image",
+   "fieldtype": "Check",
+   "label": "The picture is AI-made",
+   "default": "1",
+   "description": "Tick when the picture is made by an AI tool and the person it shows does not exist. It is then labelled on the guide's page."
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-11 16:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "AI Guide Persona",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "sequence",
+ "sort_order": "ASC",
+ "states": []
+}

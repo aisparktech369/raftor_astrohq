@@ -14,13 +14,53 @@ def rows() -> list[dict]:
 	return json.loads((HERE / "ai_guides.json").read_text(encoding="utf-8"))
 
 
+AREA_WORD = {"pandit_ji": "Pandit ji", "numerologist": "Numerologist", "dream_guide": "Dream interpreter"}  # the word each area's guides carry in the vocabulary
+PERSONA = "AI Guide Persona"
+
+
+def personas() -> list[dict]:
+	"""The guides of the same area that speak differently (ai_personas.json): data, made into records on install and then kept in Desk."""
+	return json.loads((HERE / "ai_personas.json").read_text(encoding="utf-8"))
+
+
+def _available() -> bool:
+	return "raftor_servicehq" in frappe.get_installed_apps() and frappe.db.exists("DocType", "Provider") and frappe.get_meta("Provider").has_field("ai_guide_page")
+
+
 def ensure() -> None:
 	"""Makes each AI guide that is missing. Safe to repeat. Does nothing when the provider app is not on the site."""
-	if "raftor_servicehq" not in frappe.get_installed_apps() or not frappe.db.exists("DocType", "Provider") or not frappe.get_meta("Provider").has_field("ai_guide_page"):
+	if not _available():
 		return
 	for row in rows():
 		_make(row)
+	seed_personas()
 	frappe.db.commit()
+
+
+def seed_personas() -> None:
+	"""The guides of each area, as records staff change in Desk (AI Guide Persona): made once, never put back once they exist, and each given its listing on the Seek guidance page."""
+	if not frappe.db.exists("DocType", PERSONA):
+		return
+	if not frappe.db.count(PERSONA):
+		for row in personas():
+			frappe.get_doc({"doctype": PERSONA, "enabled": 1, "ai_image": 0, **row}).insert(ignore_permissions=True)
+	for name in frappe.get_all(PERSONA, pluck="name"):
+		sync_persona(frappe.get_doc(PERSONA, name))
+
+
+def sync_persona(persona) -> None:
+	"""A persona's listing: its Provider (the card on Seek guidance, always online, labelled AI), made when missing and kept in step with what staff write in Desk (name, words, languages, picture, on or off)."""
+	if not _available() or persona.area not in AREA_WORD:
+		return
+	slug = persona.slug
+	_make({"slug": slug, "name": persona.guide_name, "persona": AREA_WORD[persona.area], "page": f"ask/guide?persona={slug}", "photo": f"guide-{slug}.svg", "languages": persona.languages or "English",
+		   "bio": " ".join(x for x in (persona.tagline and persona.tagline.rstrip(".") + ".", persona.bio) if x)})
+	values = {"display_name": persona.guide_name, "bio": f"<p>{' '.join(x for x in (persona.tagline and persona.tagline.rstrip('.') + '.', persona.bio) if x)}</p>", "status": "Live" if persona.enabled else "Paused"}
+	if persona.avatar and frappe.db.get_value("Provider", slug, "photo") != persona.avatar:
+		values["photo"] = persona.avatar
+	frappe.db.set_value("Provider", slug, values)
+	if frappe.db.exists("Astrologer Profile", slug) and persona.languages:
+		frappe.db.set_value("Astrologer Profile", slug, "languages", persona.languages)
 
 
 def _keep_photo(name: str, data: bytes, slug: str) -> str:

@@ -363,3 +363,14 @@ def read_report(user: str, who: str, kind: str, guide_user: str) -> dict:
 	out["message"] = (f"This is {row.full_name}'s {kind} report" + (", just made and kept under their reports" if made else ", kept under their reports") +
 					  ". Share what helps the conversation in your own words, in the chat; give no link, and do not read it all out. If they want the full report it is under their reports.")
 	return out
+
+
+def persona_voice(persona: str, guide: str) -> str:
+	"""The words that make one guide of an area sound like itself (AgentsHQ asks with the name the chat gives and the area's agent). Only an enabled guide of that very area has a voice; any other name gives nothing."""
+	row = frappe.db.get_value("AI Guide Persona", {"slug": persona, "area": guide, "enabled": 1}, ["guide_name", "voice"], as_dict=True) if persona else None
+	if not (row and row.voice):
+		return ""
+	first = ((frappe.db.get_value("AI Guide Persona", persona, "languages") or "").split(",")[0] or "").strip().lower()
+	language = {"hinglish": "Hinglish: Hindi words written in Roman letters, mixed with English as the person does", "hindi": "Hindi (Devanagari, unless the person writes in Roman letters)"}.get(first, "")
+	return (f"Voice for this chat. You are {row.guide_name}, one of several AI guides of the same kind, each with its own way of speaking. For the language, the tone and the length of your replies, the following takes precedence over any default language or tone you were given; "
+			f"your boundaries, rules and tools do not change. " + (f"Write every reply in {language}. " if language else "") + row.voice).strip()

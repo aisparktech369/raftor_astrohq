@@ -1,0 +1,37 @@
+# Pictures for the AI guides
+
+Each of the 27 guides needs one portrait. Make them with your image tool and attach each one in Desk (AI Guide Persona, the Picture field); until then a lettered picture shows. Keep **The picture is AI-made** ticked, so the guide's page says so.
+
+**For every picture:** a photorealistic portrait of a fictional person who does not exist, head and shoulders, 3:4 portrait, looking at the camera, natural soft light, shallow depth of field, a warm uncluttered background, no text, no logo, no jewellery that looks like a brand, no resemblance to any real person or celebrity. Keep the same style, the same lens look and the same lighting across the whole set so the guides look like one family. At least 900 pixels wide.
+
+**Rules to keep:** the guide's page and card always say it is an AI guide, so the picture must not claim a real identity; no uniforms or badges that suggest a licence or a degree.
+
+| Guide | Area | Suits | Prompt |
+|---|---|---|---|
+| Kavya | numerologist | Gen Z, Young adults | Photorealistic portrait of a fictional Indian woman, about 24, a casual kurti with small earrings, warm smile, background: a bright cafe corner. Head and shoulders, 3:4, natural soft light. |
+| Arjun | numerologist | Working professionals | Photorealistic portrait of a fictional Indian man, about 32, a smart shirt, short neat hair, slight smile, background: a modern office with soft daylight. Head and shoulders, 3:4, natural soft light. |
+| Dadi Maa | numerologist | Seniors, Families | Photorealistic portrait of a fictional Indian woman, about 68, a soft cotton saree, grey hair in a bun, kind eyes, background: a warm home veranda. Head and shoulders, 3:4, natural soft light. |
+| Meera | numerologist | Women, Families | Photorealistic portrait of a fictional Indian woman, about 36, a simple salwar kameez, a small bindi, calm smile, background: a tidy living room with a window. Head and shoulders, 3:4, natural soft light. |
+| Rohan | numerologist | Business owners, Founders | Photorealistic portrait of a fictional Indian man, about 40, a plain linen shirt, trimmed beard, confident look, background: a small shop counter or studio. Head and shoulders, 3:4, natural soft light. |
+| Ananya | numerologist | Students | Photorealistic portrait of a fictional Indian young woman, about 20, a hoodie or kurti, hair tied back, bright expression, background: a library or study desk. Head and shoulders, 3:4, natural soft light. |
+| Ishaan | numerologist | Beginners | Photorealistic portrait of a fictional Indian man, about 28, a round-neck t-shirt, friendly expression, glasses, background: a notebook-filled desk. Head and shoulders, 3:4, natural soft light. |
+| Sunita | numerologist | Parents, Expecting parents | Photorealistic portrait of a fictional Indian woman, about 42, a cotton saree or suit, gentle smile, background: a bright home. Head and shoulders, 3:4, natural soft light. |
+| Vikram | numerologist | Sceptics, Analytical users | Photorealistic portrait of a fictional Indian man, about 45, a plain shirt, short greying hair, thoughtful look, background: a quiet study with books. Head and shoulders, 3:4, natural soft light. |
+| Shastri ji | pandit ji | Seniors, Traditional families | Photorealistic portrait of a fictional Indian elderly man, about 70, a white kurta, a modest tilak, white beard, gentle face, background: a quiet temple veranda. Head and shoulders, 3:4, natural soft light. |
+| Riya | pandit ji | Gen Z, Young adults | Photorealistic portrait of a fictional Indian woman, about 23, a casual top with a thin rudraksha mala, playful smile, background: a soft pastel background with crystals. Head and shoulders, 3:4, natural soft light. |
+| Devendra | pandit ji | Gemstone buyers | Photorealistic portrait of a fictional Indian man, about 38, a crisp kurta, clean-shaven, attentive look, background: a desk with gemstones in soft light. Head and shoulders, 3:4, natural soft light. |
+| Jyotsna | pandit ji | Families, Homemakers | Photorealistic portrait of a fictional Indian woman, about 45, a cotton saree, a small bindi, warm smile, background: a home puja corner in soft light. Head and shoulders, 3:4, natural soft light. |
+| Mohan | pandit ji | Business owners | Photorealistic portrait of a fictional Indian man, about 55, a kurta with a shawl, a modest tilak, kind face, background: a small shop with a diya glowing. Head and shoulders, 3:4, natural soft light. |
+| Priya Didi | pandit ji | Women, Families | Photorealistic portrait of a fictional Indian woman, about 34, a bright cotton saree, a bindi, welcoming smile, background: a home with marigold flowers. Head and shoulders, 3:4, natural soft light. |
+| Raghav | pandit ji | Students, Young professionals | Photorealistic portrait of a fictional Indian man, about 26, a casual shirt, short hair, a friendly look, background: a college campus. Head and shoulders, 3:4, natural soft light. |
+| Hari | pandit ji | Homeowners, New homes | Photorealistic portrait of a fictional Indian man, about 48, a simple kurta, calm expression, background: a home entrance with a toran. Head and shoulders, 3:4, natural soft light. |
+| Shanti | pandit ji | People under stress, Seniors | Photorealistic portrait of a fictional Indian woman, about 52, a pale saree, gentle expression, grey streaks in hair, background: a quiet room with a diya. Head and shoulders, 3:4, natural soft light. |
+| Luna | dream guide | Gen Z, Young adults | Photorealistic portrait of a fictional Indian young woman, about 22, a dark oversized shirt, soft expression, background: a dim room with fairy lights. Head and shoulders, 3:4, natural soft light. |
+| Nidra | dream guide | Seniors, Families | Photorealistic portrait of a fictional Indian elderly woman, about 66, a soft saree, a gentle smile, background: a calm evening window. Head and shoulders, 3:4, natural soft light. |
+| Sapna | dream guide | Women, Families | Photorealistic portrait of a fictional Indian woman, about 39, a simple saree or kurta, a warm smile, background: a quiet room with curtains. Head and shoulders, 3:4, natural soft light. |
+| Aarav | dream guide | People with nightmares | Photorealistic portrait of a fictional Indian man, about 30, a calm shirt, steady kind eyes, background: a softly lit room at dusk. Head and shoulders, 3:4, natural soft light. |
+| Ira | dream guide | Anyone with a recurring dream | Photorealistic portrait of a fictional Indian woman, about 31, a simple top, thoughtful expression, background: a neat room with morning light. Head and shoulders, 3:4, natural soft light. |
+| Kabir | dream guide | Curious readers, Students | Photorealistic portrait of a fictional Indian man, about 50, a kurta, short salt-and-pepper beard, thoughtful look, background: a bookshelf. Head and shoulders, 3:4, natural soft light. |
+| Zoya | dream guide | Young adults, Couples | Photorealistic portrait of a fictional Indian woman, about 27, a casual dress or kurti, gentle smile, background: a warm window light. Head and shoulders, 3:4, natural soft light. |
+| Rishi | dream guide | Students, Professionals | Photorealistic portrait of a fictional Indian man, about 29, a shirt with sleeves rolled up, steady expression, background: a modern co-working space. Head and shoulders, 3:4, natural soft light. |
+| Maya | dream guide | Spiritual seekers | Photorealistic portrait of a fictional Indian woman, about 44, a soft shawl over a saree, serene expression, background: a quiet room with a lamp. Head and shoulders, 3:4, natural soft light. |
