@@ -34,6 +34,7 @@ class TestTemple(AstroTestCase):
 		super().setUp()
 		install.seed_pooja()
 		self.user = make_user().name
+		self.gallery()
 		frappe.set_user(self.user)
 
 	def tearDown(self):
@@ -44,6 +45,16 @@ class TestTemple(AstroTestCase):
 				os.remove(path)
 		TestTemple.made = []
 		super().tearDown()
+
+	def gallery(self):
+		"""A small gallery of the tests' own (the real one is the owner's to fill): two pictures and two live darshans, one the temple's own channel and one a relay."""
+		frappe.set_user("Administrator")
+		for key, extra in (("t-ganesh", {"title": "Ganesh ji", "deity": "Ganesh", "image": "/files/t-ganesh.jpg", "credit": "A. Photographer", "licence": "CC0"}),
+						   ("t-lakshmi", {"title": "Maa Lakshmi", "deity": "Lakshmi", "image": "/files/t-lakshmi.jpg", "credit": "B. Photographer", "licence": "CC BY 4.0"}),
+						   ("t-live", {"title": "Somnath, live", "deity": "Shiva", "live_channel": "UCT1egsvA08YcdMLiEu1DTRg", "channel_name": "Somnath Temple - Official Channel", "official": 1, "licence": "Live stream from YouTube"}),
+						   ("t-relay", {"title": "Mahakal, live", "deity": "Shiva", "live_channel": "UCQE_hlxeDSuw4YpuAkDmrMg", "channel_name": "divyadarshan", "official": 0, "licence": "Live stream from YouTube"})):
+			if not frappe.db.exists("Mandir Image", key):
+				frappe.get_doc({"doctype": "Mandir Image", "image_key": key, "enabled": 1, "sequence": 10, **extra}).insert(ignore_permissions=True)
 
 	def with_photo(self):
 		return temple.set_photo(_photo(self.user))
@@ -200,24 +211,45 @@ class TestTemple(AstroTestCase):
 		self.assertEqual(out["sounds"]["open"], "/files/shankh.mp3")
 		self.assertEqual(out["steps"][0]["sound"], "/files/gandha.mp3")
 
-	def test_the_gallery_comes_with_pictures_credited_and_licensed_and_a_person_picks_one(self):
+	def test_a_person_picks_a_mandir_from_the_gallery_and_it_is_theirs_and_open_now(self):
 		gallery = temple.view()["gallery"]
-		self.assertGreaterEqual(len(gallery), 12)
 		pictures = [g for g in gallery if not g["live"]]
-		for row in pictures:
-			self.assertTrue(row["image"].startswith("/assets/raftor_astrohq/mandirs/"), row["id"])
-			self.assertTrue(os.path.exists(frappe.get_app_path("raftor_astrohq", "public", "mandirs", row["image"].rsplit("/", 1)[1])), row["id"])
-		for licence in frappe.get_all("Mandir Image", filters={"live_channel": ["in", ["", None]]}, pluck="licence"):
-			self.assertRegex(licence, r"^(CC0|CC BY|Public domain)", licence)  # nothing without a licence that allows its use
+		self.assertEqual(len(pictures), 2)
+		self.assertEqual(pictures[0]["credit"], "Photo: A. Photographer · CC0")  # who made it, and under what licence
 		out = temple.choose_mandir(pictures[0]["id"])
 		self.assertEqual(out["photo"], pictures[0]["image"])
 		self.assertEqual([m["current"] for m in out["mandirs"]], [True])
 		self.assertEqual(temple.choose_mandir(pictures[0]["id"])["mandirs"][0]["id"], out["mandirs"][0]["id"])  # again: it only opens it
 		self.assertEqual(out["steps"][0]["state"], "next")
 
+	def test_with_an_empty_gallery_the_person_is_asked_for_their_own_photo(self):
+		frappe.set_user("Administrator")
+		frappe.db.set_value("Mandir Image", {"enabled": 1}, "enabled", 0)
+		frappe.set_user(self.user)
+		out = temple.view()
+		self.assertEqual((out["gallery"], out["words"]["choose"]), ([], "Add your mandir photo"))
+
+	def test_a_gallery_picture_that_is_switched_off_is_not_offered(self):
+		frappe.set_user("Administrator")
+		frappe.db.set_value("Mandir Image", "t-ganesh", "enabled", 0)
+		frappe.set_user(self.user)
+		self.assertNotIn("t-ganesh", [g["id"] for g in temple.view()["gallery"]])
+		with self.assertRaises(frappe.ValidationError):
+			temple.choose_mandir("t-ganesh")
+
+	def test_the_seeded_gallery_has_no_picture_without_a_licence_and_the_live_ones_wait_switched_off(self):
+		import json
+		from pathlib import Path
+
+		rows = json.loads((Path(install.__file__).parent / "mandirs.json").read_text(encoding="utf-8"))["images"]
+		for row in rows:
+			self.assertTrue(row.get("live_channel") or str(row.get("licence", "")).startswith(("CC0", "CC BY", "Public domain")), row["key"])
+			if row.get("live_channel"):
+				self.assertEqual(row["enabled"], 0, row["key"])  # live darshan is postponed
+
 	def test_a_person_keeps_several_mandirs_opens_one_and_puts_one_away(self):
-		first = temple.choose_mandir("ganesh")
-		second = temple.choose_mandir("lakshmi")
+		first = temple.choose_mandir("t-ganesh")
+		second = temple.choose_mandir("t-lakshmi")
 		own = temple.set_photo(_photo(self.user), new=1)
 		ids = [m["id"] for m in own["mandirs"]]
 		self.assertEqual(len(ids), 3)
@@ -228,7 +260,7 @@ class TestTemple(AstroTestCase):
 		self.assertEqual(len(temple.view()["mandirs"]), 2)
 
 	def test_a_mandir_of_another_person_cannot_be_opened_or_removed_and_the_number_is_limited(self):
-		mine = temple.choose_mandir("ganesh")["deity"]
+		mine = temple.choose_mandir("t-ganesh")["deity"]
 		frappe.set_user(make_user().name)
 		for call in (lambda: temple.switch_mandir(mine), lambda: temple.remove_mandir(mine)):
 			with self.assertRaises(frappe.ValidationError):
@@ -242,36 +274,36 @@ class TestTemple(AstroTestCase):
 				temple.choose_mandir(keys[2])
 
 	def test_the_donate_button_is_only_the_mandirs_own_https_page(self):
-		self.assertIsNone(temple.choose_mandir("ganesh")["donate"])
+		self.assertIsNone(temple.choose_mandir("t-ganesh")["donate"])
 		frappe.set_user("Administrator")
-		frappe.db.set_value("Mandir Image", "ganesh", "donate_url", "https://example.org/donate")
+		frappe.db.set_value("Mandir Image", "t-ganesh", "donate_url", "https://example.org/donate")
 		frappe.set_user(self.user)
-		out = temple.choose_mandir("ganesh")
+		out = temple.choose_mandir("t-ganesh")
 		self.assertEqual(out["donate"], {"label": "Donate to Ganesh ji", "url": "https://example.org/donate"})
 
 	def test_a_live_darshan_is_a_mandir_whose_picture_is_the_temples_own_stream(self):
 		live = [g for g in temple.view()["gallery"] if g["live"]]
 		self.assertGreaterEqual(len(live), 2)
-		out = temple.choose_mandir("somnath-live")
+		out = temple.choose_mandir("t-live")
 		self.assertEqual(out["photo"], "")
 		self.assertRegex(out["live"]["url"], r"^https://www\.youtube-nocookie\.com/embed/live_stream\?channel=UC[\w-]{22}&")
 		self.assertEqual(out["live"]["credit"], "Live from Somnath Temple - Official Channel")  # the temple's own channel
 		self.assertEqual(out["credit"], out["live"]["credit"])
 		self.assertRegex(out["live"]["watch"], r"^https://www\.youtube\.com/channel/UC[\w-]{22}/live$")  # a way out to the stream if it does not play inside the page
 		frappe.set_user("Administrator")
-		frappe.db.set_value("Mandir Image", "somnath-live", "live_video", "MZexuq9xqS0")
+		frappe.db.set_value("Mandir Image", "t-live", "live_video", "MZexuq9xqS0")
 		frappe.set_user(self.user)
-		self.assertEqual(temple.choose_mandir("somnath-live")["live"]["watch"], "https://www.youtube.com/watch?v=MZexuq9xqS0")  # a particular live video, when one is named
+		self.assertEqual(temple.choose_mandir("t-live")["live"]["watch"], "https://www.youtube.com/watch?v=MZexuq9xqS0")  # a particular live video, when one is named
 		self.assertEqual(out["steps"][0]["state"], "next")  # the offerings can be made over the stream
 		self.assertEqual(temple.place_tilak(40, 40)["tilaks"], [{"x": 40, "y": 40}])
 		self.assertEqual(self.make("gandha")["done"], 1)
-		self.assertTrue(temple.choose_mandir("mahakal-live")["live"]["credit"].startswith("Relayed from "))  # someone else's relay says so
+		self.assertTrue(temple.choose_mandir("t-relay")["live"]["credit"].startswith("Relayed from "))  # someone else's relay says so
 
 	def test_a_channel_that_is_not_a_channel_id_plays_nothing(self):
 		frappe.set_user("Administrator")
-		frappe.db.set_value("Mandir Image", "somnath-live", "live_channel", "UC\"><script>alert(1)</script>")
+		frappe.db.set_value("Mandir Image", "t-live", "live_channel", "UC\"><script>alert(1)</script>")
 		frappe.set_user(self.user)
-		out = temple.choose_mandir("somnath-live")
+		out = temple.choose_mandir("t-live")
 		self.assertIsNone(out["live"])
 		self.assertEqual(out["steps"][0]["state"], "locked")
 

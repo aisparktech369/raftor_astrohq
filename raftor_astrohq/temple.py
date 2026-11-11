@@ -132,6 +132,8 @@ def _payload(user: str, deity, played: str = "") -> dict:
 	tilaks = _tilaks(session) if has_photo else []
 	mine = frappe.get_all(DEITY, filters={"user": user}, fields=["name", "title", "photo", "is_main", "mandir_image"], order_by="creation asc")
 	gallery = frappe.get_all(GALLERY, filters={"enabled": 1}, fields=["image_key", "title", "deity", "mandir", "image", "credit", "licence", "live_channel"], order_by="sequence asc, creation asc")
+	if not gallery:
+		w["choose"] = _("Add your mandir photo")  # nothing to choose from yet: the person brings their own
 	stock = frappe.db.get_value(GALLERY, deity.mandir_image, ["title", "donate_url", "credit", "licence"], as_dict=True) if deity and deity.mandir_image else None
 	return {"title": (deity.title if deity else "") or _("Your deity"), "subtitle": _("{0} Pooja · {1} offerings").format(kind.title, total), "photo": (deity.photo or "") if deity else "", "live": live,
 			"steps": steps, "done": done, "total": total, "finished": finished, "card": card, "tilaks": tilaks, "played": played, "rounds": cint(session.rounds) if session else 0,
