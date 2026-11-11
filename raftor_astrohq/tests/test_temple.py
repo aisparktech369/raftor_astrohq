@@ -257,6 +257,11 @@ class TestTemple(AstroTestCase):
 		self.assertRegex(out["live"]["url"], r"^https://www\.youtube-nocookie\.com/embed/live_stream\?channel=UC[\w-]{22}&")
 		self.assertEqual(out["live"]["credit"], "Live from Somnath Temple - Official Channel")  # the temple's own channel
 		self.assertEqual(out["credit"], out["live"]["credit"])
+		self.assertRegex(out["live"]["watch"], r"^https://www\.youtube\.com/channel/UC[\w-]{22}/live$")  # a way out to the stream if it does not play inside the page
+		frappe.set_user("Administrator")
+		frappe.db.set_value("Mandir Image", "somnath-live", "live_video", "MZexuq9xqS0")
+		frappe.set_user(self.user)
+		self.assertEqual(temple.choose_mandir("somnath-live")["live"]["watch"], "https://www.youtube.com/watch?v=MZexuq9xqS0")  # a particular live video, when one is named
 		self.assertEqual(out["steps"][0]["state"], "next")  # the offerings can be made over the stream
 		self.assertEqual(temple.place_tilak(40, 40)["tilaks"], [{"x": 40, "y": 40}])
 		self.assertEqual(self.make("gandha")["done"], 1)

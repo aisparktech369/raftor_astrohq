@@ -26,6 +26,7 @@ METER = "temple_pooja"
 PHOTO_TYPES = ("jpg", "jpeg", "png", "webp")
 PHOTO_MAX_MB = 8
 CHANNEL = re.compile(r"^UC[A-Za-z0-9_-]{22}$")  # a YouTube channel id
+VIDEO = re.compile(r"^[A-Za-z0-9_-]{11}$")  # a YouTube video id
 MANDIRS_MAX = 12  # the mandirs a person may keep for their daily setup
 TILAKS_MAX = 12  # the marks of sandal a person may leave in a round: a deity or several
 
@@ -65,11 +66,14 @@ def _live(deity):
 	"""The live darshan this mandir stands for, if it is one: the page of the channel's current stream, played by YouTube's own player (muted, so the temple's own sounds are heard), and whose it is. None for a mandir made of a picture."""
 	if not (deity and deity.mandir_image):
 		return None
-	row = frappe.db.get_value(GALLERY, deity.mandir_image, ["title", "live_channel", "channel_name", "official", "aarti_times", "donate_url"], as_dict=True)
+	row = frappe.db.get_value(GALLERY, deity.mandir_image, ["title", "live_channel", "live_video", "channel_name", "official", "aarti_times", "donate_url"], as_dict=True)
 	if not (row and CHANNEL.match(row.live_channel or "")):
 		return None
 	name = row.channel_name or row.title
-	return {"url": f"https://www.youtube-nocookie.com/embed/live_stream?channel={row.live_channel}&autoplay=1&mute=1&controls=0&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&iv_load_policy=3",
+	video = row.live_video if VIDEO.match(row.live_video or "") else ""
+	play = "autoplay=1&mute=1&controls=0&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&iv_load_policy=3"
+	return {"url": f"https://www.youtube-nocookie.com/embed/{video}?{play}" if video else f"https://www.youtube-nocookie.com/embed/live_stream?channel={row.live_channel}&{play}",
+			"watch": f"https://www.youtube.com/watch?v={video}" if video else f"https://www.youtube.com/channel/{row.live_channel}/live",
 			"credit": (_("Live from {0}") if cint(row.official) else _("Relayed from {0}")).format(name), "times": row.aarti_times or "", "official": bool(cint(row.official))}
 
 
@@ -96,7 +100,7 @@ def words(kind) -> dict:
 		},
 		"done": _("Done"), "auto": _("Do it for me"), "cancel": _("Cancel"), "turn_of": _("Turn {0} of {1}"), "marks": _("{0} placed"), "fed": _("{0} offered"),
 		"not_image": _("Choose a photo (JPG, PNG or WebP)."), "too_big": _("The photo must be smaller than {0} MB.").format(PHOTO_MAX_MB), "failed": _("The photo could not be saved. Please try again."),
-		"live": _("Live"), "stream_on": _("Hear the stream"), "stream_off": _("Mute the stream"),
+		"live": _("Live"), "watch": _("Watch on YouTube"), "stream_on": _("Hear the stream"), "stream_off": _("Mute the stream"),
 		"mandirs": _("My mandirs"), "choose": _("Choose a mandir"), "upload_own": _("Upload your own"), "close": _("Close"), "current": _("Open now"), "remove": _("Remove"), "credit": _("Photo: {0} · {1}"), "gallery_title": _("Popular mandirs"), "mine_title": _("Your mandirs"),
 		"title": _("Your Digital Temple"), "enter": _("Enter"), "ring_bell": _("Ring the bell"), "sound_on": _("Turn the sound on"), "sound_off": _("Turn the sound off"),
 		"close_doors": _("Close the temple doors"), "leave": _("Leave the temple"),

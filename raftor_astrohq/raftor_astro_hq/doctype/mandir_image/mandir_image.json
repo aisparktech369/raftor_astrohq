@@ -13,6 +13,7 @@
   "sequence",
   "live_section",
   "live_channel",
+  "live_video",
   "channel_name",
   "official",
   "aarti_times",
@@ -83,6 +84,12 @@
    "description": "Makes this a live darshan: the temple screen plays whatever this channel is streaming now, through YouTube's own player. The id starts with UC and is 24 characters."
   },
   {
+   "fieldname": "live_video",
+   "fieldtype": "Data",
+   "label": "YouTube video id",
+   "description": "Optional, 11 characters. A particular live video to play instead of whatever the channel streams now, for a stream that runs all day. Blank: the channel's current stream."
+  },
+  {
    "fieldname": "channel_name",
    "fieldtype": "Data",
    "label": "Channel name",
@@ -149,7 +156,7 @@
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-11-11 13:00:00.000000",
+ "modified": "2026-11-11 14:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "Mandir Image",
