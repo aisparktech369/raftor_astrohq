@@ -57,6 +57,42 @@ class TestTheDraw(AstroTestCase):
 			self.assertEqual(tarot.interpret(reading["token"])["interpretation"]["state"], "locked")
 		written.assert_not_called()  # nothing is written for someone who has not signed in
 
+	def test_the_topics_are_chips_with_a_symbol_and_the_one_chosen_is_kept_with_the_draw(self):
+		from raftor_websitehq.website_hq import icons
+
+		frappe.set_user("Guest")
+		answer = tarot.draw("What now?", "career")
+		topics = answer["words"]["topics"]
+		self.assertEqual([t["key"] for t in topics], ["love", "career", "money", "health", "family", "self", "general"])
+		for topic in topics:
+			self.assertTrue(topic["label"] and str(icons.svg(topic["icon"])).startswith("<svg"), topic["key"])
+		self.assertEqual(answer["reading"]["topic"], "career")
+		self.assertEqual(tarot.view(answer["reading"]["token"])["reading"]["topic"], "career")  # the same when they come back from signing in
+		for odd in (None, "", "politics", "<b>x</b>"):
+			self.assertEqual(tarot.draw(None, odd)["reading"]["topic"], "", odd)  # one of ours, or none
+
+	def test_the_topic_is_told_to_the_writer_and_kept_with_the_reading(self):
+		frappe.set_user("Guest")
+		token = tarot.draw("", "money")["reading"]["token"]
+		frappe.set_user(make_user().name)
+		sent = {}
+
+		def fake(url, json=None, headers=None, timeout=None):
+			sent.update(json)
+
+			class Answer:
+				status_code = 200
+
+				def json(self_inner):
+					return {"data": {"content": "Words.", "model": "m"}}
+			return Answer()
+
+		settings = frappe._dict(address="http://hub", site="", key="k", api_name="text-to-text", timeout=5)
+		with patch.object(tarot.rashifal, "settings", return_value=settings), patch.object(tarot.requests, "post", fake):
+			tarot.interpret(token)
+		self.assertEqual(frappe.parse_json(sent["payload"]["prompt"])["topic"], "Money")
+		self.assertEqual(frappe.db.get_value("Tarot Reading", token, "topic"), "money")
+
 	def test_coming_back_with_the_token_shows_the_same_three(self):
 		first = self.guest_draw()["reading"]
 		again = tarot.view(first["token"])["reading"]
@@ -98,7 +134,7 @@ class TestTheDraw(AstroTestCase):
 		with patch.object(tarot.rashifal, "settings", return_value=settings), patch.object(tarot.requests, "post", fake):
 			text = tarot.interpret(token)["interpretation"]["text"]
 		prompt = frappe.parse_json(sent["payload"]["prompt"])
-		self.assertEqual(sorted(prompt), ["cards", "question"])
+		self.assertEqual(sorted(prompt), ["cards", "question", "topic"])
 		self.assertEqual(len(prompt["cards"]), 3)
 		self.assertEqual(text, "Words here")  # the markup of a model is not kept
 
