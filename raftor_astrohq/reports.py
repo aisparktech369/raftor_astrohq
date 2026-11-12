@@ -403,7 +403,7 @@ NUMEROLOGY_CREDIT = _("Classical numerology, a traditional system. It is not a f
 
 
 def numerology_summary(details: dict) -> str:
-	return _("For {0}").format(details.get("report_name") or "")
+	return str(details.get("report_name") or "").strip()  # (the card puts "For" before it)
 
 
 def numerology_context(name: str, born: datetime.date, answer: dict, on: datetime.date) -> dict:
