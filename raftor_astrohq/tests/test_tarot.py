@@ -47,15 +47,12 @@ class TestTheDraw(AstroTestCase):
 		self.assertNotIn("<b>", answer["reading"]["question"])
 		self.assertLessEqual(len(answer["reading"]["question"]), tarot.QUESTION_LENGTH)
 
-	def test_the_machine_has_a_button_for_each_place_with_a_moon_and_a_line_of_zodiac_marks(self):
-		from raftor_websitehq.website_hq import icons
-
+	def test_the_machine_has_one_central_button_and_a_way_to_consult_after_the_reading(self):
 		words = self.guest_draw()["words"]
-		self.assertEqual([words["positions"][k]["icon"] for k in ("past", "present", "future")], ["moon-old", "moon-full", "moon-new"])
-		for key in ("past", "present", "future"):
-			self.assertTrue(str(icons.svg(words["positions"][key]["icon"])).startswith("<svg"), key)
+		self.assertTrue(words["shuffle"] and words["stop"] and words["press"])
 		self.assertEqual(len(words["ornament"].split()), 12)
-		self.assertIn("{0}", words["button"])
+		self.assertEqual(words["consult"]["url"], "/consult?persona=Tarot+reader")  # the tarot readers, AI and human
+		self.assertTrue(words["consult"]["label"] and words["consult"]["text"])
 
 	def test_a_visitor_gets_the_three_cards_and_a_locked_reading_with_the_way_to_sign_in(self):
 		reading = self.guest_draw()["reading"]

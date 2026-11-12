@@ -37,7 +37,11 @@ def _positions() -> dict:
 	return {"past": (_("Past"), _("What has shaped this")), "present": (_("Present"), _("Where you stand now")), "future": (_("Future"), _("Where it may lean"))}
 
 
-ICONS = {"past": "moon-old", "present": "moon-full", "future": "moon-new"}  # (the waning moon, the full moon, the waxing moon: names of the site's icon set)
+def _consult_url() -> str:
+	"""Where "Consult now" goes: the Seek guidance page, already showing the tarot readers (AI and human)."""
+	from raftor_websitehq.website_hq.page_groups import page_url
+
+	return page_url("consult", persona="Tarot reader")
 
 
 def _topics() -> list[dict]:
@@ -47,13 +51,14 @@ def _topics() -> list[dict]:
 
 def _words() -> dict:
 	"""Every word the page shows, for the card to draw."""
-	return {"title": _("Draw three cards"), "subtitle": _("Hold a question in mind, then press the three buttons in any order. Each card comes out with what it is traditionally said to mean."),
+	return {"title": _("Draw three cards"), "subtitle": _("Hold a question in mind, then shuffle. Stop each card in turn and read what it is traditionally said to mean."),
 			"topic_label": _("Pick a topic"), "topic_shown": _("Your topic"), "topics": _topics(), "question_label": _("What is on your mind?"), "question_placeholder": _("Optional: a question or a situation"), "sign": _("Your three cards"), "ornament": " ".join(rashifal.rashi(n)[4] + "\ufe0e" for n in range(1, 13)),
-			"press": _("Press a button to draw that card"), "button": _("Draw the {0} card"), "again": _("Start again"), "meanings": _("What the cards say"), "upright": _("Upright"), "reversed": _("Reversed"),
+			"press": _("Press Shuffle, then Stop to reveal each card in turn."), "shuffle": _("Shuffle"), "stop": _("Stop"), "again": _("Start again"), "meanings": _("What the cards say"), "upright": _("Upright"), "reversed": _("Reversed"),
 			"reading_title": _("The three together"), "writing": _("Reading your cards…"),
 			"locked_title": _("Read what the three cards say together"), "locked_text": _("Sign in or create your account to read the reading of all three cards together. The cards you drew are kept for you."),
 			"locked_action": _("Sign in to read it"), "retry": _("Try again"), "unavailable": _("The reading could not be written just now. Please try again in a little while."),
-			"note": _("Tarot is a way to reflect, not a forecast."), "positions": {key: {"label": label, "hint": hint, "icon": ICONS[key]} for key, (label, hint) in _positions().items()}}
+			"note": _("Tarot is a way to reflect, not a forecast."), "positions": {key: {"label": label, "hint": hint} for key, (label, hint) in _positions().items()},
+			"consult": {"title": _("Talk it through"), "text": _("Choose an AI or a human tarot reader to go deeper into your three cards."), "label": _("Consult now"), "url": _consult_url()}}
 
 
 def _card(index: int, reversed_: bool, position: str) -> dict:
