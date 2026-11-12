@@ -54,6 +54,27 @@ class TestTheDraw(AstroTestCase):
 		self.assertEqual(words["consult"]["url"], "/consult?persona=Tarot+reader")  # the tarot readers, AI and human
 		self.assertTrue(words["consult"]["label"] and words["consult"]["text"])
 
+	def test_a_picture_put_in_the_folder_is_used_for_its_card_and_the_back_and_without_one_the_card_is_drawn(self):
+		import os
+
+		self.assertEqual(tarot.slug_of("Wheel of Fortune"), "wheel-of-fortune")
+		self.assertEqual(tarot._image("99-no-such-card"), "")
+		folder = frappe.get_app_path("raftor_astrohq", "public", "tarot")
+		made = []
+		try:
+			for name in ("00-the-fool.webp", "back.png"):
+				path = os.path.join(folder, name)
+				open(path, "wb").write(b"x")
+				made.append(path)
+			self.assertEqual(tarot._image("00-the-fool"), "/assets/raftor_astrohq/tarot/00-the-fool.webp")
+			self.assertEqual(self.guest_draw()["words"]["back_image"], "/assets/raftor_astrohq/tarot/back.png")
+			fool = [i for i, c in enumerate(tarot.MAJOR) if c[1] == "The Fool"][0]
+			self.assertEqual(tarot._card(fool, False, "past")["image"], "/assets/raftor_astrohq/tarot/00-the-fool.webp")
+			self.assertEqual(tarot._card(1, False, "past")["image"], "")  # the Magician has none yet
+		finally:
+			for path in made:
+				os.remove(path)
+
 	def test_a_visitor_gets_the_three_cards_and_a_locked_reading_with_the_way_to_sign_in(self):
 		reading = self.guest_draw()["reading"]
 		state = reading["interpretation"]

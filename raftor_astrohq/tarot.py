@@ -8,6 +8,8 @@ The cards and their meanings are the app's own (tarot_deck.py). The words of the
 It is reflection, not prediction: the writer is told never to forecast, to give no medical, legal or money advice, and to stay with the question in a calm, plain voice.
 The page (websitehq's Tarot Draw Card) draws what these methods answer and holds no words of its own."""
 import json
+import os
+import re
 import secrets
 
 import frappe
@@ -58,13 +60,26 @@ def _words() -> dict:
 			"locked_title": _("Read what the three cards say together"), "locked_text": _("Sign in or create your account to read the reading of all three cards together. The cards you drew are kept for you."),
 			"locked_action": _("Sign in to read it"), "retry": _("Try again"), "unavailable": _("The reading could not be written just now. Please try again in a little while."),
 			"note": _("Tarot is a way to reflect, not a forecast."), "positions": {key: {"label": label, "hint": hint} for key, (label, hint) in _positions().items()},
+			"back_image": _image("back"), "leave": _("Close"), "leave_url": "/",
 			"consult": {"title": _("Talk it through"), "text": _("Choose an AI or a human tarot reader to go deeper into your three cards."), "label": _("Consult now"), "url": _consult_url()}}
+
+
+def _image(slug: str) -> str:
+	"""The address of the picture of a card, if one has been put in public/tarot (see docs/tarot.md), else nothing: the page then draws the card from its symbol."""
+	for ending in ("webp", "jpg", "jpeg", "png"):
+		if os.path.exists(frappe.get_app_path("raftor_astrohq", "public", "tarot", f"{slug}.{ending}")):
+			return f"/assets/raftor_astrohq/tarot/{slug}.{ending}"
+	return ""
+
+
+def slug_of(name: str) -> str:
+	return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
 
 
 def _card(index: int, reversed_: bool, position: str) -> dict:
 	numeral, name, icon, keywords, upright, reversed_text = MAJOR[index]
 	label, hint = _positions()[position]
-	return {"position": position, "label": label, "hint": hint, "numeral": numeral, "name": name, "icon": icon, "reversed": bool(reversed_),
+	return {"position": position, "label": label, "hint": hint, "numeral": numeral, "name": name, "icon": icon, "image": _image(f"{index:02d}-{slug_of(name)}"), "reversed": bool(reversed_),
 			"orientation": _("Reversed") if reversed_ else _("Upright"), "keywords": keywords, "meaning": reversed_text if reversed_ else upright}
 
 
