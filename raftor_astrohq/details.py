@@ -34,7 +34,7 @@ PLACE_SOURCE = "raftor_astrohq.api.place_options"  # the method that answers the
 
 def place_field(name: str, label: str) -> dict:
 	"""The place of birth as a form asks for it: type the town and choose it from the list (the astrology service's towns); what is typed and not on the list is read as written, so that it can be told what to try."""
-	return {"name": name, "label": label, "type": "lookup", "source": PLACE_SOURCE, "free_text": True, "required": True, "placeholder": _("Start typing the town"),
+	return {"name": name, "label": label, "icon": "pin", "type": "lookup", "source": PLACE_SOURCE, "free_text": True, "required": True, "placeholder": _("Start typing the town"),
 			"hint": _("Choose your town from the list, with its state. If it is not there, write the town and its state, or choose the nearest bigger town.")}
 
 
@@ -84,9 +84,9 @@ def person_fields(prefix: str = "", whose: str = "") -> list[dict]:
 	k = person_keys(prefix)
 	own = (lambda word: f"{whose}{word}") if whose else (lambda word: word[:1].upper() + word[1:])
 	return [
-		{"name": k["name"], "label": own(_("name")), "required": True, "placeholder": _("Full name in English letters")},
-		{"name": k["date"], "label": own(_("date of birth")), "type": "date", "required": True},
-		{"name": k["time"], "label": own(_("time of birth")), "type": "time_text", "required": True, "placeholder": "HH:MM",
+		{"name": k["name"], "label": own(_("name")), "icon": "user", "required": True, "placeholder": _("Full name in English letters")},
+		{"name": k["date"], "label": own(_("date of birth")), "icon": "calendar", "type": "date", "required": True},
+		{"name": k["time"], "label": own(_("time of birth")), "icon": "clock", "type": "time_text", "required": True, "placeholder": "HH:MM",
 		 "hint": _("The exact time matters: the lagna and the dasha change with it. If you do not know it, ask your family or look at the birth certificate.")},
 		place_field(k["place"], own(_("place of birth"))),
 	]
@@ -120,8 +120,9 @@ def whose() -> dict:
 	"""Whose kundli it is, asked only where it is given away (servicehq free_reports.py): the person's own, or someone in the family. The answer is the birth profile's relationship, which
 	decides how the details are kept (the person's own profile is "You"; a family member's is kept with the person's confirmation that they may)."""
 	words = {profiles.SELF: _("Me"), "Spouse": _("My husband or wife"), "Child": _("My child"), "Parent": _("My mother or father"), "Sibling": _("My brother or sister"), "Other": _("Someone else")}
-	return {"name": "whose", "label": _("This kundli is for"), "type": "select", "required": True, "default": profiles.SELF,
-			"options": [{"value": relation, "label": words.get(relation, relation)} for relation in profiles.relationships()]}
+	marks = {profiles.SELF: "user", "Spouse": "rings", "Child": "child", "Parent": "home", "Sibling": "users", "Other": "star"}
+	return {"name": "whose", "label": _("This kundli is for"), "type": "chips", "grid": True, "tiles": True, "required": True, "default": profiles.SELF,
+			"options": [{"value": relation, "label": words.get(relation, relation), "icon": marks.get(relation, "user")} for relation in profiles.relationships()]}
 
 
 def match_fields() -> list[dict]:
