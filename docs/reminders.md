@@ -1,19 +1,19 @@
-# My reminders (built 11 Nov 2026, after the owner's "My reminder page.... U get it"; dev only)
+# The days a person of astrohq follows (the domain side of servicehq's day reminders)
 
-A signed-in person says which days they follow and is told before each one. Page `/my/reminders` (in the account menu) lists them (Pause or turn on, Delete) and `/my/reminders/new` adds one.
+servicehq does the reminding (see its `docs/day-reminders.md`: the records, the pages `/my/reminders`, the schedule, the message). astrohq only says what a day is, through the hook `servicehq_day_reminders` (`day_reminders.py`, `definition`).
 
-A reminder names any of: a **tithi** (Pratipada to Chaturdashi, Purnima, Amavasya) with a **fortnight** (Shukla, Krishna or Both), a **weekday**, a **special day** (Ravi Pushya, Guru Pushya, Sarvartha Siddhi, Amrit Siddhi), and when to tell them: the evening before, the morning of, or both. It holds on a day when **any of the things it names holds** (Ashtami, or every Tuesday): the message says which one the day is. Up to 20 a person; the same one twice is refused.
+## What a person can choose
+Any of: **tithis** (Pratipada to Chaturdashi, Purnima, Amavasya) with a **fortnight** (Shukla, Krishna or Both), **weekdays**, **special days** (Ravi Pushya, Guru Pushya, Sarvartha Siddhi, Amrit Siddhi). A reminder holds on a day when **any** of the things it names holds; the message says which one the day is. Purnima and Amavasya need no fortnight.
 
-## How it runs (reminders.py)
-* The day's facts come from the Panchang's engine answer at the Panchang's town (`panchang.day`): the tithi at sunrise with when it begins and ends, the weekday, the nakshatra (it counts for a special day when it holds at sunrise or begins before the next sunrise). No AI.
-* Scheduled at 19:00 (tomorrow's days, "evening before") and 05:30 (today's, "morning of"), site time.
-* Sent through ServiceHQ's `messages.send` to Notification HQ, event `astro.reminder`: the email, and its in-app twin (the bell). SMS and WhatsApp when switched on there. The words are a Notification in Desk ("Reminder: a day you follow"), editable.
-* Once per reminder, day and time of day (`Astro Reminder Sent`), so a repeated run sends nothing new. A paused reminder or a disabled person is skipped.
+## How a day is known (`day_reminders.py`)
+* `facts(date)`: the Panchang's engine answer for the day at the Panchang's town (`panchang.day`): the tithi at sunrise with when it begins and ends, the weekday, the nakshatra (it counts for a special day when it holds at sunrise or begins before the next sunrise). No AI.
+* `follows`, `title_of`, `text_for`, `link`, `clean`: the rule, in words, and what the person chose, checked.
 
 ## Limits to know
 * One town for all (the Panchang's), not each person's own.
 * Tithis are kept by the tithi at sunrise. Traditions differ for some vrats (Pradosh is the evening's Trayodashi, Ekadashi can be kept on the next day): an astrologer should confirm. The special days' rules are the commonly printed ones.
 
-Fixed on the way: `vocabulary.pack_services()` read every JSON in `pack/` as a list of services, including `guides.json` (a dictionary), which broke the service sync on migrate; it now reads list files only.
+## History
+The first version lived in astrohq (Astro Reminder, its own pages and schedule). The patches `move_reminders_to_servicehq` (the records, the old message) and `hand_reminder_pages_to_servicehq` (the pages change hands) moved it; a site that never had reminders has nothing to move.
 
-Tests: `tests/test_reminders.py`.
+Tests: `tests/test_day_reminders.py` (the days, the words, what a person may choose).

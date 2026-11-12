@@ -4,13 +4,12 @@ site's. Addresses are `<group>/<page>`: a person's own birth details under `my`,
 import frappe
 from frappe import _
 
-from raftor_astrohq import details, profiles, reminders
+from raftor_astrohq import details, profiles
 from raftor_servicehq.roles import SERVICE_PROVIDER_ROLE
 from raftor_websitehq.website_hq.page_groups import page_url
 
 API = "raftor_astrohq.api."
 ASTRO = "raftor_astrohq.astrologer_api."
-REMIND = "raftor_astrohq.reminders."
 VIEW = "raftor_astrohq.report_view."
 TEMPLE = "raftor_astrohq.temple."
 TIGHT = {"padding": "Small", "gap": "Small"}
@@ -170,17 +169,4 @@ def definitions() -> list[dict]:
 		dream_guide_page(),
 		guide_page(),
 		temple_page(),
-		_list("my/reminders", _("My reminders"), _("Tell me before the days I follow: a tithi such as Ashtami or Amavasya, a weekday, or a special day."), {
-			"method": REMIND + "list_reminders", "empty": _("You have no reminders yet. Add the days you follow and we will tell you before each one."),
-			"links": [{"label": _("Add a reminder"), "href": _my("reminders/new"), "kind": "primary", "where": "top"}]},
-			menu={"label": _("My reminders"), "summary": _("Be told before Ashtami, Amavasya, Ekadashi and the days you follow."), "order": 18, "side": {"order": 29}}),
-		_form("my/reminders/new", _("Add a reminder"), _("Tap what you follow. You are told on each of them: any tithi you tap, any day, any special day."), {
-			"save": REMIND + "save_reminder", "submit_label": _("Save"), "cancel_label": _("Cancel"), "cancel_url": _my("reminders"), "success_redirect": _my("reminders"),
-			"fields": [
-				{"name": "tithi", "label": _("Tithis I follow"), "type": "chips", "multiple": True, "grid": True, "options": reminders.TITHIS, "hint": _("Tap as many as you follow, for example Ashtami and Amavasya.")},
-				{"name": "paksha", "label": _("Which fortnight"), "type": "chips", "segmented": True, "default": "Both", "options": [{"value": "Both", "label": _("Both")}, {"value": "Shukla", "label": _("Shukla")}, {"value": "Krishna", "label": _("Krishna")}],
-				 "hint": _("Shukla is the bright half, Krishna the dark half. Purnima and Amavasya need no choice.")},
-				{"name": "weekday", "label": _("Days of the week"), "type": "chips", "multiple": True, "options": [{"value": d, "label": _(d)[:3]} for d in reminders.WEEKDAYS]},
-				{"name": "special", "label": _("Special days"), "type": "chips", "multiple": True, "options": reminders.SPECIALS},
-				{"name": "lead", "label": _("Tell me"), "type": "chips", "segmented": True, "required": True, "default": "Evening before", "options": [{"value": v, "label": _(v)} for v in reminders.LEADS]}]}, note=_("The day is the one the panchang gives at sunrise. The message says when the tithi begins and ends.")),
 	]

@@ -3,3 +3,5 @@
 
 [post_model_sync]
 # Patches added to perform one-time data migrations after the schema sync.
+raftor_astrohq.patches.move_reminders_to_servicehq
+raftor_astrohq.patches.hand_reminder_pages_to_servicehq
