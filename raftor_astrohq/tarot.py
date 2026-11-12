@@ -51,9 +51,9 @@ def _topics() -> list[dict]:
 
 def _words() -> dict:
 	"""Every word the page shows, for the card to draw."""
-	return {"title": _("Draw three cards"), "subtitle": _("Hold a question in mind, then shuffle. Stop each card in turn and read what it is traditionally said to mean."),
-			"topic_label": _("Pick a topic"), "topic_shown": _("Your topic"), "topics": _topics(), "question_label": _("What is on your mind?"), "question_placeholder": _("Optional: a question or a situation"), "sign": _("Your three cards"), "ornament": " ".join(rashifal.rashi(n)[4] + "\ufe0e" for n in range(1, 13)),
-			"press": _("Press Shuffle, then Stop to reveal each card in turn."), "shuffle": _("Shuffle"), "stop": _("Stop"), "again": _("Start again"), "meanings": _("What the cards say"), "upright": _("Upright"), "reversed": _("Reversed"),
+	return {"title": _("Your three cards"), "subtitle": _("Think of what is on your mind, then shuffle and stop each card in turn. A way to reflect, not a forecast."),
+			"topic_label": _("Pick a topic"), "optional": _("Optional"), "topic_shown": _("Your topic"), "topics": _topics(), "question_label": _("What is on your mind?"), "question_toggle": _("Add a question"), "question_placeholder": _("A question or a situation, in your own words"), "sign": _("Your three cards"), "ornament": " ".join(rashifal.rashi(n)[4] + "\ufe0e" for n in range(1, 13)),
+			"press": _("Shuffle, then tap Stop when it feels right."), "press_stop": _("Tap Stop when it feels right."), "shuffle": _("Shuffle"), "stop": _("Stop"), "again": _("Start again"), "meanings": _("What the cards say"), "upright": _("Upright"), "reversed": _("Reversed"),
 			"reading_title": _("The three together"), "writing": _("Reading your cards…"),
 			"locked_title": _("Read what the three cards say together"), "locked_text": _("Sign in or create your account to read the reading of all three cards together. The cards you drew are kept for you."),
 			"locked_action": _("Sign in to read it"), "retry": _("Try again"), "unavailable": _("The reading could not be written just now. Please try again in a little while."),
