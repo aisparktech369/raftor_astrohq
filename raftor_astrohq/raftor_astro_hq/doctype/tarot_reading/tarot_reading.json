@@ -1,0 +1,28 @@
+{
+ "actions": [],
+ "autoname": "field:token",
+ "creation": "2026-11-12 18:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["token", "user", "question", "cards", "interpretation", "model"],
+ "fields": [
+  {"fieldname": "token", "fieldtype": "Data", "label": "Token", "reqd": 1, "unique": 1, "read_only": 1},
+  {"fieldname": "user", "fieldtype": "Link", "label": "Person", "options": "User", "in_list_view": 1},
+  {"fieldname": "question", "fieldtype": "Small Text", "label": "What they asked"},
+  {"fieldname": "cards", "fieldtype": "Long Text", "label": "The three cards (JSON: card, position, reversed)", "read_only": 1},
+  {"fieldname": "interpretation", "fieldtype": "Long Text", "label": "The reading of the three together"},
+  {"fieldname": "model", "fieldtype": "Data", "label": "Written by", "read_only": 1}
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-12 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "Tarot Reading",
+ "owner": "Administrator",
+ "permissions": [{"create": 1, "delete": 1, "read": 1, "role": "System Manager", "write": 1}],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

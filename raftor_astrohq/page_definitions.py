@@ -11,6 +11,7 @@ from raftor_websitehq.website_hq.page_groups import page_url
 API = "raftor_astrohq.api."
 ASTRO = "raftor_astrohq.astrologer_api."
 VIEW = "raftor_astrohq.report_view."
+TAROT = "raftor_astrohq.tarot."
 TEMPLE = "raftor_astrohq.temple."
 TIGHT = {"padding": "Small", "gap": "Small"}
 
@@ -118,6 +119,13 @@ def temple_page() -> dict:
 			"sections": [{"key": "temple", "cards": [{"type": "Offering Stage Card", "values": values}], "look": {**TIGHT, "theme": "Temple"}}]}  # (the theme variant made for it: its tones are the room's)
 
 
+def tarot_page() -> dict:
+	"""Three cards, drawn from a small cabinet (websitehq's Tarot Draw Card): open to anyone; the reading of the three together asks for a sign-in (tarot.py)."""
+	values = {"view": TAROT + "view", "draw": TAROT + "draw", "interpret": TAROT + "interpret", "url_args": "draw"}
+	return {"route": "services/tarot", "title": _("Tarot"), "login_required": False,
+			"sections": [{"key": "tarot", "cards": [{"type": "Tarot Draw Card", "values": values}], "look": {**TIGHT, "theme": "Temple"}}]}
+
+
 def definitions() -> list[dict]:
 	profile_list = _my("birth-profiles")
 	you = {"relationship": profiles.SELF}
@@ -170,4 +178,5 @@ def definitions() -> list[dict]:
 		dream_guide_page(),
 		guide_page(),
 		temple_page(),
+		tarot_page(),
 	]

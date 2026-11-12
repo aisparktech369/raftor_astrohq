@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from frappe import _
+from raftor_websitehq.website_hq.page_groups import page_url
 
 from raftor_astrohq.details import birth_details, kundli_fields, match_fields, numerology_fields, question, sankalp, visit_fields, whose, wish
 
@@ -88,7 +89,7 @@ def vocabulary() -> dict:
 		"booking_actions": "raftor_astrohq.report_view.booking_actions",
 		# The reports a customer asks for from the shop, made from their own birth details (servicehq digital.py, free_reports.py). Each ships as an item switched off, at price 0
 		# (both are free, always: they are given, not sold; the kundli and the match making report ship switched on, the rest wait for the business team to switch them on); servicehq asks the details and delivers the PDF the maker returns.
-		"reports_soon": [{"title": _("Tarot reading"), "icon": "cards"}],  # (what people ask for next: shown with "Coming soon", no way in yet)
+		"reports_soon": [{"title": _("Tarot reading"), "icon": "cards", "link": page_url("services", "tarot")}],  # (what people ask for next: shown with "Coming soon" and no way in; one that has a page of its own names it in `link` and is shown as a free report with its way in)
 		"reports": {
 			"kundli": {"kind": "Astrologer", "icon": "chart", "title": _("Kundli report"), "blurb": _("Your birth chart made from your date, time and place of birth."), "price": 0, "on": True,
 					   "description": _("Your kundli: the lagna, where each planet stood, the houses, the navamsa chart, your dasha periods and the panchang of the day you were born.\n\n"
