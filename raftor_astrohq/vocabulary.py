@@ -89,7 +89,7 @@ def vocabulary() -> dict:
 		"booking_actions": "raftor_astrohq.report_view.booking_actions",
 		# The reports a customer asks for from the shop, made from their own birth details (servicehq digital.py, free_reports.py). Each ships as an item switched off, at price 0
 		# (both are free, always: they are given, not sold; the kundli and the match making report ship switched on, the rest wait for the business team to switch them on); servicehq asks the details and delivers the PDF the maker returns.
-		"reports_soon": [{"title": _("Tarot reading"), "icon": "cards", "link": page_url("services", "tarot")}],  # (what people ask for next: shown with "Coming soon" and no way in; one that has a page of its own names it in `link` and is shown as a free report with its way in)
+		"reports_soon": [{"title": _("Numerology"), "icon": "hash", "link": page_url("services", "numerology")}, {"title": _("Tarot reading"), "icon": "cards", "link": page_url("services", "tarot")}],  # (what people ask for next: shown with "Coming soon" and no way in; one that has a page of its own names it in `link` and is shown as a free report with its way in)
 		"reports": {
 			"kundli": {"kind": "Astrologer", "icon": "chart", "title": _("Kundli report"), "blurb": _("Your birth chart made from your date, time and place of birth."), "price": 0, "on": True,
 					   "description": _("Your kundli: the lagna, where each planet stood, the houses, the navamsa chart, your dasha periods and the panchang of the day you were born.\n\n"
@@ -106,7 +106,6 @@ def vocabulary() -> dict:
 						   "description": _("Your birth number from the day you were born, the zodiac period, and the number of your name, each with what it is said to mean: your character, your dates, days and colours, the planet of your number and what the tradition links with it.\n\n"
 											"Made from your name and date of birth. It is classical numerology, a traditional system, not a prediction. It is free: you can read it as a PDF as soon as it is made."),
 						   "details": {"fields": numerology_fields(), "validate": "raftor_astrohq.details.numerology_rules"}, "maker": "raftor_astrohq.reports.numerology_report",
-						   "board": "raftor_astrohq.numerology_board.board",
 						   "free": {"summary": "raftor_astrohq.reports.numerology_summary"}},
 			**arranged_reports(),
 		},

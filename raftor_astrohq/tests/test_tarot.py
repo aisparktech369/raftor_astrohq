@@ -116,7 +116,7 @@ class TestTheDraw(AstroTestCase):
 			return Answer()
 
 		settings = frappe._dict(address="http://hub", site="", key="k", api_name="text-to-text", timeout=5)
-		with patch.object(tarot.rashifal, "settings", return_value=settings), patch.object(tarot.requests, "post", fake):
+		with patch("raftor_astrohq.hub.rashifal.settings", return_value=settings), patch("raftor_astrohq.hub.requests.post", fake):
 			tarot.interpret(token)
 		self.assertEqual(frappe.parse_json(sent["payload"]["prompt"])["topic"], "Money")
 		self.assertEqual(frappe.db.get_value("Tarot Reading", token, "topic"), "money")
@@ -159,7 +159,7 @@ class TestTheDraw(AstroTestCase):
 			return Answer()
 
 		settings = frappe._dict(address="http://hub", site="", key="k", api_name="text-to-text", timeout=5)
-		with patch.object(tarot.rashifal, "settings", return_value=settings), patch.object(tarot.requests, "post", fake):
+		with patch("raftor_astrohq.hub.rashifal.settings", return_value=settings), patch("raftor_astrohq.hub.requests.post", fake):
 			text = tarot.interpret(token)["interpretation"]["text"]
 		prompt = frappe.parse_json(sent["payload"]["prompt"])
 		self.assertEqual(sorted(prompt), ["cards", "question", "topic"])

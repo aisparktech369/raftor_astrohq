@@ -12,6 +12,7 @@ API = "raftor_astrohq.api."
 ASTRO = "raftor_astrohq.astrologer_api."
 VIEW = "raftor_astrohq.report_view."
 TAROT = "raftor_astrohq.tarot."
+NUMEROLOGY = "raftor_astrohq.numerology_page."
 TEMPLE = "raftor_astrohq.temple."
 TIGHT = {"padding": "Small", "gap": "Small"}
 
@@ -126,6 +127,13 @@ def tarot_page() -> dict:
 			"sections": [{"key": "tarot", "cards": [{"type": "Tarot Draw Card", "values": values}], "look": {**TIGHT, "theme": "Temple"}}]}
 
 
+def numerology_page() -> dict:
+	"""A name and a date of birth, and the numbers come out one by one (websitehq's Number Reveal Card): open to anyone; the reading of the numbers together asks for a sign-in (numerology_page.py)."""
+	values = {"view": NUMEROLOGY + "view", "reveal": NUMEROLOGY + "reveal", "interpret": NUMEROLOGY + "interpret", "url_args": "reading"}
+	return {"route": "services/numerology", "title": _("Numerology"), "login_required": False,
+			"sections": [{"key": "numerology", "cards": [{"type": "Number Reveal Card", "values": values}], "look": {**TIGHT, "theme": "Temple"}}]}
+
+
 def definitions() -> list[dict]:
 	profile_list = _my("birth-profiles")
 	you = {"relationship": profiles.SELF}
@@ -179,4 +187,5 @@ def definitions() -> list[dict]:
 		guide_page(),
 		temple_page(),
 		tarot_page(),
+		numerology_page(),
 	]
