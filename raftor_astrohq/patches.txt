@@ -5,3 +5,7 @@
 # Patches added to perform one-time data migrations after the schema sync.
 raftor_astrohq.patches.move_reminders_to_servicehq
 raftor_astrohq.patches.hand_reminder_pages_to_servicehq
+raftor_astrohq.patches.set_tarot_skill_area
+raftor_astrohq.patches.set_tarot_guides_area
+raftor_astrohq.patches.fix_guide_slugs
+raftor_astrohq.patches.lite_plan_starts_at_seek_guidance

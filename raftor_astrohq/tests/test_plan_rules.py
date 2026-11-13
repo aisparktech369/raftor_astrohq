@@ -98,3 +98,13 @@ class TestWhatAstroHQCounts(AstroTestCase):
 		plans.use(user, "free_reports")
 		self.assertEqual(frappe.db.get_value("Plan Day", day, "events"), before + 1)
 		self.assertTrue(plans.check(user, "free_reports")["ok"])
+
+
+class TestTheButtonsOfThePlans(TestCase):
+	def test_every_button_leads_to_a_page_of_the_site_that_is_a_start_and_the_free_one_starts_at_seek_guidance(self):
+		by_name = {p["plan_name"]: p for p in DATA["plans"]}
+		self.assertEqual((by_name["Lite"]["button_label"], by_name["Lite"]["button_url"]), ("Start free", "/consult"))  # not a chat with one of the guides
+		for plan in DATA["plans"]:
+			url = plan.get("button_url") or ""
+			self.assertTrue(url == "" or (url.startswith("/") and not url.startswith("//")), plan["plan_name"])
+			self.assertNotIn("/ask/", url, plan["plan_name"])
