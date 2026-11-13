@@ -311,6 +311,9 @@ assistant_tools = [
 	"raftor_astrohq.assistant_tools.numerology.CalculateNumerology",
 	"raftor_astrohq.assistant_tools.people.GetFamilyMember",
 	"raftor_astrohq.assistant_tools.people.GetReport",
+	"raftor_astrohq.assistant_tools.tarot.StartTarotSession",  # a tarot session in a chat, one card at a time (tarot_session.py)
+	"raftor_astrohq.assistant_tools.tarot.DealTarotCard",
+	"raftor_astrohq.assistant_tools.tarot.GetTarotSession",
 ]
 
 # AgentsHQ calls this when it puts the astrohq domain's files in the store: it labels each file's pieces
@@ -320,3 +323,6 @@ agent_rag_enrichers = ["astrohq:raftor_astrohq.knowledge.enrich"]
 agent_person = ["raftor_astrohq.person"]
 
 # The plans are servicehq's feature; AstroHQ comes with its own (plans.json, made by install.after_install) and says what they count (plan_rules.py).
+
+# Where a person lands after signing in when nothing else sends them (websitehq auth/session.py role_home): their dashboard.
+rfhq_default_home = ["raftor_astrohq.landing.default_home"]
