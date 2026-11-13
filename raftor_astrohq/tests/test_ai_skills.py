@@ -45,11 +45,11 @@ class TestSkills(AstroTestCase):
 		frappe.db.rollback()
 		_clean()
 
-	def test_the_shipped_skills_are_the_five_disciplines_the_pandit_ji_ones_and_tarot_waits_for_its_guide(self):
+	def test_the_shipped_skills_are_the_five_disciplines_the_pandit_ji_ones_and_tarot_has_its_guide_but_waits_off_for_its_keys(self):
 		keys = {r["skill_key"]: r for r in ai_guides.skills()}
 		for key in ("vedic_astrology", "kp_astrology", "tarot", "numerology", "dream_interpretation", "gemstones", "rudraksha", "poojas"):
 			self.assertIn(key, keys)
-		self.assertEqual((keys["kp_astrology"]["enabled"], keys["tarot"]["enabled"], keys["tarot"]["area"]), (0, 0, ""))
+		self.assertEqual((keys["kp_astrology"]["enabled"], keys["tarot"]["enabled"], keys["tarot"]["area"]), (0, 0, "tarot"))  # tarot has its agent now, and stays off until the guide's keys are made
 		self.assertTrue(all(keys[k]["enabled"] for k in ("numerology", "dream_interpretation", "vedic_astrology")))
 
 	def test_a_guide_takes_the_area_of_its_skills_and_reads_the_shelves_of_all_of_them(self):
@@ -161,7 +161,7 @@ class TestProfiles(AstroTestCase):
 	def test_a_guide_whose_skill_is_off_is_made_switched_off(self):
 		self._use(_person(discipline="tarot"))
 		ai_profiles.run(source=str(self.source))
-		self.assertEqual(frappe.db.get_value("AI Guide Persona", "t-prof", ["enabled", "area"]), (0, ""))
+		self.assertEqual(frappe.db.get_value("AI Guide Persona", "t-prof", ["enabled", "area"]), (0, "tarot"))  # it takes the area of its skill, and is off because the skill is
 
 	def test_a_person_with_a_discipline_no_skill_covers_is_skipped_with_the_reason(self):
 		self._use(_person(discipline="astro_cooking"))

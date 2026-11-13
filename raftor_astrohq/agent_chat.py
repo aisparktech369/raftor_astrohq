@@ -29,6 +29,10 @@ def _words(blueprint: str | None = None) -> dict:
 		return {"title": _("Dream guide"), "subtitle": _("AI guide · Exploring your dreams"), "who": _("the dream guide"), "placeholder": _("Tell me a dream"), "route": "dream-guide",
 				"resting": _("The dream guide is resting. Please come back a little later."), "notice": _("AI guide. I explore what a dream might mean to you. I can't predict anything or say what a dream shows about your health or others."),
 				"sign_in": _("Sign up or sign in to talk about a dream with the dream guide. It takes a minute."), "ask": _("Would you like to tell me a dream?")}
+	if blueprint == agents.TAROT["blueprint"]:
+		return {"title": _("Tarot guide"), "subtitle": _("AI guide · tarot"), "who": _("the tarot guide"), "placeholder": _("Tell me what is on your mind"), "route": "guide",
+				"resting": _("The tarot guide is resting. Please come back a little later."), "notice": _("AI guide. I read the cards as a way to reflect. I can't predict anything or advise on health, money or the law."),
+				"sign_in": _("Sign up or sign in to have a tarot reading with the tarot guide. It takes a minute."), "ask": _("What would you like to look at with the cards today?")}
 	return {"title": _("Pandit ji"), "subtitle": _("AI guide · Rudraksha, gemstones and poojas"), "who": _("Pandit ji"), "placeholder": _("Ask Pandit ji"), "route": "pandit-ji",
 			"resting": _("Pandit ji is resting. Please come back a little later."), "notice": _("AI guide. I explain from our Academy and can't predict or promise results."),
 			"sign_in": _("Sign up or sign in to ask Pandit ji, our AI guide to Rudraksha, gemstones and poojas. It takes a minute, and booking and buying need an account too."), "ask": _("What would you like to know?")}

@@ -15,8 +15,9 @@ HEAD = "---\nid: {id}\ncategory: rudraksha\ntitle: {title}\nintro: x.\npublish: 
 class TestContent(TestCase):
 	def test_every_article_is_one_file(self):
 		items = [i for i in content.load() if not content.rag_only(i)]
-		self.assertEqual(len(items), 145)
-		self.assertEqual(len({i["id"] for i in items}), 145)
+		self.assertEqual(len(items), 236)  # 145 and the Tarot series: 78 cards, 7 spreads, 5 methodology pages and the overview
+		self.assertEqual(len({i["id"] for i in items}), 236)
+		self.assertEqual(len([i for i in items if i["category"] == "tarot"]), 91)
 
 	def test_the_files_for_the_guides_only_are_the_consult_kinds_and_the_services(self):
 		only = [i for i in content.load() if content.rag_only(i)]
@@ -62,8 +63,8 @@ class TestContent(TestCase):
 		for item in [i for i in content.load() if not content.rag_only(i)]:
 			if item["id"] in ("gem-which-for-which-need", "gem-planets-gems-beads-poojas"):
 				continue  # the need-to-remedy guides are tables of their own kind
-			if item["category"] in ("numerology", "dreams"):
-				continue  # the numerology and dream series keep their own shape: prose and a few tables
+			if item["category"] in ("numerology", "dreams", "tarot"):
+				continue  # the numerology, dream and tarot series keep their own shape: prose and a few tables (a card page is its sections: picture, meaning, upright, reversed; the tarot deck and spreads are read from them, tarot_deck.py)
 			if item["id"].endswith("-guide"):
 				self.assertGreaterEqual(item["body"].count("|---|"), 4, item["file"])
 				continue

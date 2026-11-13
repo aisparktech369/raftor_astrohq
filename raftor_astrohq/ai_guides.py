@@ -14,7 +14,7 @@ def rows() -> list[dict]:
 	return json.loads((HERE / "ai_guides.json").read_text(encoding="utf-8"))
 
 
-AREA_WORD = {"pandit_ji": "Pandit ji", "numerologist": "Numerologist", "dream_guide": "Dream interpreter"}  # the word each area's guides carry in the vocabulary
+AREA_WORD = {"pandit_ji": "Pandit ji", "numerologist": "Numerologist", "dream_guide": "Dream interpreter", "tarot": "Tarot reader"}  # the word each area's guides carry in the vocabulary
 PERSONA = "AI Guide Persona"
 
 

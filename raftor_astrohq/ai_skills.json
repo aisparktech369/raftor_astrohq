@@ -6,5 +6,5 @@
  {"skill_key": "rudraksha", "title": "Rudraksha", "area": "pandit_ji", "enabled": 1, "shelves": "rudraksha, services", "about": "Needs the Rudraksha knowledge and the shop search. In place."},
  {"skill_key": "poojas", "title": "Poojas", "area": "pandit_ji", "enabled": 1, "shelves": "pooja, services", "about": "Needs the pooja knowledge and the services search. In place."},
  {"skill_key": "kp_astrology", "title": "KP astrology", "area": "pandit_ji", "enabled": 0, "shelves": "consult", "about": "Needs a KP chart tool (cusps, sub-lords, significators) in the astrology service and KP knowledge in the Academy. Not there yet: switch on when both are."},
- {"skill_key": "tarot", "title": "Tarot", "area": "", "enabled": 0, "shelves": "consult", "about": "Needs a tarot guide of its own: a deck, a draw tool, the card meanings in the Academy, and a blueprint. Not there yet."}
+ {"skill_key": "tarot", "title": "Tarot", "area": "tarot", "enabled": 0, "shelves": "tarot, consult", "about": "Conducts a reading in the Academy's methodology with the three tarot session tools (start, deal, get session). Built; switch on when the tarot guide's keys to the tool server are made (TAROT_FAC_KEY, TAROT_FAC_SECRET) and its Blueprint Reference is switched on."}
 ]

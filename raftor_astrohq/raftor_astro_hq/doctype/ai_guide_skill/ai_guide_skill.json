@@ -34,7 +34,7 @@
    "fieldtype": "Data",
    "label": "Area",
    "in_list_view": 1,
-   "description": "Which of the site's guides does this skill: pandit_ji, numerologist or dream_guide. Its rules and tools are the area's. Blank while no guide can do it yet."
+   "description": "Which of the site's guides does this skill: pandit_ji, numerologist, dream_guide or tarot. Its rules and tools are the area's. Blank while no guide can do it yet."
   },
   {
    "fieldname": "enabled",

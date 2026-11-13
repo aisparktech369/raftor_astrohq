@@ -1,72 +1,158 @@
-"""The twenty-two major cards of the tarot: number, name, a symbol from the site's icon set (websitehq website_hq/icons.py), three keywords and what the card is traditionally said to mean
-upright and reversed. The words are reflections to think about, never forecasts. The meanings are the app's own: a card shown on the page, never typed in by a visitor."""
+"""The tarot deck and its spreads, read from the knowledge base: the Markdown articles of the Tarot category in the astrohq domain. They are the one source: the Academy shows them, the guides search them,
+and this page and the guides' draw tool draw from them, so every one of them says the same thing about a card. Nothing about a card or a spread is worded here.
 
-# (numeral, name, icon, keywords, upright, reversed)
-MAJOR = [
-	("0", "The Fool", "child", "New beginnings · Trust · Openness",
-	 "A fresh start is on offer. Step forward with an open mind and a light heart, and let curiosity lead more than certainty.",
-	 "Hesitation, or rushing ahead without looking. Pause, check what you are carrying, then take the step with care."),
-	("I", "The Magician", "hand", "Will · Skill · Resourcefulness",
-	 "You already hold what you need. Focus your attention and put your skills to work, and an idea can become action.",
-	 "Scattered effort, or doubt in your own ability. Gather your energy on one thing before you start another."),
-	("II", "The High Priestess", "book", "Intuition · Stillness · Inner knowing",
-	 "Listen inward. Answers are gathering quietly beneath the surface, and patience will bring them forward.",
-	 "Noise is drowning out your inner voice. Make room for quiet before you decide."),
-	("III", "The Empress", "heart", "Nurture · Abundance · Creativity",
-	 "A time of growth and care. What you tend with warmth, in work, home or relationships, is likely to flourish.",
-	 "Giving too much, or neglecting your own needs. Look after yourself so that what you nurture can thrive."),
-	("IV", "The Emperor", "shield", "Structure · Authority · Stability",
-	 "Order and steady leadership serve you now. Set clear boundaries and build on firm ground.",
-	 "Rigidity, or a struggle over control. Ask where firmness has become stubbornness."),
-	("V", "The Hierophant", "bell", "Tradition · Guidance · Learning",
-	 "Learning from a teacher, a tradition or a trusted community supports you. Time-tested ways have something to give.",
-	 "You are questioning the rules you were given. Find what is truly yours rather than following out of habit."),
-	("VI", "The Lovers", "rings", "Union · Choice · Harmony",
-	 "A meaningful bond, or a choice made from the heart. Honesty and shared values bring harmony.",
-	 "Tension between values, or a hard choice put off. Speak plainly about what matters to you."),
-	("VII", "The Chariot", "truck", "Drive · Focus · Progress",
-	 "Determination carries you forward. Hold the reins steady and keep your eye on the goal.",
-	 "Pulled in two directions, or losing momentum. Settle on a direction before pressing ahead."),
-	("VIII", "Strength", "flame", "Courage · Patience · Compassion",
-	 "Quiet courage wins over force. Gentleness with yourself and with others is a strength now.",
-	 "Self-doubt, or running low on energy. Rest, and rebuild your confidence in small steps."),
-	("IX", "The Hermit", "lamp", "Reflection · Solitude · Insight",
-	 "A time to step back and look within. A little solitude can light the next step.",
-	 "Withdrawing too far, or avoiding what needs attention. Reach out to someone you trust."),
-	("X", "Wheel of Fortune", "wheel", "Cycles · Change · Turning point",
-	 "Things are turning. Cycles change, and going with the change rather than against it eases the way.",
-	 "Resisting a change, or feeling stuck in a repeating pattern. See what the pattern is trying to teach."),
-	("XI", "Justice", "scales", "Fairness · Truth · Balance",
-	 "Act with honesty and weigh things fairly. Consequences follow choices, and clear thinking serves you.",
-	 "Unfairness, or avoiding responsibility. Look at the facts again before you judge."),
-	("XII", "The Hanged Man", "return", "Pause · Surrender · A new view",
-	 "Waiting is not wasted. Let go of control for now and look at the matter from another side.",
-	 "A delay that has gone on too long. Decide what you are holding on to, and why."),
-	("XIII", "Death", "hourglass", "Endings · Transformation · Release",
-	 "One chapter closes so that another can open. The card speaks of change and renewal, not of a literal ending.",
-	 "Holding on to what has run its course. Allowing the change makes room for the new."),
-	("XIV", "Temperance", "cup", "Balance · Moderation · Patience",
-	 "Blend, adjust and go gently. A steady, balanced pace brings what force cannot.",
-	 "Excess, or being out of step. Find your middle way again."),
-	("XV", "The Devil", "chain", "Attachment · Habit · Temptation",
-	 "Notice what binds you: a habit, a worry or a desire that has too much hold. Seeing it is the first step to freedom.",
-	 "A hold is loosening. You are beginning to take back your choice."),
-	("XVI", "The Tower", "tower", "Upheaval · Revelation · Clearing",
-	 "A sudden change shakes what was not built on firm ground. It clears the way for something truer.",
-	 "Fear of a needed change, or a shake-up already passing. Rebuild patiently."),
-	("XVII", "The Star", "star", "Hope · Renewal · Calm",
-	 "Hope returns. After difficulty come calm, healing and trust in what lies ahead.",
-	 "Faith is running low. Small, steady acts of care restore it."),
-	("XVIII", "The Moon", "moon", "Dreams · Uncertainty · Intuition",
-	 "Things are not yet clear. Go carefully, trust your feelings, and wait for the light before deciding.",
-	 "A fog is lifting. What was confusing becomes clearer; face what you have been avoiding."),
-	("XIX", "The Sun", "sun", "Joy · Clarity · Vitality",
-	 "Warmth and clarity shine on you. Enjoy what is going well and share it.",
-	 "A good thing is slow to arrive, or a cloud sits over your mood. The light is still there; give it time."),
-	("XX", "Judgement", "check", "Awakening · Reflection · Calling",
-	 "A moment of honest review and a call to rise. Forgive the past and answer what calls you.",
-	 "Self-criticism, or ignoring a calling. Be as fair to yourself as you would be to a friend."),
-	("XXI", "The World", "globe", "Completion · Wholeness · Achievement",
-	 "A cycle completes. Take in what you have achieved, and prepare for the next beginning.",
-	 "Nearly there, with something unfinished. Complete the last step before moving on."),
-]
+A card is the article `tarot-card-<name>`: `00-fool` ... `21-world` for the twenty-two major cards, `<suit>-<rank>` (`wands-ace` ... `pentacles-king`) for the fifty-six minor cards. That name is the card's id
+everywhere (a stored reading, a picture, a tool call): the picture of a card is `public/tarot/<id>.webp` (see docs/tarot.md). A spread is the article `tarot-spread-<name>`, its places listed under `## Positions`.
+
+What this file does hold is not wording: the order of the deck, the numeral on a card face, and which symbol of the site's icon set stands for a card or a suit."""
+import os
+import re
+import secrets
+import time
+
+import frappe
+
+from raftor_astrohq import content
+
+CATEGORY = "tarot"
+CARD = "tarot-card-"
+SPREAD = "tarot-spread-"
+PRACTICE = "tarot-method-practice-notes"
+CONDUCT = "tarot-method-conducting-a-session"  # the ceremony: how a session is conducted, from the opening to the close
+KEEP_SECONDS = 300  # how long the parsed deck is kept before the files are read again
+REVERSED_ONE_IN = 4  # a card comes out reversed one time in four
+
+SUITS = ("wands", "cups", "swords", "pentacles")
+SUIT_ICON = {"wands": "wand", "cups": "cup", "swords": "sword", "pentacles": "coin"}  # (names of website_hq/icons.py)
+RANKS = ("ace", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "page", "knight", "queen", "king")
+RANK_MARK = dict(zip(RANKS, ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "P", "Kn", "Q", "K")))
+ROMAN = ("0", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI")
+MAJOR_ICON = ("child", "hand", "book", "heart", "shield", "bell", "rings", "truck", "flame", "lamp", "wheel", "scales", "return", "hourglass", "cup", "chain", "tower", "star", "moon", "sun", "check", "globe")
+
+# The spreads the page offers, in the order it shows them, and the one it starts on. The rest of the spreads are in the Academy for a reader who lays the cards out by hand.
+OFFERED = ("one-card-draw", "three-card-spread", "yes-or-no", "five-card-spread")
+DEFAULT_SPREAD = "three-card-spread"
+
+_kept: dict = {"at": 0.0, "data": None}
+POSITION = re.compile(r"^\s*\d+\.\s+\*\*(.+?)\*\*\s*[—–-]\s*(.+?)\s*$", re.M)
+
+
+def slug_of(text: str) -> str:
+	return re.sub(r"[^a-z0-9]+", "-", str(text).lower()).strip("-")
+
+
+def _sections(body: str) -> dict[str, str]:
+	"""The `## ` sections of an article: {heading in lower case: its text}; the text before the first section is under ""."""
+	found, name, lines = {}, "", []
+	for line in str(body or "").splitlines():
+		if line.startswith("## "):
+			found[name] = "\n".join(lines).strip()
+			name, lines = line[3:].strip().lower(), []
+		elif not line.startswith("# "):
+			lines.append(line)
+	found[name] = "\n".join(lines).strip()
+	return found
+
+
+def _intro(sections: dict[str, str]) -> str:
+	return next((p.strip() for p in sections.get("", "").split("\n\n") if p.strip() and not p.strip().startswith("**Card")), "")
+
+
+def _card(item: dict) -> dict | None:
+	stem = item["id"][len(CARD):]
+	parts = _sections(item["body"])
+	number = re.match(r"(\d\d)-", stem)
+	if number:
+		n = int(number.group(1))
+		if n >= len(ROMAN):
+			return None
+		suit, rank, numeral, icon, order = None, None, ROMAN[n], MAJOR_ICON[n], n
+	else:
+		suit, _, rank = stem.partition("-")
+		if suit not in SUITS or rank not in RANKS:
+			return None
+		numeral, icon, order = RANK_MARK[rank], SUIT_ICON[suit], 100 + SUITS.index(suit) * 20 + RANKS.index(rank)
+	return {"id": stem, "name": item["title"], "arcana": "major" if number else "minor", "suit": suit, "rank": rank, "number": order if number else None, "numeral": numeral, "icon": icon, "order": order,
+			"picture": parts.get("what the picture shows", ""), "headline": parts.get("what it means", ""), "upright": parts.get("upright", ""), "reversed": parts.get("reversed", ""),
+			"extra": parts.get("extra meanings", ""), "link": content.route_of(item)}
+
+
+def _spread(item: dict) -> dict | None:
+	key = item["id"][len(SPREAD):]
+	parts = _sections(item["body"])
+	places = [{"label": label.strip(), "hint": hint.strip()} for label, hint in POSITION.findall(parts.get("positions", ""))]
+	if not places:
+		return None
+	return {"key": key, "title": item["title"], "intro": _intro(parts), "positions": places, "draw": parts.get("how to draw", ""), "read": parts.get("how to read", ""), "link": content.route_of(item)}
+
+
+def _build() -> dict:
+	items = content.domain_files_of(CATEGORY)
+	cards = sorted((c for c in (_card(i) for i in items if i["id"].startswith(CARD)) if c), key=lambda c: c["order"])
+	spreads = {s["key"]: s for s in (_spread(i) for i in items if i["id"].startswith(SPREAD)) if s}
+	practice = next((_sections(i["body"]) for i in items if i["id"] == PRACTICE), {})
+	conduct = next((_sections(i["body"]) for i in items if i["id"] == CONDUCT), {})
+	return {"cards": cards, "by_id": {c["id"]: c for c in cards}, "spreads": spreads, "practice": "\n\n".join(f"{name.capitalize()}:\n{text}" for name, text in practice.items() if name and text and name != "related reading"),
+			"conduct": {name: text for name, text in conduct.items() if name and text and name != "related reading"}}
+
+
+def load(force: bool = False) -> dict:
+	"""The deck as it stands in the knowledge base, kept for a few minutes (a change to an article reaches the page then, or at once after `load(force=True)`)."""
+	if force or _kept["data"] is None or time.time() - _kept["at"] > KEEP_SECONDS:
+		_kept["data"], _kept["at"] = _build(), time.time()
+	return _kept["data"]
+
+
+def cards() -> list[dict]:
+	"""Every card, in the deck's order: the twenty-two major cards by number, then wands, cups, swords and pentacles from the ace to the king."""
+	return load()["cards"]
+
+
+def card(card_id: str) -> dict | None:
+	return load()["by_id"].get(str(card_id or ""))
+
+
+def spreads() -> list[dict]:
+	"""The spreads the page offers, in order."""
+	data = load()["spreads"]
+	return [data[key] for key in OFFERED if key in data]
+
+
+def spread(key: str | None) -> dict | None:
+	"""The spread of this key if the page offers it, else the default one."""
+	data = load()["spreads"]
+	return data.get(key) if key in OFFERED and key in data else data.get(DEFAULT_SPREAD)
+
+
+def practice_notes() -> str:
+	"""How a reading is to be given, from the Academy's practice notes: the guides and the page's writer both follow it."""
+	return load()["practice"]
+
+
+def shuffled() -> list[dict]:
+	"""The whole deck face down: every card once, in a random order (`secrets`), each upright or reversed. The one draw of the page and of the chat tools: a draw takes cards from the top, or from where the person points."""
+	chooser = secrets.SystemRandom()
+	ids = [c["id"] for c in cards()]
+	chooser.shuffle(ids)
+	return [{"id": card_id, "r": chooser.randrange(REVERSED_ONE_IN) == 0} for card_id in ids]
+
+
+def conduct(*parts: str) -> dict[str, str]:
+	"""The Academy's methodology for conducting a session, by section in the order it is written (opening, choosing the spread, choosing the cards, turning over the cards, giving the reading, going deeper, closing, care).
+	With names, only those sections. The guides are given it by the tools, so the ceremony they conduct is the one the Academy defines."""
+	sections = load()["conduct"]
+	return {name: text for name, text in sections.items() if not parts or name in parts}
+
+
+def image(card_id: str) -> str:
+	"""The address of the picture of a card (or "back"), else nothing: the page then draws the card from its symbol. The pictures are the factory's (domains/astrohq/media/tarot/<card id>.webp), delivered once
+	by AgentsHQ and shown from the same address by the page, the Academy and the guides' chat. A site that has not had them delivered yet is given what an earlier version kept in public/tarot."""
+	from raftor_agentshq import media
+
+	delivered = media.url("astrohq", f"tarot/{card_id}")
+	if delivered:
+		return delivered
+	for ending in ("webp", "jpg", "jpeg", "png"):
+		if os.path.exists(frappe.get_app_path("raftor_astrohq", "public", "tarot", f"{card_id}.{ending}")):
+			return f"/assets/raftor_astrohq/tarot/{card_id}.{ending}"
+	return ""

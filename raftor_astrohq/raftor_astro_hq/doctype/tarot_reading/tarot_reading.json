@@ -9,9 +9,12 @@
   "user",
   "question",
   "topic",
+  "spread",
   "cards",
   "interpretation",
-  "model"
+  "model",
+  "source",
+  "fan"
  ],
  "fields": [
   {
@@ -40,9 +43,16 @@
    "label": "Topic"
   },
   {
+   "fieldname": "spread",
+   "fieldtype": "Data",
+   "label": "Spread",
+   "description": "The key of the spread in the Academy (three-card-spread, one-card-draw, yes-or-no, five-card-spread). Empty on a reading made before spreads: the three-card spread.",
+   "read_only": 1
+  },
+  {
    "fieldname": "cards",
    "fieldtype": "Long Text",
-   "label": "The three cards (JSON: card, position, reversed)",
+   "label": "The cards (JSON: card id, reversed), in the places of the spread",
    "read_only": 1
   },
   {
@@ -55,6 +65,21 @@
    "fieldtype": "Data",
    "label": "Written by",
    "read_only": 1
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Data",
+   "label": "Where it was drawn",
+   "description": "chat (a guide's tarot session, drawn one card at a time with the chat tools) or empty (the tarot page).",
+   "read_only": 1
+  },
+  {
+   "fieldname": "fan",
+   "fieldtype": "Long Text",
+   "label": "The cards still face down (JSON: card id, reversed)",
+   "description": "A chat session only: the whole deck, shuffled once when the session began. The person's pick, or the top card, is taken from it. Never shown to the person.",
+   "read_only": 1,
+   "hidden": 1
   }
  ],
  "index_web_pages_for_search": 0,

@@ -20,7 +20,7 @@ PRODUCT_MARKER = re.compile(r"^\[\[product\s+[^\]\n]+\]\]\s*$", re.M)
 SHARED_SECTIONS = ("Identifying a genuine", "How to spot a genuine", "How to wear it", "Care and cleaning")
 REQUIRED = ("id", "category", "title", "intro", "publish")
 BLOGGER = {"short_name": "astrohq-team", "full_name": "AstroHQ Team", "bio": "Written and checked by the AstroHQ Team, from the traditional texts."}
-CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones", "pooja": "Pooja", "numerology": "Numerology", "dreams": "Dreams", "consult": "Consult", "services": "Services"}
+CATEGORIES = {"rudraksha": "Rudraksha", "gemstones": "Gemstones", "pooja": "Pooja", "numerology": "Numerology", "dreams": "Dreams", "consult": "Consult", "services": "Services", "tarot": "Tarot"}
 CATEGORY_NOTES = {
 	"rudraksha": "The beads by number of faces: meaning, mantra, the traditions around each, and how to choose one.",
 	"gemstones": "Origin, treatments, the planets and stories behind each stone, and how to choose one.",
@@ -55,6 +55,13 @@ def load(folder: Path | None = None) -> list[dict]:
 		items = _read(folder)
 	check(items)
 	return items
+
+
+def domain_files_of(category: str) -> list[dict]:
+	"""The article files of one category (the tarot deck is read from the Tarot category's), as AgentsHQ reads them."""
+	from raftor_agentshq import domain_rag
+
+	return domain_rag.domain_files(DOMAIN, series=category)
 
 
 def _read(folder: Path) -> list[dict]:
@@ -238,6 +245,10 @@ def _blogger():
 
 def _cover(item: dict, items: list[dict]) -> str:
 	"""The picture of the article's first product (the shop entry's, else the item's own); a guide with no product borrows the first picture in its own category; else the shared one. The Academy list shows it."""
+	if item["category"] == "tarot":  # a card's own picture (the factory's, see tarot_deck.py), else the back of the cards, else nothing
+		from raftor_astrohq import tarot_deck
+
+		return tarot_deck.image(str(item["id"]).removeprefix(tarot_deck.CARD)) or tarot_deck.image("back") or ""  # none yet: blank, never another series' picture (a rudraksha bead on a tarot card)
 	same = [item] + [other for other in items if other["category"] == item["category"] and other is not item]
 	for article in same:
 		for code in (article.get("products") or "").split(","):

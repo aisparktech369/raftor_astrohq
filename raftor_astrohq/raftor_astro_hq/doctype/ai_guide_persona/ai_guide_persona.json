@@ -58,7 +58,7 @@
    "label": "Area",
    "reqd": 0,
    "in_list_view": 1,
-   "description": "Which of the site's guides does the work: pandit_ji (astrology, Rudraksha, gemstones and poojas), numerologist or dream_guide. The rules, tools and knowledge are the area's; this guide only speaks differently. Filled from the skills when left blank."
+   "description": "Which of the site's guides does the work: pandit_ji (astrology, Rudraksha, gemstones and poojas), numerologist, dream_guide or tarot (tarot readings). The rules, tools and knowledge are the area's; this guide only speaks differently. Filled from the skills when left blank."
   },
   {
    "fieldname": "enabled",

@@ -7,6 +7,7 @@ The person brings its character, voice, way of working and portrait; AstroHQ att
 A person is known by its profile_id: a guide already made from it is left exactly as staff have it in Desk. A guide whose skill is not switched on, or that pack/guides.json lists under "held" (profile_id -> why), is made switched off.
 `bench --site <site> execute raftor_astrohq.ai_profiles.run --kwargs '{"preview": 1}'` shows the plan."""
 import json
+import re
 from pathlib import Path
 
 import frappe
@@ -35,10 +36,16 @@ def persons() -> list[dict]:
 	return personas.catalogue()
 
 
+def slug_of(key: str) -> str:
+	"""A guide's slug is its record's name, its address (`?persona=`) and its listing's name: lowercase letters, numbers and single hyphens, as the listing requires. A person's key may carry more (an apostrophe in
+	Rhea D'Souza): apostrophes are dropped, any other run of characters becomes one hyphen."""
+	return re.sub(r"[^a-z0-9]+", "-", re.sub(r"['\u2019`]", "", str(key).lower())).strip("-")
+
+
 def persona_values(person: dict, sequence: int, name: str | None = None) -> dict:
 	"""The fields of the AI Guide Persona a person becomes."""
 	keep = ("tagline", "bio", "audience", "topics", "languages", "greeting", "traits", "mindset", "communication_style", "signature_line", "workflow", "response_format", "boundaries", "avatar_prompt")
-	return {"doctype": PERSONA, "slug": person["key"], "profile_id": person["profile_id"], "guide_name": name or person["name"], "skills": [{"skill": DISCIPLINE_SKILL[person["discipline"]]}],
+	return {"doctype": PERSONA, "slug": slug_of(person["key"]), "profile_id": person["profile_id"], "guide_name": name or person["name"], "skills": [{"skill": DISCIPLINE_SKILL[person["discipline"]]}],
 			**{k: person[k] for k in keep}, "ai_image": 1, "sequence": sequence}
 
 
