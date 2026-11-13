@@ -311,9 +311,6 @@ assistant_tools = [
 	"raftor_astrohq.assistant_tools.numerology.CalculateNumerology",
 	"raftor_astrohq.assistant_tools.people.GetFamilyMember",
 	"raftor_astrohq.assistant_tools.people.GetReport",
-	"raftor_astrohq.assistant_tools.tarot.StartTarotSession",  # a tarot session in a chat, one card at a time (tarot_session.py)
-	"raftor_astrohq.assistant_tools.tarot.DealTarotCard",
-	"raftor_astrohq.assistant_tools.tarot.GetTarotSession",
 ]
 
 # AgentsHQ calls this when it puts the astrohq domain's files in the store: it labels each file's pieces
