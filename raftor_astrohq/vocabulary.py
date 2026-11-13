@@ -89,7 +89,9 @@ def vocabulary() -> dict:
 		"booking_actions": "raftor_astrohq.report_view.booking_actions",
 		# The reports a customer asks for from the shop, made from their own birth details (servicehq digital.py, free_reports.py). Each ships as an item switched off, at price 0
 		# (both are free, always: they are given, not sold; the kundli and the match making report ship switched on, the rest wait for the business team to switch them on); servicehq asks the details and delivers the PDF the maker returns.
-		"reports_soon": [{"title": _("Numerology"), "icon": "hash", "link": page_url("services", "numerology")}, {"title": _("Tarot reading"), "icon": "cards", "link": page_url("services", "tarot")}],  # (what people ask for next: shown with "Coming soon" and no way in; one that has a page of its own names it in `link` and is shown as a free report with its way in)
+		"reports_soon": [{"title": _("Numerology"), "icon": "hash", "blurb": _("Your birth number and name number, worked out as you watch."), "link": page_url("services", "numerology")},
+						 {"title": _("Tarot reading"), "icon": "cards", "blurb": _("Draw a spread and reflect on a question. Reflection, not a forecast."), "link": page_url("services", "tarot")},
+						 {"title": _("Today's Panchang"), "icon": "moon-old", "blurb": _("Tithi, nakshatra and the good and bad hours, for any day and town."), "link": "/panchang"}],  # (what people ask for next: shown with "Coming soon" and no way in; one that has a page of its own names it in `link` and is shown as a free report with its way in)
 		"reports": {
 			"kundli": {"kind": "Astrologer", "icon": "chart", "title": _("Kundli report"), "blurb": _("Your birth chart made from your date, time and place of birth."), "price": 0, "on": True,
 					   "description": _("Your kundli: the lagna, where each planet stood, the houses, the navamsa chart, your dasha periods and the panchang of the day you were born.\n\n"
@@ -102,12 +104,25 @@ def vocabulary() -> dict:
 									   "Made from the details you give for both. It is free: you can read it as a PDF as soon as it is made."),
 					  "details": {"fields": match_fields(), "validate": "raftor_astrohq.details.match_rules"}, "maker": "raftor_astrohq.reports.match_report",
 					  "free": {"summary": "raftor_astrohq.reports.match_summary", "picker": "raftor_astrohq.reports.match_picker", "keep": "raftor_astrohq.reports.keep_match_profiles"}},  # each of the two is chosen from the saved people or written new, and kept for next time
-			"numerology": {"kind": "Astrologer", "icon": "hash", "title": _("Numerology report"), "blurb": _("Your birth number and name number, by the rules of classical numerology."), "price": 0,
+			"numerology": {"kind": "Astrologer", "coming_soon": False, "icon": "hash", "title": _("Numerology report"), "blurb": _("Your birth number and name number, by the rules of classical numerology."), "price": 0,
 						   "description": _("Your birth number from the day you were born, the zodiac period, and the number of your name, each with what it is said to mean: your character, your dates, days and colours, the planet of your number and what the tradition links with it.\n\n"
 											"Made from your name and date of birth. It is classical numerology, a traditional system, not a prediction. It is free: you can read it as a PDF as soon as it is made."),
 						   "details": {"fields": numerology_fields(), "validate": "raftor_astrohq.details.numerology_rules"}, "maker": "raftor_astrohq.reports.numerology_report",
 						   "free": {"summary": "raftor_astrohq.reports.numerology_summary"}},
 			**arranged_reports(),
+		},
+		"free_reports_page": {  # the Free reports page (servicehq page_definitions.free_reports_page)
+			"badge": _("Free tools"), "heading": _("Know yourself. Free."),
+			"subheading": _("Your kundli, your numbers, your cards and today's Panchang, made from your own details in moments. Nothing to pay, no card needed."), "cta": _("See what is free"),
+			"steps": [{"title": _("Add your details"), "body": _("Your date, time and place of birth, once. They stay private to your account.")},
+					  {"title": _("We make it in moments"), "body": _("Your report is ready while you wait. It is classical astrology: guidance to reflect on, never a prediction.")},
+					  {"title": _("Read it, keep it"), "body": _("Read it on screen or as a PDF. It stays in your account for whenever you want it again.")}],
+			"faq": [{"q": _("Is it really free?"), "a": _("Yes. These reports and tools are free, with no card and no trial. If we ever add a paid report, it will say so before you start.")},
+					{"q": _("What do I need to give?"), "a": _("Your name, date of birth and place of birth, and the time if you know it. For match making, the same for the second person.")},
+					{"q": _("Who can see my details?"), "a": _("Only you. A guide never sees your contact details, and we never sell your data. The Privacy Policy has the full picture.")},
+					{"q": _("I do not know my birth time. Can I still use it?"), "a": _("Yes: tick that you do not know it. Details that depend on the exact time are then less precise.")},
+					{"q": _("How accurate is it?"), "a": _("Charts are calculated from your birth details by the traditional method. A report is guidance to think about, not a forecast; reading it with a guide goes deeper.")}],
+			"consult": {"heading": _("Want a person to read it with you?"), "text": _("Pick a verified astrologer, tarot reader or numerologist. Your first session is free."), "label": _("Seek guidance")},
 		},
 		"quick_links": [  # where a signed-in customer begins (servicehq overview.customer_start); icons are names in websitehq icons.py
 			{"label": "Free kundli", "summary": "From your birth details", "url": "/services/free-reports", "icon": "chart"},
