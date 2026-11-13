@@ -109,6 +109,14 @@ def vocabulary() -> dict:
 						   "free": {"summary": "raftor_astrohq.reports.numerology_summary"}},
 			**arranged_reports(),
 		},
+		"quick_links": [  # where a signed-in customer begins (servicehq overview.customer_start); icons are names in websitehq icons.py
+			{"label": "Free kundli", "summary": "From your birth details", "url": "/services/free-reports", "icon": "chart"},
+			{"label": "Tarot", "summary": "Reflect on a question", "url": "/services/tarot", "icon": "cards"},
+			{"label": "Numerology", "summary": "Your numbers", "url": "/services/numerology", "icon": "hash"},
+			{"label": "Today's Panchang", "summary": "Tithi and timings", "url": "/panchang", "icon": "moon-old"},
+			{"label": "Your temple", "summary": "Light a diya", "url": "/my/temple", "icon": "lamp"},
+			{"label": "Reminders", "summary": "The tithis you follow", "url": "/my/reminders", "icon": "bell"},
+		],
 		"kinds": {
 			"Consultation": {"recommendation_mode": "Required", "line_title": "Seek guidance", "meta_title": "Seek guidance from verified astrologers | AstroHQ", "meta_description": "Choose an astrologer, KP astrologer, numerologist, tarot reader or pandit. See the fee before you book. Your first session is free.", "line_subtitle": "Every guide can help with every kind of question. Choose who to talk to, online now or at a time you choose.", "details": {"fields": [question()], "fields_for": "raftor_astrohq.details.consultation_fields", "topic_field": "question", "validate": "raftor_astrohq.details.consultation_rules"}},
 			"Subscription": {"service": "daily pooja", "services": "daily poojas", "unit": "day", "units": "days", "book": "Subscribe", "details": {"fields": [*sankalp(), wish()]}},
