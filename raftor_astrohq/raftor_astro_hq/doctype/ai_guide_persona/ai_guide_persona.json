@@ -9,6 +9,7 @@
   "guide_name",
   "area",
   "enabled",
+  "minute_rate",
   "sequence",
   "profile_id",
   "skills_section",
@@ -214,6 +215,13 @@
    "fieldtype": "Long Text",
    "label": "Picture brief",
    "description": "What the portrait should show, for whoever makes the picture."
+  },
+  {
+   "fieldname": "minute_rate",
+   "fieldtype": "Currency",
+   "label": "Price of a Minute",
+   "default": "1",
+   "description": "What one minute of talk with this guide costs when the person buys AI minutes in the chat (their plan's free minutes cost nothing). Minutes bought are used with any AI guide."
   }
  ],
  "index_web_pages_for_search": 0,

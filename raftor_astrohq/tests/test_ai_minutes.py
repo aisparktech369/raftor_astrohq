@@ -58,7 +58,15 @@ class TestAIMinutes(AstroTestCase):
 		ai_minutes.payment_arrived(pay("PAY-3", f"aiminutes:{user}:10:1", doctype="Booking"))
 		self.assertEqual(ai_minutes.bought_left(user), 20)
 
-	def test_buying_needs_a_sensible_amount_and_a_price_for_a_minute(self):
+	def test_a_minute_costs_what_the_guide_says_and_one_when_it_says_nothing(self):
+		self.assertEqual(ai_minutes.per_minute(""), 1.0)
+		with patch.object(frappe.db, "get_value", return_value=2.5):
+			self.assertEqual(ai_minutes.per_minute("devika-iyer"), 2.5)
+			self.assertEqual([p["price"] for p in ai_minutes.packs("devika-iyer")][0], ai_minutes._money(25))
+		with patch.object(frappe.db, "get_value", return_value=0):
+			self.assertEqual(ai_minutes.per_minute("devika-iyer"), 1.0)
+
+	def test_buying_needs_a_sensible_amount_and_a_guide_that_sells_minutes(self):
 		self.assertRaises(frappe.ValidationError, ai_minutes.buy, 1)
 		self.assertRaises(frappe.ValidationError, ai_minutes.buy, 5000)
 		with patch.object(ai_minutes, "per_minute", return_value=0):

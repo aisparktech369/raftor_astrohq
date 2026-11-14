@@ -3,8 +3,8 @@
     plan's free minutes (servicehq plans, meter ai_minutes)  ->  then the minutes bought here, oldest pack first
 
 A pack is 10, 20 or 30 minutes, or any amount from CUSTOM_MIN to CUSTOM_MAX. It is bought the way more time in a live session is (servicehq sessions.extend): PaymentHQ is asked for a payment, the chat shows the payment
-page over itself, and when PaymentHQ says it was paid (hook paymenthq_on_paid) the minutes are added as one AI Minute Credit row, once. The price of a minute is the Item Price of ITEM (a draft Item that only holds the price:
-the business team sets it, and leaves the Item disabled; it is never sold through the shop). Every AI chat shows how many minutes are left (`my_status`), warns when they are few, and, when none are left, says so and
+page over itself, and when PaymentHQ says it was paid (hook paymenthq_on_paid) the minutes are added as one AI Minute Credit row, once. The price of a minute is the AI guide's own (AI Guide Persona.minute_rate, set in Desk; 1 for now), or DEFAULT_RATE for a guide with no record of its own
+(Pandit ji, the numerologist and the others). Minutes bought are used with any AI guide. Every AI chat shows how many minutes are left (`my_status`), warns when they are few, and, when none are left, says so and
 offers the packs (plan_rules.allowance).
 
 Staff and people whose plan has no limit on AI minutes are never counted or shown a counter."""
@@ -14,7 +14,7 @@ from frappe.utils import cint, flt, fmt_money, now_datetime
 
 from raftor_astrohq import plan_rules
 
-ITEM = "ASTROHQ-AI-MINUTES"
+DEFAULT_RATE = 1.0  # the price of a minute for a guide that has none of its own set
 CREDIT = "AI Minute Credit"
 KEY = "aiminutes"  # a payment for minutes carries a request key that starts with this
 PACKS = (10, 20, 30)
@@ -64,24 +64,24 @@ def status(user: str) -> dict:
 	return {"limited": True, "free": round(free, 1), "bought": round(bought, 1), "left": round(total, 1), "low": 0 < total <= LOW, "out": total <= 0}
 
 
-def on_sale() -> bool:
-	"""Whether minutes can be bought: the price of a minute has been set."""
-	return per_minute() > 0
+def per_minute(persona: str = "") -> float:
+	"""What a minute costs with this guide (a persona's slug), else DEFAULT_RATE."""
+	rate = flt(frappe.db.get_value("AI Guide Persona", {"slug": persona, "enabled": 1}, "minute_rate")) if persona else 0.0
+	return rate if rate > 0 else DEFAULT_RATE
 
 
-def per_minute() -> float:
-	return flt(frappe.db.get_value("Item Price", {"item_code": ITEM, "selling": 1}, "price_list_rate"))
+def on_sale(persona: str = "") -> bool:
+	"""Whether minutes can be bought (a guide whose price was set to nothing sells none)."""
+	return per_minute(persona) > 0
 
 
 def _money(amount: float) -> str:
-	return fmt_money(amount, currency=frappe.db.get_value("Item Price", {"item_code": ITEM, "selling": 1}, "currency") or frappe.defaults.get_global_default("currency") or "INR")
+	return fmt_money(amount, currency=frappe.defaults.get_global_default("currency") or "INR")
 
 
-def packs() -> list[dict]:
-	"""The packs on offer with their prices; none while the minutes cannot be bought yet (the Item is a draft, or has no price)."""
-	if not on_sale():
-		return []
-	rate = per_minute()
+def packs(persona: str = "") -> list[dict]:
+	"""The packs on offer with their prices at this guide's rate."""
+	rate = per_minute(persona)
 	return [{"minutes": m, "price": _money(rate * m)} for m in PACKS]
 
 
@@ -92,12 +92,12 @@ def words() -> dict:
 
 
 @frappe.whitelist()
-def my_status() -> dict:
-	"""For the chat's counter, asked after each reply: the person's minutes, and what they can buy."""
+def my_status(persona: str = "") -> dict:
+	"""For the chat's counter, asked after each reply: the person's minutes, and what they can buy with the guide they are talking to (`persona` is that guide's slug, when it is one of the named ones)."""
 	user = frappe.session.user
 	out = status(user)
 	if out.get("limited"):
-		out.update({"packs": packs(), "custom": {"min": CUSTOM_MIN, "max": CUSTOM_MAX, "rate": _money(per_minute())} if on_sale() else None, "buy": BUY, "words": words()})
+		out.update({"packs": packs(persona), "custom": {"min": CUSTOM_MIN, "max": CUSTOM_MAX, "rate": _money(per_minute(persona))}, "buy": BUY, "words": words()})
 	return out
 
 
@@ -112,8 +112,6 @@ def allowance(user: str) -> dict:
 		return result
 	if bought_left(user) > 0:
 		return {"ok": True, "plan": result.get("plan"), "bought": True}
-	if not on_sale():
-		return result
 	words = _("You have used your AI minutes. You can add more right here and carry on where we stopped: 10, 20 or 30 minutes, or an amount of your own.")
 	return {**result, "message": f"{result.get('message') or ''} {words}".strip()}
 
@@ -143,7 +141,7 @@ def turn_done(user: str) -> None:
 
 # ---- buying ----
 @frappe.whitelist(methods=["POST"])
-def buy(minutes: int = 10) -> dict:
+def buy(minutes: int = 10, persona: str = "") -> dict:
 	"""The person chooses minutes to add: asks PaymentHQ for the payment and answers where to pay (a page of this site, shown over the chat). The minutes are added when PaymentHQ says it was paid."""
 	from raftor_servicehq import payments_port
 	from raftor_servicehq.sessions import _on_this_site
@@ -154,10 +152,10 @@ def buy(minutes: int = 10) -> dict:
 	minutes = cint(minutes)
 	if not (CUSTOM_MIN <= minutes <= CUSTOM_MAX):
 		frappe.throw(_("Choose between {0} and {1} minutes.").format(CUSTOM_MIN, CUSTOM_MAX))
-	if not on_sale():
-		frappe.throw(_("AI minutes cannot be bought yet."))
+	if not on_sale(persona):
+		frappe.throw(_("AI minutes cannot be bought with this guide."))
 	key = f"{KEY}:{user}:{minutes}:{frappe.db.count(CREDIT, {'user': user})}"  # asking again for the same thing gives the same payment, until it is paid
-	made = payments_port.request(user, flt(per_minute() * minutes, 2), "User", user, _("{0} minutes of talk with the AI astrologers").format(minutes), key=key, return_to="/")
+	made = payments_port.request(user, flt(per_minute(persona) * minutes, 2), "User", user, _("{0} minutes of talk with the AI astrologers").format(minutes), key=key, return_to="/")
 	return {"ok": bool(made.get("url")), "url": _on_this_site(made.get("url")), "payment": made["payment"], "minutes": minutes}
 
 
@@ -178,14 +176,3 @@ def give(payment: str, user: str, minutes: float) -> bool:
 		return False
 	frappe.get_doc({"doctype": CREDIT, "user": user, "minutes_bought": minutes, "minutes_left": minutes, "bought_on": now_datetime(), "payment": payment}).insert(ignore_permissions=True)
 	return True
-
-
-def ensure_item() -> str | None:
-	"""The Item that holds the price of a minute, made as a draft (disabled, no price) when missing: the business team sets its price (its Item Price in Standard Selling, for ONE minute) and leaves it disabled: it is
-	not sold through the shop, the minutes are bought in the chat. Safe to repeat."""
-	if frappe.db.exists("Item", ITEM):
-		return None
-	frappe.get_doc({"doctype": "Item", "item_code": ITEM, "item_name": "AI minutes", "item_group": "Services", "stock_uom": "Nos", "is_stock_item": 0, "disabled": 1,
-					"description": "The price of one minute of talk with the AI astrologers and guides. Bought in the chat as 10, 20, 30 or an amount of the person's own."}).insert(ignore_permissions=True).add_comment(
-		"Info", _("Set its price (an Item Price in Standard Selling) for ONE minute. Leave the Item disabled: it only holds the price, AI minutes are bought in the chat, never in the shop."))
-	return ITEM

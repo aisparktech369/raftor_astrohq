@@ -12,3 +12,4 @@ raftor_astrohq.patches.lite_plan_starts_at_seek_guidance
 raftor_astrohq.patches.refresh_tarot_voices
 raftor_astrohq.patches.add_stock_mandir_pictures
 raftor_astrohq.patches.move_astrologer_skills
+raftor_astrohq.patches.set_ai_minute_rates
