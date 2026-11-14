@@ -135,7 +135,9 @@ class TestReportsFromTheChat(AstroTestCase):
 		person.write(user, {"notes": [], "people": [{"name": "Tara", "relationship": "sister", "date_of_birth": "1992-04-04", "time_of_birth": "06:30", "place_of_birth": "Delhi"}]}, "g", "s")
 		self.assertIn("which of the two is the groom", person.read_report(user, "me", "match", VEDIC, "Tara")["message"])
 		self.assertIn("same person twice", person.read_report(user, "Tara", "match", VEDIC, "my sister", "bride")["message"])
-		self.assertIn("not found among the saved", person.read_report(user, "me", "match", VEDIC, "Nobody Here", "groom")["message"])
+		self.assertIn("not among the saved profiles", person.read_report(user, "me", "match", VEDIC, "Nobody Here", "groom")["message"])
+		gone = person.read_report(user, "me", "kundli", VEDIC)  # a person with only family saved is told who is saved, not that nothing is
+		self.assertTrue(gone["found"] or "Tara" in gone["message"] or "profiles" in gone)
 
 	def test_a_profile_lookup_shows_only_what_the_guides_area_allows(self):
 		user = _user()

@@ -343,7 +343,7 @@ def _read_match(user: str, who: str, partner: str, who_is: str) -> dict:
 	rows = _rows(user)
 	first, second = _find(rows, who), _find(rows, partner)
 	if first is None or second is None:
-		return {"found": False, "message": "One of the two profiles was not found among the saved ones. Ask for the name, or open the profiles first. A new person's date, time and place of birth can be given and saved first."}
+		return {**_no_profile(rows), "message": _no_profile(rows)["message"].replace("No profile matches that.", "One of the two people is not among the saved profiles.") if rows else "No profile is saved yet. Ask for each person's date, time and place of birth."}
 	if first.name == second.name:
 		return {"found": False, "message": "That is the same person twice. Ask who the other person is."}
 	for row in (first, second):
@@ -372,6 +372,13 @@ def _read_match(user: str, who: str, partner: str, who_is: str) -> dict:
 					   "never as a verdict on the people or the marriage. Never say a match is good or bad for them or advise to marry or not; if they want a decision, point them to a live astrologer."}
 
 
+def _no_profile(rows: list) -> dict:
+	"""No profile matched: say who is saved, so the guide offers those names (a person may have saved only their family, no profile of their own) instead of saying nothing is saved."""
+	have = [{"name": _label(r), "relationship": r.relationship} for r in rows]
+	return {"found": False, "profiles": have, "message": ("No profile matches that. These are saved: " + ", ".join(f"{p['name']} ({p['relationship']})" for p in have) + ". Offer these names and ask whose chart they mean; if they mean themself, ask for their own date, time and place of birth.")
+			if have else "No profile is saved yet. Ask for the date, time and place of birth of the person whose chart they want."}
+
+
 def read_report(user: str, who: str, kind: str, guide_user: str, partner: str = "", who_is: str = "") -> dict:
 	"""What a guide may say from one person's report, in its own area only, as facts to put in its own words in the chat (no link). A report that does not exist yet is made now and kept as available among the
 	person's reports (a free report, bright on their page); when it cannot be made yet, what is missing is named, so the guide can ask for it."""
@@ -385,9 +392,10 @@ def read_report(user: str, who: str, kind: str, guide_user: str, partner: str = 
 		return {"found": False, "message": f"That report is outside your area: {AREA_WORDS[kind]}. Say so kindly and, if useful, point the person to them."}
 	if kind == "match":
 		return _read_match(user, who, partner, who_is)
-	row = _find(_rows(user), who)
+	rows = _rows(user)
+	row = _find(rows, who)
 	if row is None:
-		return {"found": False, "message": "No profile matches that. Ask for the name, or open the profiles first."}
+		return _no_profile(rows)
 	if not row.date_of_birth:
 		return {"found": False, "message": f"{row.full_name}'s date of birth is not saved yet. Ask for it first."}
 	item = frappe.db.get_value("Item", {"custom_report_kind": REPORTS[kind][0], "custom_vertical": "astrohq"})
