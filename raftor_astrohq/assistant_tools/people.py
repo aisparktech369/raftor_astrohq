@@ -70,3 +70,38 @@ class GetReport(BaseTool):
 		if not user or user == "Guest":
 			return {"found": False, "message": "Nobody is signed in, so there is no report to read."}
 		return person.read_report(user, str(arguments.get("who") or ""), str(arguments.get("kind") or ""), frappe.session.user, str(arguments.get("partner") or ""), str(arguments.get("who_is") or ""))
+
+
+class AddProfile(BaseTool):
+	def __init__(self):
+		super().__init__()
+		self.name = "add_profile"
+		self.description = (
+			"Save one person's birth details among the signed-in person's own profiles, so their chart can be opened: themself ('me') or someone in their family. Use it only after the person has said yes to saving them (ask: 'May I save "
+			"these in your profiles so I can open the chart?'). Give only what was said: a name, how they are related, the date of birth (day, month, year), the time (24-hour) and the place. A profile that is already there is "
+			"completed where it has gaps; call it again when a missing detail arrives. It says what is still missing: ask for exactly that, then open the chart. Never guess a detail."
+		)
+		self.requires_permission = None
+		self.annotations = {"module": "astrohq.people", "tags": ["write"], "tier": "T2"}
+		self.inputSchema = {
+			"type": "object",
+			"properties": {
+				"who": {"type": "string", "description": "The person's name, or 'me' for the signed-in person."},
+				"relationship": {"type": "string", "description": "How they are related to the signed-in person: spouse, child, parent, sibling, friend, other. Leave out for 'me'."},
+				"date_of_birth": {"type": "string", "description": "YYYY-MM-DD."},
+				"time_of_birth": {"type": "string", "description": "24-hour HH:MM, as said (for 7:30 pm, 19:30)."},
+				"time_unknown": {"type": "boolean", "description": "True when they say the time of birth is not known."},
+				"place_of_birth": {"type": "string", "description": "Town and state or country, as said."},
+				"user": {"type": "string", "description": "Set by the system. Leave it out."},
+			},
+			"required": ["who"],
+		}
+
+	def execute(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+		from raftor_astrohq import person
+
+		user = (arguments.get("user") or "").strip()
+		if not user or user == "Guest":
+			return {"saved": False, "message": "Nobody is signed in, so nothing can be saved."}
+		return person.save_profile(user, str(arguments.get("who") or ""), str(arguments.get("relationship") or ""), str(arguments.get("date_of_birth") or ""), str(arguments.get("time_of_birth") or ""),
+								   str(arguments.get("place_of_birth") or ""), bool(arguments.get("time_unknown")))

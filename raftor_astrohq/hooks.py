@@ -310,6 +310,7 @@ assistant_tools = [
 	"raftor_astrohq.assistant_tools.services.GetService",
 	"raftor_astrohq.assistant_tools.numerology.CalculateNumerology",
 	"raftor_astrohq.assistant_tools.people.GetFamilyMember",
+	"raftor_astrohq.assistant_tools.people.AddProfile",
 	"raftor_astrohq.assistant_tools.people.GetReport",
 	"raftor_astrohq.assistant_tools.tarot.StartTarotSession",  # a tarot session in a chat, one card at a time (tarot_session.py)
 	"raftor_astrohq.assistant_tools.tarot.DealTarotCard",

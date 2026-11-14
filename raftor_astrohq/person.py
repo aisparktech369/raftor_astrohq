@@ -372,6 +372,72 @@ def _read_match(user: str, who: str, partner: str, who_is: str) -> dict:
 					   "never as a verdict on the people or the marriage. Never say a match is good or bad for them or advise to marry or not; if they want a decision, point them to a live astrologer."}
 
 
+def save_profile(user: str, who: str, relationship: str = "", date_of_birth: str = "", time_of_birth: str = "", place_of_birth: str = "", time_unknown: bool = False) -> dict:
+	"""Saves (or completes) one person's birth details among the signed-in person's own profiles, from what they said in the chat after agreeing to it: themself, or someone in their family. A profile that is already there
+	is completed where it has gaps; details the person entered on the website are never changed from here. Says what is still missing, so the guide asks for exactly that. `user` is the signed-in person, set by the server."""
+	who = str(who or "").strip()
+	given = str(relationship or "").strip()
+	is_self = who.lower() in ("", "me", "myself", "self", "you") or given.lower() in ("me", "myself", "self", "you")
+	rows = _rows(user)
+	if not is_self and not any(r.relationship == profiles.SELF for r in rows) and who and (frappe.db.get_value("User", user, "first_name") or "").strip().lower() == who.split()[0].lower() and not _find(rows, who):
+		is_self = True  # their own name, and no profile of their own yet: it is theirs
+	row = next((r for r in rows if r.relationship == profiles.SELF), None) if is_self else _find(rows, f"{who} ({given})" if given else who)
+	values = {}
+	if date_of_birth:
+		try:
+			born = frappe.utils.getdate(date_of_birth)
+		except Exception:
+			return {"saved": False, "message": "That date of birth is not a date. Ask for it again as day, month and year."}
+		if born > frappe.utils.getdate(today()):
+			return {"saved": False, "message": "A date of birth cannot be in the future. Ask for it again."}
+		values["date_of_birth"] = str(born)
+	if time_unknown and not time_of_birth:
+		values["time_unknown"] = 1
+	if time_of_birth:
+		match = profiles.TIME.match(str(time_of_birth).strip())
+		if not match or int(match.group(1)) > 23 or int(match.group(2)) > 59:
+			return {"saved": False, "message": "That is not a 24-hour time such as 06:42. Ask for the time of birth again."}
+		values["time_of_birth"], values["time_unknown"] = f"{int(match.group(1)):02d}:{match.group(2)}", 0
+	if place_of_birth and len(str(place_of_birth).strip()) >= 2:
+		values["place_of_birth"] = str(place_of_birth).strip()
+	doc = frappe.get_doc("User", user)
+	if row is None:
+		if is_self:
+			name = who if who.lower() not in ("", "me", "myself", "self", "you") else (frappe.db.get_value("User", user, "full_name") or "")
+			if len(name.strip()) < 2:
+				return {"saved": False, "message": "Ask for their full name first."}
+			doc.append(profiles.TABLE, {"relationship": profiles.SELF, "full_name": name.strip(), "from_chat": 1, "permission_given": 1, **values})
+		else:
+			if len(who.strip()) < 2 or KINDRED.get(who.lower()):
+				return {"saved": False, "message": "Ask for the person's name first (not only 'my daughter')."}
+			added = _add_member(user, f"{who} ({given})" if given else who, {"name": who, "relationship": given, **values})
+			if added is None:
+				return {"saved": False, "message": "The person's plan holds no more people. Say so kindly: they can remove someone on the website, or choose a bigger plan. Their chart cannot be opened until then."}
+			doc = frappe.get_doc("User", user)
+	else:
+		target = next(r for r in doc.get(profiles.TABLE) if r.name == row.name)
+		if not target.get("from_chat"):  # entered by the account holder on the website: not changed from the chat
+			gaps = {k: v for k, v in values.items() if not target.get(k)}
+			if len(gaps) != len(values):
+				return {"saved": False, "message": "Those details are already saved for this person on the website, and differ from what was said. Do not change them: say so, and tell them they can edit the profile on the website."}
+			values = gaps
+		for key, value in values.items():
+			target.set(key, value)
+	if row is not None or is_self:
+		doc.flags.ignore_permissions = True
+		doc.save(ignore_permissions=True)
+	fresh = _rows(user)
+	saved = next((r for r in fresh if r.relationship == profiles.SELF), None) if is_self else _find(fresh, f"{who} ({given})" if given else who)
+	if saved is None:
+		return {"saved": False, "message": "The profile could not be saved just now. Say so and offer to try again."}
+	missing = [label for label, value in (("date of birth", saved.date_of_birth), ("time of birth", saved.time_of_birth and not saved.time_unknown), ("place of birth", saved.place_of_birth)) if not value]
+	out = {"saved": True, "name": saved.full_name, "relationship": saved.relationship, "missing": missing}
+	out["message"] = ("Saved " + saved.full_name + ". " + ("Still needed for a chart: " + ", ".join(missing) + ". Ask for exactly that." if missing else "Everything for a chart is there: open the chart now."))
+	if saved.time_unknown:
+		out["message"] += " Their time of birth is not known, so a chart cannot be drawn: say so kindly."
+	return out
+
+
 def _no_profile(rows: list) -> dict:
 	"""No profile matched: say who is saved, so the guide offers those names (a person may have saved only their family, no profile of their own) instead of saying nothing is saved."""
 	have = [{"name": _label(r), "relationship": r.relationship} for r in rows]

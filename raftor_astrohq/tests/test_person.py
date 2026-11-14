@@ -120,6 +120,42 @@ class TestReportsFromTheChat(AstroTestCase):
 		self.assertNotIn("outside your area", person.read_report(user, "me", "match", VEDIC, "Tara")["message"])
 		self.assertNotIn("outside your area", person.read_report(user, "me", "match", KP, "Tara")["message"])
 
+	def test_a_guide_can_save_a_missing_person_and_complete_them_as_details_arrive(self):
+		user = _user()
+		first = person.save_profile(user, "Rahul", "spouse", "1985-02-03")
+		self.assertTrue(first["saved"])
+		self.assertEqual(first["relationship"], "Spouse")
+		self.assertEqual(first["missing"], ["time of birth", "place of birth"])
+		again = person.save_profile(user, "Rahul", "spouse", time_of_birth="7:30", place_of_birth="Pune, Maharashtra")
+		self.assertEqual(again["missing"], [])
+		self.assertEqual(len([r for r in _rows(user) if r.full_name == "Rahul"]), 1)  # completed, not duplicated
+		self.assertEqual(person._find(person._rows(user), "Rahul").time_of_birth, "07:30")
+
+	def test_a_person_with_only_family_saved_can_save_their_own_profile(self):
+		user = _user()
+		frappe.db.delete("Astro Birth Profile", {"parent": user, "relationship": "You"})
+		self.assertIsNone(person._find(person._rows(user), "me"))
+		done = person.save_profile(user, "me", "", "1990-05-12", "10:30", "Mumbai, Maharashtra")
+		self.assertTrue(done["saved"] and done["missing"] == [])
+		self.assertEqual(person._find(person._rows(user), "me").relationship, "You")
+
+	def test_a_bad_date_or_time_is_not_saved_and_a_website_entry_is_not_changed_from_the_chat(self):
+		user = _user()
+		self.assertFalse(person.save_profile(user, "Rahul", "spouse", "not a date")["saved"])
+		self.assertFalse(person.save_profile(user, "Rahul", "spouse", "2999-01-01")["saved"])
+		self.assertFalse(person.save_profile(user, "Rahul", "spouse", "1985-02-03", "25:99")["saved"])
+		mine = person._find(person._rows(user), "me")
+		refused = person.save_profile(user, "me", "", mine.date_of_birth.strftime("%Y-%m-%d"), mine.time_of_birth, "Somewhere Else")
+		self.assertFalse(refused["saved"])
+		self.assertIn("website", refused["message"])
+		self.assertNotEqual(person._find(person._rows(user), "me").place_of_birth, "Somewhere Else")
+
+	def test_the_save_tool_needs_a_signed_in_person(self):
+		from raftor_astrohq.assistant_tools.people import AddProfile
+
+		self.assertFalse(AddProfile().execute({"who": "Rahul", "user": "Guest"})["saved"])
+		self.assertFalse(AddProfile().execute({"who": "Rahul"})["saved"])
+
 	def test_only_the_astrologer_guides_get_the_chart_card_when_they_open_a_person(self):
 		from unittest.mock import patch
 

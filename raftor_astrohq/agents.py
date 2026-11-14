@@ -33,9 +33,9 @@ TAROT = {"role": "Tarot Guide Agent", "user": "tarot-guide-agent@agents.astrohq.
 # The two astrologer guides (a chart read from the engine's answer for a saved profile: the Vedic kundli, or the chart the Krishnamurti way, and the ashtakoota match of two saved people). They explain what the chart shows and
 # never predict; there is no Academy knowledge for them yet, so they speak from the report only. Their tools: the person's own profiles, the reports of their own area, the services (to hand over to a live astrologer) and the Academy search.
 VEDIC = {"role": "Vedic Astrologer Guide Agent", "user": "vedic-astrologer-guide-agent@agents.astrohq.in", "blueprint": "vedic_astrologer", "title": "Vedic astrologer guide (AI)",
-		 "tools": ["search_knowledge", "get_family_member", "get_report", "find_services", "get_service"], "reads": {}}
+		 "tools": ["search_knowledge", "get_family_member", "get_report", "add_profile", "find_services", "get_service"], "reads": {}}
 KP = {"role": "KP Astrologer Guide Agent", "user": "kp-astrologer-guide-agent@agents.astrohq.in", "blueprint": "kp_astrologer", "title": "KP astrologer guide (AI)",
-	  "tools": ["search_knowledge", "get_family_member", "get_report", "find_services", "get_service"], "reads": {}}
+	  "tools": ["search_knowledge", "get_family_member", "get_report", "add_profile", "find_services", "get_service"], "reads": {}}
 # A guide's record is made switched ON, except one whose keys to the tool server are not made yet: its record is made OFF, and staff switch it on (Blueprint Reference, Desk) when they are.
 SWITCHED_OFF_AT_FIRST = {"tarot", "vedic_astrologer", "kp_astrologer"}
 AGENTS = {BLUEPRINT: {"role": ROLE, "user": USER, "blueprint": BLUEPRINT, "title": "Pandit ji (AI guide)", "tools": TOOLS, "reads": READS}, NUMEROLOGIST["blueprint"]: NUMEROLOGIST, DREAM_GUIDE["blueprint"]: DREAM_GUIDE, TAROT["blueprint"]: TAROT,
