@@ -33,7 +33,9 @@ ACADEMY_INTRO = "Explained from the traditional texts, with sources."
 LEARN_TAB = "Learn about this bead"
 ACADEMY_LINK = "/blog"  # Frappe's own address for the blog; /academy redirects to it (websitehq hooks)
 META_LENGTH = 140  # the search description field holds this much; the full intro stays in blog_intro
-SERIES_COVERS = {"pooja": "/assets/raftor_astrohq/images/academy-pooja.png"}
+SERIES_COVERS = {"pooja": "/assets/raftor_astrohq/images/academy-pooja.png", "dreams": "/assets/raftor_astrohq/images/academy-dreams.jpg", "numerology": "/assets/raftor_astrohq/images/academy-numerology.jpg"}
+# Pictures from Wikimedia Commons, public domain: dreams = Van Gogh, The Starry Night; numerology = Raphael, The School of Athens (detail: Pythagoras with his tablet of numbers)
+OWN_COVER = ("dreams", "numerology")  # these series are about no product: their articles always take the series picture, never a shop item's
 GROUP_COVERS = {  # a pooja article takes the picture of its shelf (drawn for the site, kept in this app)
 	"Kamna purti": "/assets/raftor_astrohq/images/academy-lotus.png", "Samasya samadhan": "/assets/raftor_astrohq/images/academy-kalash.png",
 	"Graha shanti, the planets": "/assets/raftor_astrohq/images/academy-planets.png", "Graha shanti, doshas and yogas": "/assets/raftor_astrohq/images/academy-planets.png",
@@ -249,6 +251,10 @@ def _cover(item: dict, items: list[dict]) -> str:
 		from raftor_astrohq import tarot_deck
 
 		return tarot_deck.image(str(item["id"]).removeprefix(tarot_deck.CARD)) or tarot_deck.image("back") or ""  # none yet: blank, never another series' picture (a rudraksha bead on a tarot card)
+	if item["category"] in OWN_COVER:  # its own picture by title (academy_covers.py), else the series picture
+		from raftor_astrohq import academy_covers
+
+		return academy_covers.cover(item) or SERIES_COVERS[item["category"]]
 	same = [item] + [other for other in items if other["category"] == item["category"] and other is not item]
 	for article in same:
 		for code in (article.get("products") or "").split(","):
