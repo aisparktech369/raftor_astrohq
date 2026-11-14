@@ -14,12 +14,16 @@ UNLIMITED = 1000
 
 def allowance(user: str, guide: str = "") -> dict:
 	"""Whether the AI astrologers may answer this person now: {"ok": True} or {"ok": False, "message", "cards"}."""
-	return plans.check(user, AI_MINUTES)
+	from raftor_astrohq import ai_minutes
+
+	return ai_minutes.allowance(user)  # the plan's free minutes first, then the minutes the person bought
 
 
 def turn_done(user: str, guide: str = "") -> None:
 	"""An answer was given: the time since the person last talked counts against their plan, unless they had paused (plans.use_time)."""
-	plans.use_time(user, AI_MINUTES)
+	from raftor_astrohq import ai_minutes
+
+	ai_minutes.turn_done(user)
 
 
 def family_room(user: str) -> int:

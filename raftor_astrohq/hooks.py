@@ -327,3 +327,6 @@ agent_person = ["raftor_astrohq.person"]
 
 # Where a person lands after signing in when nothing else sends them (websitehq auth/session.py role_home): their dashboard.
 rfhq_default_home = ["raftor_astrohq.landing.default_home"]
+
+# AI minutes the person bought (ai_minutes.py): given when the order is paid, whatever the gateway.
+paymenthq_on_paid = {"User": ["raftor_astrohq.ai_minutes.payment_arrived"]}

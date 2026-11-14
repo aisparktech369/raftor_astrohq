@@ -1,0 +1,92 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-11-15 00:00:00.000000",
+ "description": "AI minutes a person bought (one row for each payment). They are used after the free minutes of the person's plan, oldest row first. Made when the payment arrives, never by hand.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "minutes_bought",
+  "minutes_left",
+  "col1",
+  "bought_on",
+  "last_used",
+  "order_section",
+  "payment"
+ ],
+ "fields": [
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "Account",
+   "options": "User",
+   "reqd": 1,
+   "in_list_view": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "minutes_bought",
+   "fieldtype": "Float",
+   "label": "Minutes Bought",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "minutes_left",
+   "fieldtype": "Float",
+   "label": "Minutes Left",
+   "reqd": 1,
+   "in_list_view": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "col1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bought_on",
+   "fieldtype": "Datetime",
+   "label": "Bought On",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "last_used",
+   "fieldtype": "Datetime",
+   "label": "Last Used",
+   "read_only": 1
+  },
+  {
+   "fieldname": "order_section",
+   "fieldtype": "Section Break",
+   "label": "Where it came from"
+  },
+  {
+   "fieldname": "payment",
+   "fieldtype": "Data",
+   "label": "Payment",
+   "read_only": 1,
+   "unique": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-15 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "AI Minute Credit",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "write": 1,
+   "role": "System Manager"
+  }
+ ],
+ "sort_field": "bought_on",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

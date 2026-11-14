@@ -91,6 +91,7 @@ def info(**args) -> dict:
 		"welcome": (_("Hi {0}, I'm {1}. ").format(name, w["who"]) if name else _("Hi, I'm {0}. ").format(w["who"])) + w["ask"],
 		"placeholder": w["placeholder"], "notice": w["notice"],
 		"talk": False,  # no talk mode: the guide is text only (owner, 2026-11-09)
+		"minutes": "raftor_astrohq.ai_minutes.my_status",  # the chat shows the minutes left and asks for more through this (the counter hides itself when nothing is counted for the person)
 	}
 
 

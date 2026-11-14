@@ -20,6 +20,12 @@ def after_install():
 	from raftor_astrohq import ai_guides
 
 	ai_guides.ensure()
+	from raftor_astrohq import ai_minutes
+
+	try:
+		ai_minutes.ensure_item()  # the draft Item AI minutes are sold as (the business team prices and switches it on)
+	except Exception:
+		frappe.log_error(frappe.get_traceback(), "AI minutes item")
 	install_plans()
 	sync_written_content()
 	switch_off_unconnected_indexing()
