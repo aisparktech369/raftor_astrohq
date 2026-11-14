@@ -57,7 +57,7 @@ class TestPersonas(AstroTestCase):
 	def test_a_guide_is_listed_as_an_ai_guide_and_kept_in_step_with_desk(self):
 		provider = frappe.db.get_value("Provider", "t-kavya", ["status", "ai_guide_page", "display_name"], as_dict=True)
 		self.assertEqual((provider.status, provider.ai_guide_page, provider.display_name), ("Live", "ask/guide?persona=t-kavya", "T Kavya"))
-		self.assertTrue(frappe.db.get_value("Provider", "t-kavya", "photo"))  # a guide made in Desk with no picture still has a lettered one
+		self.assertFalse(frappe.db.get_value("Provider", "t-kavya", "photo"))  # a guide with no picture has none stored: the site draws its initials
 		doc = frappe.get_doc("AI Guide Persona", "t-kavya")
 		doc.enabled = 0
 		doc.save(ignore_permissions=True)
@@ -66,7 +66,7 @@ class TestPersonas(AstroTestCase):
 	def test_a_voice_is_given_only_for_an_enabled_guide_of_that_area(self):
 		voice = person.persona_voice("t-kavya", "numerologist")
 		self.assertIn("You are T Kavya", voice)
-		self.assertIn("Write every reply in Hinglish", voice)
+		self.assertIn("Your own language is Hinglish", voice)
 		self.assertIn("takes precedence over any default language", voice)
 		self.assertIn("boundaries, rules and tools do not change", voice)
 		self.assertEqual(person.persona_voice("t-kavya", "pandit_ji"), "")  # the name belongs to another area

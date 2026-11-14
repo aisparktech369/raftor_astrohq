@@ -9,3 +9,4 @@ raftor_astrohq.patches.set_tarot_skill_area
 raftor_astrohq.patches.set_tarot_guides_area
 raftor_astrohq.patches.fix_guide_slugs
 raftor_astrohq.patches.lite_plan_starts_at_seek_guidance
+raftor_astrohq.patches.refresh_tarot_voices
