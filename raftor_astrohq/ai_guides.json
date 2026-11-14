@@ -25,5 +25,23 @@
   "photo": "guide-mystic-dreamer.svg",
   "languages": "English",
   "bio": "An AI guide that helps you explore what a dream may mean, from your own story and the traditions that explain dreams. It does not predict or promise anything."
+ },
+ {
+  "slug": "vedic-astrologer-guide",
+  "name": "Vedic Astrologer Guide",
+  "persona": "Astrologer",
+  "page": "ask/vedic-astrologer",
+  "photo": "guide-vedic-astrologer.svg",
+  "languages": "English",
+  "bio": "An AI guide that explains your birth chart (kundli), or a family member's, and how two charts match. It reads the chart from your saved profiles. It does not predict or promise anything."
+ },
+ {
+  "slug": "kp-astrologer-guide",
+  "name": "KP Astrologer Guide",
+  "persona": "KP astrologer",
+  "page": "ask/kp-astrologer",
+  "photo": "guide-kp-astrologer.svg",
+  "languages": "English",
+  "bio": "An AI guide that explains your chart the Krishnamurti way, with its cusps, star lords and sub lords, and how two charts match. It reads the chart from your saved profiles. It does not predict or promise anything."
  }
 ]
