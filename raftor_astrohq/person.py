@@ -252,11 +252,15 @@ def member(user: str, who: str, guide_user: str = "") -> dict:
 
 	areas = agents.report_areas(guide_user) if guide_user else ["kundli", "numerology"]  # a guide reads only the reports of its own area
 	try:
-		chart = chart_summary(user, row) if "kundli" in areas else None
+		chart = chart_summary(user, row) if {"kundli", "kp"} & set(areas) else None
 	except Exception:
 		chart = None
 	if chart:
 		out["chart"] = chart
+		if agents.blueprint_of_user(guide_user) in ASTROLOGER_GUIDES:  # the astrologer guides show the chart itself whenever they open a person (once in a chat: the chat does not repeat a card)
+			from raftor_astrohq import chart_card
+
+			out["chart_cards"] = [chart_card.card(row.name, row.full_name)]
 	if row.date_of_birth and "numerology" in areas:
 		try:
 			from raftor_astrohq import astrology
@@ -301,6 +305,7 @@ REPORTS = {"kundli": ("kundli", "Kundli report"), "numerology": ("numerology", "
 AREA_WORDS = {"kundli": "a kundli is read by Pandit ji and the Vedic astrologer guide", "numerology": "numerology is read by the numerology guide and Pandit ji",
 			  "kp": "a KP chart is read by the KP astrologer guide", "match": "matching two charts is read by the Vedic and KP astrologer guides"}
 GROOM, BRIDE = "groom", "bride"
+ASTROLOGER_GUIDES = ("vedic_astrologer", "kp_astrologer")
 
 
 def _planets(chart: dict) -> list[str]:

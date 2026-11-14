@@ -120,6 +120,16 @@ class TestReportsFromTheChat(AstroTestCase):
 		self.assertNotIn("outside your area", person.read_report(user, "me", "match", VEDIC, "Tara")["message"])
 		self.assertNotIn("outside your area", person.read_report(user, "me", "match", KP, "Tara")["message"])
 
+	def test_only_the_astrologer_guides_get_the_chart_card_when_they_open_a_person(self):
+		from unittest.mock import patch
+
+		user = _user()
+		with patch("raftor_astrohq.person.chart_summary", return_value={"ascendant": "Libra"}):
+			self.assertEqual(person.member(user, "me", VEDIC)["chart_cards"][0]["kind"], "chart")
+			self.assertEqual(person.member(user, "me", KP)["chart_cards"][0]["kind"], "chart")
+			self.assertNotIn("chart_cards", person.member(user, "me", PANDIT))
+			self.assertEqual(person.member(user, "me", PANDIT)["chart"], {"ascendant": "Libra"})
+
 	def test_a_match_needs_to_know_the_groom_and_two_different_saved_people(self):
 		user = _user()
 		person.write(user, {"notes": [], "people": [{"name": "Tara", "relationship": "sister", "date_of_birth": "1992-04-04", "time_of_birth": "06:30", "place_of_birth": "Delhi"}]}, "g", "s")

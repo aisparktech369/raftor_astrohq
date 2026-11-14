@@ -27,7 +27,7 @@ def svg_for(user: str, row, chart: str = "d1") -> str | None:
 	code, words = KINDS.get(chart, KINDS["d1"])
 	divisional = data["divisional_charts"][code]["chart"]
 	lagna = rp.sign_index(data["lagna"]["sign"]) if code == "D1" else data["divisional_charts"]["D9"]["ascendant_house"]  # the sign of house 1, as the kundli report draws it
-	return rp.diamond_chart_svg(divisional, lagna, f"{row.full_name}: {words}", look=rp.site_look())
+	return rp.diamond_chart_svg(divisional, lagna, f"{row.full_name}: {words}", font=10, look=rp.site_look())  # a size smaller than the report's: a house with three planets ("Ju(R) Ra") fits in the chat
 
 
 @frappe.whitelist()
