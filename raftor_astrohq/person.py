@@ -297,8 +297,10 @@ def chart_summary(user: str, row) -> dict | None:
 	return out
 
 
-REPORTS = {"kundli": ("kundli", "Kundli report"), "numerology": ("numerology", "Numerology report")}
-AREA_WORDS = {"kundli": "a kundli is read by Pandit ji and the astrologers", "numerology": "numerology is read by the numerology guide and Pandit ji"}
+REPORTS = {"kundli": ("kundli", "Kundli report"), "numerology": ("numerology", "Numerology report"), "kp": ("kp", "KP chart report"), "match": ("match", "Match making report")}
+AREA_WORDS = {"kundli": "a kundli is read by Pandit ji and the Vedic astrologer guide", "numerology": "numerology is read by the numerology guide and Pandit ji",
+			  "kp": "a KP chart is read by the KP astrologer guide", "match": "matching two charts is read by the Vedic and KP astrologer guides"}
+GROOM, BRIDE = "groom", "bride"
 
 
 def _planets(chart: dict) -> list[str]:
@@ -315,7 +317,57 @@ def _numerology_summary(row) -> dict:
 	return {**_part(reading, "birth"), **_part(reading, "name")}
 
 
-def read_report(user: str, who: str, kind: str, guide_user: str) -> dict:
+def _kp_summary(user: str, row) -> dict:
+	"""A person's chart the KP way, as the engine reads it: the ruling planets at birth, each house cusp with its sign, star and sub lord, and each planet's house with its sign, star and sub lord, with the dasha running now."""
+	data = answers.get(user, report_view.profile_numbers(row), "KP_SYSTEM")
+	rules = data.get("ruling_planets_at_birth") or {}
+	out = {"ruling_planets": {key.replace("_", " "): value for key, value in rules.items()},
+		   "cusps": [f"House {h['HouseNr']}: sign lord {h['RasiLord']}, star lord {h['NakshatraLord']}, sub lord {h['SubLord']}" for h in data.get("houses") or []],
+		   "planets": [f"{p['Object']}: house {p['HouseNr']}, sign lord {p['RasiLord']}, star lord {p['NakshatraLord']}, sub lord {p['SubLord']}" for p in data.get("planets") or []]}
+	headline = chart_summary(user, row) or {}
+	return {**out, **{key: headline[key] for key in ("ascendant", "moon_sign", "running_mahadasha", "running_antardasha") if key in headline}}
+
+
+def _read_match(user: str, who: str, partner: str, who_is: str) -> dict:
+	"""The ashtakoota match of two of the person's saved profiles (the same engine call and wording as the site's match making report), as facts for the guide to say in its own words."""
+	from raftor_astrohq import astrology, reports
+
+	who_is = str(who_is or "").strip().lower()
+	if who_is not in (GROOM, BRIDE):
+		return {"found": False, "message": "Matching is worked out for a groom and a bride. Ask which of the two is the groom and which the bride, then call again with who_is set to groom or bride for the first person."}
+	rows = _rows(user)
+	first, second = _find(rows, who), _find(rows, partner)
+	if first is None or second is None:
+		return {"found": False, "message": "One of the two profiles was not found among the saved ones. Ask for the name, or open the profiles first. A new person's date, time and place of birth can be given and saved first."}
+	if first.name == second.name:
+		return {"found": False, "message": "That is the same person twice. Ask who the other person is."}
+	for row in (first, second):
+		missing = [label for label, value in (("date of birth", row.date_of_birth), ("time of birth", row.time_of_birth and not row.time_unknown), ("place of birth", row.place_of_birth)) if not value]
+		if missing:
+			return {"found": False, "message": f"Matching needs {row.full_name}'s {' and '.join(missing)}. Ask for it."}
+	boy, girl = (first, second) if who_is == GROOM else (second, first)
+	try:
+		boy_numbers, girl_numbers = report_view.profile_numbers(boy, "Male"), report_view.profile_numbers(girl, "Female")
+		if not boy_numbers or not girl_numbers:
+			return {"found": False, "message": "The time of birth is needed for both. Ask for it."}
+		match = astrology.chart(boy_numbers, "MATCH_CALC", partner=girl_numbers)
+	except Exception:
+		frappe.log_error(title="match summary")
+		return {"found": False, "message": "The match could not be worked out just now. Say so and offer to try again."}
+	score = match.get("compatibility") or {}
+	doshas = match.get("doshas") or {}
+	total = float(score.get("total_score") or 0)
+	from raftor_astrohq import chart_card
+
+	return {"found": True, "report": "match", "groom": boy.full_name, "bride": girl.full_name, "chart_cards": [chart_card.card(boy.name, boy.full_name), chart_card.card(girl.name, girl.full_name)],
+			"summary": {"total": f"{total:g} out of {int(score.get('max_score') or 36)}", "how_it_is_read": reports._verdict(total),
+						"kootas": [f"{name}: {float(score.get(key) or 0):g} out of {top} ({looks_at})" for name, looks_at, key, top in reports.KOOTAS],
+						"manglik": {"groom": bool((doshas.get("person1") or {}).get("manglik")), "bride": bool((doshas.get("person2") or {}).get("manglik"))}},
+			"message": f"This is the ashtakoota match of {boy.full_name} (groom) and {girl.full_name} (bride). Say the total and what range it is usually read as, then the one or two kootas that scored lowest and highest, in your own words and as what the tradition reads, "
+					   "never as a verdict on the people or the marriage. Never say a match is good or bad for them or advise to marry or not; if they want a decision, point them to a live astrologer."}
+
+
+def read_report(user: str, who: str, kind: str, guide_user: str, partner: str = "", who_is: str = "") -> dict:
 	"""What a guide may say from one person's report, in its own area only, as facts to put in its own words in the chat (no link). A report that does not exist yet is made now and kept as available among the
 	person's reports (a free report, bright on their page); when it cannot be made yet, what is missing is named, so the guide can ask for it."""
 	from raftor_astrohq import agents
@@ -323,9 +375,11 @@ def read_report(user: str, who: str, kind: str, guide_user: str) -> dict:
 
 	kind = str(kind or "").strip().lower()
 	if kind not in REPORTS:
-		return {"found": False, "message": "Say which report: kundli or numerology."}
+		return {"found": False, "message": "Say which report: kundli, kp, match or numerology."}
 	if kind not in agents.report_areas(guide_user):
 		return {"found": False, "message": f"That report is outside your area: {AREA_WORDS[kind]}. Say so kindly and, if useful, point the person to them."}
+	if kind == "match":
+		return _read_match(user, who, partner, who_is)
 	row = _find(_rows(user), who)
 	if row is None:
 		return {"found": False, "message": "No profile matches that. Ask for the name, or open the profiles first."}
@@ -333,10 +387,10 @@ def read_report(user: str, who: str, kind: str, guide_user: str) -> dict:
 		return {"found": False, "message": f"{row.full_name}'s date of birth is not saved yet. Ask for it first."}
 	item = frappe.db.get_value("Item", {"custom_report_kind": REPORTS[kind][0], "custom_vertical": "astrohq"})
 	details = {"report_name": row.full_name, "birth_date": str(row.date_of_birth)}
-	if kind == "kundli":
+	if kind in ("kundli", "kp"):
 		missing = [label for label, value in (("time of birth", row.time_of_birth and not row.time_unknown), ("place of birth", row.place_of_birth)) if not value]
 		if missing:
-			return {"found": False, "message": f"A kundli needs {row.full_name}'s {' and '.join(missing)}. Ask for it; the report is made as soon as it is known, and kept under their reports."}
+			return {"found": False, "message": f"A {kind} chart needs {row.full_name}'s {' and '.join(missing)}. Ask for it; the report is made as soon as it is known, and kept under their reports."}
 		details.update({"whose": row.relationship, "birth_time": row.time_of_birth, "birth_place": row.place_of_birth})
 	made = False
 	if item and free_reports.on_sale(item):  # kept as available: the person's own free report, once, for these details
@@ -353,10 +407,16 @@ def read_report(user: str, who: str, kind: str, guide_user: str) -> dict:
 	try:
 		if kind == "numerology":
 			out["summary"] = _numerology_summary(row)
+		elif kind == "kp":
+			out["summary"] = _kp_summary(user, row)
 		else:
 			chart = chart_summary(user, row) or {}
 			by = answers.get(user, report_view.profile_numbers(row), "SUPER_BASIC")
 			out["summary"] = {**chart, "planets": _planets(by)}
+		if kind in ("kundli", "kp") and report_view.profile_numbers(row):
+			from raftor_astrohq import chart_card
+
+			out["chart_cards"] = [chart_card.card(row.name, row.full_name)]
 	except Exception:
 		frappe.log_error(title="report summary")
 		return {"found": False, "message": "The report could not be read just now. Say so and offer to try again."}

@@ -122,14 +122,14 @@ def chosen_profile(rows: list, profile: str | None):
 	return next((row for row in rows if row.name == profile), rows[0] if rows else None)
 
 
-def profile_numbers(row) -> dict | None:
+def profile_numbers(row, gender: str | None = None) -> dict | None:
 	"""The numbers the engine is asked with for a birth profile; none when its time of birth is not known (a chart needs the minute)."""
 	try:
 		born = datetime.datetime.combine(frappe.utils.getdate(row.date_of_birth), datetime.time.fromisoformat(str(row.time_of_birth or "")[:5]))
 	except ValueError:
 		return None
 	place = places.lookup(row.place_of_birth or "", born)
-	return astrology.birth_data(row, place["latitude"], place["longitude"], place["timezone_offset"])
+	return astrology.birth_data(row, place["latitude"], place["longitude"], place["timezone_offset"], gender)
 
 
 def booking_actions(booking: str) -> list[dict]:

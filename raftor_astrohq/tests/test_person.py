@@ -100,6 +100,7 @@ class TestPersonNotes(AstroTestCase):
 
 
 NUMEROLOGIST, PANDIT, DREAMER = "numerology-guide-agent@agents.astrohq.in", "pandit-ji-agent@agents.astrohq.in", "dream-guide-agent@agents.astrohq.in"
+VEDIC, KP = "vedic-astrologer-guide-agent@agents.astrohq.in", "kp-astrologer-guide-agent@agents.astrohq.in"
 
 
 class TestReportsFromTheChat(AstroTestCase):
@@ -110,6 +111,21 @@ class TestReportsFromTheChat(AstroTestCase):
 		self.assertIn("outside your area", person.read_report(user, "me", "numerology", "someone-else@example.com")["message"])
 		self.assertTrue(person.read_report(user, "me", "numerology", PANDIT)["found"])
 		self.assertEqual(frappe.db.count("Free Report", {"user": user}), 1)  # only the one that was in an area was made
+
+	def test_the_astrologer_guides_read_their_own_charts_and_match_but_not_each_others(self):
+		user = _user()
+		self.assertIn("outside your area", person.read_report(user, "me", "kp", VEDIC)["message"])
+		self.assertIn("outside your area", person.read_report(user, "me", "kundli", KP)["message"])
+		self.assertIn("outside your area", person.read_report(user, "me", "numerology", VEDIC)["message"])
+		self.assertNotIn("outside your area", person.read_report(user, "me", "match", VEDIC, "Tara")["message"])
+		self.assertNotIn("outside your area", person.read_report(user, "me", "match", KP, "Tara")["message"])
+
+	def test_a_match_needs_to_know_the_groom_and_two_different_saved_people(self):
+		user = _user()
+		person.write(user, {"notes": [], "people": [{"name": "Tara", "relationship": "sister", "date_of_birth": "1992-04-04", "time_of_birth": "06:30", "place_of_birth": "Delhi"}]}, "g", "s")
+		self.assertIn("which of the two is the groom", person.read_report(user, "me", "match", VEDIC, "Tara")["message"])
+		self.assertIn("same person twice", person.read_report(user, "Tara", "match", VEDIC, "my sister", "bride")["message"])
+		self.assertIn("not found among the saved", person.read_report(user, "me", "match", VEDIC, "Nobody Here", "groom")["message"])
 
 	def test_a_profile_lookup_shows_only_what_the_guides_area_allows(self):
 		user = _user()

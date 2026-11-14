@@ -33,6 +33,14 @@ def _words(blueprint: str | None = None) -> dict:
 		return {"title": _("Tarot guide"), "subtitle": _("AI guide · tarot"), "who": _("the tarot guide"), "placeholder": _("Tell me what is on your mind"), "route": "guide",
 				"resting": _("The tarot guide is resting. Please come back a little later."), "notice": _("AI guide. I read the cards as a way to reflect. I can't predict anything or advise on health, money or the law."),
 				"sign_in": _("Sign up or sign in to have a tarot reading with the tarot guide. It takes a minute."), "ask": _("What would you like to look at with the cards today?")}
+	if blueprint == agents.VEDIC["blueprint"]:
+		return {"title": _("Vedic astrologer guide"), "subtitle": _("AI guide · Vedic chart"), "who": _("the Vedic astrologer guide"), "placeholder": _("Ask about a chart"), "route": "vedic-astrologer",
+				"resting": _("The Vedic astrologer guide is resting. Please come back a little later."), "notice": _("AI guide. I explain what a chart shows. I can't predict anything or advise on health, money or marriage."),
+				"sign_in": _("Sign up or sign in to talk about a chart with the Vedic astrologer guide. It takes a minute."), "ask": _("Whose chart would you like to look at: yours, or someone you have saved?")}
+	if blueprint == agents.KP["blueprint"]:
+		return {"title": _("KP astrologer guide"), "subtitle": _("AI guide · KP chart"), "who": _("the KP astrologer guide"), "placeholder": _("Ask about a KP chart"), "route": "kp-astrologer",
+				"resting": _("The KP astrologer guide is resting. Please come back a little later."), "notice": _("AI guide. I explain what a KP chart shows. I can't predict anything or advise on health, money or marriage."),
+				"sign_in": _("Sign up or sign in to talk about a KP chart with the KP astrologer guide. It takes a minute."), "ask": _("Whose chart would you like to look at: yours, or someone you have saved?")}
 	return {"title": _("Pandit ji"), "subtitle": _("AI guide · Rudraksha, gemstones and poojas"), "who": _("Pandit ji"), "placeholder": _("Ask Pandit ji"), "route": "pandit-ji",
 			"resting": _("Pandit ji is resting. Please come back a little later."), "notice": _("AI guide. I explain from our Academy and can't predict or promise results."),
 			"sign_in": _("Sign up or sign in to ask Pandit ji, our AI guide to Rudraksha, gemstones and poojas. It takes a minute, and booking and buying need an account too."), "ask": _("What would you like to know?")}

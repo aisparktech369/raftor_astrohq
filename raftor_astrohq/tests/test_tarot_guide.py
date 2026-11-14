@@ -29,7 +29,7 @@ class TestTheTarotAgent(AstroTestCase):
 			self.assertIn(cls, registered, name)
 
 	def test_a_guide_whose_keys_are_not_made_yet_has_its_record_made_switched_off(self):
-		self.assertEqual(agents.SWITCHED_OFF_AT_FIRST, {"tarot"})  # the others are made on, as they always were
+		self.assertEqual(agents.SWITCHED_OFF_AT_FIRST, {"tarot", "vedic_astrologer", "kp_astrologer"})  # the others are made on, as they always were
 		if frappe.db.exists("Blueprint Reference", "tarot"):
 			self.assertTrue(frappe.db.exists("Blueprint Reference", {"name": "tarot", "agent_role": "Customer"}))
 

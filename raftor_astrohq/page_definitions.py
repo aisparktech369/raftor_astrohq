@@ -96,6 +96,22 @@ def dream_guide_page() -> dict:
 		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info", "static_args": '{"agent": "dream_guide"}'}}], "look": TIGHT}]}
 
 
+def vedic_astrologer_page() -> dict:
+	"""Ask the Vedic astrologer guide: a chat that opens a saved person's kundli and matches two saved people (agent_chat.py, the card's fixed argument says which agent)."""
+	return {"route": "ask/vedic-astrologer", "title": _("Ask the Vedic astrologer guide"), "meta_title": _("Ask the Vedic astrologer guide | AstroHQ"),
+		"meta_description": _("See your birth chart, or a family member's, explained, and match two charts. An AI guide that explains what a chart shows and predicts nothing."), "login_required": False, "sections": [
+		{"key": "head", "title": _("Ask the Vedic astrologer guide"), "subtitle": _("Your birth chart, or a family member's, explained; and how two charts match."), "look": TIGHT},
+		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info", "static_args": '{"agent": "vedic_astrologer"}'}}], "look": TIGHT}]}
+
+
+def kp_astrologer_page() -> dict:
+	"""Ask the KP astrologer guide: a chat that opens a saved person's chart the Krishnamurti way and matches two saved people (agent_chat.py, the card's fixed argument says which agent)."""
+	return {"route": "ask/kp-astrologer", "title": _("Ask the KP astrologer guide"), "meta_title": _("Ask the KP astrologer guide | AstroHQ"),
+		"meta_description": _("See your chart the KP way, with cusps, star and sub lords, and match two charts. An AI guide that explains what a chart shows and predicts nothing."), "login_required": False, "sections": [
+		{"key": "head", "title": _("Ask the KP astrologer guide"), "subtitle": _("Your chart the Krishnamurti way, with its cusps, star lords and sub lords; and how two charts match."), "look": TIGHT},
+		{"key": "chat", "cards": [{"type": "App Chat Card", "values": {"info": "raftor_astrohq.agent_chat.info", "static_args": '{"agent": "kp_astrologer"}'}}], "look": TIGHT}]}
+
+
 def guide_page() -> dict:
 	"""Talk to one of the AI guides of an area (?persona=kavya): one chat page for all of them (agent_chat.py reads the name from the address and the card tells the chat which guide it is)."""
 	return {"route": "ask/guide", "title": _("Talk to an AI guide"), "meta_title": _("Talk to an AI guide | AstroHQ"),
@@ -184,6 +200,8 @@ def definitions() -> list[dict]:
 		ask_page(),
 		numerologist_page(),
 		dream_guide_page(),
+		vedic_astrologer_page(),
+		kp_astrologer_page(),
 		guide_page(),
 		temple_page(),
 		tarot_page(),

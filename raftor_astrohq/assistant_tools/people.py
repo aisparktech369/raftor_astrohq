@@ -45,7 +45,7 @@ class GetReport(BaseTool):
 		super().__init__()
 		self.name = "get_report"
 		self.description = (
-			"Read one person's kundli or numerology report, in your own area only, to talk from it: for the signed-in person themself or someone in their saved profiles ('me', 'Tara', 'my daughter'). It gives you the "
+			"Read one person's kundli, KP, match making or numerology report, in your own area only, to talk from it: for the signed-in person themself or someone in their saved profiles ('me', 'Tara', 'my daughter'). It gives you the "
 			"summary to say in the chat in your own words; there is no link, and you do not read it all out. If the report does not exist yet it is made now and kept under the person's reports, free. "
 			"If a detail is missing it says which: ask for that one thing. A report outside your area is refused: say so kindly and point to who reads it."
 		)
@@ -55,7 +55,9 @@ class GetReport(BaseTool):
 			"type": "object",
 			"properties": {
 				"who": {"type": "string", "description": "The name or the relation, as the person said it: 'Tara', 'my daughter', 'me'."},
-				"kind": {"type": "string", "enum": ["kundli", "numerology"], "description": "Which report."},
+				"kind": {"type": "string", "enum": ["kundli", "kp", "match", "numerology"], "description": "Which report: kundli (the Vedic chart), kp (the chart the Krishnamurti way), match (the ashtakoota match of two saved people) or numerology."},
+				"partner": {"type": "string", "description": "For kind match only: the second person, as the person said it ('Rahul', 'my wife'). `who` is then the first person."},
+				"who_is": {"type": "string", "enum": ["groom", "bride"], "description": "For kind match only: whether the first person (`who`) is the groom or the bride. Ask if it was not said."},
 				"user": {"type": "string", "description": "Set by the system. Leave it out."},
 			},
 			"required": ["who", "kind"],
@@ -67,4 +69,4 @@ class GetReport(BaseTool):
 		user = (arguments.get("user") or "").strip()
 		if not user or user == "Guest":
 			return {"found": False, "message": "Nobody is signed in, so there is no report to read."}
-		return person.read_report(user, str(arguments.get("who") or ""), str(arguments.get("kind") or ""), frappe.session.user)
+		return person.read_report(user, str(arguments.get("who") or ""), str(arguments.get("kind") or ""), frappe.session.user, str(arguments.get("partner") or ""), str(arguments.get("who_is") or ""))
