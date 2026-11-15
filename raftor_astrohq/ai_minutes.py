@@ -61,7 +61,7 @@ def status(user: str) -> dict:
 		return {"limited": False}
 	bought = bought_left(user)
 	total = free + bought
-	return {"limited": True, "free": round(free, 1), "bought": round(bought, 1), "left": round(total, 1), "low": 0 < total <= LOW, "out": total <= 0}
+	return {"limited": True, "free": round(free, 1), "bought": round(bought, 1), "left": round(total, 1), "left_seconds": max(0, int(round(total * 60))), "low": 0 < total <= LOW, "out": total <= 0}
 
 
 def per_minute(persona: str = "") -> float:
@@ -88,7 +88,9 @@ def packs(persona: str = "") -> list[dict]:
 def words() -> dict:
 	"""Every word the counter shows (the chat holds none of its own)."""
 	return {"left": _("{0} min left"), "low": _("Only {0} min left. Add minutes to keep talking."), "out": _("You are out of minutes. Add some and carry on where we stopped."), "minutes": _("min"),
-			"other": _("Other"), "add": _("Add"), "custom": _("Minutes ({0}-{1})"), "trouble": _("AI minutes cannot be added just now. Please try again in a moment."), "price_each": _("{0} a minute"), "paying": _("Add AI minutes"), "close": _("Close"), "added": _("{0} minutes added. Carry on!")}
+			"other": _("Other"), "add": _("Add"), "custom": _("Minutes ({0}-{1})"), "trouble": _("AI minutes cannot be added just now. Please try again in a moment."), "price_each": _("{0} a minute"), "paying": _("Add AI minutes"), "close": _("Close"), "added": _("{0} minutes added. Carry on!"), "sheet_title": _("Add AI minutes"),
+			"sheet_low": _("Your time is almost up. Add minutes to keep talking: the clock waits until you are back."), "sheet_out": _("Your minutes are used up. Add some and we carry on where we stopped: the clock starts again when you are back."),
+			"not_now": _("Not now"), "continue": _("Minutes added. Let us carry on."), "clock": _("Time left")}
 
 
 @frappe.whitelist()
@@ -100,6 +102,23 @@ def my_status(persona: str = "") -> dict:
 		out.update({"packs": packs(persona), "custom": {"min": CUSTOM_MIN, "max": CUSTOM_MAX, "rate": _money(per_minute(persona))}, "buy": BUY, "words": words()})
 	return out
 
+
+
+@frappe.whitelist(methods=["POST"])
+def touch() -> dict:
+	"""The person's clock starts from now: the time they spent away from the chat (choosing minutes, paying) is not counted. The chat calls this when its recharge sheet is closed or the payment is done."""
+	from raftor_servicehq import plans
+
+	user = frappe.session.user
+	if not _limited(user):
+		return {"ok": True}
+	plan = plans.plan_of(user)
+	for row in plans.covering(plan, plan_rules.AI_MINUTES):
+		key = plans._key(user, row, plan)
+		if frappe.db.exists(plans.USAGE, key):
+			frappe.db.set_value(plans.USAGE, key, "last_at", now_datetime(), update_modified=False)
+	frappe.db.sql("update `tabAI Minute Credit` set last_used = %s where user = %s and minutes_left > 0", (now_datetime(), user))
+	return {"ok": True}
 
 
 # ---- the plan's rule, with the bought minutes behind it ----

@@ -58,6 +58,25 @@ class TestAIMinutes(AstroTestCase):
 		ai_minutes.payment_arrived(pay("PAY-3", f"aiminutes:{user}:10:1", doctype="Booking"))
 		self.assertEqual(ai_minutes.bought_left(user), 20)
 
+	def test_the_status_gives_the_seconds_for_the_clock(self):
+		user = make_user().name
+		with patch.object(ai_minutes, "_limited", return_value=True), patch.object(ai_minutes, "plan_left", return_value=2.5):
+			self.assertEqual(ai_minutes.status(user)["left_seconds"], 150)
+			_credit(user, 1)
+			self.assertEqual(ai_minutes.status(user)["left_seconds"], 210)
+
+	def test_coming_back_from_the_sheet_restarts_the_persons_clock(self):
+		user = make_user().name
+		credit = _credit(user, 10)
+		frappe.db.set_value("AI Minute Credit", credit.name, "last_used", "2026-01-01 10:00:00")
+		frappe.set_user(user)
+		try:
+			with patch.object(ai_minutes, "_limited", return_value=True):
+				self.assertTrue(ai_minutes.touch()["ok"])
+		finally:
+			frappe.set_user("Administrator")
+		self.assertGreater(frappe.db.get_value("AI Minute Credit", credit.name, "last_used"), frappe.utils.get_datetime("2026-06-01"))
+
 	def test_a_minute_costs_what_the_guide_says_and_one_when_it_says_nothing(self):
 		self.assertEqual(ai_minutes.per_minute(""), 1.0)
 		with patch.object(frappe.db, "get_value", return_value=2.5):
