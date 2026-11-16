@@ -227,9 +227,9 @@ def allowance(user: str, guide: str) -> dict:
 	return plan_rules.allowance(user, guide)
 
 
-def turn_done(user: str, guide: str) -> None:
-	"""A reply was given: it counts against the person's plan (AgentsHQ calls this when a turn is complete)."""
-	plan_rules.turn_done(user, guide)
+def turn_done(user: str, guide: str, persona: str = "") -> None:
+	"""A reply was given: it counts against the person's plan, at the guide's multiplier (AgentsHQ calls this when a turn is complete)."""
+	plan_rules.turn_done(user, guide, persona)
 
 
 def member(user: str, who: str, guide_user: str = "") -> dict:

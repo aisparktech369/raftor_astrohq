@@ -92,7 +92,14 @@ def info(**args) -> dict:
 		"placeholder": w["placeholder"], "notice": w["notice"],
 		"talk": False,  # no talk mode: the guide is text only (owner, 2026-11-09)
 		"minutes": "raftor_astrohq.ai_minutes.my_status",  # the chat shows the minutes left and asks for more through this (the counter hides itself when nothing is counted for the person)
+		**({"rate": _rating_prompt()} if persona and frappe.db.exists("Provider", persona.slug) else {}),  # the same stars as for a booked session: they land on the guide's rating
 	}
+
+
+def _rating_prompt() -> dict:
+	"""How the chat asks for a rating (servicehq reviews.submit_chat_review): once, after a few answers, a row of five stars. The words are said here; the chat holds none of its own."""
+	return {"method": "raftor_servicehq.reviews.submit_chat_review", "after": 4,
+			"words": {"ask": _("How is this chat going?"), "star": _("{0} out of 5"), "thanks": _("Thank you. Your rating helps others find the right guide."), "later": _("Not now"), "trouble": _("We could not save that just now.")}}
 
 
 def guide() -> dict:

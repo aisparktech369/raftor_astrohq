@@ -77,13 +77,28 @@ class TestAIMinutes(AstroTestCase):
 			frappe.set_user("Administrator")
 		self.assertGreater(frappe.db.get_value("AI Minute Credit", credit.name, "last_used"), frappe.utils.get_datetime("2026-06-01"))
 
-	def test_a_minute_costs_what_the_guide_says_and_one_when_it_says_nothing(self):
-		self.assertEqual(ai_minutes.per_minute(""), 1.0)
-		with patch.object(frappe.db, "get_value", return_value=2.5):
-			self.assertEqual(ai_minutes.per_minute("devika-iyer"), 2.5)
-			self.assertEqual([p["price"] for p in ai_minutes.packs("devika-iyer")][0], ai_minutes._money(25))
+	def test_a_minute_costs_the_price_of_an_ai_minute_times_the_guides_number(self):
+		self.assertEqual((ai_minutes.factor(""), ai_minutes.per_minute("")), (1.0, 1.0))  # no guide named: one AI minute a minute, 1 rupee
+		for multiplier, rupees in ((1, 1.0), (2, 2.0), (3, 3.0), (5, 5.0)):
+			with patch.object(frappe.db, "get_value", return_value=multiplier):
+				self.assertEqual(ai_minutes.per_minute("devika-iyer"), rupees)
+		with patch.object(frappe.db, "get_value", return_value=2):
+			self.assertEqual([p["price"] for p in ai_minutes.packs("devika-iyer")][0], ai_minutes._money(20))  # a pack of 10 minutes with a guide of 2
 		with patch.object(frappe.db, "get_value", return_value=0):
-			self.assertEqual(ai_minutes.per_minute("devika-iyer"), 1.0)
+			self.assertEqual(ai_minutes.per_minute("devika-iyer"), 1.0)  # a guide that sets none is 1
+
+	def test_a_minute_with_a_guide_uses_its_number_of_ai_minutes_and_the_clock_reads_time_with_that_guide(self):
+		user = make_user().name
+		credit = _credit(user, 30)
+		with patch.object(ai_minutes, "_limited", return_value=True), patch.object(ai_minutes, "plan_left", return_value=0.0):
+			self.assertEqual((ai_minutes.status(user, 3)["total"], ai_minutes.status(user, 3)["left"], ai_minutes.status(user, 3)["left_seconds"]), (30.0, 10.0, 600))  # 30 AI minutes are 10 minutes of talk with a guide of 3
+			self.assertEqual(ai_minutes.status(user, 1)["left"], 30.0)
+		with patch.object(ai_minutes, "_limited", return_value=True), patch("raftor_servicehq.plans.check", return_value={"ok": False, "reason": "quota"}), patch.object(ai_minutes, "factor", return_value=3.0):
+			ai_minutes.turn_done(user, "devika-iyer")  # the first turn after a pause counts half a minute: 1.5 AI minutes at 3
+		self.assertEqual(frappe.db.get_value("AI Minute Credit", credit.name, "minutes_left"), 28.5)
+		with patch.object(ai_minutes, "_limited", return_value=True), patch("raftor_servicehq.plans.check", return_value={"ok": True}), patch("raftor_servicehq.plans.use_time") as free, patch.object(ai_minutes, "factor", return_value=2.0):
+			ai_minutes.turn_done(user, "devika-iyer")
+		self.assertEqual(free.call_args.kwargs.get("factor"), 2.0)  # the plan's free minutes are counted at the guide's number too
 
 	def test_buying_needs_a_sensible_amount_and_a_guide_that_sells_minutes(self):
 		self.assertRaises(frappe.ValidationError, ai_minutes.buy, 1)
@@ -106,6 +121,14 @@ class TestAIMinutes(AstroTestCase):
 				done = ai_minutes.buy(30)
 		finally:
 			frappe.set_user("Administrator")
-		self.assertEqual((asked["amount"], asked["doctype"], asked["name"], asked["payer"]), (150.0, "User", user, user))
+		self.assertEqual((asked["amount"], asked["doctype"], asked["name"], asked["payer"]), (30.0, "User", user, user))  # 30 AI minutes at 1 rupee each
 		self.assertTrue(asked["key"].startswith(f"aiminutes:{user}:30:"))
 		self.assertEqual(done["url"], "/pay/abc")  # a page of this site, shown over the chat
+		frappe.set_user(user)
+		try:
+			with patch.object(ai_minutes, "factor", return_value=3.0), patch("raftor_servicehq.payments_port.request", side_effect=request):
+				ai_minutes.buy(30)
+		finally:
+			frappe.set_user("Administrator")
+		self.assertEqual(asked["amount"], 90.0)  # 30 minutes with a guide of 3 are 90 AI minutes, 1 rupee each
+		self.assertTrue(asked["key"].startswith(f"aiminutes:{user}:90:"))  # what is given when it is paid is the AI minutes

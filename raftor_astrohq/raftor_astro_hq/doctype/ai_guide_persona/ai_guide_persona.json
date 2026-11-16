@@ -217,16 +217,25 @@
    "description": "What the portrait should show, for whoever makes the picture."
   },
   {
+   "fieldname": "minute_factor",
+   "fieldtype": "Float",
+   "label": "AI Minutes Used per Minute",
+   "default": "1",
+   "description": "How many of the person's AI minutes one real minute of talk with this guide uses: 1, 2 or 3 for now, up to 5 (an AI minute is 1 rupee, so this is also the rupees a minute).",
+   "precision": "1"
+  },
+  {
    "fieldname": "minute_rate",
    "fieldtype": "Currency",
-   "label": "Price of a Minute",
+   "label": "Price of a Minute (worked out)",
    "default": "1",
-   "description": "What one minute of talk with this guide costs when the person buys AI minutes in the chat (their plan's free minutes cost nothing). Minutes bought are used with any AI guide."
+   "description": "Worked out, not set: the price of an AI minute times the number above.",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-11-11 18:00:00.000000",
+ "modified": "2026-11-16 13:00:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "AI Guide Persona",

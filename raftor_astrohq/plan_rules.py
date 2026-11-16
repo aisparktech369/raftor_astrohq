@@ -19,11 +19,11 @@ def allowance(user: str, guide: str = "") -> dict:
 	return ai_minutes.allowance(user)  # the plan's free minutes first, then the minutes the person bought
 
 
-def turn_done(user: str, guide: str = "") -> None:
-	"""An answer was given: the time since the person last talked counts against their plan, unless they had paused (plans.use_time)."""
+def turn_done(user: str, guide: str = "", persona: str = "") -> None:
+	"""An answer was given: the time since the person last talked counts against their plan, unless they had paused (plans.use_time), as points: the minutes times the guide's multiplier."""
 	from raftor_astrohq import ai_minutes
 
-	ai_minutes.turn_done(user)
+	ai_minutes.turn_done(user, persona)
 
 
 def family_room(user: str) -> int:

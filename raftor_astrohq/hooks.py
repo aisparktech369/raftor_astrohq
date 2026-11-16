@@ -289,6 +289,7 @@ standard_portal_menu_items = [
 
 # servicehq's service kinds, in astrohq's words (vocabulary.py). Only words; the mechanics are servicehq's.
 servicehq_vocabulary = {"astrohq": "raftor_astrohq.vocabulary.vocabulary"}
+servicehq_ai_rate = ["raftor_astrohq.ai_minutes.rate_of"]  # what a minute with an AI guide costs (shown on its card instead of "Free")
 servicehq_day_reminders = {"astrohq": "raftor_astrohq.day_reminders.definition"}  # (the days a person follows: servicehq does the reminding)
 rfhq_report_makers = ["raftor_astrohq.reports.birth_summary"]
 
