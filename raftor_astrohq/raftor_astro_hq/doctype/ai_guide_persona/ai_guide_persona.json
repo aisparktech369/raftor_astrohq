@@ -231,11 +231,18 @@
    "default": "1",
    "description": "Worked out, not set: the price of an AI minute times the number above.",
    "read_only": 1
+  },
+  {
+   "fieldname": "daily_token_cap",
+   "fieldtype": "Int",
+   "label": "Daily Token Cap",
+   "default": "0",
+   "description": "The most tokens (read and written) this guide may use in a day, across all its chats. When it is reached the guide rests until tomorrow and says so kindly. 0 means no cap."
   }
  ],
  "index_web_pages_for_search": 0,
  "links": [],
- "modified": "2026-11-16 13:00:00.000000",
+ "modified": "2026-11-17 14:10:00.000000",
  "modified_by": "Administrator",
  "module": "Raftor Astro HQ",
  "name": "AI Guide Persona",

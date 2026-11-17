@@ -5,7 +5,7 @@ import frappe
 from frappe import _
 
 from raftor_astrohq import details, profiles
-from raftor_servicehq.roles import SERVICE_PROVIDER_ROLE
+from raftor_servicehq.roles import SERVICE_PROVIDER_ROLE, STAFF_ROLES
 from raftor_websitehq.website_hq.page_groups import page_url
 
 API = "raftor_astrohq.api."
@@ -153,7 +153,14 @@ def numerology_page() -> dict:
 def definitions() -> list[dict]:
 	profile_list = _my("birth-profiles")
 	you = {"relationship": profiles.SELF}
+	stats = "raftor_astrohq.stats_page."
 	return [
+		{"route": "team/stats", "title": _("Business stats"), "login_required": True, "roles": list(STAFF_ROLES), "otherwise": "my",
+		 "menu": {"label": _("Business stats"), "summary": _("Sessions, ratings and what the AI guides use and cost."), "order": 6, "side": {"order": 11}},
+		 "sections": [{"key": "head", "title": _("Business stats"), "subtitle": _("The last 30 days, then each AI guide and each week."), "look": TIGHT},
+					  {"key": "numbers", "columns": "3", "source": {"method": stats + "summary", "card": "Fact Card", "empty": _("Nothing to count yet.")}, "look": TIGHT},
+					  {"key": "guides", "title": _("AI guides"), "source": {"method": stats + "guides", "empty": _("No AI chats in the last 30 days.")}, "look": TIGHT},
+					  {"key": "weeks", "title": _("Week by week"), "source": {"method": stats + "weekly", "empty": _("Nothing yet.")}, "look": TIGHT}]},
 		_form("onboarding/birth-details", _("Your birth details"), _("We use this to calculate your chart. You can add family members afterwards."), {
 			"load": API + "get_profile", "save": API + "save_profile", "static_args": you, "fields": _you_fields(), "submit_label": _("Save and continue"),
 			"success_redirect": _start("birth-details/done")}, note=_("Your details are private and used only for your chart.")),

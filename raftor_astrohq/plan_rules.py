@@ -4,6 +4,7 @@
     PEOPLE          the people a person may keep in their profiles: `family_room`, `family_words`
 """
 import frappe
+from frappe import _
 
 from raftor_servicehq import plans
 
@@ -12,9 +13,13 @@ PEOPLE = "family_profiles"
 UNLIMITED = 1000
 
 
-def allowance(user: str, guide: str = "") -> dict:
-	"""Whether the AI astrologers may answer this person now: {"ok": True} or {"ok": False, "message", "cards"}."""
-	from raftor_astrohq import ai_minutes
+def allowance(user: str, guide: str = "", persona: str = "") -> dict:
+	"""Whether the AI astrologers may answer this person now: {"ok": True} or {"ok": False, "message", "cards"}. A guide that has used its tokens for the day rests until tomorrow."""
+	from raftor_astrohq import ai_minutes, ai_telemetry
+
+	if persona and ai_telemetry.over_cap(persona):
+		name = frappe.db.get_value("AI Guide Persona", {"slug": persona}, "guide_name") or persona
+		return {"ok": False, "reason": "guide_rest", "message": _("{0} has talked with a lot of people today and is resting now. Please come back tomorrow, or talk to another of our guides.").format(name)}
 
 	return ai_minutes.allowance(user)  # the plan's free minutes first, then the minutes the person bought
 

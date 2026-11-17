@@ -222,9 +222,9 @@ def read(user: str, guide: str = "") -> dict:
 	return {"notes": current(user, limit=LIMIT, kinds=allowed["notes"]), "card": card(user, allowed["card"])}
 
 
-def allowance(user: str, guide: str) -> dict:
-	"""Whether this guide may answer this person now, on their plan (AgentsHQ asks before it queues a message). See plan_rules.py."""
-	return plan_rules.allowance(user, guide)
+def allowance(user: str, guide: str, persona: str = "") -> dict:
+	"""Whether this guide may answer this person now, on their plan and within the guide's own daily cap (AgentsHQ asks before it queues a message). See plan_rules.py."""
+	return plan_rules.allowance(user, guide, persona)
 
 
 def turn_done(user: str, guide: str, persona: str = "") -> None:
