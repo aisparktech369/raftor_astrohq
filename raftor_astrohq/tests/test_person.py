@@ -238,7 +238,9 @@ class TestWhatEachGuideSees(AstroTestCase):
 		for guide in ("pandit_ji", "numerologist"):
 			seen = person.read(user, guide)
 			self.assertEqual(len(seen["notes"]), 3)
-			self.assertIn("born 3 Mar 2015", seen["card"])
+			self.assertIn("years old", seen["card"])  # how old, never the birth date itself (the AI does not get it)
+			self.assertNotIn("2015", seen["card"])
+			self.assertNotIn("3 Mar", seen["card"])
 
 	def test_the_dream_guides_profile_lookup_gives_a_name_and_dream_notes_only(self):
 		user = self._seeded()
@@ -247,7 +249,11 @@ class TestWhatEachGuideSees(AstroTestCase):
 		self.assertEqual([n["point"] for n in out["notes"]], ["Dreams of falling from a height"])
 		self.assertNotIn("date_of_birth", out)
 		self.assertNotIn("summary", person.member(user, "my daughter", DREAMER))
-		self.assertEqual(person.member(user, "my daughter", PANDIT)["date_of_birth"], "2015-03-03")
+		daughter = person.member(user, "my daughter", PANDIT)
+		self.assertNotIn("date_of_birth", daughter)  # the lookup gives the age and whether details are on file, not the date, time or place
+		self.assertNotIn("place_of_birth", daughter)
+		self.assertEqual(daughter["age_years"], person._age(frappe._dict(date_of_birth="2015-03-03")))
+		self.assertIn("birth", daughter["birth_details"])
 
 	def test_an_unknown_guide_sees_nothing(self):
 		user = self._seeded()

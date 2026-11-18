@@ -156,15 +156,29 @@ def forget(user: str, name: str) -> bool:
 	return True
 
 
+def _age(row) -> int | None:
+	"""Whole years since the birth date, or None when it is not given."""
+	if not row.date_of_birth:
+		return None
+	born, on = frappe.utils.getdate(row.date_of_birth), frappe.utils.getdate(today())
+	return on.year - born.year - ((on.month, on.day) < (born.month, born.day))
+
+
+def _details(row) -> str:
+	"""What is on file of the birth, said as present or missing. The date, time and place themselves are not given to the AI: it gets the chart's facts from the tools, and the engine reads the details."""
+	gaps = [word for word, ok in (("date", bool(row.date_of_birth)), ("time", bool(row.time_unknown or row.time_of_birth)), ("place", bool(row.place_of_birth))) if not ok]
+	return "birth details complete" if not gaps else "birth " + " and ".join(gaps) + " not given"
+
+
 def _line(row) -> str:
-	born = formatdate(row.date_of_birth, "d MMM yyyy") if row.date_of_birth else "birth date not given"
-	clock = "birth time not known" if row.time_unknown else (f"at {row.time_of_birth}" if row.time_of_birth else "birth time not given")
-	place = f", {row.place_of_birth}" if row.place_of_birth else ""
+	age = _age(row)
+	born = f"about {age} years old" if age is not None else "age not given"
+	clock, place = _details(row), ""
 	who = "You" if row.relationship == profiles.SELF else f"{row.full_name} ({row.relationship.lower()})"
 	fresh = row.from_chat and row.creation and (frappe.utils.now_datetime() - frappe.utils.get_datetime(row.creation)).total_seconds() < 1800
 	status = (" [saved from this chat a moment ago: tell them once, in a few words, that you saved " + row.full_name + " and they can complete or remove it in their profiles]" if fresh
 			  else " [added from chat, details to be completed by the person]" if row.from_chat else "")
-	line = f"- {who}: {row.full_name}, born {born}, {clock}{place}{status}"
+	line = f"- {who}: {row.full_name}, {born}, {clock}{place}{status}"
 	return line + (f"\n  What we know: {row.summary}" if row.summary else "")
 
 
@@ -197,6 +211,25 @@ def _bookings(user: str) -> list[str]:
 
 	rows = frappe.get_all("Booking", filters={"customer_user": user}, fields=["offering", "slot_start", "workflow_state"], order_by="creation desc", limit=LAST)
 	return [f"- Booked {name(r.offering)}{' on ' + formatdate(r.slot_start, 'd MMM yyyy') if r.slot_start else ''} ({(r.workflow_state or '').lower()})" for r in rows]
+
+
+def names(user: str) -> list[dict]:
+	"""The names the AI must not see (AgentsHQ swaps each for a stand-in, pseudonyms.py): the person's and their family's, as the profiles have them. `key` stays the same for a profile, so its stand-in does too."""
+	out = [{"key": r.name, "name": r.full_name, "self": r.relationship == profiles.SELF} for r in _rows(user) if (r.full_name or "").strip()]
+	account = " ".join(x for x in (frappe.db.get_value("User", user, "first_name"), frappe.db.get_value("User", user, "last_name")) if x)
+	if account and sum(c.isdigit() for c in account) < 5:  # a phone-number sign-up has the number as its name: that is removed as a number, not swapped
+		out.append({"key": "account", "name": account, "self": True})
+	return [r for r in out if sum(c.isdigit() for c in r["name"]) < 5]
+
+
+def real(user: str, text: str) -> str:
+	"""A name the AI used for a tool, with its stand-in turned back to the real one ('Meera' -> 'Tara'). Unchanged when AgentsHQ is not there."""
+	try:
+		from raftor_agentshq import pseudonyms
+
+		return pseudonyms.real(user, text)
+	except Exception:
+		return text
 
 
 def card(user: str, mode: str = "full") -> str:
@@ -235,7 +268,7 @@ def turn_done(user: str, guide: str, persona: str = "") -> None:
 def member(user: str, who: str, guide_user: str = "") -> dict:
 	"""One profile for the guide's tool: the details, the summary and notes kept from the chats, and the numerology headline of the birth date when it is known. `user` is the signed-in person, set by the server."""
 	rows = _rows(user)
-	row = _find(rows, who)
+	row = _find(rows, real(user, who))
 	if row is None:
 		return {"found": False, "message": "No profile matches that. Ask the person for the name, or offer to add them.", "profiles": [{"name": _label(r), "relationship": r.relationship} for r in rows]}
 	from raftor_astrohq import agents
@@ -245,8 +278,8 @@ def member(user: str, who: str, guide_user: str = "") -> dict:
 		kinds = reads["notes"] or []
 		return {"found": True, "name": row.full_name, "relationship": row.relationship, "notes": [{"on": str(n.noted_on or ""), "kind": n.kind, "point": n.point} for n in frappe.get_all(
 			"Profile Note", filters={"user": user, "profile": row.name, "is_current": 1, "kind": ["in", kinds or [""]]}, fields=["noted_on", "kind", "point"], order_by="noted_on asc", limit=20)]}
-	out = {"found": True, "name": row.full_name, "relationship": row.relationship, "date_of_birth": str(row.date_of_birth or ""), "time_of_birth": row.time_of_birth or "",
-		   "time_unknown": bool(row.time_unknown), "place_of_birth": row.place_of_birth or "", "details_complete": not profiles.row_errors(profiles.row_values(row)),
+	out = {"found": True, "name": row.full_name, "relationship": row.relationship, "age_years": _age(row), "birth_details": _details(row),
+		   "details_complete": not profiles.row_errors(profiles.row_values(row)),
 		   "summary": row.summary or "", "notes": [{"on": str(n.noted_on or ""), "kind": n.kind, "point": n.point} for n in frappe.get_all("Profile Note", filters={"user": user, "profile": row.name, "is_current": 1}, fields=["noted_on", "kind", "point"], order_by="noted_on asc", limit=20)]}
 	from raftor_astrohq import agents
 
@@ -375,7 +408,7 @@ def _read_match(user: str, who: str, partner: str, who_is: str) -> dict:
 def save_profile(user: str, who: str, relationship: str = "", date_of_birth: str = "", time_of_birth: str = "", place_of_birth: str = "", time_unknown: bool = False) -> dict:
 	"""Saves (or completes) one person's birth details among the signed-in person's own profiles, from what they said in the chat after agreeing to it: themself, or someone in their family. A profile that is already there
 	is completed where it has gaps; details the person entered on the website are never changed from here. Says what is still missing, so the guide asks for exactly that. `user` is the signed-in person, set by the server."""
-	who = str(who or "").strip()
+	who = real(user, str(who or "").strip())  # a stand-in name the AI used for someone already saved is turned back; a new name stays as it is
 	given = str(relationship or "").strip()
 	is_self = who.lower() in ("", "me", "myself", "self", "you") or given.lower() in ("me", "myself", "self", "you")
 	rows = _rows(user)
@@ -451,6 +484,7 @@ def read_report(user: str, who: str, kind: str, guide_user: str, partner: str = 
 	from raftor_astrohq import agents
 	from raftor_servicehq import free_reports, intake as intake_rules, workflows
 
+	who, partner = real(user, who), real(user, partner)  # the AI speaks of people by stand-in names
 	kind = str(kind or "").strip().lower()
 	if kind not in REPORTS:
 		return {"found": False, "message": "Say which report: kundli, kp, match or numerology."}
