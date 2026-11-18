@@ -13,13 +13,22 @@ class Unavailable(frappe.ValidationError):
 	pass
 
 
-def write(system: str, facts: dict, max_tokens: int = 500, limit: int = 1600) -> tuple[str, str]:
-	"""(the text, the model's name) for `facts` (plain data, sent as JSON) under the instructions in `system`."""
+def _mode_for(system: str, prompt: str) -> str:
+	""""deep" when the context sent is at least `reading_deep_context_chars` characters (a site-config number). Not set: always "quick"."""
+	threshold = frappe.conf.get("reading_deep_context_chars")
+	if not threshold:
+		return "quick"
+	return "deep" if len(system) + len(prompt) >= int(threshold) else "quick"
+
+
+def write(system: str, facts: dict, max_tokens: int = 500, limit: int = 1600, mode: str | None = None) -> tuple[str, str]:
+	"""(the text, the model's name) for `facts` (plain data, sent as JSON) under the instructions in `system`. `mode` is "quick" or "deep"; left out, the size of the context decides."""
 	s = rashifal.settings()
 	if not (s.address and s.key):
 		raise Unavailable
 	headers = {"X-Api-Key": s.key} | ({"X-Frappe-Site-Name": s.site} if s.site else {})
-	body = {"api_name": s.api_name, "payload": {"system": system, "prompt": json.dumps(facts, ensure_ascii=False), "temperature": 0.7, "max_tokens": max_tokens}}
+	prompt = json.dumps(facts, ensure_ascii=False)
+	body = {"api_name": s.api_name, "payload": {"system": system, "prompt": prompt, "temperature": 0.7, "max_tokens": max_tokens, "mode": mode or _mode_for(system, prompt)}}
 	try:
 		response = requests.post(s.address + rashifal.GATEWAY, json=body, headers=headers, timeout=s.timeout)
 		answer = response.json()
