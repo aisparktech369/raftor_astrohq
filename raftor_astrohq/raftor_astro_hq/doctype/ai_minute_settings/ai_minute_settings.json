@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "creation": "2026-11-18 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "note",
+  "minute_price"
+ ],
+ "fields": [
+  {
+   "fieldname": "note",
+   "fieldtype": "HTML",
+   "label": "What this is",
+   "options": "<p>An AI minute is the unit people spend on a chat with an AI guide. Each guide says how many AI minutes one minute of talk uses (AI Guide Persona &gt; AI Minutes Used per Minute, 1 to 5), so a minute with a guide costs the price below times that number. No AI guide is free.</p>"
+  },
+  {
+   "default": "1",
+   "description": "Rupees one AI minute costs. At 1, the balance of AI minutes is in effect rupees. Changing it changes the price on every guide's card and in the packs on sale.",
+   "fieldname": "minute_price",
+   "fieldtype": "Currency",
+   "label": "Price of One AI Minute",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-11-18 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "AI Minute Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

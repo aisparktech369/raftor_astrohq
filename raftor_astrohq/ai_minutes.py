@@ -3,7 +3,7 @@
     plan's free minutes (servicehq plans, meter ai_minutes)  ->  then the minutes bought here, oldest pack first
 
 A pack is 10, 20 or 30 minutes, or any amount from CUSTOM_MIN to CUSTOM_MAX. It is bought the way more time in a live session is (servicehq sessions.extend): PaymentHQ is asked for a payment, the chat shows the payment
-page over itself, and when PaymentHQ says it was paid (hook paymenthq_on_paid) the minutes are added as one AI Minute Credit row, once. An AI minute costs AI_MINUTE_PRICE rupees, and a minute of talk uses the guide's number of AI minutes (AI Guide Persona.minute_factor, set in Desk: 1, 2 or 3 for now), so a minute with a guide costs AI_MINUTE_PRICE times it. The multiplier is 1 for a guide with no record of its own
+page over itself, and when PaymentHQ says it was paid (hook paymenthq_on_paid) the minutes are added as one AI Minute Credit row, once. An AI minute costs what AI Minute Settings says (rupees; 1 when nothing is set), and a minute of talk uses the guide's number of AI minutes (AI Guide Persona.minute_factor, set in Desk: 1, 2 or 3 for now), so a minute with a guide costs that price times it. The multiplier is 1 for a guide with no record of its own
 (Pandit ji, the numerologist and the others). AI minutes bought are used with any AI guide. Every AI chat shows how many minutes are left (`my_status`), warns when they are few, and, when none are left, says so and
 offers the packs (plan_rules.allowance).
 
@@ -14,7 +14,6 @@ from frappe.utils import cint, flt, fmt_money, now_datetime
 
 from raftor_astrohq import plan_rules
 
-AI_MINUTE_PRICE = 1.0  # what one AI minute costs (rupees): always 1 for 1, so the balance is in effect rupees; a guide's number says how many AI minutes one minute of talk with it uses (1 to 5 rupees a minute)
 CREDIT = "AI Minute Credit"
 KEY = "aiminutes"  # a payment for minutes carries a request key that starts with this
 PACKS = (10, 20, 30)
@@ -78,9 +77,14 @@ def rate_of(provider: str) -> float:
 	return per_minute(provider) if frappe.db.exists("AI Guide Persona", {"slug": provider}) else 0.0
 
 
+def price() -> float:
+	"""What one AI minute costs in rupees (AI Minute Settings; never below 1)."""
+	return max(flt(frappe.db.get_single_value("AI Minute Settings", "minute_price")), 1.0)
+
+
 def per_minute(persona: str = "") -> float:
 	"""What a minute costs in rupees with this guide: the price of an AI minute times the guide's number."""
-	return AI_MINUTE_PRICE * factor(persona)
+	return price() * factor(persona)
 
 
 def on_sale(persona: str = "") -> bool:
@@ -190,7 +194,7 @@ def buy(minutes: int = 10, persona: str = "") -> dict:
 		frappe.throw(_("AI minutes cannot be bought with this guide."))
 	credit = flt(minutes * factor(persona), 2)  # what is kept is AI minutes: they go with the person to any guide (a minute with another guide uses that guide's number)
 	key = f"{KEY}:{user}:{credit:g}:{frappe.db.count(CREDIT, {'user': user})}"  # asking again for the same thing gives the same payment, until it is paid
-	made = payments_port.request(user, flt(AI_MINUTE_PRICE * credit, 2), "User", user, _("{0} minutes of talk with the AI astrologers").format(minutes), key=key, return_to="/")
+	made = payments_port.request(user, flt(price() * credit, 2), "User", user, _("{0} minutes of talk with the AI astrologers").format(minutes), key=key, return_to="/")
 	return {"ok": bool(made.get("url")), "url": _on_this_site(made.get("url")), "payment": made["payment"], "minutes": minutes}
 
 

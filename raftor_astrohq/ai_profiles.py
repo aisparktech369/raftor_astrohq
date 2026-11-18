@@ -44,7 +44,7 @@ def slug_of(key: str) -> str:
 
 def persona_values(person: dict, sequence: int, name: str | None = None) -> dict:
 	"""The fields of the AI Guide Persona a person becomes."""
-	keep = ("tagline", "bio", "audience", "topics", "languages", "greeting", "traits", "mindset", "communication_style", "signature_line", "workflow", "response_format", "boundaries", "avatar_prompt")
+	keep = ("tagline", "bio", "audience", "topics", "languages", "greeting", "traits", "mindset", "communication_style", "signature_line", "workflow", "response_format", "boundaries", "avatar_prompt", "minute_factor")
 	return {"doctype": PERSONA, "slug": slug_of(person["key"]), "profile_id": person["profile_id"], "guide_name": name or person["name"], "skills": [{"skill": DISCIPLINE_SKILL[person["discipline"]]}],
 			**{k: person[k] for k in keep}, "ai_image": 1, "sequence": sequence}
 

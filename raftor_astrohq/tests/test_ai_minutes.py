@@ -87,6 +87,17 @@ class TestAIMinutes(AstroTestCase):
 		with patch.object(frappe.db, "get_value", return_value=0):
 			self.assertEqual(ai_minutes.per_minute("devika-iyer"), 1.0)  # a guide that sets none is 1
 
+	def test_the_price_of_an_ai_minute_is_a_setting_and_never_below_a_rupee(self):
+		self.assertEqual(ai_minutes.price(), 1.0)  # nothing set: 1 rupee
+		with patch.object(frappe.db, "get_single_value", return_value=2.5):
+			self.assertEqual(ai_minutes.price(), 2.5)
+			with patch.object(frappe.db, "get_value", return_value=2):
+				self.assertEqual(ai_minutes.per_minute("devika-iyer"), 5.0)
+		with patch.object(frappe.db, "get_single_value", return_value=0.2):
+			self.assertEqual(ai_minutes.price(), 1.0)
+		with self.assertRaises(frappe.ValidationError):
+			frappe.get_doc({"doctype": "AI Minute Settings", "minute_price": 0.5}).validate()
+
 	def test_a_minute_with_a_guide_uses_its_number_of_ai_minutes_and_the_clock_reads_time_with_that_guide(self):
 		user = make_user().name
 		credit = _credit(user, 30)
