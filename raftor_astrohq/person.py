@@ -2,7 +2,7 @@
 
 A note is a dated line tied to a birth profile (the account holder, "You", or a family member): "Tara (daughter): worried about exams". Notes are kept in Profile Note, never overwritten (a corrected or dropped note is
 kept as Replaced), and each profile carries a short read-only summary of its current notes ("What We Know"). When a person speaks of someone who has no profile yet, the guide adds one, marked "Added From Chat", with only
-what was said; the account holder completes the birth details on the website; until the birth details are complete the profile is not used for reports. Consent is not asked yet: the person's consent toggles come later.
+what was said; the account holder completes the birth details on the website; until the birth details are complete, and the person has said they have that person's permission, the profile is not used for reports. A family member added from the chat starts without permission (permission_given 0): the guide asks once ("do you have their permission, or are you their parent or guardian?") and saves the answer with add_profile (has_permission), or the account holder ticks it on the website.
 
 	read(user)                        {"notes": [...], "card": text}: the current notes and what the site knows of the person, for the guide at the start of a turn
 	write(user, payload, guide, ...)  keeps the notes (and new family members) the note-taker returned after a reply
@@ -13,7 +13,7 @@ what was said; the account holder completes the birth details on the website; un
 import re
 
 import frappe
-from frappe.utils import formatdate, today
+from frappe.utils import cint, formatdate, today
 
 from raftor_astrohq import answers, plan_rules, profiles, report_view
 from raftor_astrohq import report_pdf as rp
@@ -74,7 +74,7 @@ def _add_member(user: str, about: str, details: dict | None = None):
 	if plan_rules.family_room(user) < 1:
 		return None  # the person's plan holds no more people (plan_rules.py); the notes about them are still kept
 	doc = frappe.get_doc("User", user)
-	row = {"relationship": _relationship(about, (details or {}).get("relationship") or ""), "full_name": name.title() if name.islower() else name, "from_chat": 1, "permission_given": 1}  # unfiltered for now: the person's consent toggles come later and will start from the "Added From Chat" mark
+	row = {"relationship": _relationship(about, (details or {}).get("relationship") or ""), "full_name": name.title() if name.islower() else name, "from_chat": 1, "permission_given": 1 if (details or {}).get("has_permission") else 0}  # (a person is added without permission until it is asked and answered; see save_profile) gles come later and will start from the "Added From Chat" mark
 	for key in ("date_of_birth", "time_of_birth", "place_of_birth"):
 		if (details or {}).get(key):
 			row[key] = str(details[key]).strip()
@@ -405,7 +405,7 @@ def _read_match(user: str, who: str, partner: str, who_is: str) -> dict:
 					   "never as a verdict on the people or the marriage. Never say a match is good or bad for them or advise to marry or not; if they want a decision, point them to a live astrologer."}
 
 
-def save_profile(user: str, who: str, relationship: str = "", date_of_birth: str = "", time_of_birth: str = "", place_of_birth: str = "", time_unknown: bool = False) -> dict:
+def save_profile(user: str, who: str, relationship: str = "", date_of_birth: str = "", time_of_birth: str = "", place_of_birth: str = "", time_unknown: bool = False, has_permission: bool = False) -> dict:
 	"""Saves (or completes) one person's birth details among the signed-in person's own profiles, from what they said in the chat after agreeing to it: themself, or someone in their family. A profile that is already there
 	is completed where it has gaps; details the person entered on the website are never changed from here. Says what is still missing, so the guide asks for exactly that. `user` is the signed-in person, set by the server."""
 	who = real(user, str(who or "").strip())  # a stand-in name the AI used for someone already saved is turned back; a new name stays as it is
@@ -463,11 +463,17 @@ def save_profile(user: str, who: str, relationship: str = "", date_of_birth: str
 	saved = next((r for r in fresh if r.relationship == profiles.SELF), None) if is_self else _find(fresh, f"{who} ({given})" if given else who)
 	if saved is None:
 		return {"saved": False, "message": "The profile could not be saved just now. Say so and offer to try again."}
+	if not is_self and has_permission and saved.from_chat and not cint(saved.permission_given):
+		frappe.db.set_value("Astro Birth Profile", saved.name, "permission_given", 1, update_modified=False)  # the person said yes when asked
+		saved = frappe._dict(saved, permission_given=1)
 	missing = [label for label, value in (("date of birth", saved.date_of_birth), ("time of birth", saved.time_of_birth and not saved.time_unknown), ("place of birth", saved.place_of_birth)) if not value]
 	out = {"saved": True, "name": saved.full_name, "relationship": saved.relationship, "missing": missing}
 	out["message"] = ("Saved " + saved.full_name + ". " + ("Still needed for a chart: " + ", ".join(missing) + ". Ask for exactly that." if missing else "Everything for a chart is there: open the chart now."))
 	if saved.time_unknown:
 		out["message"] += " Their time of birth is not known, so a chart cannot be drawn: say so kindly."
+	if not is_self and not cint(saved.permission_given):
+		out["permission_needed"] = True
+		out["message"] += f" Ask once: 'Do you have {saved.full_name}'s permission to keep these details, or are you their parent or guardian?' When they say yes, call add_profile again with has_permission true. Until then no report is made for {saved.full_name}."
 	return out
 
 
@@ -496,6 +502,8 @@ def read_report(user: str, who: str, kind: str, guide_user: str, partner: str = 
 	row = _find(rows, who)
 	if row is None:
 		return _no_profile(rows)
+	if row.relationship != profiles.SELF and not cint(row.permission_given):
+		return {"found": False, "permission_needed": True, "message": f"No report for {row.full_name} yet: their permission is not on file. Ask once: 'Do you have their permission to keep their details, or are you their parent or guardian?' When they say yes, call add_profile again with has_permission true (or they can tick it on their profile on the website)."}
 	if not row.date_of_birth:
 		return {"found": False, "message": f"{row.full_name}'s date of birth is not saved yet. Ask for it first."}
 	item = frappe.db.get_value("Item", {"custom_report_kind": REPORTS[kind][0], "custom_vertical": "astrohq"})

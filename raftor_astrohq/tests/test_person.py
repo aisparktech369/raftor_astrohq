@@ -45,7 +45,7 @@ class TestPersonNotes(AstroTestCase):
 								   "people": [{"name": "Rhenna", "relationship": "daughter", "date_of_birth": "2015-03-03", "place_of_birth": "Pune"}]}, "Pandit ji", "s")
 		self.assertEqual(done["people_added"], 1)
 		rhenna = next(r for r in _rows(user) if r.full_name == "Rhenna")
-		self.assertEqual((rhenna.relationship, str(rhenna.date_of_birth), rhenna.place_of_birth, rhenna.from_chat, rhenna.permission_given), ("Child", "2015-03-03", "Pune", 1, 1))
+		self.assertEqual((rhenna.relationship, str(rhenna.date_of_birth), rhenna.place_of_birth, rhenna.from_chat, rhenna.permission_given), ("Child", "2015-03-03", "Pune", 1, 0))  # added from the chat: no permission until it is asked and answered
 		self.assertEqual(rhenna.summary, "Stressed about exams")
 		self.assertEqual(len([r for r in _rows(user) if r.full_name == "Rhenna"]), 1)
 
@@ -184,10 +184,13 @@ class TestReportsFromTheChat(AstroTestCase):
 	def test_asking_names_what_is_missing_and_never_guesses(self):
 		user = _user()
 		person.write(user, {"notes": [], "people": [{"name": "Rhenna", "relationship": "daughter", "date_of_birth": "2015-03-03"}]}, "g", "s")
+		self.assertTrue(person.read_report(user, "my daughter", "kundli", PANDIT)["permission_needed"])  # no report before the person has said they may keep her details
+		person.save_profile(user, "Rhenna", "daughter", has_permission=True)
 		self.assertIn("time of birth and place of birth", person.read_report(user, "my daughter", "kundli", PANDIT)["message"])
 		self.assertIn("Say which report", person.read_report(user, "me", "tarot", PANDIT)["message"])
 		self.assertIn("No profile matches", person.read_report(user, "my uncle", "numerology", PANDIT)["message"])
 		person.write(user, {"notes": [], "people": [{"name": "Nameless", "relationship": "other"}]}, "g", "s")
+		person.save_profile(user, "Nameless", "other", has_permission=True)
 		self.assertIn("date of birth is not saved", person.read_report(user, "Nameless", "numerology", PANDIT)["message"])
 
 	def test_a_missing_report_is_made_once_kept_as_available_and_given_as_a_summary_not_a_link(self):
@@ -269,3 +272,42 @@ class TestWhatEachGuideSees(AstroTestCase):
 		self.assertEqual([n["point"] for n in seen["notes"]], ["Drew the Tower for a question about work"])
 		self.assertNotIn("born", seen["card"])
 		self.assertEqual([n["point"] for n in person.read(user, "dream_guide")["notes"]], ["Dreams of falling"])
+
+
+class TestFamilyPermission(AstroTestCase):
+	"""A family member from the chat starts without permission; the person is asked once, and without a yes no report is made for them."""
+
+	def _row(self, user, name):
+		return frappe.db.sql("select permission_given, from_chat from `tabAstro Birth Profile` where parent=%s and full_name=%s", (user, name), as_dict=True)[0]
+
+	def test_someone_added_from_a_note_has_no_permission_yet(self):
+		user = _user()
+		person.write(user, {"notes": [{"about": "Tara (daughter)", "kind": "worry", "point": "Exams"}], "people": []}, "g", "s")
+		self.assertEqual(self._row(user, "Tara")["permission_given"], 0)
+
+	def test_saving_a_family_member_without_a_yes_keeps_the_details_but_asks(self):
+		user = _user()
+		out = person.save_profile(user, "Tara", "daughter", "2015-03-03", "07:30", "Pune")
+		self.assertTrue(out["saved"])
+		self.assertTrue(out["permission_needed"])
+		self.assertIn("permission", out["message"].lower())
+		self.assertEqual(self._row(user, "Tara")["permission_given"], 0)
+
+	def test_a_yes_records_the_permission(self):
+		user = _user()
+		person.save_profile(user, "Tara", "daughter", "2015-03-03", "07:30", "Pune")
+		out = person.save_profile(user, "Tara", "daughter", has_permission=True)
+		self.assertNotIn("permission_needed", out)
+		self.assertEqual(self._row(user, "Tara")["permission_given"], 1)
+
+	def test_no_report_is_made_for_someone_without_permission(self):
+		user = _user()
+		person.save_profile(user, "Tara", "daughter", "2015-03-03", "07:30", "Pune")
+		out = person.read_report(user, "Tara", "numerology", PANDIT)
+		self.assertFalse(out["found"])
+		self.assertTrue(out["permission_needed"])
+
+	def test_the_person_themself_needs_no_permission(self):
+		user = _user()
+		out = person.save_profile(user, "me", "", "1990-05-05", "06:42", "Delhi")
+		self.assertNotIn("permission_needed", out)
