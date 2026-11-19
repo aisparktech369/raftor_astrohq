@@ -84,17 +84,24 @@ class CalculateNumerology(BaseTool):
 				"year": {"type": "integer", "minimum": 1800, "maximum": 2200, "description": "The year of birth, only for the year number"},
 				"name": {"type": "string", "description": "The name in Latin letters, in the spelling the person chose, for example 'John Smith'"},
 				"part": {"type": "string", "enum": list(PARTS), "description": "Which part to return (default 'birth', or 'name' when only a name is given)"},
+				"user": {"type": "string", "description": "Set by the system. Leave it out."},
 			},
 		}
 
 	def execute(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
 		from raftor_astrohq import astrology
 
+		name = arguments.get("name")
+		user = (arguments.get("user") or "").strip()
+		if name and user and user != "Guest":
+			from raftor_astrohq import person
+
+			name = person.real(user, str(name))  # the guide saw a made-up name for someone the site knows: the number is worked from the real spelling
 		part = arguments.get("part") or ("birth" if arguments.get("day") else "name")
 		if part not in PARTS:
 			part = "birth"
 		try:
-			answer = astrology.numerology(arguments.get("day"), arguments.get("month"), arguments.get("name"), arguments.get("year"))
+			answer = astrology.numerology(arguments.get("day"), arguments.get("month"), name, arguments.get("year"))
 		except astrology.AstrologyRefused as error:
 			return {"found": False, "message": str(error)}
 		except astrology.AstrologyUnavailable:

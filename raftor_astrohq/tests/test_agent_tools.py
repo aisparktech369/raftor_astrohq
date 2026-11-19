@@ -77,3 +77,24 @@ class TestNumerologyToolGivesOnePart(TestCase):
 		self.assertEqual(set(_part(reading, "birth")["birth"]), {"number", "headline", "summary", "strengths", "watch"})
 		self.assertEqual(len(_part(reading, "more")["more"]["famous"]), 4)
 		self.assertEqual(_part(reading, "name"), {"name": {"number": 5}})
+
+
+class TestNumerologyNameBehindAStandIn(TestCase):
+	def test_the_name_number_is_worked_from_the_real_spelling_when_the_guide_used_a_made_up_name(self):
+		import frappe
+		from unittest.mock import patch
+
+		from raftor_astrohq.assistant_tools.numerology import CalculateNumerology
+
+		seen = {}
+
+		def fake(day, month, name, year):
+			seen["name"] = name
+			return {"reading": {}}
+
+		with patch("raftor_astrohq.astrology.numerology", side_effect=fake), patch("raftor_astrohq.person.real", return_value="Asha Rao"):
+			CalculateNumerology().execute({"name": "Meera Iyer", "part": "name", "user": "someone@example.com"})
+		self.assertEqual(seen["name"], "Asha Rao")
+		with patch("raftor_astrohq.astrology.numerology", side_effect=fake):
+			CalculateNumerology().execute({"name": "Plain Name", "part": "name"})  # no person given (a guide not yet told who it talks to): unchanged
+		self.assertEqual(seen["name"], "Plain Name")
