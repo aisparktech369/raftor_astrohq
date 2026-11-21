@@ -8,6 +8,8 @@
   "enabled",
   "publish_at_once",
   "writer_section",
+  "route",
+  "services_account",
   "hub_address",
   "hub_site",
   "hub_key",
@@ -42,21 +44,40 @@
    "label": "The writer (the hub's text-to-text)"
   },
   {
+   "fieldname": "route",
+   "fieldtype": "Select",
+   "label": "Where the words are written",
+   "options": "Old hub\nAISpark Services",
+   "default": "Old hub",
+   "description": "Old hub: the address and key below. AISpark Services: through IntegrationHQ's AISpark Services account (the server's services, with this site's customer key). Change it here to go back at any time."
+  },
+  {
+   "fieldname": "services_account",
+   "fieldtype": "Link",
+   "label": "AISpark Services account",
+   "options": "Raftor Integration Account",
+   "depends_on": "eval:doc.route===\"AISpark Services\"",
+   "description": "Leave empty to use the one that is connected."
+  },
+  {
    "fieldname": "hub_address",
    "fieldtype": "Data",
    "label": "Hub address",
-   "description": "For example http://127.0.0.1:8800. No trailing slash."
+   "description": "For example http://127.0.0.1:8800. No trailing slash.",
+   "depends_on": "eval:doc.route!==\"AISpark Services\""
   },
   {
    "fieldname": "hub_site",
    "fieldtype": "Data",
    "label": "Hub site name",
-   "description": "Only when the hub serves several sites on one address; sent as X-Frappe-Site-Name."
+   "description": "Only when the hub serves several sites on one address; sent as X-Frappe-Site-Name.",
+   "depends_on": "eval:doc.route!==\"AISpark Services\""
   },
   {
    "fieldname": "hub_key",
    "fieldtype": "Password",
-   "label": "Hub key"
+   "label": "Hub key",
+   "depends_on": "eval:doc.route!==\"AISpark Services\""
   },
   {
    "fieldname": "api_name",

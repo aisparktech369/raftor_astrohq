@@ -1,4 +1,4 @@
-"""The hub's text-to-text, asked for a short piece of plain text from facts the app gives it (the tarot reading and the numerology reading). The address, key and model come from Daily Rashifal Settings, the one
+"""The text-to-text service (the old hub, or the AISpark server through IntegrationHQ: Daily Rashifal Settings says which), asked for a short piece of plain text from facts the app gives it (the tarot reading and the numerology reading). The address, key and model come from Daily Rashifal Settings, the one
 place the hub is set up. What comes back is cleaned (no markup, a safe length) and anything that goes wrong is one answer, Unavailable: the page then says the words could not be written just now."""
 import json
 
@@ -24,18 +24,21 @@ def _mode_for(system: str, prompt: str) -> str:
 def write(system: str, facts: dict, max_tokens: int = 500, limit: int = 1600, mode: str | None = None) -> tuple[str, str]:
 	"""(the text, the model's name) for `facts` (plain data, sent as JSON) under the instructions in `system`. `mode` is "quick" or "deep"; left out, the size of the context decides."""
 	s = rashifal.settings()
-	if not (s.address and s.key):
+	if not rashifal.configured(s):
 		raise Unavailable
 	headers = {"X-Api-Key": s.key} | ({"X-Frappe-Site-Name": s.site} if s.site else {})
 	prompt = json.dumps(facts, ensure_ascii=False)
 	body = {"api_name": s.api_name, "payload": {"system": system, "prompt": prompt, "temperature": 0.7, "max_tokens": max_tokens, "mode": mode or _mode_for(system, prompt)}}
 	try:
-		response = requests.post(s.address + rashifal.GATEWAY, json=body, headers=headers, timeout=s.timeout)
-		answer = response.json()
+		if s.get("route") == rashifal.SERVICES:
+			status, answer = rashifal.via_services(s, body)
+		else:
+			response = requests.post(s.address + rashifal.GATEWAY, json=body, headers=headers, timeout=s.timeout)
+			status, answer = response.status_code, response.json()
 	except (requests.exceptions.RequestException, ValueError):
 		raise Unavailable from None
 	data = answer.get("data") if isinstance(answer, dict) else None
 	text = strip_html_tags(str((data or {}).get("content") or "")).replace("*", "").replace("#", "").strip()[:limit]
-	if response.status_code >= 400 or not text:
+	if status >= 400 or not text:
 		raise Unavailable
 	return text, str((data or {}).get("model") or "")

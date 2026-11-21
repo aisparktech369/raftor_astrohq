@@ -67,7 +67,34 @@ class RashifalUnavailable(frappe.ValidationError):
 def settings() -> frappe._dict:
 	doc = frappe.get_single(SETTINGS)
 	return frappe._dict(enabled=bool(doc.enabled), publish_at_once=bool(doc.publish_at_once), address=(doc.hub_address or "").strip().rstrip("/"), site=(doc.hub_site or "").strip(),
-						key=doc.get_password("hub_key", raise_exception=False) or "", api_name=(doc.api_name or "").strip() or "text-to-text", timeout=int(doc.timeout_seconds or 90))
+						key=doc.get_password("hub_key", raise_exception=False) or "", api_name=(doc.api_name or "").strip() or "text-to-text", timeout=int(doc.timeout_seconds or 90),
+						route=doc.get("route") or OLD_HUB, account=doc.get("services_account") or "")
+
+
+OLD_HUB, SERVICES = "Old hub", "AISpark Services"
+
+
+def configured(s: frappe._dict) -> bool:
+	"""The writer can be asked: through the old hub it needs the address and the key here; through AISpark Services the account holds them."""
+	return s.get("route") == SERVICES or bool(s.address and s.key)
+
+
+def via_services(s: frappe._dict, body: dict) -> tuple[int, dict]:
+	"""(status, answer) as the old hub's gateway gave them, from the AISpark server through IntegrationHQ. Anything that goes wrong is (a status of 400 or more, {}): the callers already turn that into the
+	page's own "could not be written just now". What is logged is the kind of failure and the words the server gave, never the key or the address."""
+	try:
+		from raftor_integrationhq.adapters.ai_gateway import aispark_services as svc
+	except ImportError:
+		frappe.log_error(title="AISpark Services: IntegrationHQ is not installed", message="")
+		return 503, {}
+	try:
+		return 200, svc.call(body["api_name"], body["payload"], account=s.get("account") or None)
+	except svc.ServicesError as error:
+		frappe.log_error(title="AISpark Services did not write", message=f"{error.status} {error.code}: {error.message}")
+		return error.status, {}
+	except frappe.ValidationError as error:  # no account, no key, a bad address: said in plain words by the connection
+		frappe.log_error(title="AISpark Services is not set up", message=str(error)[:300])
+		return 503, {}
 
 
 def rashi(number: int) -> tuple:
@@ -169,17 +196,20 @@ def parse(content: str) -> dict:
 def write(facts_: dict, s: frappe._dict | None = None) -> tuple[dict, str]:
 	"""The words for one sign, from the hub's text-to-text: ({'en': {...}, 'hi': {...}}, the model's name)."""
 	s = s or settings()
-	if not (s.address and s.key):
+	if not configured(s):
 		raise RashifalUnavailable(_("The writer is not set up: see Daily Rashifal Settings."))
 	headers = {"X-Api-Key": s.key} | ({"X-Frappe-Site-Name": s.site} if s.site else {})
 	body = {"api_name": s.api_name, "payload": {"system": SYSTEM, "prompt": json.dumps(facts_, ensure_ascii=False), "json_mode": True, "temperature": 0.6, "max_tokens": 900}}
 	try:
-		response = requests.post(s.address + GATEWAY, json=body, headers=headers, timeout=s.timeout)
-		answer = response.json()
+		if s.get("route") == SERVICES:
+			status, answer = via_services(s, body)
+		else:
+			response = requests.post(s.address + GATEWAY, json=body, headers=headers, timeout=s.timeout)
+			status, answer = response.status_code, response.json()
 	except (requests.exceptions.RequestException, ValueError):
 		raise RashifalUnavailable(_("The writer did not answer.")) from None
 	data = answer.get("data") if isinstance(answer, dict) else None
-	if response.status_code >= 400 or not isinstance(data, dict) or not data.get("content"):
+	if status >= 400 or not isinstance(data, dict) or not data.get("content"):
 		raise RashifalUnavailable(_("The writer refused or gave nothing."))
 	return parse(data["content"]), str(data.get("model") or "")
 
