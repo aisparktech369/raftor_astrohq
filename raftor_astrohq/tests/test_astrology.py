@@ -505,6 +505,67 @@ class TestStraightToTheAstrologyAPI(AstroTestCase):
 			configure(api_name="")
 
 
+class TestThroughAISparkServices(AstroTestCase):
+	"""AstroHQ asks the server's `astrology` service through IntegrationHQ's AISpark Services account: no address or key on this page."""
+
+	def setUp(self):
+		super().setUp()
+		from raftor_integrationhq.adapters.ai_gateway import aispark_services as svc
+		self.svc = svc
+		configure(how=astrology.SERVICES, hub_address="", api_key="", api_name="")
+
+	def serving(self, answer=None, error=None):
+		return mock.patch.object(self.svc, "call", side_effect=error) if error else mock.patch.object(self.svc, "call", return_value=answer)
+
+	def test_it_needs_no_address_or_key_on_the_page(self):
+		self.assertTrue(astrology.available())
+
+	def test_the_payload_goes_to_the_astrology_service_and_the_chart_comes_back(self):
+		with self.serving({"success": True, "data": CHART, "request_id": "r", "units": {"calls": 1}, "replayed": False}) as call:
+			out = astrology.chart({**BORN, "full_name": "Asha Rao"}, "CORE_BASIC")
+		self.assertEqual(out, CHART["data"])
+		(service, payload), kwargs = call.call_args.args, call.call_args.kwargs
+		self.assertEqual(service, "astrology")
+		self.assertEqual(payload, {"opcode": "CORE_BASIC", "birth_data": BORN})
+		self.assertNotIn("Asha", json.dumps(payload))
+
+	def test_the_named_account_is_used(self):
+		configure(how=astrology.SERVICES, services_account="AI Gateway-AISpark Services-Administrator", hub_address="", api_key="", api_name="")
+		with self.serving({"success": True, "data": CHART}) as call:
+			astrology.chart(BORN)
+		self.assertEqual(call.call_args.kwargs["account"], "AI Gateway-AISpark Services-Administrator")
+
+	def test_every_failure_is_one_of_the_two_astrology_errors(self):
+		cases = ((self.svc.ServicesRefused(422, "refused", "That birth place is not usable."), astrology.AstrologyRefused),
+				 (self.svc.ServicesQuota(429, "quota", "used up"), astrology.AstrologyUnavailable),
+				 (self.svc.ServicesUnavailable(), astrology.AstrologyUnavailable),
+				 (self.svc.ServicesError(401, "unauthorized", "Not authorised."), astrology.AstrologyUnavailable))
+		for error, kind in cases:
+			with self.subTest(type(error).__name__):
+				with self.serving(error=error):
+					with self.assertRaises(kind):
+						astrology.chart(BORN)
+
+	def test_an_engine_error_inside_a_good_answer_is_not_handed_over_as_a_chart(self):
+		with self.serving({"success": True, "data": {"status": "success", "data": {"error": "missing nakshatra data"}}}):
+			with self.assertRaises(astrology.AstrologyUnavailable) as caught:
+				astrology.chart(BORN)
+		self.assertIn("missing nakshatra", str(caught.exception))
+
+	def test_an_unreadable_answer_is_unavailable(self):
+		for body in ({"success": False}, {}, {"success": True, "data": "x"}):
+			with self.subTest(str(body)):
+				with self.serving(body):
+					with self.assertRaises(astrology.AstrologyUnavailable):
+						astrology.chart(BORN)
+
+	def test_the_connection_check_asks_for_a_sample_chart(self):
+		with self.serving({"success": True, "data": PANCHANGA}):
+			result = astrology.check_connection()
+		self.assertTrue(result["ok"], result)
+		self.assertIn("AISpark Services", result["message"])
+
+
 class TestWhoMaySeeAndUseIt(AstroTestCase):
 	def setUp(self):
 		super().setUp()

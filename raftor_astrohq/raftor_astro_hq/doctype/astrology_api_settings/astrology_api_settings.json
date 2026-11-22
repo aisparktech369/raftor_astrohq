@@ -7,6 +7,7 @@
   "note",
   "enabled",
   "how",
+  "services_account",
   "section_hub",
   "hub_address",
   "api_key",
@@ -49,16 +50,25 @@
   },
   {
    "default": "Through the hub",
-   "description": "Through the hub: the hub keeps count of the calls and passes each on to the engine. Straight: AstroHQ asks the astrology API itself, with the key set on that service.",
+   "description": "Through the hub: the hub keeps count of the calls and passes each on to the engine. Straight: AstroHQ asks the astrology API itself, with the key set on that service. AISpark Services: through IntegrationHQ's AISpark Services account (the server's services, with this site's customer key); the address and key below are not used.",
    "fieldname": "how",
    "fieldtype": "Select",
    "label": "How AstroHQ Reaches It",
-   "options": "Through the hub\nStraight to the astrology API"
+   "options": "Through the hub\nStraight to the astrology API\nThrough AISpark Services"
+  },
+  {
+   "fieldname": "services_account",
+   "fieldtype": "Link",
+   "label": "AISpark Services account",
+   "options": "Raftor Integration Account",
+   "depends_on": "eval:doc.how==='Through AISpark Services'",
+   "description": "Leave empty to use the one that is connected."
   },
   {
    "fieldname": "section_hub",
    "fieldtype": "Section Break",
-   "label": "Where It Is"
+   "label": "Where It Is",
+   "depends_on": "eval:doc.how!='Through AISpark Services'"
   },
   {
    "description": "The hub's address, for example https://hub.example.com, or the astrology API's, for example http://127.0.0.1:8795 for the service on this server. It must start with https:// (an address on this computer may start with http://).",

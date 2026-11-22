@@ -1,7 +1,7 @@
 """AstroHQ's way to the astrology API.
 
 The astrology engine (Vedic charts, dasha, panchang, KP, matching) is a program of its own that AstroHQ only asks, over the web, with a key.
-Two ways to reach it, chosen in Astrology API Settings: through the hub (the hub's `astrology` API, which passes the call on to wherever the engine
+Three ways to reach it, chosen in Astrology API Settings: through AISpark Services (IntegrationHQ's account for the server's services, with this site's customer key), through the old hub (the hub's `astrology` API, which passes the call on to wherever the engine
 runs) or straight to the astrology API (a small service on this server, or an AWS Lambda function: the same contract). AstroHQ never imports an
 astrology library: those are under the AGPL, and keeping them out of AstroHQ keeps AstroHQ a separate program (tests/test_astrology.py checks that).
 
@@ -26,7 +26,7 @@ from frappe import _
 from frappe.utils import getdate, now_datetime, strip_html_tags
 
 SETTINGS = "Astrology API Settings"
-HUB, STRAIGHT = "Through the hub", "Straight to the astrology API"  # the two values of the page's "How AstroHQ Reaches It"
+HUB, STRAIGHT, SERVICES = "Through the hub", "Straight to the astrology API", "Through AISpark Services"  # the three values of the page's "How AstroHQ Reaches It"
 CALL = "/api/method/raftor_apimanager.gateway.call"
 USAGE = "/api/method/raftor_apimanager.gateway.usage"
 LOCAL_HOSTS = ("localhost", "127.0.0.1", "::1")  # http is accepted for these only, for trying things on one computer
@@ -61,11 +61,14 @@ def settings() -> frappe._dict:
 		api_key=doc.get_password("api_key", raise_exception=False) or "",
 		api_name=(doc.api_name or "").strip(),
 		timeout=int(doc.timeout_seconds or 20),
+		account=doc.get("services_account") or "",
 	)
 
 
 def _filled_in(s: frappe._dict) -> bool:
-	"""Address and key, and (only through the hub) the API's name."""
+	"""Address and key, and (only through the hub) the API's name. Through AISpark Services the account holds the address and the key, so nothing is needed here."""
+	if s.how == SERVICES:
+		return True
 	return bool(s.address and s.api_key and (s.how == STRAIGHT or s.api_name))
 
 
@@ -148,9 +151,41 @@ def _ask(payload: dict, s: frappe._dict | None = None, must_be_on: bool = True) 
 	s = s or settings()
 	if not ((s.enabled or not must_be_on) and _filled_in(s)):
 		raise AstrologyUnavailable(_("Charts are switched off or not set up yet: see Astrology API Settings."))
+	if s.how == SERVICES:
+		return _chart_of(_via_services(payload, s))
 	if s.how == STRAIGHT:  # the astrology API's own contract: the payload itself, answered with the engine's envelope
 		return _result(_send("POST", s.address + "/", s, payload), straight=True)
 	return _result(_send("POST", s.address + CALL, s, {"api_name": s.api_name, "payload": payload}))
+
+
+def _via_services(payload: dict, s: frappe._dict) -> dict:
+	"""The server's answer for `payload` ({"success", "data": the engine's envelope, ...}), asked of the `astrology` service through IntegrationHQ's AISpark Services account. Every way it can fail becomes AstrologyUnavailable or AstrologyRefused, in words safe to show; the key and the address are never in them."""
+	try:
+		from raftor_integrationhq.adapters.ai_gateway import aispark_services as svc
+	except ImportError:
+		raise AstrologyUnavailable(_("The astrology service is not set up on this site.")) from None
+	try:
+		return svc.call("astrology", payload, account=s.get("account") or None)
+	except svc.ServicesRefused as error:
+		raise AstrologyRefused(error.message or _("The birth details were not accepted.")) from None
+	except svc.ServicesQuota:
+		raise AstrologyUnavailable(_("AstroHQ has used up the calls it may make to the astrology API for now.")) from None
+	except svc.ServicesError as error:
+		frappe.log_error(title="AISpark Services did not answer astrology", message=f"{error.status} {error.code}: {error.message}")
+		raise AstrologyUnavailable(error.message or _("The astrology service is not working right now. Try again in a little while.")) from None
+	except frappe.ValidationError as error:  # no account, no key, a bad address: said in plain words by the connection
+		raise AstrologyUnavailable(str(error)) from None
+
+
+def _chart_of(body: dict) -> dict:
+	"""The chart inside the server's answer, the same way the hub's answer is read."""
+	answer = body.get("data") if isinstance(body, dict) and body.get("success") else None
+	if not isinstance(answer, dict):
+		raise AstrologyUnavailable(_("The astrology service sent an answer AstroHQ could not read."))
+	chart = answer["data"] if answer.get("status") == "success" and "data" in answer else answer
+	if isinstance(chart, dict) and isinstance(chart.get("error"), str):
+		raise AstrologyUnavailable(chart["error"])
+	return chart
 
 
 def _send(method: str, url: str, s: frappe._dict, body: dict | None = None) -> requests.Response:
@@ -228,7 +263,10 @@ def check_connection() -> dict:
 	if not _filled_in(s):
 		return {"ok": False, "message": _("Fill in the address and AstroHQ's API key (and, through the hub, the API's name) first, and save.")}
 	try:
-		if s.how == STRAIGHT:
+		if s.how == SERVICES:
+			answer = _ask({"opcode": "PANCHANGA", "birth_data": SAMPLE}, s, must_be_on=False)
+			named = _("AISpark Services")
+		elif s.how == STRAIGHT:
 			info = _send("GET", s.address + "/", s)
 			if info.status_code != 200:
 				_result(info, straight=True)  # raises the right sentence for 503, 404 and the rest

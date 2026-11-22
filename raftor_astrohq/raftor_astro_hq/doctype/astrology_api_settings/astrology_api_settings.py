@@ -13,8 +13,9 @@ class AstrologyAPISettings(Document):
 		if not 5 <= int(self.timeout_seconds or 0) <= 60:
 			frappe.throw(_("Wait for an answer between 5 and 60 seconds."))
 		if self.enabled:
-			needed = [("hub_address", _("the address")), ("api_key", _("the API key"))]
-			if (self.how or astrology.HUB) != astrology.STRAIGHT:
+			how = self.how or astrology.HUB
+			needed = [] if how == astrology.SERVICES else [("hub_address", _("the address")), ("api_key", _("the API key"))]
+			if how == astrology.HUB:
 				needed.append(("api_name", _("the API's name")))
 			missing = [label for field, label in needed if not self.get(field)]
 			if missing:
