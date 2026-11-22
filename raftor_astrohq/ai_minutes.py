@@ -259,7 +259,7 @@ def book(payment_name: str) -> str | None:
 	from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
 
 	payment = frappe.get_doc("Payment", payment_name)
-	if payment.workflow_state != "Paid" or not payment.payment_entry or frappe.db.exists("Sales Order", {"po_no": payment.name, "docstatus": ["<", 2]}):
+	if payment.workflow_state not in ("Paid", "Settled") or not payment.payment_entry or frappe.db.exists("Sales Order", {"po_no": payment.name, "docstatus": ["<", 2]}):
 		return None
 	from raftor_paymenthq.accounting import company, customer_of
 
