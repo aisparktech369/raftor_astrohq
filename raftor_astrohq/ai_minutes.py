@@ -187,6 +187,8 @@ USE = "AI Minute Use"
 def record(user: str, persona: str, talked: float, times: float, source: str, pack: str = "") -> None:
 	"""One row for an answer that counted: minutes of talk, the AI minutes they used, where they came from and what the person had left after. Staff and people with no limit are not written. A problem here never stops the chat."""
 	try:
+		if flt(talked * times, 2) <= 0:
+			return  # nothing was used, so there is nothing to write down
 		if not _limited(user):
 			return
 		left = plan_left(user)

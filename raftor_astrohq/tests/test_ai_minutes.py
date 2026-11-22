@@ -213,3 +213,18 @@ class TestAIMinuteLedger(AstroTestCase):
 		with patch.object(ai_minutes, "_limited", return_value=True), patch.object(ai_minutes, "plan_left", return_value=None):
 			ai_minutes.record(user, "", 1.0, 1.0, "Plan")
 		self.assertEqual(frappe.db.count(ai_minutes.USE, {"user": user}), 0)
+
+
+class TestTheLedgerSkipsNothing(AstroTestCase):
+	"""An answer that used no AI minutes leaves no row; one that used some does."""
+
+	def written(self, talked, times):
+		user = make_user().name
+		with patch.object(ai_minutes, "_limited", return_value=True), patch.object(ai_minutes, "plan_left", return_value=5.0):
+			ai_minutes.record(user, "devika-iyer", talked, times, "Plan")
+		return frappe.db.count(ai_minutes.USE, {"user": user})
+
+	def test_a_zero_minute_answer_writes_no_row_and_a_real_one_writes_one(self):
+		self.assertEqual(self.written(0, 3), 0)
+		self.assertEqual(self.written(0.5, 0), 0)
+		self.assertEqual(self.written(0.5, 3), 1)
