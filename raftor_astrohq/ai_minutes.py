@@ -207,6 +207,10 @@ def payment_arrived(payment) -> None:
 		give(payment.name, payment.purpose_name, flt(key.split(":")[-2]))
 	except Exception:
 		frappe.log_error(frappe.get_traceback(), f"AI minutes for {payment.name}")
+	try:
+		book(payment.name)
+	except Exception:
+		frappe.log_error(frappe.get_traceback(), f"AI minutes sale for {payment.name}")
 
 
 def give(payment: str, user: str, minutes: float) -> bool:
@@ -215,3 +219,52 @@ def give(payment: str, user: str, minutes: float) -> bool:
 		return False
 	frappe.get_doc({"doctype": CREDIT, "user": user, "minutes_bought": minutes, "minutes_left": minutes, "bought_on": now_datetime(), "payment": payment}).insert(ignore_permissions=True)
 	return True
+
+
+# ---- the sale in the books: an order and a settled invoice ----
+ITEM = "AI Minutes"
+
+
+def _item() -> str:
+	if not frappe.db.exists("Item", ITEM):
+		frappe.get_doc({"doctype": "Item", "item_code": ITEM, "item_name": ITEM, "item_group": "Services" if frappe.db.exists("Item Group", "Services") else "All Item Groups", "stock_uom": "Nos",
+						"is_stock_item": 0, "is_sales_item": 1, "is_purchase_item": 0, "description": "AI minutes bought for chats with the AI guides"}).insert(ignore_permissions=True)
+	return ITEM
+
+
+def book(payment_name: str) -> str | None:
+	"""A paid purchase of AI minutes becomes a submitted Sales Order (so it shows in the customer's orders) and a submitted Sales Invoice settled by that payment (so the money is a sale, not an unmatched advance).
+	The price is taken as GST-inclusive; with a tax template chosen in AI Minute Settings the invoice also carries that GST. Once per payment (the order holds the payment's name as its reference). Returns the invoice's name."""
+	from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
+
+	payment = frappe.get_doc("Payment", payment_name)
+	if payment.workflow_state != "Paid" or not payment.payment_entry or frappe.db.exists("Sales Order", {"po_no": payment.name, "docstatus": ["<", 2]}):
+		return None
+	from raftor_paymenthq.accounting import company, customer_of
+
+	customer, credit = customer_of(payment.purpose_name), flt(payment.request_key.split(":")[-2])
+	if not customer or credit <= 0:
+		frappe.log_error(f"{payment.name}: no customer or no minutes for the sale of AI minutes", "AI minutes sale")
+		return None
+	on = frappe.utils.getdate(payment.paid_on)
+	template = frappe.db.get_single_value("AI Minute Settings", "sales_tax_template") or ""
+	order = frappe.get_doc({"doctype": "Sales Order", "customer": customer, "company": company(), "transaction_date": on, "delivery_date": on, "po_no": payment.name, "po_date": on,
+							"currency": payment.currency or "INR", "taxes_and_charges": template, "items": [{"item_code": _item(), "qty": credit, "rate": flt(payment.amount) / credit, "delivery_date": on, "description": payment.description}]})
+	order.flags.ignore_permissions = True
+	order.set_missing_values()
+	order.insert()
+	order.submit()
+	invoice = make_sales_invoice(order.name)
+	invoice.update({"posting_date": on, "set_posting_time": 1, "due_date": on, "po_no": payment.name, "allocate_advances_automatically": 1})
+	invoice.flags.ignore_permissions = True
+	invoice.insert()
+	invoice.set_advances()
+	invoice.advances = [row for row in invoice.advances if row.reference_name == payment.payment_entry]  # this payment only, not another unmatched advance of the same customer
+	invoice.save()
+	invoice.submit()
+	for row in order.items:  # minutes are delivered the moment they are paid for: the order is complete
+		frappe.db.set_value("Sales Order Item", row.name, "delivered_qty", row.qty, update_modified=False)
+	order.reload()
+	order.db_set("per_delivered", 100, update_modified=False)
+	order.set_status(update=True)
+	return invoice.name

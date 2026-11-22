@@ -143,3 +143,43 @@ class TestAIMinutes(AstroTestCase):
 			frappe.set_user("Administrator")
 		self.assertEqual(asked["amount"], 90.0)  # 30 minutes with a guide of 3 are 90 AI minutes, 1 rupee each
 		self.assertTrue(asked["key"].startswith(f"aiminutes:{user}:90:"))  # what is given when it is paid is the AI minutes
+
+
+class TestAIMinutesSale(AstroTestCase):
+	"""A paid purchase of AI minutes is an order and a settled invoice, once; the price is GST-inclusive unless a tax template is chosen."""
+
+	def _paid(self):
+		import uuid
+		from raftor_paymenthq import lifecycle
+
+		user = f"mb{uuid.uuid4().hex[:8]}@example.com"
+		frappe.get_doc({"doctype": "User", "email": user, "first_name": "Minutes", "send_welcome_email": 0, "user_type": "Website User"}).insert(ignore_permissions=True)
+		frappe.get_doc({"doctype": "Customer", "customer_name": f"Minutes {user[:10]}", "customer_type": "Individual", "email_id": user}).insert(ignore_permissions=True)
+		made = lifecycle.request(user, 400, "User", user, "200 minutes of talk", key=f"aiminutes:{user}:400:0")
+		name = made["payment"] if isinstance(made, dict) else made
+		lifecycle.receive(name, "pay_test")  # PaymentHQ tells the hook, which gives the minutes and books the sale
+		return user, name
+
+	def test_a_paid_pack_is_an_order_and_an_invoice_paid_by_that_payment_once(self):
+		frappe.db.set_single_value("AI Minute Settings", "sales_tax_template", "")
+		user, name = self._paid()
+		order = frappe.db.get_value("Sales Order", {"po_no": name}, ["name", "grand_total", "status"], as_dict=True)
+		invoice = frappe.db.get_value("Sales Invoice", {"po_no": name}, ["name", "grand_total", "outstanding_amount", "docstatus", "total_taxes_and_charges"], as_dict=True)
+		self.assertEqual((order.grand_total, order.status), (400, "Completed"))
+		self.assertEqual((invoice.grand_total, invoice.outstanding_amount, invoice.docstatus, invoice.total_taxes_and_charges), (400, 0, 1, 0))  # GST-inclusive: no separate tax line by default
+		self.assertEqual(frappe.db.get_value("AI Minute Credit", {"payment": name}, "minutes_bought"), 400)
+		self.assertIsNone(ai_minutes.book(name))  # a second telling makes nothing more
+		self.assertEqual(frappe.db.count("Sales Order", {"po_no": name}), 1)
+
+	def test_a_chosen_gst_template_splits_the_same_price_inside_it(self):
+		company = frappe.defaults.get_global_default("company")
+		parent = frappe.db.get_value("Account", {"company": company, "account_name": "Duties and Taxes"}, "name")
+		account = frappe.db.get_value("Account", {"company": company, "account_name": "Test GST Output"}, "name") or frappe.get_doc(
+			{"doctype": "Account", "account_name": "Test GST Output", "parent_account": parent, "company": company, "account_type": "Tax", "is_group": 0}).insert(ignore_permissions=True).name
+		template = frappe.db.get_value("Sales Taxes and Charges Template", {"title": "Test GST 18 inclusive", "company": company}) or frappe.get_doc({"doctype": "Sales Taxes and Charges Template", "title": "Test GST 18 inclusive", "company": company, "taxes": [
+			{"charge_type": "On Net Total", "account_head": account, "description": "GST 18%", "rate": 18, "included_in_print_rate": 1}]}).insert(ignore_permissions=True).name
+		frappe.db.set_single_value("AI Minute Settings", "sales_tax_template", template)
+		self.addCleanup(frappe.db.set_single_value, "AI Minute Settings", "sales_tax_template", "")
+		user, name = self._paid()
+		invoice = frappe.db.get_value("Sales Invoice", {"po_no": name}, ["grand_total", "outstanding_amount", "total_taxes_and_charges"], as_dict=True)
+		self.assertEqual((invoice.grand_total, invoice.outstanding_amount, invoice.total_taxes_and_charges), (400, 0, 61.02))  # 400 inclusive of 18%: 338.98 + 61.02
