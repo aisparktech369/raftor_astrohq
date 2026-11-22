@@ -183,3 +183,33 @@ class TestAIMinutesSale(AstroTestCase):
 		user, name = self._paid()
 		invoice = frappe.db.get_value("Sales Invoice", {"po_no": name}, ["grand_total", "outstanding_amount", "total_taxes_and_charges"], as_dict=True)
 		self.assertEqual((invoice.grand_total, invoice.outstanding_amount, invoice.total_taxes_and_charges), (400, 0, 61.02))  # 400 inclusive of 18%: 338.98 + 61.02
+
+
+class TestAIMinuteLedger(AstroTestCase):
+	"""Every counted answer is written down, and the person's page reads it back."""
+
+	def test_an_answer_from_the_plan_and_one_from_bought_minutes_are_both_written_down(self):
+		from raftor_astrohq import ai_minutes_page
+
+		user = make_user().name
+		pack = _credit(user, 20)
+		with patch.object(ai_minutes, "_limited", return_value=True), patch.object(ai_minutes, "plan_left", return_value=5.0), patch("raftor_servicehq.plans.check", return_value={"ok": True}), \
+				patch("raftor_servicehq.plans.use_time", return_value=1.0), patch.object(ai_minutes, "factor", return_value=2.0):
+			ai_minutes.turn_done(user, "")  # from the plan: 1 minute of talk at 2 a minute
+		with patch.object(ai_minutes, "_limited", return_value=True), patch.object(ai_minutes, "plan_left", return_value=0.0), patch("raftor_servicehq.plans.check", return_value={"ok": False}), patch.object(ai_minutes, "factor", return_value=2.0):
+			ai_minutes.turn_done(user, "")  # the first answer after a pause counts half a minute: 1 AI minute from the pack
+		rows = frappe.get_all(ai_minutes.USE, filters={"user": user}, fields=["source", "talk_minutes", "ai_minutes", "balance_after", "pack"], order_by="creation asc")
+		self.assertEqual([(r.source, r.talk_minutes, r.ai_minutes) for r in rows], [("Plan", 1.0, 2.0), ("Bought", 0.5, 1.0)])
+		self.assertEqual((rows[0].balance_after, rows[1].balance_after, rows[1].pack), (25.0, 19.0, pack.name))
+		with patch.object(ai_minutes_page, "_user", return_value=user), patch.object(ai_minutes, "_limited", return_value=True), patch.object(ai_minutes, "plan_left", return_value=0.0):
+			self.assertEqual([c["label"] for c in ai_minutes_page.summary()["items"]][0], "AI minutes left")
+			self.assertEqual(len(ai_minutes_page.usage()["items"]), 2)
+			self.assertEqual(ai_minutes_page.bought()["items"][0]["title"], "20 AI minutes")
+
+	def test_staff_and_unlimited_plans_leave_no_rows(self):
+		user = make_user().name
+		with patch.object(ai_minutes, "_limited", return_value=False):
+			ai_minutes.record(user, "", 1.0, 1.0, "Plan")
+		with patch.object(ai_minutes, "_limited", return_value=True), patch.object(ai_minutes, "plan_left", return_value=None):
+			ai_minutes.record(user, "", 1.0, 1.0, "Plan")
+		self.assertEqual(frappe.db.count(ai_minutes.USE, {"user": user}), 0)

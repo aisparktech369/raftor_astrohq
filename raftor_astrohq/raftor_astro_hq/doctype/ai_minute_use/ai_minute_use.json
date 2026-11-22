@@ -1,0 +1,100 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-11-22 00:00:00.000000",
+ "description": "One row for every answer an AI guide gave that counted AI minutes: who, when, with which guide, how much, from the plan or from bought minutes, and what was left after. Written by the system, never by hand.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "used_on",
+  "guide",
+  "guide_name",
+  "col1",
+  "talk_minutes",
+  "ai_minutes",
+  "source",
+  "pack",
+  "balance_after"
+ ],
+ "fields": [
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "Account",
+   "options": "User",
+   "reqd": 1,
+   "in_list_view": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "used_on",
+   "fieldtype": "Datetime",
+   "label": "Used On",
+   "reqd": 1,
+   "in_list_view": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "guide",
+   "fieldtype": "Data",
+   "label": "Guide (slug)",
+   "search_index": 1
+  },
+  {
+   "fieldname": "guide_name",
+   "fieldtype": "Data",
+   "label": "Guide",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "col1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "talk_minutes",
+   "fieldtype": "Float",
+   "label": "Minutes of Talk",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "ai_minutes",
+   "fieldtype": "Float",
+   "label": "AI Minutes Used",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Select",
+   "label": "Taken From",
+   "options": "Plan\nBought",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "pack",
+   "fieldtype": "Data",
+   "label": "Pack Used (AI Minute Credit)"
+  },
+  {
+   "fieldname": "balance_after",
+   "fieldtype": "Float",
+   "label": "AI Minutes Left After"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-11-22 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Raftor Astro HQ",
+ "name": "AI Minute Use",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "read": 1,
+   "role": "System Manager"
+  }
+ ],
+ "sort_field": "used_on",
+ "sort_order": "DESC",
+ "states": []
+}

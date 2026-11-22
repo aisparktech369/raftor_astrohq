@@ -53,6 +53,12 @@ def summary() -> dict:
 		cards.append({"value": _short(ai["tokens"]), "label": _("AI tokens used")})
 		cards.append({"value": _rupees(ai["cost"]) if ai["cost"] else _("Not set"), "label": _("AI cost"),
 					  "description": _("{0} a chat").format(_rupees(ai["cost"] / ai["chats"])) if ai["cost"] and ai["chats"] else _("Set the rates in AgentsHQ Settings")})
+	sold = flt(frappe.db.sql("select coalesce(sum(minutes_bought), 0) from `tabAI Minute Credit` where bought_on >= %s", since)[0][0])
+	spent = flt(frappe.db.sql("select coalesce(sum(ai_minutes), 0) from `tabAI Minute Use` where used_on >= %s", since)[0][0])
+	owed = flt(frappe.db.sql("select coalesce(sum(minutes_left), 0) from `tabAI Minute Credit` where minutes_left > 0")[0][0])
+	if sold or spent or owed:
+		cards += [{"value": _short(sold), "label": _("AI minutes sold"), "description": _("{0} used from the plan or bought packs").format(_short(spent))},
+				  {"value": _short(owed), "label": _("Bought AI minutes still unused"), "description": _("Paid for, not yet used")}]
 	return {"items": cards}
 
 
@@ -60,7 +66,7 @@ def summary() -> dict:
 def guides() -> dict:
 	"""One record for each AI guide that was used: its chats, tokens and cost, how people rated it, and its daily cap."""
 	_team()
-	rows = ai_telemetry.per_guide(DAYS)
+	rows, since = ai_telemetry.per_guide(DAYS), _since()
 	totals = trust.guide_totals([r.guide for r in rows])
 	items = []
 	for r in rows:
@@ -70,6 +76,9 @@ def guides() -> dict:
 				 (_("Cost {0} · {1} a chat").format(_rupees(r.cost), _rupees(r.per_chat)) if r.cost else _("Cost: set the rates in AgentsHQ Settings"))]
 		if provider and provider.total_reviews:
 			lines.append(f"★ {provider.avg_rating:.1f} ({provider.total_reviews})" + (_(" · {0} sessions").format(f"{totals.get(r.guide, {}).get('sessions', 0):,}")))
+		used = flt(frappe.db.sql("select coalesce(sum(ai_minutes), 0) from `tabAI Minute Use` where guide = %s and used_on >= %s", (r.guide, since))[0][0])
+		if used:
+			lines.append(_("{0} AI minutes used").format(_short(used)))
 		if cap:
 			lines.append(_("Daily cap {0} tokens (used today {1})").format(_short(cap), _short(ai_telemetry.tokens_today(r.guide))))
 		items.append({"id": r.guide, "title": r.name, "badge": _("{0} tokens").format(_short(r.tokens)), "tone": "warning" if cap and ai_telemetry.over_cap(r.guide) else "success", "lines": lines, "actions": []})

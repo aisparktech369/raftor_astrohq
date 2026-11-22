@@ -150,11 +150,23 @@ def numerology_page() -> dict:
 			"sections": [{"key": "numerology", "cards": [{"type": "Number Reveal Card", "values": values}], "look": {**TIGHT, "theme": "Temple"}}]}
 
 
+def ai_minutes_page() -> dict:
+	"""My AI minutes (ai_minutes_page.py): the balance, the packs bought with their invoices, and where the minutes went."""
+	m = "raftor_astrohq.ai_minutes_page."
+	return {"route": "my/ai-minutes", "title": _("My AI minutes"), "login_required": True,
+			"menu": {"label": _("My AI minutes"), "summary": _("Your balance, what you bought and where your minutes went."), "order": 36, "side": {"label": _("AI minutes"), "order": 51}},
+			"sections": [{"key": "head", "title": _("My AI minutes"), "subtitle": _("When your free minutes are used, you can add more from the chat."), "look": TIGHT},
+						 {"key": "numbers", "columns": "3", "source": {"method": m + "summary", "card": "Fact Card", "empty": ""}, "look": TIGHT},
+						 {"key": "bought", "title": _("Minutes you bought"), "source": {"method": m + "bought", "empty": _("You have not bought any yet.")}, "look": TIGHT},
+						 {"key": "usage", "title": _("Where your minutes went"), "source": {"method": m + "usage", "empty": _("Nothing used yet.")}, "look": TIGHT}]}
+
+
 def definitions() -> list[dict]:
 	profile_list = _my("birth-profiles")
 	you = {"relationship": profiles.SELF}
 	stats = "raftor_astrohq.stats_page."
 	return [
+		ai_minutes_page(),
 		{"route": "team/stats", "title": _("Business stats"), "login_required": True, "roles": list(STAFF_ROLES), "otherwise": "my",
 		 "menu": {"label": _("Business stats"), "summary": _("Sessions, ratings and what the AI guides use and cost."), "order": 6, "side": {"order": 11}},
 		 "sections": [{"key": "head", "title": _("Business stats"), "subtitle": _("The last 30 days, then each AI guide and each week."), "look": TIGHT},

@@ -154,12 +154,13 @@ def allowance(user: str) -> dict:
 
 def turn_done(user: str, persona: str = "") -> None:
 	"""An answer was given. While the plan has free minutes they are counted there (as always); once they are used up the minutes since the last answer come off the bought ones. A minute of talk uses the guide's
-	number of AI minutes (a guide of 3 uses 3 a minute)."""
+	number of AI minutes (a guide of 3 uses 3 a minute). Each answer that counted is written down (`record`) so the person can see where their minutes went."""
 	from raftor_servicehq import plans
 
 	times = factor(persona)
 	if not _limited(user) or plans.check(user, plan_rules.AI_MINUTES).get("ok") or bought_left(user) <= 0:
-		plans.use_time(user, plan_rules.AI_MINUTES, factor=times)
+		talked = plans.use_time(user, plan_rules.AI_MINUTES, factor=times)
+		record(user, persona, talked, times, "Plan")
 		return
 	rows = frappe.get_all(CREDIT, filters={"user": user, "minutes_left": [">", 0]}, fields=["name", "minutes_left", "last_used"], order_by="bought_on asc, creation asc")
 	last = max((r.last_used for r in frappe.get_all(CREDIT, filters={"user": user}, fields=["last_used"]) if r.last_used), default=None)
@@ -169,12 +170,32 @@ def turn_done(user: str, persona: str = "") -> None:
 		if 0 <= gap <= PAUSE:
 			minutes = gap
 	remaining = round(minutes * times, 2)
+	first_pack = rows[0].name if rows else ""
 	for row in rows:
 		if remaining <= 0:
 			break
 		take = min(remaining, flt(row.minutes_left))
 		frappe.db.set_value(CREDIT, row.name, {"minutes_left": round(flt(row.minutes_left) - take, 2), "last_used": now_datetime()}, update_modified=False)
 		remaining = round(remaining - take, 2)
+	record(user, persona, minutes, times, "Bought", first_pack)
+
+
+# ---- the ledger of use ----
+USE = "AI Minute Use"
+
+
+def record(user: str, persona: str, talked: float, times: float, source: str, pack: str = "") -> None:
+	"""One row for an answer that counted: minutes of talk, the AI minutes they used, where they came from and what the person had left after. Staff and people with no limit are not written. A problem here never stops the chat."""
+	try:
+		if not _limited(user):
+			return
+		left = plan_left(user)
+		if left is None:
+			return
+		frappe.get_doc({"doctype": USE, "user": user, "used_on": now_datetime(), "guide": persona or "", "guide_name": (frappe.db.get_value("AI Guide Persona", {"slug": persona}, "guide_name") if persona else "") or "",
+						"talk_minutes": flt(talked, 2), "ai_minutes": flt(talked * times, 2), "source": source, "pack": pack, "balance_after": flt(left + bought_left(user), 2)}).insert(ignore_permissions=True)
+	except Exception:
+		frappe.log_error(frappe.get_traceback(), "AI minute use not written")
 
 
 # ---- buying ----
