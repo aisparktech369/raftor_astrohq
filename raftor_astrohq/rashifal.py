@@ -58,6 +58,11 @@ SYSTEM = (
 	"Give this sign's reading its own flavour from its element and ruling planet, without naming the planet, begin the summary in its own way (not with \"Today calls for\" or \"Today brings\"), and give one small practical thing to do in at least two parts. Write each part as one sentence: the summary of at most 14 words, every other part of at most 11 words. The Hindi is natural simple Hindi in Devanagari, not a word-for-word copy. "
 	'Answer with JSON only, in exactly this shape: {"en": {"summary": "", "love": "", "money": "", "work": "", "health": ""}, "hi": {"summary": "", "love": "", "money": "", "work": "", "health": ""}}'
 )
+SYSTEM_ALL = (
+	SYSTEM.replace("for one sign", "for each of the signs given").replace("You are given the day's facts for the sign as JSON.", "You are given the day's facts for each sign as JSON, keyed by the sign's number.")
+	.replace("begin the summary in its own way", "begin each summary in its own way, different from the other signs'")
+	.replace('Answer with JSON only, in exactly this shape: {"en"', 'Answer with JSON only: an object keyed by the same sign numbers, each in exactly this shape: {"en"')
+)
 
 
 class RashifalUnavailable(frappe.ValidationError):
@@ -193,13 +198,12 @@ def parse(content: str) -> dict:
 	return out
 
 
-def write(facts_: dict, s: frappe._dict | None = None) -> tuple[dict, str]:
-	"""The words for one sign, from the hub's text-to-text: ({'en': {...}, 'hi': {...}}, the model's name)."""
-	s = s or settings()
+def ask(system: str, prompt: str, max_tokens: int, s: frappe._dict) -> tuple[str, str]:
+	"""One call to the writer: (its text, the model's name)."""
 	if not configured(s):
 		raise RashifalUnavailable(_("The writer is not set up: see Daily Rashifal Settings."))
 	headers = {"X-Api-Key": s.key} | ({"X-Frappe-Site-Name": s.site} if s.site else {})
-	body = {"api_name": s.api_name, "payload": {"system": SYSTEM, "prompt": json.dumps(facts_, ensure_ascii=False), "json_mode": True, "temperature": 0.6, "max_tokens": 900}}
+	body = {"api_name": s.api_name, "payload": {"system": system, "prompt": prompt, "json_mode": True, "temperature": 0.6, "max_tokens": max_tokens}}
 	try:
 		if s.get("route") == SERVICES:
 			status, answer = via_services(s, body)
@@ -211,7 +215,38 @@ def write(facts_: dict, s: frappe._dict | None = None) -> tuple[dict, str]:
 	data = answer.get("data") if isinstance(answer, dict) else None
 	if status >= 400 or not isinstance(data, dict) or not data.get("content"):
 		raise RashifalUnavailable(_("The writer refused or gave nothing."))
-	return parse(data["content"]), str(data.get("model") or "")
+	return data["content"], str(data.get("model") or "")
+
+
+def write(facts_: dict, s: frappe._dict | None = None) -> tuple[dict, str]:
+	"""The words for one sign, from the hub's text-to-text: ({'en': {...}, 'hi': {...}}, the model's name)."""
+	content, model = ask(SYSTEM, json.dumps(facts_, ensure_ascii=False), 900, s or settings())
+	return parse(content), model
+
+
+def parse_all(content: str, numbers) -> dict:
+	"""The writer's answer for several signs, {'1': {'en': {...}, 'hi': {...}}, ...}, as {number: words} of the signs that came back right. A sign that is missing or wrong is left out (it is written on the next run).
+	ValueError only when the whole answer is not a JSON object."""
+	text = re.sub(r"^```(?:json)?\s*|\s*```$", "", str(content or "").strip())
+	try:
+		data = json.loads(text)
+	except ValueError:
+		raise ValueError("not JSON") from None
+	if not isinstance(data, dict):
+		raise ValueError("not an object")
+	out = {}
+	for number in numbers:
+		try:
+			out[number] = parse(json.dumps(data.get(str(number))))
+		except ValueError:
+			continue
+	return out
+
+
+def write_all(facts_by_number: dict, s: frappe._dict | None = None) -> tuple[dict, str]:
+	"""The words for all the given signs in ONE call: ({number: words}, the model's name). Signs the writer got wrong are left out."""
+	content, model = ask(SYSTEM_ALL, json.dumps({str(n): f for n, f in facts_by_number.items()}, ensure_ascii=False), min(4000, 320 * len(facts_by_number) + 400), s or settings())
+	return parse_all(content, facts_by_number), model
 
 
 # ---- the day's twelve ----
@@ -231,18 +266,21 @@ def write_day(on_date=None, manual: bool = False) -> dict:
 	except (astrology.AstrologyUnavailable, astrology.AstrologyRefused) as error:
 		frappe.log_error(title="Daily rashifal: the sky could not be had", message=str(error))
 		return {"ok": False, "message": _("The astrology service could not say where the planets are."), "made": 0, "failed": len(todo)}
+	given = {number: facts(the_sky, number) for number in todo}
+	try:
+		written, model = write_all(given, s)  # one call for every sign that is missing
+	except (RashifalUnavailable, ValueError) as error:
+		frappe.log_error(title=f"Daily rashifal: {on_date} was not written", message=str(error))
+		written, model = {}, ""
 	made = failed = 0
 	for number in todo:
-		given = facts(the_sky, number)
-		try:
-			words, model = write(given, s)
-		except (RashifalUnavailable, ValueError) as error:
+		if number not in written:
 			failed += 1
-			frappe.log_error(title=f"Daily rashifal: {rashi(number)[1]} on {on_date} was not written", message=str(error))
 			continue
+		words, facts_ = written[number], given[number]
 		record = {"doctype": DOCTYPE, "for_date": on_date, "rashi_no": number, "rashi": rashi(number)[1], "status": "Published" if s.publish_at_once else "Draft",
-				  "lucky_number": given["lucky_number"], "facts": json.dumps(given, ensure_ascii=False), "model": model, "written_on": now_datetime(),
-				  "colour_en": given["lucky_colour"], "colour_hi": given["lucky_colour_hindi"], **{f"{area}_score": value for area, value in given["scores"].items()}}
+				  "lucky_number": facts_["lucky_number"], "facts": json.dumps(facts_, ensure_ascii=False), "model": model, "written_on": now_datetime(),
+				  "colour_en": facts_["lucky_colour"], "colour_hi": facts_["lucky_colour_hindi"], **{f"{area}_score": value for area, value in facts_["scores"].items()}}
 		for language in ("en", "hi"):
 			for part in PARTS:
 				record[f"{part}_{language}"] = words[language][part]

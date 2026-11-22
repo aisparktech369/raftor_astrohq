@@ -72,31 +72,38 @@ class TestADay(AstroTestCase):
 		doc.save(ignore_permissions=True)
 
 	def _write(self, **kw):
-		with patch.object(rashifal, "sky", return_value=SKY), patch.object(rashifal, "write", return_value=(GOOD_WORDS, "test-model")) as writer:
+		with patch.object(rashifal, "sky", return_value=SKY), patch.object(rashifal, "write_all", side_effect=lambda given, s=None: ({n: GOOD_WORDS for n in given}, "test-model")) as writer:
 			return rashifal.write_day(DAY, **kw), writer
 
 	def test_twelve_drafts_are_written_once(self):
 		result, writer = self._write()
 		self.assertEqual((result["made"], result["failed"]), (12, 0))
-		self.assertEqual(writer.call_count, 12)
+		self.assertEqual(writer.call_count, 1)  # one call for all twelve signs
 		self.assertEqual(frappe.db.count(rashifal.DOCTYPE, {"for_date": DAY, "status": "Draft"}), 12)
 		again, writer = self._write()  # nothing is written twice
 		self.assertEqual((again["made"], writer.call_count), (0, 0))
 
-	def test_one_failure_does_not_stop_the_others_and_is_retried(self):
-		calls = {"n": 0}
+	def test_a_sign_left_out_by_the_writer_is_retried_alone(self):
+		def short(given, s=None):
+			return {n: GOOD_WORDS for n in given if n != 3}, "m"
 
-		def flaky(given, s=None):
-			calls["n"] += 1
-			if calls["n"] == 3:
-				raise rashifal.RashifalUnavailable("down")
-			return GOOD_WORDS, "m"
-
-		with patch.object(rashifal, "sky", return_value=SKY), patch.object(rashifal, "write", side_effect=flaky):
+		with patch.object(rashifal, "sky", return_value=SKY), patch.object(rashifal, "write_all", side_effect=short):
 			result = rashifal.write_day(DAY)
 		self.assertEqual((result["made"], result["failed"]), (11, 1))
-		result, _ = self._write()  # the next run writes only the missing one
-		self.assertEqual(result["made"], 1)
+		with patch.object(rashifal, "sky", return_value=SKY), patch.object(rashifal, "write_all", side_effect=lambda given, s=None: ({n: GOOD_WORDS for n in given}, "m")) as again:
+			result = rashifal.write_day(DAY)  # the next run asks only for the missing sign
+		self.assertEqual((result["made"], list(again.call_args[0][0])), (1, [3]))
+
+	def test_a_failed_call_writes_nothing_and_reports_it(self):
+		with patch.object(rashifal, "sky", return_value=SKY), patch.object(rashifal, "write_all", side_effect=rashifal.RashifalUnavailable("down")):
+			result = rashifal.write_day(DAY)
+		self.assertEqual((result["made"], result["failed"]), (0, 12))
+
+	def test_parse_all_keeps_the_good_signs_and_drops_the_bad(self):
+		answer = json.dumps({"1": GOOD_WORDS, "2": {"en": GOOD_WORDS["en"]}, "3": GOOD_WORDS})
+		self.assertEqual(sorted(rashifal.parse_all(answer, [1, 2, 3, 4])), [1, 3])
+		with self.assertRaises(ValueError):
+			rashifal.parse_all("nope", [1])
 
 	def test_switched_off_writes_nothing_unless_a_person_asks(self):
 		doc = frappe.get_single(rashifal.SETTINGS)
